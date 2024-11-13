@@ -10,7 +10,7 @@
 	}
 </script>
 
-<Header />
+<Header current="shop"/>
 <main>
 	<div id="image-holder">
 		<enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />

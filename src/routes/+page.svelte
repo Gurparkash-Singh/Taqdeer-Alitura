@@ -12,7 +12,7 @@
 		/>
 	</svg>
 </div>
-<Header />
+<Header current="home"/>
 <main>
 	<section id="logo">
 		<img src={Logo} alt="Taqdeer Alitura Logo" />
@@ -37,8 +37,9 @@
 		<h1>Contact</h1>
 		<div>
 			<p>Please feel free to write to us regarding anything you might need.</p>
-			<form action="">
+			<form action="?/send">
 				<textarea name="contact-form" id="contact-form" rows="3" cols="10"> Contact Us </textarea>
+                <input type="submit" value="Submit">
 			</form>
 			<ul>
 				<li>
