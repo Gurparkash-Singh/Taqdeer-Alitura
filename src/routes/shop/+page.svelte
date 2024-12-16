@@ -5,9 +5,31 @@
 
 	const arr = [];
 
+    let open_shop_menu = false;
+    let open_sort_menu = false;
+    let open_collections_menu = false;
+
 	for (let i = 0; i < 20; i++) {
 		arr.push(i);
 	}
+
+    function toggle_shop_menu(e) {
+        open_shop_menu = !open_shop_menu;
+        open_sort_menu = false;
+        open_collections_menu = false;
+    }
+
+    function toggle_sort_menu(e) {
+        open_shop_menu = false;
+        open_sort_menu = !open_sort_menu;
+        open_collections_menu = false;
+    }
+
+    function toggle_collections_menu(e) {
+        open_shop_menu = false;
+        open_sort_menu = false;
+        open_collections_menu = !open_collections_menu;
+    }
 </script>
 
 <Header current="shop"/>
@@ -19,7 +41,7 @@
 	<section id="shop">
 		<header>
 			<div>
-                <button id="category-select">
+                <button id="category-select" onclick={toggle_shop_menu}>
                     SHOP
                     <svg
                         width="24"
@@ -34,8 +56,8 @@
                         />
                     </svg>
                 </button>
-                <ul>
-                    <li>
+                <ul class:open_menu={open_shop_menu}>
+                    <li class="selected">
                         Shop All
                     </li>
                     <li>
@@ -45,13 +67,12 @@
                         Bottoms
                     </li>
                     <li>
-
                         Outerwear
                     </li>
                 </ul>
             </div>
 			<div>
-                <button id="sort">
+                <button id="sort" onclick={toggle_sort_menu}>
                     sort
                     <svg
                         width="24"
@@ -66,7 +87,7 @@
                         />
                     </svg>
                 </button>
-                <ul>
+                <ul class:open_menu={open_sort_menu}>
                     <li>
                         Price Low to High
                     </li>
@@ -76,7 +97,7 @@
                 </ul>
             </div>
 			<div>
-                <button id="collection">
+                <button id="collection" onclick={toggle_collections_menu}>
                     collection
                     <svg
                         width="24"
@@ -91,7 +112,7 @@
                         />
                     </svg>
                 </button>
-                <ul>
+                <ul class:open_menu={open_collections_menu}>
                     <li>
                         Spring
                     </li>
@@ -152,9 +173,19 @@
         position: relative;
     }
 
+    .open_menu {
+        display: inline;
+    }
+
+    .selected {
+        background-color: rgba(255, 255, 255, 0.85);
+        color: #bf1e2ed9;
+        cursor: not-allowed;
+    }
+
     div ul {
         list-style: none;
-        padding: 0 10px;
+        padding: 0;
         background-color: rgba(255, 255, 255, 0.85);
         position: absolute;
         top: 15px;
@@ -164,8 +195,13 @@
     }
 
     div ul li {
-        padding: 15px 2px;
+        padding: 15px 2px 15px 10px;
         border-bottom: 1px solid #d9d9d9;
+        cursor: pointer;
+    }
+
+    div ul li:hover {
+        background-color: #bf1e2ed9;
     }
 
     div ul li:last-child {

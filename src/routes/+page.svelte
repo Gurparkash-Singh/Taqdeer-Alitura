@@ -2,6 +2,12 @@
 	import Header from '$lib/components/Header.svelte';
 	import Logo from '$lib/images/Logo.png';
 	import BackgroundImage from '$lib/images/homepage.jpg';
+
+    let contactForm;
+
+    const sendForm = (e) => {
+        contactForm.submit();
+    }
 </script>
 
 <div id="image-holder">
@@ -37,10 +43,10 @@
 		<h1>Contact</h1>
 		<div>
 			<p>Please feel free to write to us regarding anything you might need.</p>
-			<form action="?/send">
+			<form action="?/send" bind:this={contactForm}>
 				<textarea name="contact-form" id="contact-form" rows="3" cols="10"> Contact Us </textarea>
-                <input type="submit" value="Submit">
 			</form>
+            <button onclick={sendForm} id="form-button">Send</button>
 			<ul>
 				<li>
 					<a href="https://linkedin.com" aria-label="linkedin link">
@@ -246,6 +252,7 @@
 	#contact {
 		margin: 20px 25px;
 		z-index: 2;
+        position: relative;
 	}
 
 	#contact h1 {
@@ -259,6 +266,7 @@
 		padding: 15px 25px;
 		background-color: #cb2d2d;
 		color: white;
+        position: relative;
 	}
 
 	#contact p::first-letter {
@@ -275,7 +283,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		align-items: flex-end;
+		align-items: center;
 		margin: 0;
 		padding: 0;
 	}
@@ -283,6 +291,15 @@
 	#contact ul li {
 		margin: 3px;
 	}
+
+    #form-button {
+        background: white;
+        border: none;
+        color: black;
+        padding: 5px 20px;
+        margin: 2px 0 24px 0;
+        cursor: pointer;
+    }
 
 	@media screen and( width >= 1000px) {
 		#logo h1 {

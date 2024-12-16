@@ -39,12 +39,25 @@ You can preview the production build with `npm run preview`.
 
 # To-Do
 - [ ] Resend contact in +page.server.js
-- [ ] Style send button
+- [x] Style send button
 - [ ] Rotate arrow on home page
-- [ ] Get dropdown menus working on shop page
+- [x] Toggle dropdown menus on shop page
+- [ ] Add functionality to dropdown menus on shop page
 - [ ] Show product images on shop page
 - [ ] Create product page
 - [ ] Get cart working
 - [ ] Get signup page working
 - [ ] Get login page working
 - [ ] Get profile page working
+
+# To-Do for minimal viable product
+- [ ] Get Contact form working
+- [ ] Load products from DB
+- [ ] Add functionality to dropdown menus on shop page
+- [ ] Make a products page
+- [ ] Implement Checkout
+
+In Case of minimal viable product:
+- [ ] Disable location
+- [ ] Disable cart
+- [ ] Disable profile
