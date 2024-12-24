@@ -40,7 +40,7 @@ You can preview the production build with `npm run preview`.
 # To-Do
 - [ ] Resend contact in +page.server.js
 - [x] Style send button
-- [ ] Rotate arrow on home page
+- [x] Rotate arrow on home page
 - [x] Toggle dropdown menus on shop page
 - [ ] Add functionality to dropdown menus on shop page
 - [ ] Show product images on shop page
@@ -49,15 +49,18 @@ You can preview the production build with `npm run preview`.
 - [ ] Get signup page working
 - [ ] Get login page working
 - [ ] Get profile page working
+- [ ] Limit the number of products on first page load
+- [ ] Get Contact form working
 
 # To-Do for minimal viable product
-- [ ] Get Contact form working
-- [ ] Load products from DB
-- [ ] Add functionality to dropdown menus on shop page
+- [x] Load products from DB
+- [x] Add functionality to dropdown menus on shop page
 - [ ] Make a products page
 - [ ] Implement Checkout
+- [ ] Edit Database to be able to save multiple options (like sizes and colours)
 
 In Case of minimal viable product:
 - [ ] Disable location
 - [ ] Disable cart
 - [ ] Disable profile
+- [ ] Move Contact Information to About Us

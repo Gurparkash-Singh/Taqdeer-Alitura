@@ -21,7 +21,7 @@ export const actions = {
         }
 
         const { returnData, error } = await resend.emails.send({
-            from: 'web-contact@nectarjewels.ca',
+            from: 'web-contact@taqdeer.com',
             to: ['khalsags.fateh@gmail.com'],
             subject: "Taqdeer Website Message",
             text: `

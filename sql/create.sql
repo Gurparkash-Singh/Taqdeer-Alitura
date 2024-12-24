@@ -6,6 +6,14 @@ CREATE TABLE Category (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE Collections (
+	collection_id int primary key not null AUTO_INCREMENT,
+    collection_name varchar(255) not null,
+    description text,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE Discount (
     discount_id int primary key not null AUTO_INCREMENT,
     name varchar(255),
@@ -57,14 +65,25 @@ CREATE TABLE Products (
     description text not null,
     sku varchar(255),
     category_id int not null,
+    collection_id int,
     quantity int DEFAULT 0,
     price decimal not null,
     discount_id int,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES Category(category_id),
+    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id),
     FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
 );
+
+CREATE TABLE Images (
+	image_id int primary key not null AUTO_INCREMENT,
+    product_id int not null,
+    image_link text not null,
+    alt_desc text not null,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+
 
 CREATE TABLE Payment_Details (
     payment_id int not null primary key AUTO_INCREMENT,
