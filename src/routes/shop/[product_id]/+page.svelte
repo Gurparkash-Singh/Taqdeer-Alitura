@@ -15,18 +15,23 @@
 
     <section id="product">
         <div id="image-carousel">
-            <!-- Add Arrows and multiple images -->
+            <!-- 
+                Add Arrows and multiple images (create an image carousel)
+            -->
             <img src={WhiteShirt} alt="White Shirt" />
         </div>
 
         <h1 id="product_name">{data.product[0].name}</h1>
 
         <section>
-            <!-- Add Buttons -->
+            <!-- Add Buttons for different sizes -->
+             <!-- Add to cart button needs to be added -->
         </section>
 
         <section>
-
+            <!-- Add area for product info -->
+            <!-- Add area for size charts -->
+            <!-- Add area for return policy -->
         </section>
     </section>
 </main>

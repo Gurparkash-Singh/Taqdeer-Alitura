@@ -54,6 +54,8 @@ CREATE TABLE Admin_Permissions (
     id int not null primary key AUTO_INCREMENT,
     permission_id int not null,
     type_id int not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (permission_id) REFERENCES Permission_Types(permission_id),
     FOREIGN KEY (type_id) REFERENCES Admin_Type(type_id)
 );
@@ -66,7 +68,6 @@ CREATE TABLE Products (
     sku varchar(255),
     category_id int not null,
     collection_id int,
-    quantity int DEFAULT 0,
     price decimal not null,
     discount_id int,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -81,6 +82,8 @@ CREATE TABLE Images (
     product_id int not null,
     image_link text not null,
     alt_desc text not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
@@ -155,4 +158,15 @@ CREATE TABLE Admins (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (type_id) REFERENCES Admin_Type(type_id)
+);
+
+CREATE TABLE Sizes_Available (
+	size_id int not null primary key,
+	product_id int not null,
+    size_name text not null,
+    size_abbreviation text not null,
+    quantity int DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );

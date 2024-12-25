@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS Sizes_Available;
+
 DROP TABLE IF EXISTS Admins;
 
 DROP TABLE IF EXISTS Cart_Items;
@@ -12,6 +14,8 @@ DROP TABLE IF EXISTS Orders;
 
 DROP TABLE IF EXISTS Payment_Details;
 
+DROP TABLE IF EXISTS Images;
+
 DROP TABLE IF EXISTS Products;
 
 DROP TABLE IF EXISTS Admin_Permissions;
@@ -23,5 +27,7 @@ DROP TABLE IF EXISTS Permission_Types;
 DROP TABLE IF EXISTS User;
 
 DROP TABLE IF EXISTS Discount;
+
+DROP TABLE IF EXISTS Collections;
 
 DROP TABLE IF EXISTS Category;

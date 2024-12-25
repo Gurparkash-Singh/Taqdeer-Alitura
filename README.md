@@ -42,7 +42,7 @@ You can preview the production build with `npm run preview`.
 - [x] Style send button
 - [x] Rotate arrow on home page
 - [x] Toggle dropdown menus on shop page
-- [ ] Add functionality to dropdown menus on shop page
+- [x] Add functionality to dropdown menus on shop page
 - [ ] Show product images on shop page
 - [ ] Create product page
 - [ ] Get cart working
@@ -57,7 +57,7 @@ You can preview the production build with `npm run preview`.
 - [x] Add functionality to dropdown menus on shop page
 - [ ] Make a products page
 - [ ] Implement Checkout
-- [ ] Edit Database to be able to save multiple options (like sizes and colours)
+- [x] Edit Database to be able to save sizes
 
 In Case of minimal viable product:
 - [ ] Disable location
