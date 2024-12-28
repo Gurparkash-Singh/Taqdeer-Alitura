@@ -82,9 +82,11 @@ CREATE TABLE Images (
     product_id int not null,
     image_link text not null,
     alt_desc text not null,
+    main_image boolean DEFAULT Null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    UNIQUE (product_id, main_image)
 );
 
 
@@ -161,7 +163,7 @@ CREATE TABLE Admins (
 );
 
 CREATE TABLE Sizes_Available (
-	size_id int not null primary key,
+	size_id int not null primary key auto_increment,
 	product_id int not null,
     size_name text not null,
     size_abbreviation text not null,

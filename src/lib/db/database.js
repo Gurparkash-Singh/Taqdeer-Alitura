@@ -63,5 +63,29 @@ export const dbFunctions = {
         const [products] = await db.query(query, id);
 
         return products;
+    },
+
+    getMainImages: async () => {
+        let query = "SELECT * FROM Images WHERE main_image = 1;";
+
+        const [images] = await db.query(query);
+
+        return images;
+    },
+
+    getImagesByProductId: async (product_id) => {
+        let query = "SELECT * FROM Images WHERE product_id = ?;";
+
+        const [images] = await db.query(query, product_id);
+
+        return images;
+    },
+
+    getProductSizes: async (product_id) => {
+        let query = "SELECT * FROM Sizes_Available WHERE product_id = ?;";
+
+        const [sizes] = await db.query(query, product_id);
+
+        return sizes;
     }
 }

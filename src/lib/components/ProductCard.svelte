@@ -1,11 +1,26 @@
 <script>
-	import WhiteShirt from '$lib/images/white-shirt.png';
+    let { product, images } = $props();
 
-    let { product } = $props();
+    let displayImage = $state("");
+
+    images.forEach(element => {
+        if (element.product_id == product.product_id) {
+            displayImage = element;
+        }
+    });
+
+    let id = $state(2);
+
+    if (product.product_id == 1)
+    {
+        id = 1
+    }
 </script>
 
 <div>
-    <img src={WhiteShirt} alt="White Shirt" />
+    {#await import(`$lib/images/product_images/${displayImage.image_link}.png`) then { default: src }}
+        <img {src} alt={displayImage.alt_desc} />
+    {/await}
 </div>
 
 <style>

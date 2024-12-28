@@ -60,29 +60,29 @@ VALUES
 ('Coffee Beans - Chocolate', 'Eremophila alpestris', 552.03, 2, 4),
 ('Lamb - Racks, Frenched', 'Priodontes maximus', 644.08, 3, 1);
 
-INSERT INTO Images (product_id, image_link, alt_desc)
+INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
-(1, "white-shirt.png", "A plain white shirt"),
-(2, "white-shirt.png", "A plain white shirt"),
-(3, "white-shirt.png", "A plain white shirt"),
-(4, "white-shirt.png", "A plain white shirt"),
-(5, "white-shirt.png", "A plain white shirt"),
-(6, "white-shirt.png", "A plain white shirt"),
-(7, "white-shirt.png", "A plain white shirt"),
-(8, "white-shirt.png", "A plain white shirt"),
-(9, "white-shirt.png", "A plain white shirt"),
-(10, "white-shirt.png", "A plain white shirt"),
-(11, "white-shirt.png", "A plain white shirt"),
-(12, "white-shirt.png", "A plain white shirt"),
-(13, "white-shirt.png", "A plain white shirt"),
-(14, "white-shirt.png", "A plain white shirt"),
-(15, "white-shirt.png", "A plain white shirt"),
-(16, "white-shirt.png", "A plain white shirt"),
-(17, "white-shirt.png", "A plain white shirt"),
-(18, "white-shirt.png", "A plain white shirt"),
-(19, "white-shirt.png", "A plain white shirt"),
-(20, "white-shirt.png", "A plain white shirt"),
-(21, "white-shirt.png", "A plain white shirt");
+(1, "white-shirt", "A plain white shirt", 1),
+(2, "black-shirt", "A plain black shirt", 1),
+(3, "black-shirt", "A plain black shirt", 1),
+(4, "black-shirt", "A plain black shirt", 1),
+(5, "black-shirt", "A plain black shirt", 1),
+(6, "black-shirt", "A plain black shirt", 1),
+(7, "black-shirt", "A plain black shirt", 1),
+(8, "black-shirt", "A plain black shirt", 1),
+(9, "black-shirt", "A plain black shirt", 1),
+(10, "black-shirt", "A plain black shirt", 1),
+(11, "black-shirt", "A plain black shirt", 1),
+(12, "black-shirt", "A plain black shirt", 1),
+(13, "black-shirt", "A plain black shirt", 1),
+(14, "black-shirt", "A plain black shirt", 1),
+(15, "black-shirt", "A plain black shirt", 1),
+(16, "black-shirt", "A plain black shirt", 1),
+(17, "black-shirt", "A plain black shirt", 1),
+(18, "black-shirt", "A plain black shirt", 1),
+(19, "black-shirt", "A plain black shirt", 1),
+(20, "black-shirt", "A plain black shirt", 1),
+(21, "black-shirt", "A plain black shirt", 1);
 
 INSERT INTO Sizes_Available (product_id, size_name, size_abbreviation, quantity)
 VALUES

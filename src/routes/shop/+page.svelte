@@ -5,6 +5,7 @@
 
 	let { data } = $props();
     let { categories, products, collections } = data;
+
     let filteredProducts = $state(products);
 
     let selected_category = $state(0);
@@ -173,8 +174,8 @@
 			</div>
 		</header>
 		{#each filteredProducts as product}
-			<a href="/shop/{product.product_id}">
-                <ProductCard product={product} />
+			<a href="/shop/{product.product_id}" id={`product_${product.product_id}`}>
+                <ProductCard product={product} images={data.images}/>
             </a>
 		{/each}
 	</section>

@@ -8,9 +8,11 @@ export async function load({locals})
 
     const products = await dbFunctions.getProducts();
 
+    const images = await dbFunctions.getMainImages();
+
     categories.unshift({ category_id: 0, category_name: 'All' });
 
     collections.unshift({ collection_id: 0, collection_name: 'All' });
 
-    return {categories, products, collections};
+    return {categories, products, collections, images};
 }

@@ -10,5 +10,9 @@ export async function load({params})
         error(404);
     }
 
-    return {product};
+    const images = await dbFunctions.getImagesByProductId(params.product_id);
+
+    const sizes = await dbFunctions.getProductSizes(params.product_id);
+
+    return {product, images, sizes};
 }

@@ -51,16 +51,21 @@ You can preview the production build with `npm run preview`.
 - [ ] Get profile page working
 - [ ] Limit the number of products on first page load
 - [ ] Get Contact form working
+- [ ] Add product info to db and products page
+- [ ] Add size chart and return policy in products page
+- [ ] Go back to exact shop settings and scroll to exact product on product page
+- [ ] Create image carousel on product page
+
 
 # To-Do for minimal viable product
 - [x] Load products from DB
 - [x] Add functionality to dropdown menus on shop page
-- [ ] Make a products page
+- [x] Make a products page
+- [ ] Finish Cart
 - [ ] Implement Checkout
 - [x] Edit Database to be able to save sizes
 
 In Case of minimal viable product:
 - [ ] Disable location
-- [ ] Disable cart
 - [ ] Disable profile
 - [ ] Move Contact Information to About Us
