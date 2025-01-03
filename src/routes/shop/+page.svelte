@@ -311,5 +311,9 @@
         div ul {
             background-color: rgba(255, 255, 255, 0.95);
         }
+
+        #shop {
+            justify-content: space-around;
+        }
     }
 </style>

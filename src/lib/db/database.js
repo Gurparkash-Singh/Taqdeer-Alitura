@@ -87,5 +87,66 @@ export const dbFunctions = {
         const [sizes] = await db.query(query, product_id);
 
         return sizes;
+    },
+
+    getShoppingSessionByToken: async (token) => {
+        let query = "SELECT * FROM Shopping_Session WHERE token = ?;";
+
+        const [session] = await db.query(query, token);
+
+        return session;
+    },
+
+    createNewShoppingSession: async (token) => {
+        let query = "INSERT INTO Shopping_Session (token) VALUES (?);";
+
+        await db.query(query, token);
+    },
+
+    checkCartForProduct: async (session_id, product_id, size_id) => {
+        let query = "SELECT * FROM Cart_Items ";
+        query += "WHERE session_id = ? AND product_id = ? AND size_id = ?;";
+
+        const [items] = await db.query(query, [session_id, product_id, size_id]);
+
+        return items;
+    },
+
+    addToCart: async (id, product_id, size_id, quantity) => {
+        let query = "INSERT INTO Cart_Items ";
+        query += "(session_id, product_id, size_id, quantity) ";
+        query += "VALUES (?, ?, ?, ?);";
+
+        await db.query(query, [id, product_id, size_id, quantity]);
+    },
+
+    updateCart: async (id, product_id, size_id, quantity) => {
+        let query = "UPDATE Cart_Items SET quantity = ? ";
+        query += "WHERE session_id = ? AND product_id = ? AND size_id = ?;";
+
+        await db.query(query, [quantity,id, product_id, size_id]);
+    },
+
+    removeFromCart: async (id, product_id, size_id) => {
+        let query = "DELETE FROM Cart_Items ";
+        query += "WHERE session_id = ? AND product_id = ? AND size_id = ?;";
+
+        await db.query(query, [id, product_id, size_id]);
+    },
+
+    getItemsForCurrentSession: async (id) => {
+        let query = "SELECT ";
+        query += "Cart_Items.product_id, Cart_Items.size_id, Cart_Items.quantity, ";
+        query += "Products.name, Products.description, price, Products.discount_id, ";
+        query += "image_link, alt_desc, size_name, size_abbreviation ";
+        query += "FROM Cart_Items ";
+        query += "JOIN Products ON Products.product_id = Cart_Items.product_id ";
+        query += "JOIN Images ON Images.product_id = Cart_Items.product_id ";
+        query += "JOIN Sizes_Available ON Sizes_Available.size_id = Cart_Items.size_id ";
+        query += "WHERE session_id = ? AND main_image = 1;";
+
+        const [items] = await db.query(query, id);
+
+        return items;
     }
 }

@@ -2,11 +2,45 @@
     import Header from '$lib/components/Header.svelte';
     import Logo from '$lib/images/Logo.png?enhanced';
 
-    let { data } = $props();
+    let { data, form } = $props();
 
-    let selected_size = $state(0);
+    class Product {
+		#size = $state(data.sizes[0].size_id);
+		#quantity = $state(0);
+        #size_index = $state(0);
 
-    let selected_quantity = $state(1);
+		constructor(quantity) {
+			this.#size = data.sizes[0].size_id;
+			this.#quantity = quantity;
+            this.#size_index = 0;
+		}
+
+		get size() {
+			return this.#size;
+		}
+
+		get quantity() {
+			return this.#quantity;
+		}
+
+		set size(value) {
+			for (let i = 0; i < data.sizes.length; i++)
+            {
+                if (data.sizes[i].size_id == value) {
+                    this.#size = value;
+                    this.#size_index = i;
+                }
+            }
+		}
+
+		set quantity(value) {
+            const max_quantity = data.sizes[this.#size_index].quantity;
+			this.#quantity = Math.max(0, Math.min(max_quantity, value));
+            console.log(max_quantity);
+		}
+	}
+
+    const selection = new Product(0);
 </script>
 
 <Header />
@@ -17,6 +51,9 @@
 	</div>
 
     <section id="product">
+        {#if form?.success}
+            <p style:color="green" id="product_name">{form.message}</p>
+        {/if}
         <div id="image-carousel">
             <!-- 
                 Add Arrows and multiple images (create an image carousel)
@@ -36,9 +73,7 @@
             <div id="quantity-slider">
                 <button 
                     onclick={() => {
-                        if (selected_quantity < 10) {
-                            selected_quantity = selected_quantity + 1;
-                        }
+                        selection.quantity = selection.quantity + 1;
                     }}
                     id="quantity-up"
                     aria-label="increase quantity"
@@ -47,12 +82,10 @@
                         <path d="M13.0607 0.93934C12.4749 0.353553 11.5251 0.353553 10.9393 0.93934L1.3934 10.4853C0.807611 11.0711 0.807611 12.0208 1.3934 12.6066C1.97919 13.1924 2.92893 13.1924 3.51472 12.6066L12 4.12132L20.4853 12.6066C21.0711 13.1924 22.0208 13.1924 22.6066 12.6066C23.1924 12.0208 23.1924 11.0711 22.6066 10.4853L13.0607 0.93934ZM13.5 3V2L10.5 2V3L13.5 3Z" fill="#D9D9D9"/>
                     </svg>
                 </button>
-                <p id="quantity-displayer">{selected_quantity}</p>
+                <p id="quantity-displayer">{selection.quantity}</p>
                 <button 
                     onclick={() => {
-                        if (selected_quantity > 1) {
-                            selected_quantity -= 1;
-                        }
+                        selection.quantity -= 1;
                     }}
                     id="quantity-down"
                     aria-label="decrease quantity"
@@ -68,9 +101,9 @@
                         <button class="disabled">{size.size_abbreviation}</button>
                     {:else}
                         <button
-                            class:selected={selected_size === size.size_id}
+                            class:selected={selection.size === size.size_id}
                             onclick={() => {
-                                selected_size = size.size_id
+                                selection.size = size.size_id
                             }}
                         >
                             {size.size_abbreviation}
@@ -78,9 +111,12 @@
                     {/if}
                 {/each}
             </div>
-            <div id="cart-button">
+            <form method="POST" action="?/add" id="cart-button">
+                <input type="hidden" name="quantity" value={selection.quantity}/>
+                <input type="hidden" name="size" value={selection.size}/>
+                <input type="hidden" name="product" value={data.product[0].product_id} />
                 <button>Add to cart</button>
-            </div>
+            </form>
         </section>
 
         <section>
@@ -137,6 +173,7 @@
         justify-content: center;
         row-gap: 10px;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     #product-modifier button {
@@ -178,5 +215,11 @@
         padding: 16px;
         text-align: center;
         margin: 0 10px;
+    }
+
+    @media screen and (width < 450px) {
+        #cart-button {
+            margin-top: 20px;
+        }
     }
 </style>

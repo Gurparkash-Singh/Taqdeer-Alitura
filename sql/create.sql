@@ -1,3 +1,6 @@
+-- Add ability for multiple discounts and discounts on orders
+-- Remove total from orders to normalize database (finish step 1 first)
+
 CREATE TABLE Category (
     category_id int primary key not null AUTO_INCREMENT,
     category_name varchar(255) not null,
@@ -77,6 +80,17 @@ CREATE TABLE Products (
     FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
 );
 
+CREATE TABLE Sizes_Available (
+	size_id int not null primary key auto_increment,
+	product_id int not null,
+    size_name text not null,
+    size_abbreviation text not null,
+    quantity int DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+
 CREATE TABLE Images (
 	image_id int primary key not null AUTO_INCREMENT,
     product_id int not null,
@@ -113,13 +127,17 @@ CREATE TABLE Order_Items (
     id int not null primary key AUTO_INCREMENT,
     order_id int not null,
     product_id int not null,
+    size_id int not null,
     quantity int not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES Orders(order_id),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
 );
 
+
+-- User email does not refer to users table so guest checkout can work
 CREATE TABLE User_Addresses (
     address_id int primary key not null AUTO_INCREMENT,
     user_email varchar(255) not null,
@@ -133,23 +151,35 @@ CREATE TABLE User_Addresses (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE User_Tokens (
+    id int not null primary key auto_increment,
+    user_id int not null,
+    token LONGTEXT not null,
+    expired BOOLEAN DEFAULT 0,
+    expires_at TIMESTAMP not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
 CREATE TABLE Shopping_Session (
     id int not null primary key AUTO_INCREMENT,
-    user_id int not null,
-    total decimal,
+    token LONGTEXT not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Cart_Items (
-    cart_id int not null primary key AUTO_INCREMENT,
     session_id int not null,
     product_id int not null,
+    size_id int not null,
     quantity int not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (session_id) REFERENCES Shopping_Session(id),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id),
+    PRIMARY KEY (session_id, product_id, size_id)
 );
 
 CREATE TABLE Admins (
@@ -160,15 +190,4 @@ CREATE TABLE Admins (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (type_id) REFERENCES Admin_Type(type_id)
-);
-
-CREATE TABLE Sizes_Available (
-	size_id int not null primary key auto_increment,
-	product_id int not null,
-    size_name text not null,
-    size_abbreviation text not null,
-    quantity int DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );

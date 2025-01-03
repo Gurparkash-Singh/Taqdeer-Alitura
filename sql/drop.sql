@@ -1,10 +1,10 @@
-DROP TABLE IF EXISTS Sizes_Available;
-
 DROP TABLE IF EXISTS Admins;
 
 DROP TABLE IF EXISTS Cart_Items;
 
 DROP TABLE IF EXISTS Shopping_Session;
+
+DROP TABLE IF EXISTS User_Tokens;
 
 DROP TABLE IF EXISTS User_Addresses;
 
@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS Payment_Details;
 
 DROP TABLE IF EXISTS Images;
+
+DROP TABLE IF EXISTS Sizes_Available;
 
 DROP TABLE IF EXISTS Products;
 
