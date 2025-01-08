@@ -5,14 +5,12 @@
     let { data, form } = $props();
 
     class Product {
-		#size = $state(data.sizes[0].size_id);
+		#size = $state(-1);
 		#quantity = $state(0);
-        #size_index = $state(0);
+        #size_index = $state(-1);
 
 		constructor(quantity) {
-			this.#size = data.sizes[0].size_id;
 			this.#quantity = quantity;
-            this.#size_index = 0;
 		}
 
 		get size() {
@@ -31,11 +29,13 @@
                     this.#size_index = i;
                 }
             }
+            this.quantity = 1;
 		}
 
 		set quantity(value) {
-            const max_quantity = data.sizes[this.#size_index].quantity;
-			this.#quantity = Math.max(0, Math.min(max_quantity, value));
+            let max_quantity = data.sizes[this.#size_index].quantity;
+            max_quantity = Math.min(5, max_quantity);
+			this.#quantity = Math.max(1, Math.min(max_quantity, value));
             console.log(max_quantity);
 		}
 	}
