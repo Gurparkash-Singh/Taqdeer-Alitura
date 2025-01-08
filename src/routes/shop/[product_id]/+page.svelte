@@ -180,7 +180,7 @@
         background-color: #D9D9D9;
         border: none;
         margin: 0 10px;
-        padding: 16px;
+        padding: 16px 20px;
         cursor: pointer;
     }
 
@@ -220,6 +220,13 @@
     @media screen and (width < 450px) {
         #cart-button {
             margin-top: 20px;
+        }
+    }
+
+    @media screen and (width < 252px) {
+        #size-selector {
+            display: flex;
+            flex-direction: column;
         }
     }
 </style>

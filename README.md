@@ -38,7 +38,7 @@ You can preview the production build with `npm run preview`.
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
 # To-Do
-- [ ] Style send button
+- [x] Style send button
 - [ ] Get signup page working
 - [ ] Get login page working
 - [ ] Get profile page working
@@ -47,7 +47,6 @@ You can preview the production build with `npm run preview`.
 - [ ] Change DB to allow for multiple properties per component
 - [ ] Add product info to db and products page
 - [ ] Add size chart and return policy in products page
-- [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Create image carousel on product page
 - [ ] Create popup window system
 - [ ] On home page, center about us once you reach the scroll height
@@ -56,6 +55,8 @@ You can preview the production build with `npm run preview`.
 - [ ] Add ability to select coupons at checkout
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple discounts on a profile
+- [ ] Go back to exact shop settings and scroll to exact product on product page
+- [ ] Add a close button to product page
 
 # To-Do for minimal viable product
 - [x] Load products from DB
