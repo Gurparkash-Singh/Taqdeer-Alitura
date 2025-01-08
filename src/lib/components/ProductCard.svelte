@@ -28,7 +28,6 @@
         height: 115px;
         width: 115px;
         background-color: #D9D9D9;
-        margin: 10px;
         display: flex;
         flex-direction: column;
         justify-content: center;

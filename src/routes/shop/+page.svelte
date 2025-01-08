@@ -34,6 +34,16 @@
 		open_collections_menu = !open_collections_menu;
 	}
 
+    function sortProductsByPrice()
+    {
+        if (selected_price == 0) {
+            filteredProducts.sort((a, b) => a.price - b.price);
+        }
+        else {
+            filteredProducts.sort((a, b) => b.price - a.price);
+        }
+    }
+
     function filterProducts()
     {
         filteredProducts = products;
@@ -50,6 +60,8 @@
                 return products.collection_id == selected_collection;
             });
         }
+
+        sortProductsByPrice();
     }
 </script>
 
@@ -115,8 +127,8 @@
                         <button
                             class:selected={selected_price == 0}
                             onclick={() => {
-                                filteredProducts.sort((a, b) => a.price - b.price);
                                 selected_price = 0;
+                                sortProductsByPrice();
                                 toggle_sort_menu();
                             }}
                         >
@@ -127,8 +139,8 @@
                         <button
                             class:selected={selected_price == 1}
                             onclick={() => {
-                                filteredProducts.sort((a, b) => b.price - a.price);
                                 selected_price = 1;
+                                sortProductsByPrice();
                                 toggle_sort_menu();
                             }}
                         >
@@ -173,8 +185,8 @@
 				</ul>
 			</div>
 		</header>
-		{#each filteredProducts as product}
-			<a href="/shop/{product.product_id}" id={`product_${product.product_id}`}>
+		{#each filteredProducts as product (product.product_id)}
+			<a href="/shop/{product.product_id}" class="product-links">
                 <ProductCard product={product} images={data.images}/>
             </a>
 		{/each}
@@ -203,8 +215,9 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		justify-content: space-between;
-		margin: 25px;
+		justify-content: flex-start;
+		margin: auto;
+        max-width: 405px;
 	}
 
 	#shop header {
@@ -242,6 +255,8 @@
 		width: 100%;
 		display: none;
         z-index: 2;
+        width: 115px;
+        margin: 16px 10px;
 	}
 
 	div ul li button {
@@ -270,10 +285,16 @@
 
 	#category-select {
 		color: #bf1e2e;
+        display: flex;
+		flex-direction: row;
+		align-items: baseline;
+		width: 115px;
+		justify-content: space-between;
 		border: none;
 		background: none;
 		font-size: 20pt;
-		padding: 0 10px;
+		padding: 0;
+		margin: 0 10px;
 	}
 
 	button {
@@ -281,7 +302,7 @@
 	}
 
 	#sort,
-	#collection {
+	#collection{
 		background-color: #d9d9d9;
 		display: flex;
 		flex-direction: row;
@@ -290,7 +311,7 @@
 		justify-content: space-between;
 		border: none;
 		padding: 10px 5px;
-		margin-right: 10px;
+		margin: 0 10px;
 	}
 
 	#sort svg,
@@ -300,7 +321,14 @@
 		height: 8px;
 	}
 
-    @media screen and (width < 450px) 
+    .product-links {
+        width: 115px;
+        height: 115px;
+        padding: 0;
+        margin: 10px;
+    }
+
+    @media screen and (width < 475px) 
     {
         #shop header {
             flex-direction: column;
@@ -313,7 +341,18 @@
         }
 
         #shop {
-            justify-content: space-around;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-links {
+            margin: 10px 0;
+        }
+
+        #sort,
+        #collection,
+        #category-select{
+            margin: 0;
         }
     }
 </style>
