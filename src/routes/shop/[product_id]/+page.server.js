@@ -74,7 +74,7 @@ export const actions = {
             });
         }
 
-        if (quantity < 0  || quantity > selected_size.quantity)
+        if (quantity < 0  || quantity > selected_size.quantity || quantity > 5)
         {
             return fail(404, {
                 invalid: true,
