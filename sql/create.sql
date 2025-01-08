@@ -34,6 +34,7 @@ CREATE TABLE User (
     first_name varchar(255) not null,
     last_name varchar(255) not null,
     telephone varchar(255),
+    DOB DATETIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -72,6 +73,7 @@ CREATE TABLE Products (
     category_id int not null,
     collection_id int,
     price decimal not null,
+    origin text,
     discount_id int,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

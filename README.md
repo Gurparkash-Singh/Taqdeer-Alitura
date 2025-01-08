@@ -38,25 +38,24 @@ You can preview the production build with `npm run preview`.
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
 # To-Do
-- [ ] Resend contact in +page.server.js
-- [x] Style send button
-- [x] Rotate arrow on home page
-- [x] Toggle dropdown menus on shop page
-- [x] Add functionality to dropdown menus on shop page
-- [ ] Show product images on shop page
-- [ ] Create product page
-- [ ] Get cart working
+- [ ] Style send button
 - [ ] Get signup page working
 - [ ] Get login page working
 - [ ] Get profile page working
 - [ ] Limit the number of products on first page load
-- [ ] Get Contact form working
+- [ ] Change DB to save multiple components per products
+- [ ] Change DB to allow for multiple properties per component
 - [ ] Add product info to db and products page
 - [ ] Add size chart and return policy in products page
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Create image carousel on product page
 - [ ] Create popup window system
-
+- [ ] On home page, center about us once you reach the scroll height
+- [ ] Change direction on first scroll
+- [ ] Add ability to save cards
+- [ ] Add ability to select coupons at checkout
+- [ ] Change DB to allow for multiple coupons on a product
+- [ ] Change DB to allow for multiple discounts on a profile
 
 # To-Do for minimal viable product
 - [x] Load products from DB
@@ -64,12 +63,25 @@ You can preview the production build with `npm run preview`.
 - [x] Make a products page
 - [x] Create Cart
 - [ ] Implement Checkout
+- [ ] Finish Contact form
 - [x] Edit Database to be able to save sizes
 
 In Case of minimal viable product:
 - [ ] Disable location
 - [ ] Disable profile
-- [x] Move Contact Information to About Us
 
-I have finished almost everything for minimal viable product
-I just need to talk to Faris and finish checkout
+Confirm new homepage with Faris if not then restore old homepage
+
+product <- component <- properties
+
+Create table components
+Create table properties
+
+weight / gsm
+origin
+all components
+
+Model information and a table = size chart
+
+Fix Fonts
+Add arrow to the add to cart button

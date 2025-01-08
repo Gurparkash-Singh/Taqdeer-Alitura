@@ -25,6 +25,11 @@
             subtotal += item.price * item.quantity;
         });
         total = subtotal + deliveryNum
+
+        if (subtotal == 0)
+        {
+            total = 0;
+        }
     }
 
     function formatString()
@@ -34,10 +39,15 @@
             numberFormat.style,
         );
 
-        delivery = deliveryNum.toLocaleString(
-            numberFormat.area,
-            numberFormat.style,
-        );
+        if (total == 0) {
+            delivery = subtotal;
+        }
+        else {
+            delivery = deliveryNum.toLocaleString(
+                numberFormat.area,
+                numberFormat.style,
+            );
+        }
         
         total = total.toLocaleString(numberFormat.area, numberFormat.style);
     }
@@ -79,7 +89,7 @@
         </dl>
         <button id="cart-button">Checkout</button>
         <p>* Tax will be calculated during checkout</p>
-        <p>** Total is without tax</p>
+        <p>** Total excludes tax</p>
     </section>
 </main>
 
