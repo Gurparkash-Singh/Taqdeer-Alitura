@@ -1,4 +1,3 @@
-import { handle } from '@sveltejs/kit';
 import { dbFunctions } from '$lib/db/database.js';
 
 export const handle = async ({ event, resolve }) => {
