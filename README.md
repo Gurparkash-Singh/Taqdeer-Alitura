@@ -39,15 +39,15 @@ You can preview the production build with `npm run preview`.
 
 # To-Do
 - [x] Style send button
-- [ ] Get signup page working
-- [ ] Get login page working
-- [ ] Get profile page working
-- [ ] Limit the number of products on first page load
 - [ ] Change DB to save multiple components per products
 - [ ] Change DB to allow for multiple properties per component
 - [ ] Add product info to db and products page
 - [ ] Add size chart and return policy in products page
 - [ ] Create image carousel on product page
+- [ ] Get signup page working
+- [ ] Get login page working
+- [ ] Get profile page working
+- [ ] Limit the number of products on first page load
 - [ ] Create popup window system
 - [ ] On home page, center about us once you reach the scroll height
 - [ ] Change direction on first scroll
@@ -57,6 +57,9 @@ You can preview the production build with `npm run preview`.
 - [ ] Change DB to allow for multiple discounts on a profile
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
+- [ ] Make arrows clickable on scroll
+- [ ] Make the logo a link to homepage
+- [ ] Change sizes for bigger screens
 
 # To-Do for minimal viable product
 - [x] Load products from DB
@@ -86,3 +89,7 @@ Model information and a table = size chart
 
 Fix Fonts
 Add arrow to the add to cart button
+
+# Needed in the next 2 weeks
+- [ ] Presentable
+- [ ] Products need to be added

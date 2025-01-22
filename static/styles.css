@@ -1,10 +1,10 @@
 * {
     box-sizing: border-box;
+    color: #1E1E1E;
 }
 
 body {
     margin: 0;
     padding: 0;
     position: relative;
-    color: #1E1E1E;
 }
