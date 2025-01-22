@@ -49,8 +49,8 @@ You can preview the production build with `npm run preview`.
 - [ ] Get profile page working
 - [ ] Limit the number of products on first page load
 - [ ] Create popup window system
-- [ ] On home page, center about us once you reach the scroll height
-- [ ] Change direction on first scroll
+- [x] On home page, center about us once you reach the scroll height
+- [x] Change direction on first scroll
 - [ ] Add ability to save cards
 - [ ] Add ability to select coupons at checkout
 - [ ] Change DB to allow for multiple coupons on a product

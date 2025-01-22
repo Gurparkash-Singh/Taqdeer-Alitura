@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloock&display=swap');
+
 * {
     box-sizing: border-box;
     color: #1E1E1E;
+    font-family: "Gloock", serif;
 }
 
 body {

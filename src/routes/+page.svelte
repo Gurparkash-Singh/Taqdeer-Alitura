@@ -6,44 +6,61 @@
     let { form } = $props();
 
     let verticalScrollPos = $state(0);
-    let arrow;
-    let svgHolder;
+    let arrow1;
+    let svgHolder1;
+    let arrow2;
+    let svgHolder2;
     let windowHeight = $state(0);
     let bodyHeight = $state(0);
 
-    // $effect(() => {
-    //     if (verticalScrollPos > windowHeight - 50) {
-    //         arrow.style.rotate = "180deg";
-    //         svgHolder.style.position = "fixed";
-    //         svgHolder.style.top = "20px";
-    //     }
-    //     else if (verticalScrollPos > (bodyHeight - 5) - windowHeight) 
-    //     {
-    //         arrow.style.rotate = "180deg";
-    //     }
-    //     else {
-    //         arrow.style.rotate = "0deg";
-    //         svgHolder.style.position = "absolute";
-    //         svgHolder.style.top = "calc(100vh - 40px)";
-    //     }
-    // })
+    let email = $state("");
+    let emailBody = $state("");
+    let enableSend = $state(false);
 
-    // Use this code instead to show Faris what he wanted (it feels bad)
     $effect(() => {
-        if (verticalScrollPos > 10) {
-            arrow.style.rotate = "180deg";
+        if (verticalScrollPos > windowHeight / 2) {
+            arrow1.style.rotate = "180deg";
+
+            arrow2.style.visibility = "visible";
+            svgHolder2.style.position = "absolute";
+            svgHolder2.style.top = "calc(200vh - 85px)";
         }
         else {
-            arrow.style.rotate = "0deg";
+            arrow1.style.rotate = "0deg";
+
+            arrow2.style.visibility = "hidden";
         }
 
-        if (verticalScrollPos > windowHeight - 50) {
-            svgHolder.style.position = "fixed";
-            svgHolder.style.top = "20px";
+        if (verticalScrollPos > windowHeight*1.4) {
+            arrow2.style.rotate = "180deg";
         }
         else {
-            svgHolder.style.position = "absolute";
-            svgHolder.style.top = "calc(100vh - 40px)";
+            arrow2.style.rotate = "0deg";
+        }
+
+        if (verticalScrollPos > windowHeight - 60) {
+            svgHolder1.style.position = "fixed";
+            svgHolder1.style.top = "20px";
+        }
+        else {
+            svgHolder1.style.position = "absolute";
+            svgHolder1.style.top = "calc(100vh - 40px)";
+        }
+
+        if (verticalScrollPos > windowHeight * 2 - 105) {
+            svgHolder2.style.position = "fixed";
+            svgHolder2.style.top = "20px";
+        }
+        else {
+            svgHolder2.style.position = "absolute";
+            svgHolder2.style.top = "calc(200vh - 85px)";
+        }
+
+        if (email && emailBody) {
+            enableSend = true;
+        }
+        else {
+            enableSend = false;
         }
     })
 </script>
@@ -53,8 +70,17 @@
 <div id="image-holder">
 </div>
 
-<div id="svg-holder" bind:this={svgHolder}>
-    <svg width="20" height="20" viewBox="0 0 74 42" fill="none" xmlns="http://www.w3.org/2000/svg" id="scroll-arrow" bind:this={arrow}>
+<div id="svg-holder1" bind:this={svgHolder1}>
+    <svg width="20" height="20" viewBox="0 0 74 42" fill="none" xmlns="http://www.w3.org/2000/svg" id="scroll-arrow" bind:this={arrow1}>
+        <path
+            d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
+            fill="white"
+        />
+    </svg>
+</div>
+
+<div id="svg-holder2" bind:this={svgHolder2}>
+    <svg width="20" height="20" viewBox="0 0 74 42" fill="none" xmlns="http://www.w3.org/2000/svg" id="scroll-arrow2" bind:this={arrow2}>
         <path
             d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
             fill="white"
@@ -70,7 +96,7 @@
 		<h1>ALITURA</h1>
 	</section>
 	<section id="about">
-		<h1>About Us</h1>
+		<h1>ABOUT US</h1>
 		<p>
 			Taqdeer Alitura is a streetwear label that stands for inclusion and equality by seamlessly
 			bridging the unacquainted. The words Taqdeer, an Arabic word for appreciation or a Kazakh word
@@ -84,7 +110,7 @@
 		</p>
 	</section>
 	<section id="contact">
-		<h1>Contact</h1>
+		<h1>CONTACT</h1>
         {#if form?.success}
             <p 
                 style:color="green"
@@ -109,8 +135,9 @@
                     name="contact-form"
                     id="contact-form"
                     rows="3"
-                    cols="10"
+                    cols="5"
                     placeholder="Contact Us"
+                    bind:value={emailBody}
                 ></textarea>
                 <div id="form-controls">
                     <p>
@@ -120,14 +147,24 @@
                             name="email"
                             id="email"
                             placeholder="example@example.com"
+                            bind:value={email}
                         >
                     </p>
-                    <input type="submit" value="Send" id="form-button">
+                    <input 
+                        type="submit" 
+                        value="Send" 
+                        id="form-button"
+                        class:enable-send={enableSend}
+                        class:disable-send={!enableSend}
+                    >
                 </div>
 			</form>
 			<ul>
 				<li>
-					<a href="https://linkedin.com" aria-label="linkedin link">
+					<a 
+                        href="https://www.linkedin.com/company/taqdeer-alitura/"
+                        aria-label="linkedin link"
+                    >
 						<svg
 							width="24"
 							height="27"
@@ -160,7 +197,10 @@
 					</a>
 				</li>
 				<li>
-					<a href="https://instagram.com" aria-label="instagram link">
+					<a 
+                        href="https://www.instagram.com/taqdeeralitura" 
+                        aria-label="instagram link"
+                    >
 						<svg
 							width="24"
 							height="24"
@@ -179,7 +219,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="https://tiktok.com" aria-label="tiktok link">
+					<a href="https://www.tiktok.com/@taqdeeralituraofficial" aria-label="tiktok link">
 						<svg
 							width="26"
 							height="26"
@@ -209,7 +249,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="mailto:example@gmail.com" aria-label="email link">
+					<a href="mailto:admin@taqdeeralitura.com/" aria-label="email link">
 						<svg
 							width="28"
 							height="22"
@@ -225,7 +265,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="https://twitter.com" aria-label="twitter link">
+					<a href="https://x.com/taqdeeralitura" aria-label="twitter link">
 						<svg
 							width="24"
 							height="24"
@@ -293,24 +333,34 @@
 
 	#logo h1 {
 		margin: 0;
-		font-size: 16px;
+		font-size: 20px;
 		position: relative;
 		top: 7px;
         color: white;
 	}
 
 	#logo img {
-		width: 100px;
+		width: 150px;
 		position: absolute;
 	}
 
-    #svg-holder {
+    #svg-holder1 {
+        z-index: 2;
+        left: calc(50% - 10px);
+    }
+
+    #svg-holder2 {
         z-index: 2;
         left: calc(50% - 10px);
     }
 
 	#about {
-		margin: 50px 25px;
+		margin: -25px 25px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 
 	#about h1 {
@@ -322,6 +372,9 @@
 		background-color: #cb2d2d;
 		padding: 15px 25px;
 		color: white;
+        font-size: 14px;
+        max-width: 89%;
+        line-height: 1.5;
 	}
 
 	#about p::first-letter {
@@ -329,9 +382,14 @@
 	}
 
 	#contact {
-		margin: 20px 25px;
+		margin: 0 25px;
 		z-index: 2;
         position: relative;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 
 	#contact h1 {
@@ -347,10 +405,13 @@
 		background-color: #cb2d2d;
 		color: white;
         position: relative;
+        max-width: 89%;
+        font-size: 14px;
 	}
 
     #contact p {
         color: white;
+        line-height: 1.5;
     }
 
 	#contact-p::first-letter {
@@ -359,11 +420,14 @@
 
 	#contact textarea {
 		width: 100%;
-		height: 100px;
+		height: 150px;
+        resize: none;
+        font-size: 14px;
 	}
 
     #contact label {
         color: white;
+        margin: 0 4px 0 0;
     }
 
 	#contact ul {
@@ -384,9 +448,16 @@
     #form-button {
         background: white;
         border: none;
-        color: black;
         padding: 5px 20px;
         cursor: pointer;
+    }
+
+    .enable-send {
+        color: #1E1E1E;
+    }
+
+    .disable-send {
+        color: #1E1E1E66;
     }
 
     div#form-controls {
@@ -395,11 +466,14 @@
         justify-content: center;
         align-items: flex-end;
         padding: 0;
-        margin: 20px 0;
+        margin: 20px 15px;
+        width: 100%;
     }
 
     #form-controls p {
-        display: inline;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
         margin: 0;
         text-align: start;
         margin: 0 10px;
@@ -410,6 +484,10 @@
         border: none;
         border-bottom: 2px solid white;
         color: white;
+    }
+
+    #form-controls input[type="text"] {
+        width: 175px;
     }
 
     #form-message {
