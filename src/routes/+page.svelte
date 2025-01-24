@@ -12,6 +12,14 @@
     let svgHolder2;
     let windowHeight = $state(0);
     let bodyHeight = $state(0);
+    let arrow1ScrollTo = $state(0);
+    let arrow2ScrollTo = $state(0);
+    let arrow1aria = $state("Scroll to about");
+    let arrow2aria = $state("Scroll to Contact")
+
+    let home;
+    let about;
+    let contact;
 
     let email = $state("");
     let emailBody = $state("");
@@ -24,18 +32,23 @@
             arrow2.style.visibility = "visible";
             svgHolder2.style.position = "absolute";
             svgHolder2.style.top = "calc(200vh - 85px)";
+
+            arrow1ScrollTo = 0;
         }
         else {
             arrow1.style.rotate = "0deg";
+            arrow1ScrollTo = 1;
 
             arrow2.style.visibility = "hidden";
         }
 
         if (verticalScrollPos > windowHeight*1.4) {
             arrow2.style.rotate = "180deg";
+            arrow2ScrollTo = 0;
         }
         else {
             arrow2.style.rotate = "0deg";
+            arrow2ScrollTo = 1;
         }
 
         if (verticalScrollPos > windowHeight - 60) {
@@ -63,6 +76,7 @@
             enableSend = false;
         }
     })
+
 </script>
 
 <svelte:window bind:scrollY={verticalScrollPos} bind:innerHeight={windowHeight}/>
@@ -71,31 +85,71 @@
 </div>
 
 <div id="svg-holder1" bind:this={svgHolder1}>
-    <svg width="20" height="20" viewBox="0 0 74 42" fill="none" xmlns="http://www.w3.org/2000/svg" id="scroll-arrow" bind:this={arrow1}>
-        <path
-            d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
-            fill="white"
-        />
-    </svg>
+    <button
+        class="arrow-button"
+        bind:this={arrow1}
+        onclick={() => {
+            if (arrow1ScrollTo == 0) {
+                if(arrow2ScrollTo == 0) {
+                    about.scrollIntoView();
+                }
+                else {
+                    home.scrollIntoView();
+                }
+            }
+            else {
+                about.scrollIntoView();
+            }
+        }}
+        aria-label={arrow1aria}
+    >
+        <svg 
+            width="20"
+            height="20"
+            viewBox="0 0 74 42"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            id="scroll-arrow"
+        >
+            <path
+                d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
+                fill="white"
+            />
+        </svg>
+    </button>
 </div>
 
 <div id="svg-holder2" bind:this={svgHolder2}>
-    <svg width="20" height="20" viewBox="0 0 74 42" fill="none" xmlns="http://www.w3.org/2000/svg" id="scroll-arrow2" bind:this={arrow2}>
-        <path
-            d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
-            fill="white"
-        />
-    </svg>
+    <button
+        class="arrow-button"
+        bind:this={arrow2}
+        aria-label={arrow2aria}
+        onclick={() => {
+            if (arrow2ScrollTo == 1) {
+                contact.scrollIntoView();
+            }
+            else {
+                about.scrollIntoView();
+            }
+        }}
+    >
+        <svg width="20" height="20" viewBox="0 0 74 42" fill="none" xmlns="http://www.w3.org/2000/svg" id="scroll-arrow2">
+            <path
+                d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
+                fill="white"
+            />
+        </svg>
+    </button>
 </div>
 
 <Header current="home"/>
 <main bind:clientHeight={bodyHeight}>
-	<section id="logo">
+	<section id="logo" bind:this={home}>
 		<img src={Logo} alt="Taqdeer Alitura Logo" />
 		<h1>TAQDEER</h1>
 		<h1>ALITURA</h1>
 	</section>
-	<section id="about">
+	<section id="about" bind:this={about}>
 		<h1>ABOUT US</h1>
 		<p>
 			Taqdeer Alitura is a streetwear label that stands for inclusion and equality by seamlessly
@@ -109,7 +163,7 @@
 			marriage it promises to deliver on.
 		</p>
 	</section>
-	<section id="contact">
+	<section id="contact" bind:this={contact}>
 		<h1>CONTACT</h1>
         {#if form?.success}
             <p 
@@ -310,6 +364,11 @@
 		color: white;
 	}
 
+    .arrow-button {
+        background: transparent;
+        border: none;
+    }
+
 	#image-holder {
 		padding: 20px;
 		width: 100vw;
@@ -345,7 +404,7 @@
 	}
 
     #svg-holder1 {
-        z-index: 2;
+        z-index: 3;
         left: calc(50% - 10px);
     }
 

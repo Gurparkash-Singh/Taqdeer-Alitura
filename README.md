@@ -39,6 +39,9 @@ You can preview the production build with `npm run preview`.
 
 # To-Do
 - [x] Style send button
+- [x] On home page, center about us once you reach the scroll height
+- [x] Change direction on first scroll
+- [x] Make arrows clickable
 - [ ] Change DB to save multiple components per products
 - [ ] Change DB to allow for multiple properties per component
 - [ ] Add product info to db and products page
@@ -47,19 +50,16 @@ You can preview the production build with `npm run preview`.
 - [ ] Get signup page working
 - [ ] Get login page working
 - [ ] Get profile page working
-- [ ] Limit the number of products on first page load
 - [ ] Create popup window system
-- [x] On home page, center about us once you reach the scroll height
-- [x] Change direction on first scroll
+- [ ] Make the logo a link to homepage
 - [ ] Add ability to save cards
-- [ ] Add ability to select coupons at checkout
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple discounts on a profile
+- [ ] Add ability to select coupons at checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
-- [ ] Make arrows clickable on scroll
-- [ ] Make the logo a link to homepage
 - [ ] Change sizes for bigger screens
+- [ ] Limit the number of products on first page load
 
 # To-Do for minimal viable product
 - [x] Load products from DB
