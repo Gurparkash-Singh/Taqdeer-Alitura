@@ -44,7 +44,9 @@
 
 <main>
     <div id="image-holder">
-		<enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
+		<a href="/" aria-label="Link to Home">
+            <enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
+        </a>
 	</div>
 
     <section id="product">

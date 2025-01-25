@@ -42,6 +42,8 @@ You can preview the production build with `npm run preview`.
 - [x] On home page, center about us once you reach the scroll height
 - [x] Change direction on first scroll
 - [x] Make arrows clickable
+- [x] Show the number of items on the cart icon
+- [x] Make the logo a link to homepage
 - [ ] Change DB to save multiple components per products
 - [ ] Change DB to allow for multiple properties per component
 - [ ] Add product info to db and products page
@@ -51,7 +53,6 @@ You can preview the production build with `npm run preview`.
 - [ ] Get login page working
 - [ ] Get profile page working
 - [ ] Create popup window system
-- [ ] Make the logo a link to homepage
 - [ ] Add ability to save cards
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple discounts on a profile

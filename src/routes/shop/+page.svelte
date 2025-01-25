@@ -65,9 +65,13 @@
 </script>
 
 <main>
-	<div id="image-holder">
-		<enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
-	</div>
+	<main>
+        <div id="image-holder">
+            <a href="/" aria-label="Link to Home">
+                <enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
+            </a>
+        </div>
+    </main>
 
 	<section id="shop">
 		<header>
