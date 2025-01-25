@@ -1,5 +1,4 @@
 <script>
-	import Header from '$lib/components/Header.svelte';
 	import ProductCard from '$lib/components/ProductCard.svelte';
 	import Logo from '$lib/images/Logo.png?enhanced';
 
@@ -65,7 +64,6 @@
     }
 </script>
 
-<Header current="shop" />
 <main>
 	<div id="image-holder">
 		<enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />

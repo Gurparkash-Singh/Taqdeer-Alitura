@@ -1,5 +1,4 @@
 <script>
-    import Header from '$lib/components/Header.svelte';
     import Logo from '$lib/images/Logo.png?enhanced';
     import CartProduct from '$lib/components/CartProduct.svelte';
 
@@ -54,8 +53,6 @@
     calculateValues();
     formatString();
 </script>
-
-<Header current="cart"/>
 
 <main>
     <div id="image-holder">

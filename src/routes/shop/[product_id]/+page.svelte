@@ -1,5 +1,4 @@
 <script>
-    import Header from '$lib/components/Header.svelte';
     import Logo from '$lib/images/Logo.png?enhanced';
 
     let { data, form } = $props();
@@ -42,8 +41,6 @@
 
     const selection = new Product(0);
 </script>
-
-<Header />
 
 <main>
     <div id="image-holder">

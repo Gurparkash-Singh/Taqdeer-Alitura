@@ -1,7 +1,7 @@
 <script>
-	import Header from '$lib/components/Header.svelte';
 	import Logo from '$lib/images/Logo.png';
 	import BackgroundImage from '$lib/images/homepage.jpg';
+    import Modal from '$lib/components/Modal.svelte';
 
     let { form } = $props();
 
@@ -142,7 +142,6 @@
     </button>
 </div>
 
-<Header current="home"/>
 <main bind:clientHeight={bodyHeight}>
 	<section id="logo" bind:this={home}>
 		<img src={Logo} alt="Taqdeer Alitura Logo" />
