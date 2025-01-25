@@ -1,5 +1,6 @@
 import { dbFunctions } from "$lib/db/database";
 import { error } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 
 export async function load({params})
 {

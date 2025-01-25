@@ -193,3 +193,12 @@ CREATE TABLE Admins (
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (type_id) REFERENCES Admin_Type(type_id)
 );
+
+CREATE TABLE Messages (
+	message_id int primary key not null AUTO_INCREMENT,
+    heading TEXT not null,
+    paragraph LONGTEXT not null,
+    broadcast BOOL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

@@ -1,5 +1,6 @@
 <script>
     import Logo from '$lib/images/Logo.png?enhanced';
+    import { modal } from '$lib/shared_state/shared.svelte';
 
     let { data, form } = $props();
 
@@ -40,6 +41,28 @@
 	}
 
     const selection = new Product(0);
+
+    if (form) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == form.message) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages && form.invalid) 
+        {
+            modal.messages.push({
+                heading: "Error!",
+                paragraph: form.message
+            });
+        }else if (!inMessages && form.success) {
+            modal.messages.push({
+                heading: "Success!",
+                paragraph: form.message
+            });
+        }
+    }
 </script>
 
 <main>
@@ -50,9 +73,6 @@
 	</div>
 
     <section id="product">
-        {#if form?.success}
-            <p style:color="green" id="product_name">{form.message}</p>
-        {/if}
         <div id="image-carousel">
             <!-- 
                 Add Arrows and multiple images (create an image carousel)

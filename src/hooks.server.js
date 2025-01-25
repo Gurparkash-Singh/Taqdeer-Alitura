@@ -12,6 +12,14 @@ export const handle = async ({ event, resolve }) => {
             maxAge: 60 * 60 * 24 * 7
         });
         session = authToken;
+
+        const messages = await dbFunctions.getMessages();
+
+        event.cookies.set("messages", messages, {
+            path: "/",
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 24 * 7
+        });
     }
 
     const shopping_session = await dbFunctions.getShoppingSessionByToken(session);

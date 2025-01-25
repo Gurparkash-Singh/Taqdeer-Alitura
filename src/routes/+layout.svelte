@@ -1,8 +1,14 @@
 <script>
     import { page } from "$app/state";
+    import Modal from "$lib/components/Modal.svelte";
+    import { modal } from "$lib/shared_state/shared.svelte";
 
     let { data, children } = $props();
+
+    modal.messages = data.messages;
 </script>
+
+<Modal></Modal>
 
 <div id="change-language">
 	<button aria-label="change language">

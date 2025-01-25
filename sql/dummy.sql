@@ -170,3 +170,8 @@ VALUES
 (21, "Medium", "M", 20),
 (21, "Large", "L", 20),
 (21, "Extra Large", "XL", 20);
+
+INSERT INTO Messages (heading, paragraph) VALUES
+("Welcome", "Thank you for visiting our website and your interest in Taqdeer Alitura. 
+
+Reminder that all members are entitled to 10% off all their orders");

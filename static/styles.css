@@ -2,7 +2,6 @@
 
 * {
     box-sizing: border-box;
-    color: #1E1E1E;
     font-family: "Gloock", serif;
 }
 
@@ -10,4 +9,9 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
+    color: #1E1E1E;
+}
+
+button, a {
+    color: #1E1E1E;
 }

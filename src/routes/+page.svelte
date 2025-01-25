@@ -1,7 +1,7 @@
 <script>
 	import Logo from '$lib/images/Logo.png';
 	import BackgroundImage from '$lib/images/homepage.jpg';
-    import Modal from '$lib/components/Modal.svelte';
+    import { modal } from '$lib/shared_state/shared.svelte';
 
     let { form } = $props();
 
@@ -24,6 +24,28 @@
     let email = $state("");
     let emailBody = $state("");
     let enableSend = $state(false);
+
+    if (form) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == form.message) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages && form.invalid) 
+        {
+            modal.messages.push({
+                heading: "Error!",
+                paragraph: form.message
+            });
+        }else if (!inMessages && form.success) {
+            modal.messages.push({
+                heading: "Success!",
+                paragraph: form.message
+            });
+        }
+    }
 
     $effect(() => {
         if (verticalScrollPos > windowHeight / 2) {
@@ -164,21 +186,6 @@
 	</section>
 	<section id="contact" bind:this={contact}>
 		<h1>CONTACT</h1>
-        {#if form?.success}
-            <p 
-                style:color="green"
-                id="form-message"
-            >
-                {form.message}
-            </p>
-        {:else if form?.invalid}
-            <p 
-                id="form-message"
-                style:color="red"
-            >
-                {form.message}
-            </p>
-        {/if}
 		<div>
 			<p id="contact-p">
                 Please feel free to write to us regarding anything you might need.
@@ -546,12 +553,6 @@
 
     #form-controls input[type="text"] {
         width: 175px;
-    }
-
-    #form-message {
-        text-align: center;
-        background-color: white;
-        padding: 10px;
     }
 
 	@media screen and( width >= 1000px) {

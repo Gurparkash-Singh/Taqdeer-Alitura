@@ -148,5 +148,13 @@ export const dbFunctions = {
         const [items] = await db.query(query, id);
 
         return items;
+    },
+
+    getMessages: async () => {
+        let query = "SELECT * FROM Messages WHERE broadcast = 1;";
+
+        const [messages] = await db.query(query);
+
+        return messages;
     }
 }
