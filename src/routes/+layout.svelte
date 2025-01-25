@@ -1,7 +1,7 @@
 <script>
     import { page } from "$app/state";
 
-    let { children } = $props();
+    let { data, children } = $props();
 </script>
 
 <div id="change-language">
@@ -58,7 +58,14 @@
 </div>
 
 <div id="cart">
-    <p>1</p>
+    <!-- {#if data.num_items > 0 && page.url.pathname !== "/"} -->
+    {#if data.num_items > 0}
+        <p
+            class:home={page.url.pathname === "/"}
+        >
+        {data.num_items}
+        </p>
+    {/if}
 	<a href="/cart" id="cart-link" aria-label="cart">
 		<svg width="26" height="24" viewBox="0 0 48 46" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
@@ -137,6 +144,10 @@
 	#cart-link svg {
 		padding-left: 5px;
 	}
+
+    .home {
+        color: white;
+    }
 
 	@media screen and (width >=600px) {
 		#change-language {
