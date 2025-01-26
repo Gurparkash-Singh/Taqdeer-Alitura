@@ -46,11 +46,11 @@ You can preview the production build with `npm run preview`.
 - [x] Make the logo a link to homepage
 - [x] Add messages table to DB and load messages into layout
 - [x] Create popup window system
-- [ ] Change DB to save multiple components per products
-- [ ] Change DB to allow for multiple properties per component
-- [ ] Add product info to db and products page
+- [x] Change DB to save multiple components per products
+- [x] Change DB to allow for multiple properties per component
+- [x] Add product info to db and products page
+- [x] Create image carousel on product page
 - [ ] Add size chart and return policy in products page
-- [ ] Create image carousel on product page
 - [ ] Get signup page working
 - [ ] Get login page working
 - [ ] Get profile page working

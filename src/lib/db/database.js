@@ -74,7 +74,8 @@ export const dbFunctions = {
     },
 
     getImagesByProductId: async (product_id) => {
-        let query = "SELECT * FROM Images WHERE product_id = ?;";
+        let query = "SELECT * FROM Images WHERE product_id = ? ";
+        query += "ORDER BY image_id;";
 
         const [images] = await db.query(query, product_id);
 
@@ -156,5 +157,28 @@ export const dbFunctions = {
         const [messages] = await db.query(query);
 
         return messages;
+    },
+
+    getProductComponents: async (id) => {
+        let query = "SELECT * FROM Components WHERE product_id = ?;";
+
+        const [components] = await db.query(query, id);
+
+        return components;
+    },
+
+    getComponentProperties: async (id) => {
+        let query = "SELECT Components.component_id, component_name, ";
+        query += "property_name, property_value ";
+        query += "FROM Components ";
+        query += "JOIN ComponentProperties ON ";
+        query += "Components.component_id ";
+        query += "= ComponentProperties.component_id ";
+        query += "WHERE Components.product_id = ? ";
+        query += "ORDER BY Components.component_id;";
+
+        const [properties] = await db.query(query, id);
+
+        return properties;
     }
 }

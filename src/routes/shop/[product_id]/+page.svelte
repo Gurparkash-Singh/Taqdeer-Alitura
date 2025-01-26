@@ -4,6 +4,32 @@
 
     let { data, form } = $props();
 
+    let openInfo = $state(false);
+    let openSize = $state(false);
+    let openReturn = $state(false);
+
+    let images = [];
+
+    for (let i = 0; i < data.images.length; i++) {
+        images.push(data.images[i].image_id);
+    }
+
+    let currentImage = $state(0);
+    let showImage = $state(data.images[0].image_id);
+
+    function nextImage() {
+        currentImage = (currentImage + 1) % images.length;
+        showImage = images[currentImage];
+    }
+
+    function prevImage() {
+        currentImage = (currentImage - 1);
+        if (currentImage == -1) {
+            currentImage = images.length - 1;
+        }
+        showImage = images[currentImage];
+    }
+
     class Product {
 		#size = $state(-1);
 		#quantity = $state(0);
@@ -74,16 +100,32 @@
 
     <section id="product">
         <div id="image-carousel">
-            <!-- 
-                Add Arrows and multiple images (create an image carousel)
-            -->
+            <button 
+                aria-label="previous image"
+                onclick={prevImage}
+            >
+                <svg width="34" height="60" viewBox="0 0 34 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.17157 27.1716C-0.390524 28.7337 -0.390524 31.2663 1.17157 32.8284L26.6274 58.2843C28.1895 59.8464 30.7222 59.8464 32.2843 58.2843C33.8464 56.7222 33.8464 54.1895 32.2843 52.6274L9.65685 30L32.2843 7.37258C33.8464 5.81049 33.8464 3.27783 32.2843 1.71573C30.7222 0.153632 28.1895 0.153632 26.6274 1.71573L1.17157 27.1716ZM7 26H4L4 34H7L7 26Z" fill="#1E1E1E"/>
+                </svg>
+            </button>
             {#each data.images as image}
-                {#if image.main_image == 1}
+                <div 
+                    class="carousel-holder"
+                    class:showImage={image.image_id == showImage}
+                >
                     {#await import(`$lib/images/product_images/${image.image_link}.png`) then { default: src }}
                         <img {src} alt={image.alt_desc} />
                     {/await}
-                {/if}
+                </div>
             {/each}
+            <button 
+                aria-label="next image"
+                onclick={nextImage}
+            >
+                <svg width="34" height="60" viewBox="0 0 34 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M32.8284 32.8284C34.3905 31.2663 34.3905 28.7337 32.8284 27.1716L7.37258 1.71573C5.81049 0.153631 3.27783 0.153631 1.71573 1.71573C0.153631 3.27783 0.153631 5.81049 1.71573 7.37258L24.3431 30L1.71573 52.6274C0.153631 54.1895 0.153631 56.7222 1.71573 58.2843C3.27783 59.8464 5.81049 59.8464 7.37258 58.2843L32.8284 32.8284ZM26 34H30V26H26V34Z" fill="#1E1E1E"/>
+                </svg>
+            </button>
         </div>
 
         <h1 id="product_name">{data.product[0].name}</h1>
@@ -138,10 +180,84 @@
             </form>
         </section>
 
-        <section>
-            <!-- Add area for product info -->
-            <!-- Add area for size charts -->
-            <!-- Add area for return policy -->
+        <button 
+            aria-label="toggle section"
+            class="section-button"
+            class:open-button={!openInfo}
+            id="info-button"
+            onclick={() => {
+                openInfo = !openInfo;
+            }}
+        >
+            Product Info
+        </button>
+        <section 
+            class="collapsable" 
+            id="info"
+            class:open-section={openInfo}
+        >
+            {#if data.components.length == 1}
+                {#each data.properties as property}
+                    {#if property.property_value}
+                        <p>
+                            {property.property_name}: {property.property_value}
+                        </p>
+                    {:else}
+                        <p>{property.property_name}</p>
+                    {/if}
+                {/each}
+            {:else}
+                {#each data.components as component}
+                    <h3>{component.component_name}</h3>
+                    {#each data.properties as property}
+                        {#if property.component_id == component.component_id}
+                            {#if property.property_value}
+                                <p>
+                                    {property.property_name}: {property.property_value}
+                                </p>
+                            {:else}
+                                <p>{property.property_name}</p>
+                            {/if}
+                        {/if}
+                    {/each}
+                {/each}
+            {/if}
+        </section>
+
+        <button 
+            aria-label="toggle section"
+            class="section-button"
+            class:open-button={!openSize}
+            onclick={() => {
+                openSize = !openSize;
+            }}
+        >
+            Size Chart
+        </button>
+        <section 
+            class="collapsable"
+            id="size"
+            class:open-section={openSize}
+        >
+            <p>This should have a size chart</p>
+        </section>
+
+        <button 
+            aria-label="toggle section" 
+            class="section-button"
+            class:open-return-button={!openReturn}
+            onclick={() => {
+                openReturn = !openReturn;
+            }}
+        >
+            Return Policy
+        </button>
+        <section 
+            class="collapsable"
+            id="return"
+            class:open-section={openReturn}
+        >
+            <p>This should have a return policy</p>
         </section>
     </section>
 </main>
@@ -173,13 +289,31 @@
     #image-carousel {
         display: flex;
 		justify-content: center;
-		width: 100%;
+        position: relative;
+        height: 300px;
         padding-top: calc(50% - 170px);
+        margin: auto;
+        overflow-x: auto;
+        flex-direction: row;
     }
 
-    #image-carousel img {
-        width: 170px;
-		height: 170px;
+    .carousel-holder {
+        width: 400px;
+        display: none;
+        justify-content: center;
+    }
+
+    .carousel-holder img {
+        max-width: 100%;
+    }
+
+    .showImage {
+        display: flex;
+    }
+
+    #image-carousel button {
+        background-color: transparent;
+        border: none;
     }
 
     #product_name {
@@ -234,6 +368,54 @@
         padding: 16px;
         text-align: center;
         margin: 0 10px;
+    }
+
+    .collapsable {
+        font-size: 14px;
+        padding: 0 30px;
+        display: none;
+        flex-direction: column;
+        border-bottom: 2px solid grey;
+    }
+
+    .section-button {
+        background-color: transparent;
+        border: none;
+        font-size: 14px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0;
+        margin-top: 20px;
+    }
+
+    .section-button::before {
+        content: url("/arrow.svg");
+        font-size: 20px;
+        position: relative;
+        top: 2px;
+        margin-right: 10px;
+    }
+
+    #info-button {
+        margin-top: 50px;
+    }
+
+    #return {
+        margin-bottom: 100px;
+    }
+
+    .open-section {
+        display: flex;
+    }
+
+    .open-button {
+        border-bottom: 2px solid grey;
+    }
+
+    .open-return-button {
+        margin-bottom: 100px;
+        border-bottom: 2px solid grey;
     }
 
     @media screen and (width < 450px) {

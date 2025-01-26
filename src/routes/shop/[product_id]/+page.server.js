@@ -15,7 +15,11 @@ export async function load({params})
 
     const sizes = await dbFunctions.getProductSizes(params.product_id);
 
-    return {product, images, sizes};
+    const components = await dbFunctions.getProductComponents(params.product_id);
+
+    const properties = await dbFunctions.getComponentProperties(params.product_id);
+
+    return {product, images, sizes, components, properties};
 }
 
 export const actions = {

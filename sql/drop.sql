@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS ComponentProperties;
+
+DROP TABLE IF EXISTS Components;
+
 DROP TABLE IF EXISTS Messages;
 
 DROP TABLE IF EXISTS Admins;

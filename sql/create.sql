@@ -202,3 +202,24 @@ CREATE TABLE Messages (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE TABLE Components (
+	component_id int primary key not null AUTO_INCREMENT,
+    product_id int not null,
+    component_name TEXT not null,
+    component_description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+
+CREATE TABLE ComponentProperties (
+	property_id int primary key not null AUTO_INCREMENT,
+	component_id int not null,
+    property_name TEXT not null,
+    property_description TEXT,
+    property_value TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (component_id) REFERENCES Components(component_id)
+);

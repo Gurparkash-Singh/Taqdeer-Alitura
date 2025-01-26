@@ -84,6 +84,56 @@ VALUES
 (20, "black-shirt", "A plain black shirt", 1),
 (21, "black-shirt", "A plain black shirt", 1);
 
+INSERT INTO Components (product_id, component_name)
+VALUES
+(1, "shirt"),
+(2, "shirt"),
+(3, "shirt"),
+(4, "shirt"),
+(5, "shirt"),
+(6, "shirt"),
+(7, "shirt"),
+(8, "shirt"),
+(9, "shirt"),
+(10, "shirt"),
+(11, "shirt"),
+(12, "shirt"),
+(13, "shirt"),
+(14, "shirt"),
+(15, "shirt"),
+(16, "shirt"),
+(17, "shirt"),
+(18, "shirt"),
+(19, "shirt"),
+(20, "shirt"),
+(21, "shirt");
+
+
+INSERT INTO ComponentProperties (component_id, property_name, property_value)
+VALUES 
+(1, "Made In", "Istanbul"),
+(2, "Made In", "Istanbul"),
+(3, "Made In", "Istanbul"),
+(4, "Made In", "Istanbul"),
+(5, "Made In", "Istanbul"),
+(6, "Made In", "Istanbul"),
+(7, "Made In", "Istanbul"),
+(8, "Made In", "Istanbul"),
+(9, "Made In", "Istanbul"),
+(10, "Made In", "Istanbul"),
+(11, "Made In", "Istanbul"),
+(12, "Made In", "Istanbul"),
+(13, "Made In", "Istanbul"),
+(14, "Made In", "Istanbul"),
+(15, "Made In", "Istanbul"),
+(16, "Made In", "Istanbul"),
+(17, "Made In", "Istanbul"),
+(18, "Made In", "Istanbul"),
+(19, "Made In", "Istanbul"),
+(20, "Made In", "Istanbul"),
+(21, "Made In", "Istanbul");
+
+
 INSERT INTO Sizes_Available (product_id, size_name, size_abbreviation, quantity)
 VALUES
 (1, "Small", "S", 20),
@@ -172,6 +222,5 @@ VALUES
 (21, "Extra Large", "XL", 20);
 
 INSERT INTO Messages (heading, paragraph) VALUES
-("Welcome", "Thank you for visiting our website and your interest in Taqdeer Alitura. 
-
+("Welcome", "Thank you for visiting our website and your interest in Taqdeer Alitura.
 Reminder that all members are entitled to 10% off all their orders");
