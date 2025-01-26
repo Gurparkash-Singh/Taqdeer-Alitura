@@ -33,15 +33,20 @@
             }
         }
 
+        if (form.invalid) {
+            email = form.email;
+            emailBody = form.body;
+        }
+
         if (!inMessages && form.invalid) 
         {
             modal.messages.push({
-                heading: "Error!",
+                heading: "Error",
                 paragraph: form.message
             });
         }else if (!inMessages && form.success) {
             modal.messages.push({
-                heading: "Success!",
+                heading: "Success",
                 paragraph: form.message
             });
         }
@@ -88,7 +93,7 @@
         }
         else {
             svgHolder2.style.position = "absolute";
-            svgHolder2.style.top = "calc(200vh - 85px)";
+            svgHolder2.style.top = "calc(200vh - 68px)";
         }
 
         if (email && emailBody) {
@@ -190,7 +195,7 @@
 			<p id="contact-p">
                 Please feel free to write to us regarding anything you might need.
             </p>
-			<form action="?/send" method="POST">
+			<form action="?/send" method="POST" id="contact-form-element">
 				<textarea 
                     name="contact-form"
                     id="contact-form"
@@ -199,7 +204,7 @@
                     placeholder="Contact Us"
                     bind:value={emailBody}
                 ></textarea>
-                <div id="form-controls">
+                <!-- <div id="form-controls"> -->
                     <p>
                         <label for="email">Email: </label>
                         <input 
@@ -217,7 +222,7 @@
                         class:enable-send={enableSend}
                         class:disable-send={!enableSend}
                     >
-                </div>
+                <!-- </div> -->
 			</form>
 			<ul>
 				<li>
@@ -525,35 +530,41 @@
         color: #1E1E1E66;
     }
 
-    div#form-controls {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: flex-end;
-        padding: 0;
-        margin: 20px 15px;
+    #contact-form-element {
         width: 100%;
+        text-align: center;
     }
 
-    #form-controls p {
-        display: flex;
+    #contact-form-element p {
+        display: inline-flex;
         flex-direction: row;
         align-items: flex-end;
-        margin: 0;
-        text-align: start;
-        margin: 0 10px;
+        justify-content: flex-start;
+        margin: 20px 10px 10px 0;
     }
 
-    #form-controls p input {
+    #contact-form-element p input {
         background: transparent;
         border: none;
         border-bottom: 2px solid white;
         color: white;
     }
 
-    #form-controls input[type="text"] {
-        width: 175px;
+    #contact-form-element input[type="text"] {
+        max-width: 160px;
+        width: 100%;
     }
+
+    #contact-form-element input[type="submit"] {
+        margin-bottom: 20px;
+        display: inline;
+    }
+
+    /* @media screen and (width >= 430px) {
+        #contact-form-element p {
+            margin: 20px 0 10px 10px;
+        }
+    } */
 
 	@media screen and( width >= 1000px) {
 		#logo h1 {

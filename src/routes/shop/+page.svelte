@@ -93,9 +93,11 @@
 				</button>
 				<ul class:open_menu={open_shop_menu}>
 					{#each categories as category}
-                    <li>
+                    <li
+                        class:selected={selected_category == category.category_id}
+                        class:lastListElement={category === categories[categories.length - 1]}
+                    >
                         <button 
-                            class:selected={selected_category == category.category_id}
                             onclick={() => {
                                 selected_category = category.category_id;
                                 filterProducts();
@@ -103,6 +105,11 @@
                             }}
                         >
                             {category.category_name}
+                            {#if category !== categories[categories.length - 1]}
+                                <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
+                                </svg>
+                            {/if}
                         </button>
                     </li>
 					{/each}
@@ -124,29 +131,34 @@
 						/>
 					</svg>
 				</button>
-				<ul class:open_menu={open_sort_menu}>
-					<li>
+				<ul class:open_menu={open_sort_menu} id="sort-menu">
+					<li class:selected={selected_price == 0}>
                         <button
-                            class:selected={selected_price == 0}
                             onclick={() => {
                                 selected_price = 0;
                                 sortProductsByPrice();
                                 toggle_sort_menu();
                             }}
                         >
-                            Price Low to High
+                            Price ascending
+
+                            <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
+                            </svg>
                         </button>
                     </li>
-					<li>
+					<li 
+                        class:selected={selected_price == 1}
+                        class="lastListElement"
+                    >
                         <button
-                            class:selected={selected_price == 1}
                             onclick={() => {
                                 selected_price = 1;
                                 sortProductsByPrice();
                                 toggle_sort_menu();
                             }}
                         >
-                            Price High to Low
+                            Price descending
                         </button>
                     </li>
 				</ul>
@@ -169,11 +181,15 @@
 				</button>
 				<ul class:open_menu={open_collections_menu}>
                     {#each collections as collection}
-                        <li>
+                        <li
+                            class:selected={
+                                selected_collection == collection.collection_id
+                            }
+                            class:lastListElement={
+                                collection === collections[collections.length - 1]
+                            }
+                        >
                             <button
-                                class:selected={
-                                    selected_collection == collection.collection_id
-                                }
                                 onclick={() => {
                                     selected_collection = collection.collection_id;
                                     filterProducts();
@@ -181,6 +197,11 @@
                                 }}
                             >
                                 {collection.collection_name}
+                                {#if collection !== collections[collections.length - 1]}
+                                    <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
+                                    </svg>
+                                {/if}
                             </button>
                         </li>
                     {/each}
@@ -231,6 +252,7 @@
 		margin-bottom: 20px;
         flex-wrap: wrap;
         row-gap: 10px;
+        align-items: center;
 	}
 
 	div {
@@ -242,17 +264,20 @@
 	}
 
 	.selected {
-		background-color: rgba(255, 255, 255, 0.85);
 		color: #bf1e2ed9;
 		cursor: not-allowed;
 	}
+
+    .selected:hover {
+        background-color: #bf1e2e77;
+    }
 
 	div ul {
 		list-style: none;
 		padding: 0;
 		background-color: rgba(255, 255, 255, 0.85);
 		position: absolute;
-		top: 15px;
+		top: 20px;
 		left: 0;
 		width: 100%;
 		display: none;
@@ -262,11 +287,11 @@
 	}
 
 	div ul li button {
-		padding: 15px 2px 15px 10px;
+		padding: 15px 2px 0px 10px;
 	}
 
-    div ul li {
-        border-bottom: 1px solid #d9d9d9;
+    .lastListElement {
+        padding-bottom: 15px;
     }
 
 	div ul li:hover {
@@ -289,12 +314,12 @@
 		color: #bf1e2e;
         display: flex;
 		flex-direction: row;
-		align-items: baseline;
+		align-items: center;
 		width: 115px;
 		justify-content: space-between;
 		border: none;
 		background: none;
-		font-size: 20pt;
+		font-size: 26pt;
 		padding: 0;
 		margin: 0 10px;
 	}
@@ -302,6 +327,10 @@
 	button {
 		cursor: pointer;
 	}
+
+    #sort-menu button {
+        font-size: 12px;
+    }
 
 	#sort,
 	#collection{

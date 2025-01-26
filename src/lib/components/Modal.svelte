@@ -47,7 +47,7 @@
         height: 100vh;
         z-index: 10;
         display: none;
-        background-color: #1E1E1E22;
+        background-color: #1E1E1E80;
         color: white;
         align-items: center;
         justify-content: center;

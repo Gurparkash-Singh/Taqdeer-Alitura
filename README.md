@@ -50,13 +50,23 @@ You can preview the production build with `npm run preview`.
 - [x] Change DB to allow for multiple properties per component
 - [x] Add product info to db and products page
 - [x] Create image carousel on product page
+- [ ] Finish small screen shop page design
 - [ ] Add size chart and return policy in products page
 - [ ] Get signup page working
 - [ ] Get login page working
+- [ ] Get Forget Password working
+- [ ] Redo Cart Page
+- [ ] Get Checkout working
 - [ ] Get profile page working
+- [ ] Get Edit profile working
+- [ ] Get Order History working
 - [ ] Add ability to save cards
+- [ ] Get Payment Methods Page working
+- [ ] Get Address Book working
+- [ ] Get Contact Form working
 - [ ] Change DB to allow for multiple coupons on a product
-- [ ] Change DB to allow for multiple discounts on a profile
+- [ ] Change DB to allow for multiple coupons on a profile
+- [ ] Change DB to allow for multiple coupons on entire store
 - [ ] Add ability to select coupons at checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
@@ -75,6 +85,10 @@ You can preview the production build with `npm run preview`.
 In Case of minimal viable product:
 - [ ] Disable location
 - [ ] Disable profile
+
+# Completely Finished
+- Homepage Design
+- Shop page Design for big screens
 
 product <- component <- properties
 

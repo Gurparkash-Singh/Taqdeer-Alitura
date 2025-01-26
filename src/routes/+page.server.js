@@ -18,7 +18,9 @@ export const actions = {
         if (!message || !email) {
             return fail(400, {
                 invalid: true,
-                message: "Fill in all fields"
+                message: "Fill in all fields",
+                email: email,
+                body: message
             })
         }
 
@@ -37,7 +39,9 @@ export const actions = {
         //     {
         //         return fail(400, {
         //             invalid: true,
-        //             message: "Make sure your email is correct"
+        //             message: "Make sure your email is correct",
+        //             email: email,
+        //             body: message
         //         })
         //     }
 

@@ -76,15 +76,15 @@
             }
         }
 
-        if (!inMessages && form.invalid) 
+        if (!inMessages && form.invalid)
         {
             modal.messages.push({
-                heading: "Error!",
+                heading: "Error",
                 paragraph: form.message
             });
         }else if (!inMessages && form.success) {
             modal.messages.push({
-                heading: "Success!",
+                heading: "Success",
                 paragraph: form.message
             });
         }
@@ -290,11 +290,12 @@
         display: flex;
 		justify-content: center;
         position: relative;
-        height: 300px;
+        height: 150px;
         padding-top: calc(50% - 170px);
         margin: auto;
         overflow-x: auto;
         flex-direction: row;
+        max-width: 100%;
     }
 
     .carousel-holder {
@@ -381,7 +382,7 @@
     .section-button {
         background-color: transparent;
         border: none;
-        font-size: 14px;
+        font-size: 1.2em;
         display: flex;
         justify-content: flex-start;
         align-items: center;
