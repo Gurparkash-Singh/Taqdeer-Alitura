@@ -9,7 +9,7 @@ export const handle = async ({ event, resolve }) => {
         event.cookies.set('session', authToken, {
             path: "/",
             sameSite: 'strict',
-            maxAge: 60 * 60 * 24 * 7
+            maxAge: 60 * 60 * 24
         });
         session = authToken;
 
@@ -28,18 +28,21 @@ export const handle = async ({ event, resolve }) => {
         await dbFunctions.createNewShoppingSession(session);
     }
 
-    // const users = await dbFunctions.getUserByAuthToken(session);
+    const users = await dbFunctions.getUserByAuthToken(session);
 
-    // if (users.length > 0)
-    // {
-    //     const user = users[0];
+    if (!users) {
+        return await resolve(event);
+    }
 
-    //     event.locals.user = {
-    //         firstName: user.FirstName,
-    //         lastName: user.LastName,
-    //         email: user.Email,
-    //     };
-    // }
+    const [user] = await dbFunctions.getUserByID(users[0].user_id);
+
+    if (user)
+    {
+        event.locals.user = {
+            name: user.name,
+            email: user.email
+        };
+    }
 
     return await resolve(event);
 }

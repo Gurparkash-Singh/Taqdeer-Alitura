@@ -6,5 +6,5 @@ export const load = async ({ locals }) => {
         throw redirect(302, '/access');
     }
 
-    return;
+    return {user: locals.user};
 }

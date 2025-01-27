@@ -17,7 +17,7 @@ export const dbFunctions = {
     },
 
     getUserByEmail: async (email) => {
-        let query = "SELECT * FROM Users WHERE Email = ?";
+        let query = "SELECT * FROM User WHERE Email = ?";
 
         const [users] = await db.query(query, email);
 
@@ -180,5 +180,56 @@ export const dbFunctions = {
         const [properties] = await db.query(query, id);
 
         return properties;
+    },
+
+    createUser: async (email, pass, name) => {
+        let query = "INSERT INTO User (email, password, name) "
+        query += "VALUES (?, ?, ?);";
+
+        await db.query(
+            query, [email, pass, name]
+        );
+
+        query = "SELECT * FROM User WHERE email = ?;";
+
+        const [users] = await db.query(query, email);
+
+        if (users.length > 0)
+        {
+            return users;
+        }
+
+        console.log(users);
+
+        return;
+    },
+
+    storeAuth: async (session, id) => {
+        let query = "INSERT INTO User_Tokens (user_id, token, expires_at) ";
+        query += "VALUES (?, ?, now()+interval 1 day);";
+
+        await db.query(query, [id, session]);
+    },
+
+    getUserByAuthToken: async (session) => {
+        let query = "SELECT * FROM User_Tokens WHERE token = ? ";
+        query += "AND expires_at > now();";
+
+        const [users] = await db.query(query, session);
+
+        if (users.length > 0)
+        {
+            return users;
+        }
+
+        return;
+    },
+
+    getUserByID: async (id) => {
+        let query = "SELECT * FROM User WHERE user_id = ?;";
+
+        const [user] = await db.query(query, id);
+
+        return user;
     }
 }

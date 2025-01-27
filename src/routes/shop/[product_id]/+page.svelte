@@ -176,7 +176,9 @@
                 <input type="hidden" name="quantity" value={selection.quantity}/>
                 <input type="hidden" name="size" value={selection.size}/>
                 <input type="hidden" name="product" value={data.product[0].product_id} />
-                <button>Add to cart</button>
+                <button>
+                    Add to cart
+                </button>
             </form>
         </section>
 
