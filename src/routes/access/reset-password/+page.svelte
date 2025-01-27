@@ -15,6 +15,11 @@
 </section>
 
 <style>
+    section {
+        max-width: 80%;
+        margin: auto;
+    }
+    
     h1 {
         color: #bf1e2e;
     }

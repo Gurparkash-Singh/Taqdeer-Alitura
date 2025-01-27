@@ -29,6 +29,58 @@ export const actions = {
             });
         }
 
+        if (!/[A-Z]/g.test(password))
+        {
+            let message = "Passwords must minimum eight characters, ";
+            message += "at least one letter and one number";
+
+            return fail(400, {
+                invalid: true,
+                message: message,
+                name: name,
+                email: email
+            });
+        }
+
+        if (!/[a-z]/g.test(password))
+        {
+            let message = "Passwords must minimum eight characters, ";
+            message += "at least one letter and one number";
+
+            return fail(400, {
+                invalid: true,
+                message: message,
+                name: name,
+                email: email
+            });
+        }
+
+        if (!/[\d]/g.test(password))
+        {
+            let message = "Passwords must minimum eight characters, ";
+            message += "at least one letter and one number";
+
+            return fail(400, {
+                invalid: true,
+                message: message,
+                name: name,
+                email: email
+            });
+        }
+
+        if (password.length < 8)
+        {
+            let message = "Passwords must minimum eight characters, ";
+            message += "at least one letter and one number";
+
+            return fail(400, {
+                invalid: true,
+                message: message,
+                name: name,
+                email: email
+            });
+        }
+
         let user = await dbFunctions.getUserByEmail(email);
 
         if (user) {

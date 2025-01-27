@@ -5,6 +5,19 @@
 
     let email = $state("");
     let name = $state("");
+    let password = $state("");
+    let showMessage = $state(false);
+
+    let has8 = $derived(password.length >= 8);
+    let hasUpperLetter = $derived(/[A-Z]/g.test(password));
+    let hasLowerLetter = $derived(/[a-z]/g.test(password));
+    let hasNumber = $derived(/[\d]/g.test(password));
+
+    $effect(() => {
+        if (has8 && hasUpperLetter && hasNumber && hasLowerLetter) {
+            showMessage = false;
+        }
+    })
 
     if (form) {
         let inMessages = false;
@@ -57,8 +70,48 @@
         </p>
         <p>
             <label for="password">password:</label>
-            <input type="password" name="password" id="password"/>
+            <input 
+                type="password" 
+                name="password" 
+                id="password"
+                title="Must contain at least one number and one letter, and at least 8 characters"
+                bind:value={password}
+                oninput={() => {
+                    showMessage = true;
+                    if (has8 && hasUpperLetter && hasNumber && hasLowerLetter) {
+                        showMessage = false;
+                    }
+                }}
+            />
         </p>
+        <div id="message" class:showMessage={showMessage}>
+            <h3>Password must contain the following:</h3>
+            <p
+                class:invalid={!hasUpperLetter}
+                class:valid={hasUpperLetter}
+            >
+                An uppercase letter
+            </p>
+
+            <p
+                class:invalid={!hasLowerLetter}
+                class:valid={hasLowerLetter}
+            >
+                A lowercase letter
+            </p>
+            <p
+                class:invalid={!hasNumber}
+                class:valid={hasNumber}
+            >
+                A number
+            </p>
+            <p 
+                class:invalid={!has8}
+                class:valid={has8}
+            >
+                Minimum 8 characters
+            </p>
+        </div>
         <p>
             <label for="confirm-password">confirm password:</label>
             <input type="password" name="confirm-password" id="confirm-password"/>
@@ -76,6 +129,11 @@
 </section>
 
 <style>
+    section {
+        max-width: 80%;
+        margin: auto;
+    }
+
     h1 {
         color: #bf1e2e;
     }
@@ -115,5 +173,45 @@
         flex-direction: row;
         justify-content: space-between;
         margin: 20px 0;
+    }
+
+    .valid {
+        color: green;
+    }
+
+    .valid:before {
+        position: relative;
+        left: -35px;
+        content: "✔";
+        top: 22px;
+    }
+
+    .invalid {
+        color: red;
+    }
+
+    .invalid:before {
+        position: relative;
+        left: -35px;
+        content: "✖";
+        top: 22px;
+    }
+
+    #message {
+        display:none;
+        background: #f1f1f1;
+        color: #000;
+        position: relative;
+        padding: 20px;
+        margin-top: 10px;
+    }
+
+    #message p {
+        padding: 10px 35px;
+        font-size: 18px;
+    }
+
+    #message.showMessage {
+        display: block;
     }
 </style>

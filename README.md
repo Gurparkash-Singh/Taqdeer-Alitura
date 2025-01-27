@@ -85,7 +85,7 @@ You can preview the production build with `npm run preview`.
 
 In Case of minimal viable product:
 - [ ] Disable location
-- [ ] Disable profile
+- [ ] Finish profile page
 
 # Completely Finished
 - Homepage Design
@@ -93,6 +93,13 @@ In Case of minimal viable product:
 
 
 Model information and a table = size chart
+
+# To Verify accounts
+- add a row to the user table called verified
+- set verified to false
+- send code to user
+- ask the user to verify email using code
+
 
 # Needed in the next 2 weeks
 - [ ] Presentable
