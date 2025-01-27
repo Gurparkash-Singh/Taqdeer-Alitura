@@ -290,7 +290,7 @@
         display: flex;
 		justify-content: center;
         position: relative;
-        height: 150px;
+        height: 300px;
         padding-top: calc(50% - 170px);
         margin: auto;
         overflow-x: auto;
@@ -400,6 +400,10 @@
 
     #info-button {
         margin-top: 50px;
+    }
+
+    #info h3 {
+        font-weight: normal;
     }
 
     #return {
