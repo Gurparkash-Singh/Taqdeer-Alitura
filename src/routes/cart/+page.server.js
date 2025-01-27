@@ -27,7 +27,7 @@ export const actions = {
         if (!session || shopping_session.length === 0) {
             return fail(500, {
                 invalid: true,
-                message: "Server failed"
+                message: "server failed"
             });
         }
 
@@ -40,14 +40,14 @@ export const actions = {
         {
             return fail(400, {
                 invalid: true,
-                message: "Missing fields"
+                message: "missing fields"
             });
         }
 
         await dbFunctions.removeFromCart(shopping_session, product_id, size_id);
         return {
             success: true,
-            message: "Removed Item from Cart!"
+            message: "removed item from cart"
         };
     }
 };

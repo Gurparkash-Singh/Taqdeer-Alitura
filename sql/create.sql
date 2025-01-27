@@ -67,7 +67,7 @@ CREATE TABLE Admin_Permissions (
 CREATE TABLE Products (
     product_id int primary key not null AUTO_INCREMENT,
     name varchar(255) not null,
-    description text not null,
+    description text,
     sku varchar(255),
     category_id int not null,
     collection_id int,

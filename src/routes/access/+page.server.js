@@ -13,7 +13,7 @@ export const actions = {
         {
             return fail(400, {
                 invalid: true,
-                message: "Fill all fields",
+                message: "fill in all fields",
                 email
             });
         }
@@ -24,7 +24,7 @@ export const actions = {
         {
             return fail(400, {
                 invalid: true, 
-                message: "Email or Password Invalid",
+                message: "email or password invalid",
                 email
             });
         }
@@ -35,7 +35,7 @@ export const actions = {
         {
             return fail(400, {
                 invalid: true, 
-                message: "Email or Password Invalid",
+                message: "email or password invalid",
                 email
             });
         }

@@ -32,7 +32,7 @@ export const actions = {
         if (!session || shopping_session.length === 0) {
             return fail(500, {
                 invalid: true,
-                message: "Server failed"
+                message: "server failed"
             });
         }
 
@@ -45,7 +45,7 @@ export const actions = {
         if (!product_id || !size || !quantity) {
             return fail(400, {
                 invalid: true,
-                message: "Missing fields"
+                message: "missing fields"
             });
         }
 
@@ -55,7 +55,7 @@ export const actions = {
         {
             return fail(404, {
                 invalid: true,
-                message: "Invalid Product ID"
+                message: "invalid product id"
             });
         }
 
@@ -75,7 +75,7 @@ export const actions = {
         {
             return fail(404, {
                 invalid: true,
-                message: "Size not found"
+                message: "size not found"
             });
         }
 
@@ -83,7 +83,7 @@ export const actions = {
         {
             return fail(404, {
                 invalid: true,
-                message: "Invalid quantity"
+                message: "invalid quantity"
             });
         }
 
@@ -99,13 +99,13 @@ export const actions = {
             {
                 return {
                     success: true,
-                    message: "Nothing to add"
+                    message: "nothing to add"
                 };
             }
             await dbFunctions.addToCart(shopping_session, product_id, size, quantity);
             return {
                 success: true,
-                message: "Added to Cart!"
+                message: "added to cart"
             };
         }
 
@@ -113,14 +113,14 @@ export const actions = {
             await dbFunctions.removeFromCart(shopping_session, product_id, size);
             return {
                 success: true,
-                message: "Removed Item from Cart!"
+                message: "removed item from cart"
             };
         }
 
         await dbFunctions.updateCart(shopping_session, product_id, size, quantity);
         return {
             success: true,
-            message: "Updated Cart!"
+            message: "updated cart"
         };
     }
 };

@@ -35,12 +35,12 @@
         if (!inMessages && form.invalid) 
         {
             modal.messages.push({
-                heading: "Error",
+                heading: "ERROR",
                 paragraph: form.message
             });
         }else if (!inMessages && form.success) {
             modal.messages.push({
-                heading: "Success",
+                heading: "SUCCESS",
                 paragraph: form.message
             });
         }
@@ -90,26 +90,26 @@
                 class:invalid={!hasUpperLetter}
                 class:valid={hasUpperLetter}
             >
-                An uppercase letter
+                uppercase letter
             </p>
 
             <p
                 class:invalid={!hasLowerLetter}
                 class:valid={hasLowerLetter}
             >
-                A lowercase letter
+                lowercase letter
             </p>
             <p
                 class:invalid={!hasNumber}
                 class:valid={hasNumber}
             >
-                A number
+                number
             </p>
             <p 
                 class:invalid={!has8}
                 class:valid={has8}
             >
-                Minimum 8 characters
+                eight characters
             </p>
         </div>
         <p>
@@ -176,39 +176,24 @@
     }
 
     .valid {
-        color: green;
-    }
-
-    .valid:before {
-        position: relative;
-        left: -35px;
-        content: "✔";
-        top: 22px;
+        color: rgb(29, 76, 22);
     }
 
     .invalid {
-        color: red;
-    }
-
-    .invalid:before {
-        position: relative;
-        left: -35px;
-        content: "✖";
-        top: 22px;
+        color: #bf1e2e;
     }
 
     #message {
         display:none;
         background: #f1f1f1;
-        color: #000;
         position: relative;
         padding: 20px;
         margin-top: 10px;
     }
 
-    #message p {
-        padding: 10px 35px;
-        font-size: 18px;
+    #message h3 {
+        font-weight: normal;
+        font-size: 14px;
     }
 
     #message.showMessage {

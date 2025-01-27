@@ -5,8 +5,23 @@
 
     let { data, children } = $props();
 
+    let body;
+
+    let stopScroll = $derived(modal.messages.length > 0);
+
+    $effect(() => {
+        if (stopScroll) {
+            body.style.overflow = "hidden";
+        }
+        else {
+            body.style.overflow = "auto";
+        }
+    })
+
     modal.messages = data.messages;
 </script>
+
+<svelte:body bind:this={body}/>
 
 <Modal></Modal>
 
@@ -64,7 +79,6 @@
 </div>
 
 <div id="cart">
-    <!-- {#if data.num_items > 0 && page.url.pathname !== "/"} -->
     {#if data.num_items > 0}
         <p
             class:home={page.url.pathname === "/"}
@@ -94,7 +108,7 @@
 		width: 35px;
 		height: 35px;
 		border-radius: 100px;
-		z-index: 10;
+		z-index: 3;
 	}
 
 	div a,

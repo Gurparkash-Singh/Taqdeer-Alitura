@@ -59,7 +59,7 @@
 
     section {
         background-color: #CB2D2D;
-        max-width: 500px;
+        width: min(300px, 80%);
         position: relative;
         display: flex;
         flex-direction: column;

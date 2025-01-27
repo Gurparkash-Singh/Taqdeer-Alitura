@@ -38,4 +38,15 @@
     img {
         max-width: 60px;
     }
+
+    @media screen and (width < 406px) {
+        div {
+            height: 90px;
+            width: 90px;
+        }
+
+        img {
+            max-width: 50px;
+        }
+    }
 </style>

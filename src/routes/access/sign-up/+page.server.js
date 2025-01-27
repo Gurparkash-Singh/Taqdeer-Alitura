@@ -14,7 +14,7 @@ export const actions = {
         if (!name || !email || !password || !confirmPassword) {
             return fail(400, {
                 invalid: true,
-                message: "Fill all fields",
+                message: "fill in all fields",
                 name: name,
                 email: email
             });
@@ -23,16 +23,17 @@ export const actions = {
         if (password !== confirmPassword) {
             return fail(400, {
                 invalid: true,
-                message: "Passwords don't match",
+                message: "passwords don't match",
                 name: name,
                 email: email
             });
         }
 
+        let message = "passwords must have minimum eight characters, ";
+        message += "at least one letter and one number";
+
         if (!/[A-Z]/g.test(password))
         {
-            let message = "Passwords must minimum eight characters, ";
-            message += "at least one letter and one number";
 
             return fail(400, {
                 invalid: true,
@@ -44,9 +45,6 @@ export const actions = {
 
         if (!/[a-z]/g.test(password))
         {
-            let message = "Passwords must minimum eight characters, ";
-            message += "at least one letter and one number";
-
             return fail(400, {
                 invalid: true,
                 message: message,
@@ -57,9 +55,6 @@ export const actions = {
 
         if (!/[\d]/g.test(password))
         {
-            let message = "Passwords must minimum eight characters, ";
-            message += "at least one letter and one number";
-
             return fail(400, {
                 invalid: true,
                 message: message,
@@ -70,9 +65,6 @@ export const actions = {
 
         if (password.length < 8)
         {
-            let message = "Passwords must minimum eight characters, ";
-            message += "at least one letter and one number";
-
             return fail(400, {
                 invalid: true,
                 message: message,
@@ -86,7 +78,7 @@ export const actions = {
         if (user) {
             return fail(400, {
                 invalid: true,
-                message: "Email Taken",
+                message: "email taken",
                 name: name,
                 email: email
             });

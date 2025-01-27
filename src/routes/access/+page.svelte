@@ -20,7 +20,7 @@
         if (!inMessages && form.invalid) 
         {
             modal.messages.push({
-                heading: "Error",
+                heading: "ERROR",
                 paragraph: form.message
             });
         }else if (!inMessages && form.success) {

@@ -1,42 +1,3 @@
-# sv
-
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
 # To-Do
 - [x] Style send button
 - [x] On home page, center about us once you reach the scroll height
@@ -52,26 +13,42 @@ You can preview the production build with `npm run preview`.
 - [x] Create image carousel on product page
 - [x] Get signup page working
 - [x] Get login page working
-- [ ] Finish small screen shop page design
+- [x] Stop Scrolling while modal is loaded
+- [x] Stop navigation while modal is loaded
+- [x] Verify shop page design
+- [x] Verify signup page design
+- [x] Verify login page design
+- [ ] Verify product page design
+- [ ] Upload actual products to DB
+- [ ] Redo cart page
+- [ ] Verify cart page
+- [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
-- [ ] Get Forget Password working
-- [ ] Get Verify email working
-- [ ] Get Contact Form working
-- [ ] Redo Cart Page
-- [ ] Get Checkout working
 - [ ] Get profile page working
+- [ ] Verify profile page
 - [ ] Get Edit profile working
+- [ ] Verify edit profile
 - [ ] Get Order History working
+- [ ] Verify Order History
+- [ ] Get password reset working
+- [ ] Verify password reset
+- [ ] Get verify email working
+- [ ] Verify email verification
+- [ ] Get Contact Form working
 - [ ] Add ability to save cards
-- [ ] Get Payment Methods Page working
-- [ ] Get Address Book working
+- [ ] Get payment methods page working
+- [ ] Verify payment methods page
+- [ ] Get address book working
+- [ ] Verify address book
+- [ ] Get location button working
+- [ ] Verify location button
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple coupons on a profile
 - [ ] Change DB to allow for multiple coupons on entire store
 - [ ] Add ability to select coupons at checkout
+- [ ] Verify checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
-- [ ] Change sizes for bigger screens
 - [ ] Limit the number of products on first page load
 
 # To-Do for minimal viable product
@@ -81,25 +58,32 @@ You can preview the production build with `npm run preview`.
 - [x] Create Cart
 - [ ] Implement Checkout
 - [ ] Finish Contact form
+- [ ] Finish profile
+- [ ] Finish order history
+- [ ] Finish edit profile
 - [x] Edit Database to be able to save sizes
 
 In Case of minimal viable product:
 - [ ] Disable location
-- [ ] Finish profile page
 
 # Completely Finished
-- Homepage Design
-- Shop page Design for big screens
+- Homepage design
+- Shop page design
 
+Size chart is a photo should be added to the product images
+Sizing contains model information
+Add Table to DB for model size information
 
-Model information and a table = size chart
+Return Policy should be recieved from Tap Payments
+
+Explain to Faris that you need to use resend for forgot password and contact form
+Tell Faris about your email verification idea
 
 # To Verify accounts
 - add a row to the user table called verified
 - set verified to false
 - send code to user
 - ask the user to verify email using code
-
 
 # Needed in the next 2 weeks
 - [ ] Presentable

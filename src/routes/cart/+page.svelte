@@ -4,13 +4,13 @@
 
     let { data, form } = $props();
 
-    let numberFormat = {
-        area: "en-ca",
+    let numberFormat = new Intl.numberFormat({
+        area: "ar-SA",
         style: {
             style: "currency",
-            currency: "CAD",
+            currency: "SAR",
         },
-    };
+    });
 
     let subtotal = $state(0);
     let deliveryNum = 20;
@@ -33,22 +33,16 @@
 
     function formatString()
     {
-        subtotal = subtotal.toLocaleString(
-            numberFormat.area,
-            numberFormat.style,
-        );
+        subtotal = numberFormat.format(subtotal);
 
         if (total == 0) {
             delivery = subtotal;
         }
         else {
-            delivery = deliveryNum.toLocaleString(
-                numberFormat.area,
-                numberFormat.style,
-            );
+            delivery = numberFormat.format(delivery);
         }
         
-        total = total.toLocaleString(numberFormat.area, numberFormat.style);
+        total = numberFormat.format(total);
     }
     calculateValues();
     formatString();

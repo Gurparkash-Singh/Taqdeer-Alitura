@@ -1,5 +1,15 @@
 <script>
     let {product} = $props();
+
+    let numberFormat = new Intl.numberFormat({
+        area: "ar-SA",
+        style: {
+            style: "currency",
+            currency: "SAR",
+        },
+    });
+
+    let price = numberFormat.format(product.price);
 </script>
 
 <article class="product-card">
@@ -18,8 +28,7 @@
             <img {src} alt={product.alt_desc} />
         </a>
     {/await}
-    <p>{product.description}</p>
-    <p>${product.price}</p>
+    <p>{price}</p>
     <p>
         Quantity: {product.quantity}
     </p>

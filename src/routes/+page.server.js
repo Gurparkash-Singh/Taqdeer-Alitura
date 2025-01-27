@@ -18,7 +18,7 @@ export const actions = {
         if (!message || !email) {
             return fail(400, {
                 invalid: true,
-                message: "Fill in all fields",
+                message: "fill in all fields",
                 email: email,
                 body: message
             })
@@ -53,7 +53,7 @@ export const actions = {
 
         return {
             success: true,
-            message: "Message sent successfully"
+            message: "message sent successfully"
         };
     }
 }
