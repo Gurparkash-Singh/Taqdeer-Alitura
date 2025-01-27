@@ -1,15 +1,18 @@
 <script>
     let {product} = $props();
 
-    let numberFormat = new Intl.numberFormat({
-        area: "ar-SA",
+    let numberFormat = {
+        area: "en-SA",
         style: {
             style: "currency",
             currency: "SAR",
         },
-    });
+    };
 
-    let price = numberFormat.format(product.price);
+    let price = product.price.toLocaleString(
+        numberFormat.area,
+        numberFormat.style,
+    );
 </script>
 
 <article class="product-card">
