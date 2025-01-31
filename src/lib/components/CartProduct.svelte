@@ -9,7 +9,8 @@
         },
     };
 
-    let price = product.price.toLocaleString(
+    const floatPrice = parseFloat(product.price);
+    const price = floatPrice.toLocaleString(
         numberFormat.area,
         numberFormat.style,
     );

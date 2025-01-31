@@ -8,14 +8,32 @@
     let openSize = $state(false);
     let openReturn = $state(false);
 
+    let numberFormat = {
+        area: "en-SA",
+        style: {
+            style: "currency",
+            currency: "SAR",
+        }
+    };
+
+    let floatPrice = parseFloat(data.product[0].price);
+
+    let price = floatPrice.toLocaleString(
+        numberFormat.area,
+        numberFormat.style,
+    );
+
     let images = [];
+
+    let currentImage = $state(0);
+    let showImage = $state(data.images[0].image_id);
+
+    let touchStartX = $state(0);
+    let touchEndX = $state(0);
 
     for (let i = 0; i < data.images.length; i++) {
         images.push(data.images[i].image_id);
     }
-
-    let currentImage = $state(0);
-    let showImage = $state(data.images[0].image_id);
 
     function nextImage() {
         currentImage = (currentImage + 1) % images.length;
@@ -89,21 +107,6 @@
             });
         }
     }
-
-    let numberFormat = {
-        area: "en-SA",
-        style: {
-            style: "currency",
-            currency: "SAR",
-        }
-    };
-
-    let floatPrice = parseFloat(data.product[0].price);
-
-    let price = floatPrice.toLocaleString(
-        numberFormat.area,
-        numberFormat.style,
-    );
 </script>
 
 <main>
@@ -114,7 +117,23 @@
 	</div>
 
     <section id="product">
-        <div id="image-carousel">
+        <div 
+            id="image-carousel"
+            ontouchstart={(e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }}
+            ontouchend={(e) => {
+                touchEndX = event.changedTouches[0].screenX;
+                if (touchEndX < touchStartX) {
+                    console.log('Swiped Left');
+                    nextImage();
+                }
+                if(touchEndX > touchStartX) {
+                    console.log('Swiped Right');
+                    prevImage();
+                }
+            }}
+        >
             {#each data.images as image}
                 <div 
                     class="carousel-holder"
