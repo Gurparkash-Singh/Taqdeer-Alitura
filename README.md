@@ -18,18 +18,18 @@
 - [x] Verify shop page design
 - [x] Verify signup page design
 - [x] Verify login page design
+- [x] Upload actual products to DB
 - [ ] Verify product page design
-- [ ] Upload actual products to DB
 - [ ] Redo cart page
 - [ ] Verify cart page
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
 - [ ] Get profile page working
 - [ ] Verify profile page
-- [ ] Get Edit profile working
+- [ ] Get edit profile working
 - [ ] Verify edit profile
-- [ ] Get Order History working
-- [ ] Verify Order History
+- [ ] Get order history working
+- [ ] Verify order history
 - [ ] Get password reset working
 - [ ] Verify password reset
 - [ ] Get verify email working

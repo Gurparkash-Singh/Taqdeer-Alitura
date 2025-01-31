@@ -117,7 +117,7 @@
 			</div>
 			<div>
 				<button id="sort" onclick={toggle_sort_menu}>
-					sort
+					sort price
 					<svg
 						width="24"
 						height="14"
@@ -140,7 +140,7 @@
                                 toggle_sort_menu();
                             }}
                         >
-                            Price ascending
+                            Ascending
 
                             <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
@@ -158,7 +158,7 @@
                                 toggle_sort_menu();
                             }}
                         >
-                            Price descending
+                            Descending
                         </button>
                     </li>
 				</ul>
@@ -272,6 +272,11 @@
         background-color: #bf1e2e77;
     }
 
+
+    div ul button svg {
+        width: 80px;
+    }
+
 	div ul {
 		list-style: none;
 		padding: 0;
@@ -279,10 +284,9 @@
 		position: absolute;
 		top: 20px;
 		left: 0;
-		width: 100%;
 		display: none;
         z-index: 2;
-        width: 115px;
+        width: 105px;
         margin: 16px 10px;
 	}
 
@@ -297,6 +301,10 @@
 	div ul li:hover {
 		background-color: #bf1e2ed9;
 	}
+
+    div ul li:hover svg {
+        visibility: hidden;
+    }
 
 	div ul li:last-child {
 		border-bottom: none;
@@ -328,9 +336,6 @@
 		cursor: pointer;
 	}
 
-    #sort-menu button {
-        font-size: 12px;
-    }
 
 	#sort,
 	#collection{
@@ -397,6 +402,16 @@
             width: 90px;
             height: 90px;
             margin: calc((100vw - 320px) / 6) 0;
+        }
+
+        div ul button svg 
+        {
+            width: 65px;
+        }
+
+        div ul {
+            width: 90px;
+            margin: 16px 0;
         }
     }
 

@@ -89,6 +89,21 @@
             });
         }
     }
+
+    let numberFormat = {
+        area: "en-SA",
+        style: {
+            style: "currency",
+            currency: "SAR",
+        }
+    };
+
+    let floatPrice = parseFloat(data.product[0].price);
+
+    let price = floatPrice.toLocaleString(
+        numberFormat.area,
+        numberFormat.style,
+    );
 </script>
 
 <main>
@@ -100,14 +115,6 @@
 
     <section id="product">
         <div id="image-carousel">
-            <button 
-                aria-label="previous image"
-                onclick={prevImage}
-            >
-                <svg width="20" height="30" viewBox="0 0 34 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1.17157 27.1716C-0.390524 28.7337 -0.390524 31.2663 1.17157 32.8284L26.6274 58.2843C28.1895 59.8464 30.7222 59.8464 32.2843 58.2843C33.8464 56.7222 33.8464 54.1895 32.2843 52.6274L9.65685 30L32.2843 7.37258C33.8464 5.81049 33.8464 3.27783 32.2843 1.71573C30.7222 0.153632 28.1895 0.153632 26.6274 1.71573L1.17157 27.1716ZM7 26H4L4 34H7L7 26Z" fill="#1E1E1E"/>
-                </svg>
-            </button>
             {#each data.images as image}
                 <div 
                     class="carousel-holder"
@@ -118,6 +125,19 @@
                     {/await}
                 </div>
             {/each}
+        </div>
+
+        <div id="product-name-holder">
+            <button 
+                aria-label="previous image"
+                onclick={prevImage}
+            >
+                <svg width="20" height="30" viewBox="0 0 34 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.17157 27.1716C-0.390524 28.7337 -0.390524 31.2663 1.17157 32.8284L26.6274 58.2843C28.1895 59.8464 30.7222 59.8464 32.2843 58.2843C33.8464 56.7222 33.8464 54.1895 32.2843 52.6274L9.65685 30L32.2843 7.37258C33.8464 5.81049 33.8464 3.27783 32.2843 1.71573C30.7222 0.153632 28.1895 0.153632 26.6274 1.71573L1.17157 27.1716ZM7 26H4L4 34H7L7 26Z" fill="#1E1E1E"/>
+                </svg>
+            </button>
+            <h1 id="product_name">{data.product[0].name}</h1>
+            <p id="product-price">{price}</p>
             <button 
                 aria-label="next image"
                 onclick={nextImage}
@@ -127,8 +147,6 @@
                 </svg>
             </button>
         </div>
-
-        <h1 id="product_name">{data.product[0].name}</h1>
 
         <section id="product-modifier">
             <div id="quantity-slider">
@@ -266,8 +284,9 @@
 
 <style>
 	main {
-		max-width: 500px;
+		width: 500px;
 		margin: auto;
+        max-width: 80%;
 	}
 
     #image-holder {
@@ -292,34 +311,50 @@
         display: flex;
 		justify-content: center;
         position: relative;
-        height: 300px;
-        padding-top: calc(50% - 170px);
-        margin: auto;
-        overflow-x: auto;
+        height: 400px;
         flex-direction: row;
-        max-width: 100%;
     }
 
     .carousel-holder {
-        width: 400px;
         display: none;
         justify-content: center;
+        max-width: 400px;
     }
 
     .carousel-holder img {
-        max-width: 100%;
+        width: 100%;
+        object-fit: cover;
+        max-height: 100%;
     }
 
     .showImage {
         display: flex;
     }
 
-    #image-carousel button {
+    #product-name-holder {
+        position: relative;
+    }
+
+    #product-name-holder button {
         background-color: transparent;
         border: none;
+        top: calc(50% - 14px);
+        position: absolute;
+    }
+
+    button[aria-label="previous image"] {
+        left: 0%;
+    }
+
+    button[aria-label="next image"] {
+        right: 0%;
     }
 
     #product_name {
+        text-align: center;
+    }
+
+    #product-price {
         text-align: center;
     }
 
@@ -333,11 +368,14 @@
     }
 
     #product-modifier button {
+        display: inline-flex;
         background-color: #D9D9D9;
         border: none;
         margin: 0 10px;
         padding: 16px 20px;
         cursor: pointer;
+        width: 50px;
+        justify-content: center;
     }
 
     #size-selector .selected {
@@ -353,6 +391,7 @@
     #cart-button button {
         color: white;
         background-color: #BF1E2E;
+        width: 110px;
     }
 
     #quantity-slider {
@@ -378,7 +417,7 @@
         padding: 0 30px;
         display: none;
         flex-direction: column;
-        border-bottom: 2px solid grey;
+        border-bottom: 1px solid grey;
     }
 
     .section-button {
@@ -417,11 +456,21 @@
     }
 
     .open-button {
-        border-bottom: 2px solid grey;
+        border-bottom: 1px solid grey;
     }
 
     .open-return-button {
         margin-bottom: 100px;
-        border-bottom: 2px solid grey;
+        border-bottom: 1px solid grey;
+    }
+
+    @media screen and (width < 450px) {
+        #size-selector {
+            display: flex;
+            flex-basis: 100%;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0 30px 0;
+        }
     }
 </style>
