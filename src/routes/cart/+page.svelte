@@ -16,6 +16,10 @@
     let deliveryNum = 20;
     let delivery = $state(10);
     let total = $state(0);
+    let discounts = 0;
+
+    let openInstallments = $state(false);
+    let openCoupons = $state(false);
 
     function calculateValues()
     {
@@ -60,42 +64,75 @@
             <enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
         </a>
 	</div>
+    
+    <section id="cart">
+        <section>
+            <header>
+                <ul>
+                    <li>Item name</li>
+                    <li>Quantity</li>
+                    <li>Cost</li>
+                </ul>
+            </header>
+            {#each data.cart_items as cart_item}
+                <CartProduct product={cart_item}/>
+            {/each}
+        </section>
+        <section id="checkout-area">
+            <header>
+                <ul>
+                    <li>Delivery</li>
+                    <li>Discounts</li>
+                    <li>Total</li>
+                </ul>
+            </header>
+            <ul id="order-summary">
+                <li>{delivery}</li>
+                <li>{discounts}%</li>
+                <li>{total}</li>
+            </ul>
+            <button 
+                aria-label="toggle section"
+                class="section-button"
+                class:open-button={!openInstallments}
+                onclick={() => {
+                    openInstallments = !openInstallments;
+                }}
+            >
+                Pay in installments
+            </button>
+            <section 
+                class="collapsable"
+                class:open-section={openInstallments}
+            >
+                <p>This will contain a checkout link to pay in installments.</p>
+            </section>
 
-    <section id="products">
-        {#each data.cart_items as cart_item}
-            <CartProduct product={cart_item}/>
-        {/each}
-        {#if data.cart_items.length === 0}
-            <h1>No Items in Cart</h1>    
-        {/if}
-    </section>
-
-    <section id="order-summary">
-        <h2>Order Summary</h2>
-        <dl>
-            <div>
-                <dt>Subtotal</dt>
-                <dd>{subtotal}</dd>
-            </div>
-            <div>
-                <dt>Delivery</dt>
-                <dd>{delivery}</dd>
-            </div>
-            <div>
-                <dt>Total</dt>
-                <dd>{total}</dd>
-            </div>
-        </dl>
-        <button id="cart-button">Checkout</button>
-        <p>* Tax will be calculated during checkout</p>
-        <p>** Total excludes tax</p>
+            <button 
+                aria-label="toggle section"
+                class="section-button"
+                class:open-button={!openCoupons}
+                onclick={() => {
+                    openCoupons = !openCoupons;
+                }}
+            >
+                Coupons
+            </button>
+            <section 
+                class="collapsable"
+                class:open-section={openCoupons}
+            >
+                <p>This will contain coupons.</p>
+            </section>
+        </section>
     </section>
 </main>
 
 <style>
 	main {
-		max-width: 500px;
+		max-width: 700px;
 		margin: auto;
+        width: 80%;
 	}
 
     #image-holder {
@@ -110,44 +147,80 @@
 		height: 170px;
 	}
 
-    #products {
-        display: flex;
+    .collapsable {
+        font-size: 14px;
+        padding: 0 30px;
+        display: none;
         flex-direction: column;
-        justify-content: center;
+        border-bottom: 1px solid grey;
+        width: calc(100% - 10px);
+        margin-left: 10px;
     }
 
-    h1 {
-        text-align: center;
+    .section-button {
+        background-color: transparent;
+        border: none;
+        font-size: 1.2em;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0;
+        margin-top: 20px;
+        width: calc(100% - 10px);
+        margin-left: 10px;
+    }
+
+    .section-button::before {
+        content: url("/arrow.svg");
+        font-size: 20px;
+        position: relative;
+        top: 2px;
+        margin-right: 10px;
+    }
+
+    .open-section {
+        display: flex;
+    }
+
+    .open-button {
+        border-bottom: 1px solid grey;
+    }
+
+    #cart {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #cart header ul {
+        list-style-type: none;
+        display: grid;
+        justify-items: center;
+        grid-template-columns: 1fr 1fr 1fr;
+        border-bottom: 1px solid grey;
+        padding: 10px 0 10px 10px;
+        align-items: center;
+    }
+
+    #cart header ul li:first-child {
+        justify-self: start;
+        width: 100px;
     }
 
     #order-summary {
-        border-radius: 15px;
-        display: inline-flex;
+        list-style-type: none;
+        display: grid;
+        justify-items: center;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin: 0;
+        padding: 0 0 0 10px;
         align-items: center;
-        padding-block: 3rem;
-        padding-inline: 3rem;
-        flex-direction: column;
-        width: 100%;
     }
 
-    dl div {
-        display: flex;
-        justify-content: space-between;
+    #order-summary li:first-child {
+        justify-self: start;
     }
 
-    dl {
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.5rem;
-        margin-block-end: 2.5rem;
-    }
+    @media screen and (width < 550px) {
 
-    #cart-button {
-        color: white;
-        background-color: #BF1E2E;
-        border: none;
-        margin: 0 10px;
-        padding: 16px;
-        cursor: pointer;
     }
 </style>

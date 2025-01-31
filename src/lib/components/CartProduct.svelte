@@ -21,48 +21,61 @@
         <input type="hidden" name="product_id" value={product.product_id}>
         <input type="hidden" name="size_id" value={product.size_id}>
         <button class="remove-button" aria-label="Remove Item">
-            <svg width="20" height="20" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M55.5 18.5L18.5 55.5M18.5 18.5L55.5 55.5" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.5 5.00008H4.16667M4.16667 5.00008H17.5M4.16667 5.00008L4.16667 16.6667C4.16667 17.1088 4.34226 17.5327 4.65482 17.8453C4.96738 18.1578 5.39131 18.3334 5.83333 18.3334H14.1667C14.6087 18.3334 15.0326 18.1578 15.3452 17.8453C15.6577 17.5327 15.8333 17.1088 15.8333 16.6667V5.00008M6.66667 5.00008V3.33341C6.66667 2.89139 6.84226 2.46746 7.15482 2.1549C7.46738 1.84234 7.89131 1.66675 8.33333 1.66675H11.6667C12.1087 1.66675 12.5326 1.84234 12.8452 2.1549C13.1577 2.46746 13.3333 2.89139 13.3333 3.33341V5.00008M8.33333 9.16675V14.1667M11.6667 9.16675V14.1667" stroke="#1E1E1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
         </button>
     </form>
-    <h3>{product.name} - {product.size_name}</h3>
-    {#await import(`$lib/images/product_images/${product.image_link}.png`) then { default: src }}
-        <a href="/shop/{product.product_id}">
-            <img {src} alt={product.alt_desc} />
-        </a>
-    {/await}
-    <p>{price}</p>
+    <section id="product-info">
+        <div>
+            <h3>{product.name}</h3>
+            <h6>{product.size_name}</h6>
+        </div>
+        {#await import(`$lib/images/product_images/${product.image_link}.png`) then { default: src }}
+            <a href="/shop/{product.product_id}">
+                <img {src} alt={product.alt_desc} />
+            </a>
+        {/await}
+    </section>
     <p>
-        Quantity: {product.quantity}
+        x{product.quantity}
     </p>
+    <p>{price}</p>
 </article>
 
 <style>
-    form {
-        margin-bottom: 0.5rem;
-        margin-right: 5rem;
-        align-self: flex-end;
+    .product-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        position: relative;
+        align-items: center;
+        margin-left: 10px;
+        justify-items: center;
     }
 
-    .product-card {
-        display: inline-flex;
-        align-items: center;
-        padding-block-start: 3rem;
-        padding-block-end: 3rem;
-        padding-inline: 3rem;
-        flex-direction: column;
-        inline-size: 32rem;
-        border-radius: 15px;
+    .product-card section:nth-child(2) {
+        justify-self: start;
     }
 
     .product-card img {
-        inline-size: 12rem;
-        border-radius: 15px;
+        inline-size: 100px;
+        object-fit: contain;
     }
 
-    .product-card p:nth-of-type(2) {
-        margin-block-end: 1rem;
+    .product-card h3 {
+        font-weight: normal;
+        font-size: 1em;
+        margin: 0;
+    }
+
+    .product-card h6 {
+        margin: 0 0 5px 0;
+    }
+
+    form {
+        position: absolute;
+        top: 50%;
+        left: -20px;
     }
 
     button {
@@ -72,11 +85,11 @@
 
     .remove-button:hover {
         scale: 120%;
+        cursor: pointer;
     }
 
-    @media screen and (width >= 750px) {
-        .product-card img {
-            inline-size: 16rem;
-        }
+    #product-info div {
+        display: flex;
+        flex-direction: column;
     }
 </style>
