@@ -21,13 +21,13 @@
 - [x] Upload actual products to DB
 - [x] Verify product page design
 - [x] Redo cart page
-- [ ] Verify cart page
-- [ ] Get checkout working
-- [ ] Add size chart and return policy in products page
-- [ ] Get profile page working
+- [x] Get profile page working
 - [ ] Verify profile page
 - [ ] Get edit profile working
 - [ ] Verify edit profile
+- [ ] Verify cart page
+- [ ] Get checkout working
+- [ ] Add size chart and return policy in products page
 - [ ] Get order history working
 - [ ] Verify order history
 - [ ] Get password reset working

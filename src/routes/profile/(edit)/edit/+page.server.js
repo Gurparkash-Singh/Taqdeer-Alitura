@@ -18,7 +18,7 @@ export const actions = {
                 {
                     return fail(400, {
                         invalid: true, 
-                        message: "Email Taken",
+                        message: "email taken",
                         name,
                         email,
                         DOB: birthday
@@ -52,7 +52,7 @@ export const actions = {
 
         return {
             success: true, 
-            message:"Values updated successfully"
+            message:"values updated successfully"
         }
     }
 }

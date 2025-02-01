@@ -249,5 +249,11 @@ export const dbFunctions = {
         let query = "UPDATE User SET DOB = ? WHERE email = ?;";
 
         await db.query(query, [DOB, email]);
+    },
+
+    updatePassword: async (password, email) => {
+        let query = "UPDATE User SET password = ? WHERE email = ?;";
+
+        await db.query(query, [password, email]);
     }
 }
