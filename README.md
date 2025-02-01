@@ -19,8 +19,8 @@
 - [x] Verify signup page design
 - [x] Verify login page design
 - [x] Upload actual products to DB
-- [ ] Verify product page design
-- [ ] Redo cart page
+- [x] Verify product page design
+- [x] Redo cart page
 - [ ] Verify cart page
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
@@ -45,6 +45,7 @@
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple coupons on a profile
 - [ ] Change DB to allow for multiple coupons on entire store
+- [ ] Change DB to allow for email list
 - [ ] Add ability to select coupons at checkout
 - [ ] Verify checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
@@ -68,7 +69,11 @@ In Case of minimal viable product:
 
 # Completely Finished
 - Homepage design
-- Shop page design
+- Shop page
+- Signup page
+- Login page design
+- Forgot password design
+- Product page
 
 Size chart is a photo should be added to the product images
 Sizing contains model information
@@ -87,4 +92,17 @@ Tell Faris about your email verification idea
 
 # Needed in the next 2 weeks
 - [ ] Presentable
-- [ ] Products need to be added
+- [x] Products need to be added
+
+# Before Launch
+- Move Homepage to look like the one in the image
+- When an email is entered add them to the email list
+- If email is already allowed move them to the sign up page
+- If account exists for the email entered move them to the login page
+- Only allow signups from allowed emails
+- Disable access to the entire website without loging in
+
+Research Inventory management
+Get Delivery Address
+Set Delivery Price using address
+Research email verification

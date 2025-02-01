@@ -203,7 +203,6 @@
 
     #cart header ul li:first-child {
         justify-self: start;
-        width: 100px;
     }
 
     #order-summary {

@@ -58,8 +58,9 @@
     }
 
     .product-card img {
-        inline-size: 100px;
+        inline-size: 90px;
         object-fit: contain;
+        height: 90px;
     }
 
     .product-card h3 {

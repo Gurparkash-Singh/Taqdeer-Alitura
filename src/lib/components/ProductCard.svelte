@@ -36,7 +36,9 @@
     }
 
     img {
-        max-width: 60px;
+        max-width: 90px;
+        height: 90px;
+        object-fit: contain;
     }
 
     @media screen and (width < 406px) {
@@ -46,7 +48,8 @@
         }
 
         img {
-            max-width: 50px;
+            max-width: 65px;
+            height: 65px;
         }
     }
 </style>

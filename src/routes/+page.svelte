@@ -221,6 +221,7 @@
                         id="form-button"
                         class:enable-send={enableSend}
                         class:disable-send={!enableSend}
+                        disabled={!enableSend}
                     >
                 <!-- </div> -->
 			</form>
