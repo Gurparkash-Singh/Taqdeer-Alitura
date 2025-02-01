@@ -33,7 +33,7 @@ CREATE TABLE User (
     password text not null,
     name varchar(255) not null,
     telephone varchar(255),
-    DOB DATETIME,
+    DOB DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

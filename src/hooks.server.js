@@ -11,6 +11,7 @@ export const handle = async ({ event, resolve }) => {
             sameSite: 'strict',
             maxAge: 60 * 60 * 24
         });
+
         session = authToken;
 
         const messages = await dbFunctions.getMessages();
@@ -38,9 +39,19 @@ export const handle = async ({ event, resolve }) => {
 
     if (user)
     {
+        let birthday = "";
+
+        if (user.DOB)
+        {
+            birthday = Date.parse(user.DOB);
+            birthday = new Date(birthday);
+            birthday = birthday.toISOString().split('T')[0];
+        }
+
         event.locals.user = {
             name: user.name,
-            email: user.email
+            email: user.email,
+            DOB: birthday
         };
     }
 

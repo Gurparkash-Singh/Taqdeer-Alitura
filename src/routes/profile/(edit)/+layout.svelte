@@ -1,5 +1,7 @@
 <script>
     import { page } from "$app/state";
+
+    let { children } = $props();
 </script>
 
 <section id="menu">
@@ -78,6 +80,8 @@
         </a>
     {/if}
 </section>
+
+{@render children()}
 
 <style>
     #menu {
