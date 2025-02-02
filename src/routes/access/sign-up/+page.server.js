@@ -1,17 +1,19 @@
 import { fail, redirect } from '@sveltejs/kit';
-import bcrypt from "bcryptjs";
-import { dbFunctions } from '$lib/db/database.js';
+import { profileEditor } from "$lib/functions/profile-editor.js";
 
 export const actions = {
     register: async ({ cookies, request }) => {
         const data = await request.formData();
+
+        const emptyFields = profileEditor.emptyFields(data);
 
         const name = data.get('name').trim();
         const email = data.get('email').trim();
         const password = data.get('password');
         const confirmPassword = data.get('confirm-password');
 
-        if (!name || !email || !password || !confirmPassword) {
+        if (emptyFields)
+        {
             return fail(400, {
                 invalid: true,
                 message: "fill in all fields",
@@ -20,7 +22,7 @@ export const actions = {
             });
         }
 
-        if (password !== confirmPassword) {
+        if (!profileEditor.passwordsMatch(confirmPassword, password)) {
             return fail(400, {
                 invalid: true,
                 message: "passwords don't match",
@@ -32,9 +34,7 @@ export const actions = {
         let message = "passwords must have minimum eight characters, ";
         message += "at least one letter and one number";
 
-        if (!/[A-Z]/g.test(password))
-        {
-
+        if (!profileEditor.validNewPassword(password)) {
             return fail(400, {
                 invalid: true,
                 message: message,
@@ -43,55 +43,20 @@ export const actions = {
             });
         }
 
-        if (!/[a-z]/g.test(password))
-        {
+        const invalidEmail = await profileEditor.invalidEmail(email);
+
+        if (invalidEmail) {
             return fail(400, {
                 invalid: true,
-                message: message,
+                message: invalidEmail,
                 name: name,
-                email: email
+                email: ""
             });
         }
 
-        if (!/[\d]/g.test(password))
-        {
-            return fail(400, {
-                invalid: true,
-                message: message,
-                name: name,
-                email: email
-            });
-        }
+        let session = cookies.get("session");
 
-        if (password.length < 8)
-        {
-            return fail(400, {
-                invalid: true,
-                message: message,
-                name: name,
-                email: email
-            });
-        }
-
-        let user = await dbFunctions.getUserByEmail(email);
-
-        if (user) {
-            return fail(400, {
-                invalid: true,
-                message: "email taken",
-                name: name,
-                email: email
-            });
-        }
-
-        const AuthToken = crypto.randomUUID();
-
-        const encryptedPass = await bcrypt.hash(password, 10);
-
-        [user] = await dbFunctions.createUser(email, encryptedPass, name);
-
-
-        await dbFunctions.storeAuth(cookies.get("session"), user.user_id);
+        await profileEditor.createUser(email, password, name, session);
 
         throw redirect(303, '/profile');
     }

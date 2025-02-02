@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from "bcryptjs";
+import { profileEditor } from '$lib/functions/profile-editor';
 import { dbFunctions } from '$lib/db/database.js';
 
 export const actions = {
@@ -9,8 +10,7 @@ export const actions = {
         const email = data.get('email').trim();
         const password = data.get('password');
 
-        if (!email || !password)
-        {
+        if (profileEditor.emptyFields(data)) {
             return fail(400, {
                 invalid: true,
                 message: "fill in all fields",
@@ -29,7 +29,7 @@ export const actions = {
             });
         }
 
-        const verifyPassword = await bcrypt.compare(password, user.password);
+        const verifyPassword = await profileEditor.verifyPassword(user, password);
 
         if (!verifyPassword) 
         {

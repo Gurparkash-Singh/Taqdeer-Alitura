@@ -26,6 +26,8 @@
             email = form.email;
             name = form.name;
             dob = form.DOB;
+        }else {
+            dob = data.user.DOB;
         }
 
         if (!inMessages && form.invalid) 

@@ -22,10 +22,11 @@
 - [x] Verify product page design
 - [x] Redo cart page
 - [x] Get profile page working
-- [ ] Verify profile page
-- [ ] Get edit profile working
-- [ ] Verify edit profile
+- [x] Get edit profile working
+- [x] Get email validation during signup working
 - [ ] Verify cart page
+- [ ] Verify profile page
+- [ ] Verify edit profile
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
 - [ ] Get order history working
@@ -105,4 +106,3 @@ Tell Faris about your email verification idea
 Research Inventory management
 Get Delivery Address
 Set Delivery Price using address
-Research email verification

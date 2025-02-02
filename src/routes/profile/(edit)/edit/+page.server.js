@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { dbFunctions } from '$lib/db/database.js';
+import { profileEditor } from '$lib/functions/profile-editor';
 
 export const actions = {
     submit: async ({ locals, cookies, request }) => {
@@ -11,16 +12,14 @@ export const actions = {
 
         if (email) {
             if (locals.user.email !== email) {
-
-                const existingUser = await dbFunctions.getUserByEmail(email);
-
-                if (existingUser)
-                {
+                const invalidEmail = await profileEditor.invalidEmail(email);
+                
+                if (invalidEmail) {
                     return fail(400, {
-                        invalid: true, 
-                        message: "email taken",
-                        name,
-                        email,
+                        invalid: true,
+                        message: invalidEmail,
+                        name: name,
+                        email: "",
                         DOB: birthday
                     });
                 }
@@ -46,7 +45,7 @@ export const actions = {
 
                 await dbFunctions.updateDOB(birthday, locals.user.email);
 
-                locals.user.birthday = birthday.toISOString().split('T')[0];
+                locals.user.DOB = birthday.toISOString().split('T')[0];
             }
         }
 

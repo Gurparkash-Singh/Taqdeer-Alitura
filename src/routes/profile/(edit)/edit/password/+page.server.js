@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
-import { dbFunctions } from '$lib/db/database.js';
-import bcrypt from "bcryptjs";
+import { dbFunctions } from '$lib/db/database';
+import { profileEditor } from '$lib/functions/profile-editor';
 
 export const actions = {
     submit: async ({ locals, cookies, request }) => {
@@ -10,16 +10,16 @@ export const actions = {
         const password = data.get('password');
         let confirmPassword = data.get('confirm-password');
 
-        const user = await dbFunctions.getUserByEmail(locals.user.email);
-
-        if (!oldPassword || !password || !confirmPassword) {
+        if (profileEditor.emptyFields(data)) {
             return fail(400, {
                 invalid: true, 
                 message: "fill in all fields",
             });
         }
 
-        if (password != confirmPassword) {
+        const user = await dbFunctions.getUserByEmail(locals.user.email);
+
+        if (!profileEditor.passwordsMatch(password, confirmPassword)) {
             return fail(400, {
                 invalid: true, 
                 message: "passwords don't match",
@@ -29,40 +29,14 @@ export const actions = {
         let message = "passwords must have minimum eight characters, ";
         message += "at least one letter and one number";
 
-        if (!/[A-Z]/g.test(password))
-        {
-
+        if (!profileEditor.validNewPassword) {
             return fail(400, {
-                invalid: true,
-                message: message
+                invalid: true, 
+                message: message,
             });
         }
 
-        if (!/[a-z]/g.test(password))
-        {
-            return fail(400, {
-                invalid: true,
-                message: message
-            });
-        }
-
-        if (!/[\d]/g.test(password))
-        {
-            return fail(400, {
-                invalid: true,
-                message: message
-            });
-        }
-
-        if (password.length < 8)
-        {
-            return fail(400, {
-                invalid: true,
-                message: message
-            });
-        }
-
-        const verifyPassword = await bcrypt.compare(oldPassword, user.password);
+        const verifyPassword = await profileEditor.verifyPassword(user, oldPassword);
         
         if (!verifyPassword) 
         {
@@ -72,9 +46,7 @@ export const actions = {
             });
         }
 
-        const encryptedPass = await bcrypt.hash(password, 10);
-
-        await dbFunctions.updatePassword(encryptedPass, locals.user.email);
+        await profileEditor.updatePassword(user.email, password);
 
         return {
             success: true, 
