@@ -22,7 +22,7 @@ CREATE TABLE Discount (
     name VARCHAR(255),
     description TEXT,
     discount_percent DECIMAL NOT NULL,
-    active EANEAN DEFAULT 0,
+    active BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -34,8 +34,8 @@ CREATE TABLE User (
     name VARCHAR(255) NOT NULL,
     telephone VARCHAR(255),
     date_of_birth DATE,
-    verified_email EANEAN DEFAULT 0;
-    verified_phone EANEAN DEFAULT 0;
+    verified_email BOOLEAN DEFAULT 0;
+    verified_phone BOOLEAN DEFAULT 0;
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -99,7 +99,7 @@ CREATE TABLE Images (
     product_id INT NOT NULL,
     image_link TEXT NOT NULL,
     alt_desc TEXT NOT NULL,
-    main_image EANEAN DEFAULT NULL,
+    main_image BOOLEAN DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id),

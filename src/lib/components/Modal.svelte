@@ -5,6 +5,10 @@
 
     let thisModal;
 
+    let paragraph = $derived(
+        modal.messages.length > 0 ? modal.messages[0].paragraph.split("\n") : []
+    );
+
     let display = $derived(modal.messages.length > 0);
 
     function closeModal() {
@@ -33,7 +37,9 @@
         </button>
         {#if modal.messages.length > 0}
             <h1>{modal.messages[0].heading}</h1>
-            <p>{modal.messages[0].paragraph}</p>
+            {#each paragraph as line}
+                <p>{line}</p>
+            {/each}
         {/if}
    </section>
 </div>
