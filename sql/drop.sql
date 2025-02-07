@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS ComponentProperties;
+DROP TABLE IF EXISTS Component_Properties;
 
 DROP TABLE IF EXISTS Components;
 

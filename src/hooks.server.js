@@ -41,9 +41,9 @@ export const handle = async ({ event, resolve }) => {
     {
         let birthday = "";
 
-        if (user.DOB)
+        if (user.date_of_birth)
         {
-            birthday = Date.parse(user.DOB);
+            birthday = Date.parse(user.date_of_birth);
             birthday = new Date(birthday);
             birthday = birthday.toISOString().split('T')[0];
         }
@@ -51,7 +51,7 @@ export const handle = async ({ event, resolve }) => {
         event.locals.user = {
             name: user.name,
             email: user.email,
-            DOB: birthday
+            date_of_birth: birthday
         };
     }
 

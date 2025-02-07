@@ -171,9 +171,9 @@ export const dbFunctions = {
         let query = "SELECT Components.component_id, component_name, ";
         query += "property_name, property_value ";
         query += "FROM Components ";
-        query += "JOIN ComponentProperties ON ";
+        query += "JOIN Component_Properties ON ";
         query += "Components.component_id ";
-        query += "= ComponentProperties.component_id ";
+        query += "= Component_Properties.component_id ";
         query += "WHERE Components.product_id = ? ";
         query += "ORDER BY Components.component_id;";
 
@@ -245,10 +245,10 @@ export const dbFunctions = {
         await db.query(query, [name, email]);
     },
 
-    updateDOB: async (DOB, email) => {
-        let query = "UPDATE User SET DOB = ? WHERE email = ?;";
+    updateDOB: async (date_of_birth, email) => {
+        let query = "UPDATE User SET date_of_birth = ? WHERE email = ?;";
 
-        await db.query(query, [DOB, email]);
+        await db.query(query, [date_of_birth, email]);
     },
 
     updatePassword: async (password, email) => {

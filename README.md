@@ -27,15 +27,15 @@
 - [ ] Verify cart page
 - [ ] Verify profile page
 - [ ] Verify edit profile
-- [ ] Get checkout working
-- [ ] Add size chart and return policy in products page
-- [ ] Get order history working
-- [ ] Verify order history
 - [ ] Get password reset working
 - [ ] Verify password reset
 - [ ] Get verify email working
 - [ ] Verify email verification
 - [ ] Get Contact Form working
+- [ ] Get checkout working
+- [ ] Add size chart and return policy in products page
+- [ ] Get order history working
+- [ ] Verify order history
 - [ ] Add ability to save cards
 - [ ] Get payment methods page working
 - [ ] Verify payment methods page

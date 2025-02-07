@@ -67,7 +67,7 @@ VALUES
 (6, "shorts");
 
 
-INSERT INTO ComponentProperties (component_id, property_name)
+INSERT INTO Component_Properties (component_id, property_name)
 VALUES 
 (1, "450 GSM"),
 (1, "100% Organic Cotton"),
@@ -118,4 +118,4 @@ VALUES
 
 INSERT INTO Messages (heading, paragraph) VALUES
 ("Welcome", "Thank you for visiting our website and your interest in Taqdeer Alitura.
-Reminder that all members are entitled to 10% off all their orders");
+Reminder that all members are entitled to 10% off for their first order for each collection");

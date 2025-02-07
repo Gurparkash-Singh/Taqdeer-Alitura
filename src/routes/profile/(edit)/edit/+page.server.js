@@ -8,7 +8,7 @@ export const actions = {
 
         const name = data.get("name").trim();
         const email = data.get('email').trim();
-        let birthday = data.get('dob').trim();
+        let birthday = data.get('date_of_birth').trim();
 
         if (email) {
             if (locals.user.email !== email) {
@@ -20,7 +20,7 @@ export const actions = {
                         message: invalidEmail,
                         name: name,
                         email: "",
-                        DOB: birthday
+                        date_of_birth: birthday
                     });
                 }
 
@@ -39,13 +39,13 @@ export const actions = {
         }
 
         if (birthday) {
-            if (locals.user.DOB !== birthday) {
+            if (locals.user.date_of_birth !== birthday) {
                 birthday = new Date(birthday);
                 birthday.setUTCHours(12);
 
                 await dbFunctions.updateDOB(birthday, locals.user.email);
 
-                locals.user.DOB = birthday.toISOString().split('T')[0];
+                locals.user.date_of_birth = birthday.toISOString().split('T')[0];
             }
         }
 

@@ -10,7 +10,7 @@
     let password = $state("");
     let confirmPassword = $state("");
 
-    let dob = $state(data.user.DOB);
+    let date_of_birth = $state(data.user.date_of_birth);
 
     let enableSubmit = $state(false);
 
@@ -25,9 +25,9 @@
         if (form.invalid) {
             email = form.email;
             name = form.name;
-            dob = form.DOB;
+            date_of_birth = form.date_of_birth;
         }else {
-            dob = data.user.DOB;
+            date_of_birth = data.user.date_of_birth;
         }
 
         if (!inMessages && form.invalid) 
@@ -49,7 +49,7 @@
             if (name != data.user.name || email != data.user.email) {
                 enableSubmit = true;
             }
-            else if (dob && dob != data.user.DOB) {
+            else if (date_of_birth && date_of_birth != data.user.date_of_birth) {
                 enableSubmit = true;
             }
             else {
@@ -80,12 +80,12 @@
             />
         </p>
         <p>
-            <label for="dob">date of birth:</label>
+            <label for="date_of_birth">date of birth:</label>
             <input 
                 type="date"
-                name="dob"
-                id="dob"
-                bind:value={dob}
+                name="date_of_birth"
+                id="date_of_birth"
+                bind:value={date_of_birth}
             />
         </p>
         <button 

@@ -2,61 +2,63 @@
 -- Remove total from orders to normalize database (finish step 1 first)
 
 CREATE TABLE Category (
-    category_id int primary key not null AUTO_INCREMENT,
-    category_name varchar(255) not null,
-    description text,
+    category_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    category_name VARCHAR(255) NOT NULL,
+    description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Collections (
-	collection_id int primary key not null AUTO_INCREMENT,
-    collection_name varchar(255) not null,
-    description text,
+	collection_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    collection_name VARCHAR(255) NOT NULL,
+    description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Discount (
-    discount_id int primary key not null AUTO_INCREMENT,
-    name varchar(255),
-    description text,
-    discount_percent decimal not null,
-    active boolean DEFAULT 0,
+    discount_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    description TEXT,
+    discount_percent DECIMAL NOT NULL,
+    active EANEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE User (
-    user_id int primary key not null AUTO_INCREMENT,
-    email varchar(255) not null,
-    password text not null,
-    name varchar(255) not null,
-    telephone varchar(255),
-    DOB DATE,
+    user_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL,
+    password TEXT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    telephone VARCHAR(255),
+    date_of_birth DATE,
+    verified_email EANEAN DEFAULT 0;
+    verified_phone EANEAN DEFAULT 0;
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Permission_Types (
-    permission_id int not null primary key AUTO_INCREMENT,
-    name varchar(255) not null,
-    description varchar(255),
+    permission_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Admin_Type (
-    type_id int primary key not null AUTO_INCREMENT,
-    admin_type varchar(255) not null,
+    type_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    admin_type VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Admin_Permissions (
-    id int not null primary key AUTO_INCREMENT,
-    permission_id int not null,
-    type_id int not null,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    permission_id INT NOT NULL,
+    type_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (permission_id) REFERENCES Permission_Types(permission_id),
@@ -65,15 +67,15 @@ CREATE TABLE Admin_Permissions (
 
 -- Possibly update SKU
 CREATE TABLE Products (
-    product_id int primary key not null AUTO_INCREMENT,
-    name varchar(255) not null,
-    description text,
-    sku varchar(255),
-    category_id int not null,
-    collection_id int,
-    price decimal not null,
-    origin text,
-    discount_id int,
+    product_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    sku VARCHAR(255),
+    category_id INT NOT NULL,
+    collection_id INT,
+    price DECIMAL NOT NULL,
+    origin TEXT,
+    discount_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES Category(category_id),
@@ -82,22 +84,22 @@ CREATE TABLE Products (
 );
 
 CREATE TABLE Sizes_Available (
-	size_id int not null primary key auto_increment,
-	product_id int not null,
-    size_name text not null,
-    size_abbreviation text not null,
-    quantity int DEFAULT 0,
+	size_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	product_id INT NOT NULL,
+    size_name TEXT NOT NULL,
+    size_abbreviation TEXT NOT NULL,
+    quantity INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
 CREATE TABLE Images (
-	image_id int primary key not null AUTO_INCREMENT,
-    product_id int not null,
-    image_link text not null,
-    alt_desc text not null,
-    main_image boolean DEFAULT Null,
+	image_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    image_link TEXT NOT NULL,
+    alt_desc TEXT NOT NULL,
+    main_image EANEAN DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
@@ -106,30 +108,30 @@ CREATE TABLE Images (
 
 
 CREATE TABLE Payment_Details (
-    payment_id int not null primary key AUTO_INCREMENT,
-    amount decimal not null,
-    provider varchar(255) not null,
-    status varchar(255) not null,
+    payment_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    amount DECIMAL NOT NULL,
+    provider VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Orders (
-    order_id int not null primary key AUTO_INCREMENT,
-    user_email varchar(255) not null,
-    total decimal not null,
-    payment_id int,
+    order_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_email VARCHAR(255) NOT NULL,
+    total DECIMAL NOT NULL,
+    payment_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (payment_id) REFERENCES Payment_Details(payment_id)
 );
 
 CREATE TABLE Order_Items (
-    id int not null primary key AUTO_INCREMENT,
-    order_id int not null,
-    product_id int not null,
-    size_id int not null,
-    quantity int not null,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    size_id INT NOT NULL,
+    quantity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES Orders(order_id),
@@ -138,42 +140,42 @@ CREATE TABLE Order_Items (
 );
 
 
--- User email does not refer to users table so guest checkout can work
+-- User email does NOT refer to users table so guest checkout can work
 CREATE TABLE User_Addresses (
-    address_id int primary key not null AUTO_INCREMENT,
-    user_email varchar(255) not null,
-    address_line1 varchar(255) not null,
-    address_line2 varchar(255),
-    city varchar(255) not null,
-    postal_code varchar(255) not null,
-    country varchar(255) not null,
-    telephone varchar(255) not null,
+    address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_email VARCHAR(255) NOT NULL,
+    address_line1 VARCHAR(255) NOT NULL,
+    address_line2 VARCHAR(255),
+    city VARCHAR(255) NOT NULL,
+    postal_code VARCHAR(255) NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    telephone VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE User_Tokens (
-    id int not null primary key auto_increment,
-    user_id int not null,
-    token LONGTEXT not null,
-    expires_at TIMESTAMP not null,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    token LONGTEXT NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
 CREATE TABLE Shopping_Session (
-    id int not null primary key AUTO_INCREMENT,
-    token LONGTEXT not null,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    token LONGTEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Cart_Items (
-    session_id int not null,
-    product_id int not null,
-    size_id int not null,
-    quantity int not null,
+    session_id INT NOT NULL,
+    product_id INT NOT NULL,
+    size_id INT NOT NULL,
+    quantity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (session_id) REFERENCES Shopping_Session(id),
@@ -183,9 +185,9 @@ CREATE TABLE Cart_Items (
 );
 
 CREATE TABLE Admins (
-    admin_id int primary key not null AUTO_INCREMENT,
-    user_id int not null,
-    type_id int not null,
+    admin_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    type_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES User(user_id),
@@ -193,31 +195,47 @@ CREATE TABLE Admins (
 );
 
 CREATE TABLE Messages (
-	message_id int primary key not null AUTO_INCREMENT,
-    heading TEXT not null,
-    paragraph LONGTEXT not null,
-    broadcast BOOL DEFAULT TRUE,
+	message_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    heading TEXT NOT NULL,
+    paragraph LONGTEXT NOT NULL,
+    broadcast BOOLEAN DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Components (
-	component_id int primary key not null AUTO_INCREMENT,
-    product_id int not null,
-    component_name TEXT not null,
+	component_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    component_name TEXT NOT NULL,
     component_description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
-CREATE TABLE ComponentProperties (
-	property_id int primary key not null AUTO_INCREMENT,
-	component_id int not null,
-    property_name TEXT not null,
+CREATE TABLE Component_Properties (
+	property_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	component_id INT NOT NULL,
+    property_name TEXT NOT NULL,
     property_description TEXT,
     property_value TEXT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (component_id) REFERENCES Components(component_id)
+);
+
+CREATE TABLE Member_Types (
+    type_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Members(
+    member_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    member_type INT NOT NULL,
+    user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

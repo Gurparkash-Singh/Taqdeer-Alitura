@@ -36,7 +36,7 @@
         <dt>Name</dt>
         <dd>{data.user.name}</dd>
         <dt>Date of Birth</dt>
-        <dd>{data.user.DOB}</dd>
+        <dd>{data.user.date_of_birth}</dd>
         <dt>Coupons Available</dt>
         <dd></dd>
     </dl>
@@ -74,8 +74,8 @@
     }
 
     #profile-details dt {
-        padding: 0 40px;
-        margin-bottom: 5px;
+        padding: 5px 40px;
+        margin-bottom: 10px;
         border-bottom: 1px solid #D9D9D9;
     }
 

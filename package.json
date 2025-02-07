@@ -23,6 +23,7 @@
 	"dependencies": {
 		"axios": "^1.7.9",
 		"bcryptjs": "^2.4.3",
+		"libphonenumber-js": "^1.11.19",
 		"mysql2": "^3.11.5"
 	}
 }
