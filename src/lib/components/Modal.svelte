@@ -5,9 +5,14 @@
 
     let thisModal;
 
-    let paragraph = $derived(
-        modal.messages.length > 0 ? modal.messages[0].paragraph.split("\n") : []
-    );
+    let paragraph = $derived.by(() => {
+        if (modal.messages.length > 0) {
+            return modal.messages[0].paragraph.split("\n");
+        }
+        else {
+            return [];
+        }
+    });
 
     let display = $derived(modal.messages.length > 0);
 

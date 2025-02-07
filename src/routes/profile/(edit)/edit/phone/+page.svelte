@@ -1,23 +1,19 @@
 <script>
     import { modal } from '$lib/shared_state/shared.svelte';
-	import { SvelteDate } from 'svelte/reactivity';
+    import { getCountries, getCountryCallingCode, AsYouType } from 'libphonenumber-js';
+	import { isValidPhoneNumber } from 'libphonenumber-js/max';
 
-    let { data, form } = $props();
+    let { form } = $props();
 
-    let name = $state(data.user.name);
-    let email = $state(data.user.email);
-    let oldpassword = $state("");
-    let password = $state("");
-    let confirmPassword = $state("");
+    let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
 
-    let date_of_birth = $state(data.user.date_of_birth);
+    let countryCode = $state("SA");
+    let phoneNumber = $state("");
 
     let enableSubmit = $derived.by(() => {
-        if(name && email) {
-            if (name != data.user.name || email != data.user.email) {
-                return true;
-            }
-            else if (date_of_birth && date_of_birth != data.user.date_of_birth) {
+        
+        if (countryCode) {
+            if(isValidPhoneNumber(phoneNumber, countryCode)) {
                 return true;
             }
             else {
@@ -25,9 +21,7 @@
             }
         }
         else {
-            if (date_of_birth && date_of_birth != data.user.date_of_birth) {
-                return true;
-            }
+            return false;
         }
     });
 
@@ -37,14 +31,6 @@
             if (modal.messages[i].paragraph == form.message) {
                 inMessages = true;
             }
-        }
-
-        if (form.invalid) {
-            email = form.email;
-            name = form.name;
-            date_of_birth = form.date_of_birth;
-        }else {
-            date_of_birth = data.user.date_of_birth;
         }
 
         if (!inMessages && form.invalid) 
@@ -60,36 +46,38 @@
             });
         }
     }
+
+    $effect(() => {
+        phoneNumber = new AsYouType(countryCode).input(phoneNumber)
+    })
 </script>
 
 <section>
     <form action="?/submit" method="POST">
         <p>
-            <label for="name">full name:</label>
-            <input 
-                type="text" 
-                name="name" 
-                id="name"
-                bind:value={name}
-            />
+            <label for="country">country:</label>
+            <select 
+                name="country"
+                id="country"
+                bind:value={countryCode}
+            >
+                {#each getCountries() as country}
+                    {#if country != "IL"}
+                        <option value={country}>
+                            {regionNames.of(country)}: +{getCountryCallingCode(country)}
+                        </option>
+                    {/if}
+                {/each}
+            </select>
         </p>
         <p>
-            <label for="email">email:</label>
+            <label for="phone">phone number:</label>
             <input 
-                type="text" 
-                name="email" 
-                id="email"
-                bind:value={email}
-            />
-        </p>
-        <p>
-            <label for="date_of_birth">date of birth:</label>
-            <input 
-                type="date"
-                name="date_of_birth"
-                id="date_of_birth"
-                bind:value={date_of_birth}
-            />
+                type="tel"
+                name="phone"
+                id="phone"
+                bind:value={phoneNumber}
+            >
         </p>
         <button 
             type="submit"
@@ -101,10 +89,6 @@
                 <path d="M13.0607 13.0607C13.6464 12.4749 13.6464 11.5251 13.0607 10.9393L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L9.87868 12L1.3934 20.4853C0.807611 21.0711 0.807611 22.0208 1.3934 22.6066C1.97919 23.1924 2.92893 23.1924 3.51472 22.6066L13.0607 13.0607ZM10 13.5H12V10.5H10V13.5Z" fill="white"/>
             </svg>
         </button>
-        <div>
-            <a href="/profile/edit/password">change password</a>
-            <a href="/profile/edit/phone">update phone</a>
-        </div>
     </form>
 </section>
 
@@ -123,7 +107,7 @@
         margin-bottom: 5px;
     }
 
-    form p input {
+    form p input, form p select {
         background-color: #D9D9D9;
         border: none;
         padding: 10px;
@@ -150,13 +134,5 @@
 
     .disable-submit svg path {
         fill: #1E1E1E80;
-    }
-
-    div {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 20px 0;
     }
 </style>

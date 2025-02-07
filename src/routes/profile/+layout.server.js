@@ -5,6 +5,4 @@ export const load = async ({ locals }) => {
     {
         throw redirect(302, '/access');
     }
-
-    return {user: locals.user};
 }

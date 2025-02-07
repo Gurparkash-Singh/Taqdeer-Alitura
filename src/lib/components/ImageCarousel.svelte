@@ -4,7 +4,7 @@
     let images = [];
 
     let modalCurrentImage = $state(selectImage);
-    let showImage = $state(data.images[selectImage].image_id);
+    let showImage = $derived(data.images[modalCurrentImage].image_id);
 
     let touchStartX = $state(0);
     let touchEndX = $state(0);
@@ -15,7 +15,6 @@
 
     function nextImage() {
         modalCurrentImage = (modalCurrentImage + 1) % images.length;
-        showImage = images[modalCurrentImage];
     }
 
     function prevImage() {
@@ -23,13 +22,11 @@
         if (modalCurrentImage == -1) {
             modalCurrentImage = images.length - 1;
         }
-        showImage = images[modalCurrentImage];
     }
 
     $effect(() => {
         if (!display) {
             modalCurrentImage = selectImage;
-            showImage = data.images[selectImage].image_id;
         }
     })
 </script>

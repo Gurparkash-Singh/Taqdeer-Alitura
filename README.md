@@ -24,6 +24,7 @@
 - [x] Get profile page working
 - [x] Get edit profile working
 - [x] Get email validation during signup working
+- [x] Get Contact Form working
 - [ ] Verify cart page
 - [ ] Verify profile page
 - [ ] Verify edit profile
@@ -31,7 +32,6 @@
 - [ ] Verify password reset
 - [ ] Get verify email working
 - [ ] Verify email verification
-- [ ] Get Contact Form working
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
 - [ ] Get order history working
@@ -69,10 +69,10 @@ In Case of minimal viable product:
 - [ ] Disable location
 
 # Completely Finished
-- Homepage design
+- Homepage
 - Shop page
 - Signup page
-- Login page design
+- Login page
 - Forgot password design
 - Product page
 

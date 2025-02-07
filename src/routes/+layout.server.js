@@ -1,7 +1,7 @@
 import { dbFunctions } from "$lib/db/database";
 import { error } from "@sveltejs/kit";
 
-export async function load({ cookies })
+export async function load({ cookies, locals })
 {
     const session = cookies.get("session");
 
@@ -34,5 +34,5 @@ export async function load({ cookies })
         num_items += cart_items[i].quantity;
     }
 
-    return {num_items, messages};
+    return {num_items, messages, user: locals.user};
 }

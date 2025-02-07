@@ -13,8 +13,14 @@
     let hasLowerLetter = $derived(/[a-z]/g.test(password));
     let hasNumber = $derived(/[\d]/g.test(password));
 
-    let passwordValid = $derived(has8 && hasUpperLetter && hasNumber && hasLowerLetter);
-    let enableSubmit = $derived(oldPassword && password && confirmPassword && passwordValid && (password == confirmPassword));
+    let passwordValid = $derived.by(() => {
+        return has8 && hasUpperLetter && hasNumber && hasLowerLetter
+    });
+    let enableSubmit = $derived.by(() => {
+        let filledFields = oldPassword && password && confirmPassword
+        
+        return filledFields && (password == confirmPassword) && passwordValid
+    });
 
     if (form) {
         let inMessages = false;

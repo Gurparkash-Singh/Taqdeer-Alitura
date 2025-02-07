@@ -1,11 +1,8 @@
 import { fail } from "@sveltejs/kit";
 import { RESEND_API_KEY } from '$env/static/private';
-// import { Resend } from 'resend';
+import { Resend } from 'resend';
 
-// Get Resend API Key and npm i resend uncomment line 7 and remove line 8
-
-// const resend = new Resend(RESEND_API_KEY);
-const resend = 1;
+const resend = new Resend(RESEND_API_KEY);
 
 export const actions = {
     send: async ({ request }) => {
@@ -24,32 +21,32 @@ export const actions = {
             })
         }
 
-        // const { returnData, error } = await resend.emails.send({
-        //     from: 'web-contact@taqdeer.com',
-        //     to: ['khalsags.fateh@gmail.com'],
-        //     subject: "Taqdeer Website Message",
-        //     text: `
-        //         ${message}
-        //     `,
-        // });
+        const { returnData, error } = await resend.emails.send({
+            from: 'web-contact@gurparkashsingh.com',
+            to: ['khalsags.fateh@gmail.com', email],
+            subject: "Taqdeer Website Message",
+            text: `
+                ${message}
+            `,
+        });
 
-        // if (error)
-        // {
-        //     if (error.name == 'validation_error')
-        //     {
-        //         return fail(400, {
-        //             invalid: true,
-        //             message: "Make sure your email is correct",
-        //             email: email,
-        //             body: message
-        //         })
-        //     }
+        if (error)
+        {
+            if (error.name == 'validation_error')
+            {
+                return fail(400, {
+                    invalid: true,
+                    message: "invalid email",
+                    email: email,
+                    body: message
+                })
+            }
 
-        //     return fail(500,{
-        //         invalid: true,
-        //         message: "Some Error occured"
-        //     })
-        // }
+            return fail(500,{
+                invalid: true,
+                message: "some error occured"
+            })
+        }
 
         return {
             success: true,

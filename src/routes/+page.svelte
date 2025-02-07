@@ -3,7 +3,7 @@
 	import BackgroundImage from '$lib/images/homepage.jpg';
     import { modal } from '$lib/shared_state/shared.svelte';
 
-    let { form } = $props();
+    let { form, data } = $props();
 
     let verticalScrollPos = $state(0);
     let arrow1;
@@ -21,7 +21,7 @@
     let about;
     let contact;
 
-    let email = $state("");
+    let email = $state(data.user ? data.user.email : "");
     let emailBody = $state("");
     let enableSend = $state(false);
 
