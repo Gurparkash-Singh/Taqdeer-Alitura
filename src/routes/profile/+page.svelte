@@ -1,5 +1,25 @@
 <script>
+    import { modal } from "$lib/shared_state/shared.svelte";
+
     let { data } = $props();
+
+    if (data.verified) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == data.wait) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages && data.verified) 
+        {
+            modal.messages.push({
+                heading: "SUCCESS",
+                paragraph: "verification complete"
+            });
+            data.verified = false;
+        }
+    }
 </script>
 
 <section id="menu">
@@ -31,10 +51,26 @@
 
 <section id="profile-details">
     <dl>
-        <dt>Email</dt>
-        <dd>{data.user.email}</dd>
+        <dt>
+            Email
+            {#if !data.user.verified_email}
+                <a href="/verify?email=true">verify</a>
+            {/if}
+        </dt>
+        <dd>
+            {data.user.email}
+        </dd>
         <dt>Name</dt>
         <dd>{data.user.name}</dd>
+        <!-- <dt>
+            Phone
+            {#if data.user.phone && !data.user.verified_phone}
+                <a href="/verify?phone=true">verify</a>
+            {/if}
+        </dt>
+        <dd>
+            {data.user.phone}
+        </dd> -->
         <dt>Date of Birth</dt>
         <dd>{data.user.date_of_birth}</dd>
         <dt>Coupons Available</dt>
@@ -81,6 +117,21 @@
 
     #profile-details dd {
         margin-bottom: 40px;
+    }
+
+    dt {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    dt a {
+        background-color: #d9d9d9;
+        border: none;
+        text-decoration: none;
+        text-align: center;
+        padding: 5px 30px;
     }
 
 </style>

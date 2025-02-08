@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS User_OTP;
+
+DROP TABLE IF EXISTS Members;
+
+DROP TABLE IF EXISTS Member_Types;
+
 DROP TABLE IF EXISTS Component_Properties;
 
 DROP TABLE IF EXISTS Components;

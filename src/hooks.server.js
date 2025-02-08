@@ -49,10 +49,13 @@ export const handle = async ({ event, resolve }) => {
         }
 
         event.locals.user = {
+            user_id: user.user_id,
             name: user.name,
             email: user.email,
             date_of_birth: birthday,
-            verified_email: user.verified_email
+            verified_email: user.verified_email,
+            verified_phone: user.verified_phone,
+            phone: user.telephone
         };
     }
 

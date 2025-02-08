@@ -138,7 +138,7 @@ export const dbFunctions = {
     getItemsForCurrentSession: async (id) => {
         let query = "SELECT ";
         query += "Cart_Items.product_id, Cart_Items.size_id, Cart_Items.quantity, ";
-        query += "Products.name, Products.description, price, Products.discount_id, ";
+        query += "Products.name, Products.description, price, ";
         query += "image_link, alt_desc, size_name, size_abbreviation ";
         query += "FROM Cart_Items ";
         query += "JOIN Products ON Products.product_id = Cart_Items.product_id ";
@@ -269,5 +269,49 @@ export const dbFunctions = {
         query += "id = ?;";
 
         await db.query(query, token_id);
+    },
+
+    createOTP: async (session, id, service) => {
+        let query = "INSERT INTO User_OTP (user_id, token, service, expires_at) ";
+        query += "VALUES (?, ?, ?, now()+interval 5 minute);";
+
+        await db.query(query, [id, session, service]);
+    },
+
+    getPreviousOTP: async (user_id) => {
+        let query = "SELECT * FROM User_OTP WHERE user_id = ? "
+        query += "AND created_at > now() - interval 2 minute;";
+
+        const [tokens] = await db.query(query, user_id);
+
+        return tokens;
+    },
+
+    getOTP: async (otp) => {
+        let query = "SELECT * FROM User_OTP WHERE token = ? "
+        query += "AND expires_at > now();";
+
+        const [tokens] = await db.query(query, otp);
+
+        return tokens;
+    },
+
+    expireOTP: async (user_id) => {
+        let query = "UPDATE User_OTP SET expires_at = now() WHERE ";
+        query += "user_id = ?;";
+
+        await db.query(query, user_id);
+    },
+
+    verifyEmail: async (user_id) => {
+        let query = "UPDATE User SET verified_email = 1 WHERE user_id = ?;";
+
+        await db.query(query, user_id);
+    },
+
+    verifyPhone: async (user_id) => {
+        let query = "UPDATE User SET verified_phone = 1 WHERE user_id = ?;";
+
+        await db.query(query, user_id);
     }
 }

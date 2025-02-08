@@ -1,7 +1,66 @@
 <script>
     import Logo from '$lib/images/Logo.png?enhanced';
+    import { modal } from '$lib/shared_state/shared.svelte';
 
-    let { children } = $props();
+    let { form, data } = $props();
+
+    let formElement;
+
+    let service = $state("");
+
+    let otp = $state("");
+    let enableSubmit = $state(true);
+
+    if (form) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == form.message) {
+                inMessages = true;
+            }
+        }
+
+        service = form.service;
+
+        if (!inMessages && form.invalid) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: form.message
+            });
+        }else if (!inMessages && form.success) {
+            modal.messages.push({
+                heading: "SUCCESS",
+                paragraph: form.message
+            });
+        }
+    }
+    else if (data.wait) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == data.wait) {
+                inMessages = true;
+            }
+        }
+
+        service = data.service;
+
+        if (!inMessages && data.wait) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: data.wait
+            });
+        }
+    }
+    else {
+        service = data.service;
+    }
+
+    $effect(() => {
+        if (otp.length >= 6) {
+            formElement.submit();
+        }
+    })
 </script>
 
 <main>
@@ -11,8 +70,36 @@
         </a>
 	</div>
 
-    <h1>Verify Email</h1>
-    <p>An email verification link has been sent, please use it to verify your email</p>
+    <section>
+        <h1>VERIFY ACCOUNT</h1>
+        <form 
+            action="?/submit" 
+            method="POST"
+            bind:this={formElement}
+        >
+            <input 
+                type="hidden" 
+                name="service"
+                bind:value={service}
+            />
+            <p>
+                <label for="otp">code:</label>
+                <input 
+                    type="text" 
+                    name="otp" 
+                    id="otp"
+                    bind:value={otp}
+                />
+            </p>
+            <button 
+                class:disable-submit={!enableSubmit}
+                disabled={!enableSubmit}
+                formaction="?/send"
+            >
+                Send OTP
+            </button>
+        </form>
+    </section>
 </main>
 
 <style>
@@ -36,5 +123,54 @@
 		width: 170px;
 		height: 170px;
 	}
+
+    h1 {
+        color: #bf1e2e;
+    }
+
+    section {
+        width: 80%;
+    }
+
+    form p {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form label {
+        margin-bottom: 5px;
+    }
+
+    form p input {
+        background-color: #D9D9D9;
+        border: none;
+        padding: 10px;
+    }
+
+    form button {
+        margin: 20px 0;
+        background-color: #bf1e2e;
+        color: white;
+        border: none;
+        padding: 10px 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .disable-submit {
+        background-color: #D9D9D9;
+        color: #1E1E1E80;
+    }
+
+    div {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 20px 0;
+    }
 </style>
 

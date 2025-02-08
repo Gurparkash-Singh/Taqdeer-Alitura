@@ -103,7 +103,13 @@
         </button>
         <div>
             <a href="/profile/edit/password">change password</a>
-            <a href="/profile/edit/phone">update phone</a>
+            <a href="/profile/edit/phone">
+                {#if data.user.phone}
+                    update phone
+                {:else}
+                    add phone
+                {/if}
+            </a>
         </div>
     </form>
 </section>

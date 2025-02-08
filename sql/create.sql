@@ -35,8 +35,8 @@ CREATE TABLE User (
     country VARCHAR(255),
     telephone VARCHAR(255),
     date_of_birth DATE,
-    verified_email BOOLEAN DEFAULT 0;
-    verified_phone BOOLEAN DEFAULT 0;
+    verified_email BOOLEAN DEFAULT 0,
+    verified_phone BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -78,8 +78,7 @@ CREATE TABLE Products (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES Category(category_id),
-    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id),
-    FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
+    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id)
 );
 
 CREATE TABLE Sizes_Available (
@@ -237,4 +236,15 @@ CREATE TABLE Members(
     user_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE User_OTP (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    token TEXT NOT NULL,
+    service TEXT NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
 );

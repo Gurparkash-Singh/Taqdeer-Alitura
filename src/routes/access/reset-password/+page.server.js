@@ -31,9 +31,9 @@ export const actions = {
             }
         }
 
-        const token = cookies.get("session").concat(user.name);
+        const token = cookies.get("session");
 
-        const hashedToken = await bcrypt.hash(token, 12);
+        const hashedToken = await bcrypt.hash(token.concat(user.name), 12);
 
         let message = "Password Reset Link expires in 15 minutes: \n";
         message += `${BASE}`;

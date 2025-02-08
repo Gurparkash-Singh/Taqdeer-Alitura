@@ -2,6 +2,7 @@ import { TESTMAIL_TOKEN } from "$env/static/private";
 import bcrypt from "bcryptjs";
 import { dbFunctions } from '$lib/db/database.js';
 import axios from "axios";
+import { getRandomValues } from "node:crypto";
 
 export const profileEditor = {
     emptyFields: (formData) => {
@@ -108,5 +109,24 @@ export const profileEditor = {
         const encryptedPass = await bcrypt.hash(password, 10);
 
         await dbFunctions.updatePassword(encryptedPass, email);
+    },
+
+    generateOTP: () => {
+        const array = new Int8Array(6);
+        const filledArray = getRandomValues(array);
+        let otp = "";
+
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] < 0) {
+                array[i] *= -1;
+            }
+            otp += array[i].toString();
+        }
+
+        if (otp.length > 6) {
+            otp = otp.slice(0, 6);
+        }
+
+        return otp;
     }
 };
