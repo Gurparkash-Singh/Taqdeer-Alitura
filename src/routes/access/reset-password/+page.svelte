@@ -1,7 +1,33 @@
 <script>
+    import { modal } from "$lib/shared_state/shared.svelte";
+    
+    let { form } = $props();
+    
     let email = $state("");
 
     let enableSubmit = $derived(email);
+
+    if (form) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == form.message) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages && form.invalid) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: form.message
+            });
+        }else if (!inMessages && form.success) {
+            modal.messages.push({
+                heading: "SUCCESS",
+                paragraph: form.message
+            });
+        }
+    }
 </script>
 
 <section>

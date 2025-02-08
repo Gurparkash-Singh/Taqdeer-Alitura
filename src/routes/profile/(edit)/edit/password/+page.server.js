@@ -10,7 +10,13 @@ export const actions = {
         const password = data.get('password');
         let confirmPassword = data.get('confirm-password');
 
-        if (profileEditor.emptyFields(data)) {
+        const emptyFields = profileEditor.emptyFields([
+            oldPassword,
+            password,
+            confirmPassword
+        ]);
+
+        if (emptyFields) {
             return fail(400, {
                 invalid: true, 
                 message: "fill in all fields",

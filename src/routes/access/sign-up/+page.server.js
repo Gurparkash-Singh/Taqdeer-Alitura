@@ -5,12 +5,17 @@ export const actions = {
     register: async ({ cookies, request }) => {
         const data = await request.formData();
 
-        const emptyFields = profileEditor.emptyFields(data);
-
         const name = data.get('name').trim();
         const email = data.get('email').trim();
         const password = data.get('password');
         const confirmPassword = data.get('confirm-password');
+
+        const emptyFields = profileEditor.emptyFields([
+            name,
+            email,
+            password,
+            confirmPassword
+        ]);
 
         if (emptyFields)
         {

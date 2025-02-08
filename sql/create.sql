@@ -32,6 +32,7 @@ CREATE TABLE User (
     email VARCHAR(255) NOT NULL,
     password TEXT NOT NULL,
     name VARCHAR(255) NOT NULL,
+    country VARCHAR(255),
     telephone VARCHAR(255),
     date_of_birth DATE,
     verified_email BOOLEAN DEFAULT 0;
@@ -74,8 +75,6 @@ CREATE TABLE Products (
     category_id INT NOT NULL,
     collection_id INT,
     price DECIMAL NOT NULL,
-    origin TEXT,
-    discount_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES Category(category_id),

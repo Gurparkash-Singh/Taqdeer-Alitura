@@ -10,7 +10,7 @@ export const actions = {
         const email = data.get('email').trim();
         const password = data.get('password');
 
-        if (profileEditor.emptyFields(data)) {
+        if (profileEditor.emptyFields([email, password])) {
             return fail(400, {
                 invalid: true,
                 message: "fill in all fields",

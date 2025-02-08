@@ -51,7 +51,8 @@ export const handle = async ({ event, resolve }) => {
         event.locals.user = {
             name: user.name,
             email: user.email,
-            date_of_birth: birthday
+            date_of_birth: birthday,
+            verified_email: user.verified_email
         };
     }
 
