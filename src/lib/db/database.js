@@ -211,6 +211,13 @@ export const dbFunctions = {
         await db.query(query, [id, session]);
     },
 
+    storeToken: async (session, id) => {
+        let query = "INSERT INTO User_Tokens (user_id, token, expires_at) ";
+        query += "VALUES (?, ?, now()+interval 15 minute);";
+
+        await db.query(query, [id, session]);
+    },
+
     getUserByAuthToken: async (session) => {
         let query = "SELECT * FROM User_Tokens WHERE token = ? ";
         query += "AND expires_at > now();";
@@ -255,5 +262,12 @@ export const dbFunctions = {
         let query = "UPDATE User SET password = ? WHERE email = ?;";
 
         await db.query(query, [password, email]);
+    },
+
+    expireToken: async (token_id) => {
+        let query = "UPDATE User_Tokens SET expires_at = now() WHERE ";
+        query += "id = ?;";
+
+        await db.query(query, token_id);
     }
 }

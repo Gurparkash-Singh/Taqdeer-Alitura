@@ -25,10 +25,10 @@
 - [x] Get edit profile working
 - [x] Get email validation during signup working
 - [x] Get Contact Form working
+- [x] Get password reset working
 - [ ] Verify cart page
 - [ ] Verify profile page
 - [ ] Verify edit profile
-- [ ] Get password reset working
 - [ ] Verify password reset
 - [ ] Get verify email working
 - [ ] Verify email verification
@@ -58,12 +58,12 @@
 - [x] Add functionality to dropdown menus on shop page
 - [x] Make a products page
 - [x] Create Cart
+- [x] Finish Contact form
+- [x] Edit Database to be able to save sizes
+- [x] Finish profile
 - [ ] Implement Checkout
-- [ ] Finish Contact form
-- [ ] Finish profile
 - [ ] Finish order history
 - [ ] Finish edit profile
-- [x] Edit Database to be able to save sizes
 
 In Case of minimal viable product:
 - [ ] Disable location
