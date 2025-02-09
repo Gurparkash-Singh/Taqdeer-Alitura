@@ -27,12 +27,15 @@
 - [x] Get Contact Form working
 - [x] Get password reset working
 - [x] Get verify email working
+- [x] Change DB to allow for email list
 - [ ] Verify cart page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
 - [ ] Verify email verification
+- [ ] Get Image upload working
 - [ ] Get location button working
+- [ ] Verify location button
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
 - [ ] Get order history working
@@ -42,11 +45,9 @@
 - [ ] Verify payment methods page
 - [ ] Get address book working
 - [ ] Verify address book
-- [ ] Verify location button
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple coupons on a profile
 - [ ] Change DB to allow for multiple coupons on entire store
-- [ ] Change DB to allow for email list
 - [ ] Add ability to select coupons at checkout
 - [ ] Verify checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
@@ -61,12 +62,14 @@
 - [x] Finish Contact form
 - [x] Edit Database to be able to save sizes
 - [x] Finish profile
+- [x] Finish edit profile
 - [ ] Implement Checkout
 - [ ] Finish order history
-- [ ] Finish edit profile
 
 In Case of minimal viable product:
-- [ ] Disable location
+- [ ] Disable Address Book
+- [ ] Disable Payment Methods
+- [ ] Disable Phone
 
 # Completely Finished
 - Homepage
