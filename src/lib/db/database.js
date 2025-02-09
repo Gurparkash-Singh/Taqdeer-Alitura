@@ -313,5 +313,13 @@ export const dbFunctions = {
         let query = "UPDATE User SET verified_phone = 1 WHERE user_id = ?;";
 
         await db.query(query, user_id);
+    },
+
+    getAdmin: async (user_id) => {
+        let query = "SELECT * FROM Admins WHERE user_id = ?;";
+
+        const [admins] = await db.query(query, user_id);
+
+        return admins;
     }
 }

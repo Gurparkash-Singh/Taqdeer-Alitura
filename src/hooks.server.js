@@ -48,6 +48,12 @@ export const handle = async ({ event, resolve }) => {
             birthday = birthday.toISOString().split('T')[0];
         }
 
+        const [admin] = await dbFunctions.getAdmin(user.user_id);
+
+        if (admin) {
+            event.locals.admin = admin;
+        }
+
         event.locals.user = {
             user_id: user.user_id,
             name: user.name,
