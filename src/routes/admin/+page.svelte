@@ -3,31 +3,14 @@
 
     let { data, form } = $props();
 
-    let name = $state(data.user.name);
-    let email = $state(data.user.email);
-    let oldpassword = $state("");
-    let password = $state("");
-    let confirmPassword = $state("");
-
-    let date_of_birth = $state(data.user.date_of_birth);
+    let file = $state("");
 
     let enableSubmit = $derived.by(() => {
-        if(name && email) {
-            if (name != data.user.name || email != data.user.email) {
-                return true;
-            }
-            else if (date_of_birth && date_of_birth != data.user.date_of_birth) {
-                return true;
-            }
-            else {
-                return false;
-            }
+        if (!file) {
+            return false;
         }
-        else {
-            if (date_of_birth && date_of_birth != data.user.date_of_birth) {
-                return true;
-            }
-        }
+
+        return true;
     });
 
     if (form) {
@@ -36,14 +19,6 @@
             if (modal.messages[i].paragraph == form.message) {
                 inMessages = true;
             }
-        }
-
-        if (form.invalid) {
-            email = form.email;
-            name = form.name;
-            date_of_birth = form.date_of_birth;
-        }else {
-            date_of_birth = data.user.date_of_birth;
         }
 
         if (!inMessages && form.invalid) 
@@ -62,32 +37,20 @@
 </script>
 
 <section>
-    <form action="?/submit" method="POST">
+    <form 
+        action="?/submit" 
+        method="POST"
+        enctype="multipart/form-data"
+    >
         <p>
-            <label for="name">full name:</label>
+            <label for="file">file upload:</label>
             <input 
-                type="text" 
-                name="name" 
-                id="name"
-                bind:value={name}
-            />
-        </p>
-        <p>
-            <label for="email">email:</label>
-            <input 
-                type="text" 
-                name="email" 
-                id="email"
-                bind:value={email}
-            />
-        </p>
-        <p>
-            <label for="date_of_birth">date of birth:</label>
-            <input 
-                type="date"
-                name="date_of_birth"
-                id="date_of_birth"
-                bind:value={date_of_birth}
+                type="file" 
+                name="file"
+                id="file"
+                placeholder="Choose File"
+                accept="image/png"
+                bind:value={file}
             />
         </p>
         <button 
@@ -155,6 +118,22 @@
 
     .disable-submit svg path {
         fill: #1E1E1E80;
+    }
+
+    input[type="file"] {
+        cursor: pointer;
+    }
+
+    input::before {
+        content: "Browse: ";
+        display: inline;
+        cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+        background: transparent;
+        border: none;
+        content-visibility: hidden;
     }
 
     div {
