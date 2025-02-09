@@ -2,6 +2,7 @@
     import Logo from '$lib/images/Logo.png?enhanced';
     import { modal } from '$lib/shared_state/shared.svelte';
     import ImageModal from '$lib/components/ImageModal.svelte';
+    import { numberFormat } from '$lib/shared_state/shared.svelte';
 
     let { data, form } = $props();
 
@@ -12,20 +13,12 @@
     let display = $state(false);
     let body;
 
-    let numberFormat = {
-        area: "en-SA",
-        style: {
-            style: "currency",
-            currency: "SAR",
-        }
-    };
-
     let floatPrice = parseFloat(data.product[0].price);
 
-    let price = floatPrice.toLocaleString(
+    let price = $derived(floatPrice.toLocaleString(
         numberFormat.area,
         numberFormat.style,
-    );
+    ));
 
     let images = [];
 

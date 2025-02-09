@@ -1,19 +1,14 @@
 <script>
+    import { numberFormat } from "$lib/shared_state/shared.svelte";
+    
     let {product} = $props();
 
-    let numberFormat = {
-        area: "en-SA",
-        style: {
-            style: "currency",
-            currency: "SAR",
-        },
-    };
+    const floatPrice = parseFloat(product.price);;
 
-    const floatPrice = parseFloat(product.price);
-    const price = floatPrice.toLocaleString(
+    let price = $derived(floatPrice.toLocaleString(
         numberFormat.area,
         numberFormat.style,
-    );
+    ));
 </script>
 
 <article class="product-card">

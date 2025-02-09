@@ -2,12 +2,15 @@
     import { page } from "$app/state";
     import Modal from "$lib/components/Modal.svelte";
     import { modal } from "$lib/shared_state/shared.svelte";
+    import LocationModal from "$lib/components/LocationModal.svelte";
 
     let { data, children } = $props();
 
     let body;
 
     let stopScroll = $derived(modal.messages.length > 0);
+
+    let display = $state(false);
 
     $effect(() => {
         if (stopScroll) {
@@ -23,10 +26,23 @@
 
 <svelte:body bind:this={body}/>
 
-<Modal></Modal>
+<Modal />
+
+<LocationModal 
+    display = {display}
+    closeDisplay = {() => {
+        display = false;
+    }}
+/>
+
 
 <div id="change-language">
-	<button aria-label="change language">
+	<button 
+        aria-label="change language"
+        onclick={() => {
+            display = true;
+        }}
+    >
 		<svg width="22" height="22" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M42 22C42 33.0457 33.0457 42 22 42M42 22C42 10.9543 33.0457 2 22 2M42 22H2M22 42C10.9543 42 2 33.0457 2 22M22 42C27.0026 36.5233 29.8455 29.4159 30 22C29.8455 14.5841 27.0026 7.47671 22 2M22 42C16.9974 36.5233 14.1545 29.4159 14 22C14.1545 14.5841 16.9974 7.47671 22 2M2 22C2 10.9543 10.9543 2 22 2"

@@ -26,12 +26,13 @@
 - [x] Get email validation during signup working
 - [x] Get Contact Form working
 - [x] Get password reset working
+- [x] Get verify email working
 - [ ] Verify cart page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
-- [ ] Get verify email working
 - [ ] Verify email verification
+- [ ] Get location button working
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
 - [ ] Get order history working
@@ -41,7 +42,6 @@
 - [ ] Verify payment methods page
 - [ ] Get address book working
 - [ ] Verify address book
-- [ ] Get location button working
 - [ ] Verify location button
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple coupons on a profile

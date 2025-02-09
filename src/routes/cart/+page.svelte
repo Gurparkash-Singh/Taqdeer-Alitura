@@ -1,21 +1,30 @@
 <script>
     import Logo from '$lib/images/Logo.png?enhanced';
     import CartProduct from '$lib/components/CartProduct.svelte';
+    import { numberFormat } from '$lib/shared_state/shared.svelte';
 
     let { data, form } = $props();
 
-    let numberFormat = {
-        area: "en-SA",
-        style: {
-            style: "currency",
-            currency: "SAR",
-        },
-    };
-
-    let subtotal = $state(0);
     let deliveryNum = 20;
-    let delivery = $state(10);
-    let total = $state(0);
+    let floatSubtotal = $state(0);
+    let floatDelivery = $state(0);
+    let floatTotal = $state(0);
+
+    let subtotal = $derived(floatSubtotal.toLocaleString(
+        numberFormat.area,
+        numberFormat.style,
+    ));
+
+    let delivery = $derived(floatDelivery.toLocaleString(
+        numberFormat.area,
+        numberFormat.style,
+    ));
+
+    let total = $derived(floatTotal.toLocaleString(
+        numberFormat.area, 
+        numberFormat.style
+    ));
+
     let discounts = 0;
 
     let openInstallments = $state(false);
@@ -23,39 +32,23 @@
 
     function calculateValues()
     {
-        subtotal = 0;
+        floatSubtotal = 0;
+        floatDelivery = deliveryNum;
+
         data.cart_items.forEach(item => {
-            subtotal += item.price * item.quantity;
+            floatSubtotal += item.price * item.quantity;
         });
-        total = subtotal + deliveryNum
 
-        if (subtotal == 0)
+        floatTotal = floatSubtotal + floatDelivery
+
+        if (floatSubtotal == 0)
         {
-            total = 0;
+            floatTotal = 0;
+            floatDelivery = 0;
         }
     }
 
-    function formatString()
-    {
-        subtotal = subtotal.toLocaleString(
-            numberFormat.area,
-            numberFormat.style,
-        );
-
-        if (total == 0) {
-            delivery = subtotal;
-        }
-        else {
-            delivery = deliveryNum.toLocaleString(
-                numberFormat.area,
-                numberFormat.style,
-            );
-        }
-        
-        total = total.toLocaleString(numberFormat.area, numberFormat.style);
-    }
     calculateValues();
-    formatString();
 </script>
 
 <main>
@@ -153,8 +146,7 @@
         display: none;
         flex-direction: column;
         border-bottom: 1px solid grey;
-        width: calc(100% - 10px);
-        margin-left: 10px;
+        width: 100%;
     }
 
     .section-button {
@@ -166,8 +158,7 @@
         align-items: center;
         padding: 0;
         margin-top: 20px;
-        width: calc(100% - 10px);
-        margin-left: 10px;
+        width: 100%;
     }
 
     .section-button::before {
@@ -176,6 +167,7 @@
         position: relative;
         top: 2px;
         margin-right: 10px;
+        padding: 0 0 0 10px;
     }
 
     .open-section {
@@ -188,7 +180,8 @@
 
     #cart {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+        margin-bottom: 200px;
     }
 
     #cart header ul {
