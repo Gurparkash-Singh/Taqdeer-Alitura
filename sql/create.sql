@@ -45,6 +45,8 @@ CREATE TABLE Permission_Types (
     permission_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
+    readable BOOLEAN DEFAULT 1,
+    writeable BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -60,6 +62,8 @@ CREATE TABLE Admin_Permissions (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     permission_id INT NOT NULL,
     type_id INT NOT NULL,
+    allow_read BOOLEAN DEFAULT 1,
+    allow_write BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (permission_id) REFERENCES Permission_Types(permission_id),
@@ -276,3 +280,10 @@ CREATE TABLE Errors (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE OR REPLACE VIEW Admin_Type_And_Permission AS
+SELECT Admins.admin_id, Admins.type_id, Permission_Types.permission_id, name, allow_read, allow_write
+FROM Admins
+JOIN Admin_Type ON Admins.type_id = Admin_Type.type_id
+JOIN Admin_Permissions ON Admin_Permissions.type_id = Admin_Type.type_id
+JOIN Permission_Types ON Admin_Permissions.permission_id = Permission_Types.permission_id;

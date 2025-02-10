@@ -34,5 +34,5 @@ export async function load({ cookies, locals })
         num_items += cart_items[i].quantity;
     }
 
-    return {num_items, messages, user: locals.user};
+    return {num_items, messages, user: locals.user, admin: locals.admin};
 }

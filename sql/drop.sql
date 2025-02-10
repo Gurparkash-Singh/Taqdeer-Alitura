@@ -1,3 +1,5 @@
+DROP VIEW Admin_Type_And_Permission;
+
 DROP TABLE IF EXISTS Errors;
 
 DROP TABLE IF EXISTS Contact_Form_Emails;

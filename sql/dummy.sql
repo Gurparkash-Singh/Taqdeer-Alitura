@@ -21,17 +21,57 @@ VALUES
 ("Juthuur");
 
 
-INSERT INTO Permission_Types (name, description)
+INSERT INTO Permission_Types (name, description, readable, writeable)
 VALUES
-("All", "Permissions for everything");
+("collections", "Ability to read and write collections", 1, 1),
+("categories", "Ability to read and write categories", 1, 1),
+("products", "Ability to read and write products", 1, 1),
+("images", "Ability to read and write product images", 1, 1),
+("sizes", "Ability to read and write sizes for products", 1, 1),
+("components", "Ability to read and write product components", 1, 1),
+("component properties", "Ability to read and write properties for components", 1, 1),
+("discounts", "Ability to read and write discounts", 1, 1),
+("users", "Ability to get a list of users (names and emails)", 1, 0),
+("orders", "Ability to read orders for a given user", 1, 0),
+("orders items", "Ability to read order items for a given user", 1, 0),
+("messages", "Ability to read and write messages", 1, 1),
+("members", "Ability to read and write members", 1, 1),
+("member types", "Ability to read and write member types", 1, 1),
+("contact form", "Ability to read contact form emails", 1, 0),
+("email list", "Ability to read and write users from email list", 1, 1),
+("carts", "Ability to read abandoned carts", 1, 0),
+("admins", "Ability to read and write admins", 1, 1),
+("admin types", "Ability to read and write admin types", 1, 1),
+("admin permissions", "Ability to read and write permissions for admins types", 1, 1),
+("errors", "Ability to read errors", 1, 0);
 
 INSERT INTO Admin_Type (admin_type)
 VALUES
 ("Super Admin");
 
-INSERT INTO Admin_Permissions (permission_id, type_id)
+INSERT INTO Admin_Permissions (permission_id, type_id, allow_write)
 VALUES
-(1, 1);
+(1, 1, 1),
+(2, 1, 1),
+(3, 1, 1),
+(4, 1, 1),
+(5, 1, 1),
+(6, 1, 1),
+(7, 1, 1),
+(8, 1, 1),
+(9, 1, 0),
+(10, 1, 0),
+(11, 1, 0),
+(12, 1, 1),
+(13, 1, 1),
+(14, 1, 1),
+(15, 1, 0),
+(16, 1, 1),
+(17, 1, 0),
+(18, 1, 1),
+(19, 1, 1),
+(20, 1, 1),
+(21, 1, 0);
 
 INSERT INTO Products (name, price, category_id, collection_id, sku)
 VALUES

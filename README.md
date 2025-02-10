@@ -109,3 +109,32 @@ Tell Faris about your email verification idea
 Research Inventory management
 Get Delivery Address
 Set Delivery Price using address
+
+# For Admin Panel
+Products
+- [ ] create a place to create and update collections and categories
+- [ ] Products, images, sizes, components and properties in one place
+- [ ] Discounts in one place
+
+Allow if collection, categories, products, images, sizes, components, properties or discounts
+
+Orders
+- [ ] Create a users list with names and emails - make it searchable
+- [ ] On select user show orders and order items
+
+Allow if users, orders or order items
+
+Member Controls
+- [ ] seperate place for messages
+- [ ] seperate place for members and member types
+- [ ] seperate place to read contact form emails
+- [ ] seperate list for email list
+- [ ] create an abandoned cart section
+
+Allow if messages, members, member types, contact form, email list, carts
+
+Admin Controls
+- [ ] create an admin control panel where you can add admins and admin types
+- [ ] create an error log
+
+Allow if admins, admin types, admin permissions, errors, permissions
