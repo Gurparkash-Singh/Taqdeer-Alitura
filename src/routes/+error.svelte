@@ -1,8 +1,6 @@
 <script>
     import Logo from '$lib/images/Logo.png?enhanced';
     import { page } from '$app/state';
-
-    console.log(page.error);
 </script>
 
 <main>

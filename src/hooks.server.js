@@ -67,3 +67,9 @@ export const handle = async ({ event, resolve }) => {
 
     return await resolve(event);
 }
+
+export async function handleError({ event, error }) {
+    console.log(error);
+
+    await dbFunctions.setError(event.request.url, 500, error.message);
+}

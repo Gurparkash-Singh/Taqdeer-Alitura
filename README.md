@@ -34,10 +34,10 @@
 - [ ] Verify password reset
 - [ ] Verify email verification
 - [ ] Get Image upload working
-- [ ] Get location button working
-- [ ] Verify location button
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
+- [ ] Get location button working
+- [ ] Verify location button
 - [ ] Get order history working
 - [ ] Verify order history
 - [ ] Add ability to save cards

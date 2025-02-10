@@ -25,9 +25,7 @@ export const actions = {
             from: 'web-contact@gurparkashsingh.com',
             to: ['khalsags.fateh@gmail.com', email],
             subject: "Taqdeer Website Message",
-            text: `
-                ${message}
-            `,
+            text: message
         });
 
         if (error)

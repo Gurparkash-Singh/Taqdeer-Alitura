@@ -1,7 +1,21 @@
 import mysql from "mysql2";
 import { DATABASE_URL } from "$env/static/private";
+import { RESEND_API_KEY } from '$env/static/private';
+import { Resend } from 'resend';
 
-export const db = mysql.createPool(DATABASE_URL).promise();
+const resend = new Resend(RESEND_API_KEY);
+
+export let db;
+try {
+    db = mysql.createPool(DATABASE_URL).promise();
+} catch (dbError) {
+    const { returnData, error } = await resend.emails.send({
+        from: 'web-contact@gurparkashsingh.com',
+        to: ['khalsags.fateh@gmail.com'],
+        subject: "Taqdeer Website Error",
+        text: `cannot connect to database\nError: ${dbError.code}`,
+    });
+}
 
 export const dbFunctions = {
     getCategories: async () => {
@@ -321,5 +335,37 @@ export const dbFunctions = {
         const [admins] = await db.query(query, user_id);
 
         return admins;
+    },
+
+    setError: async (location, id, name) => {
+        let query = "INSERT INTO Errors (location, error_id, error_name) ";
+        query += "VALUES (?, ?, ?);";
+
+        try {
+            console.log(location, id, name);
+            await db.query(query, [location, id, name]);
+
+            const { returnData, error } = await resend.emails.send({
+                from: 'web-contact@gurparkashsingh.com',
+                to: ['khalsags.fateh@gmail.com'],
+                subject: "Taqdeer Website Error",
+                text: `Unexpected error occured\nError: ${name}`,
+            });
+
+            console.log(error);
+        } catch (queryError) {
+            const { returnData, error } = await resend.emails.send({
+                from: 'web-contact@gurparkashsingh.com',
+                to: ['khalsags.fateh@gmail.com'],
+                subject: "Taqdeer Website Error",
+                text: `Error while saving\nError: ${queryError.message}`,
+            });
+            console.log(queryError);
+
+            if (error) {
+                console.log("Resend failed");
+                console.log(error);
+            }
+        }
     }
 }
