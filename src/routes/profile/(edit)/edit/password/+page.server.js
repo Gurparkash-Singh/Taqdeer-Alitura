@@ -16,7 +16,12 @@ export const actions = {
             confirmPassword
         ]);
 
-        if (emptyFields) {
+        if (!oldPassword || !password || !confirmPassword) {
+            await dbFunctions.setError(
+                "password change", 
+                400,
+                `${locals.user.email} left empty fields` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: "fill in all fields",
@@ -26,6 +31,11 @@ export const actions = {
         const user = await dbFunctions.getUserByEmail(locals.user.email);
 
         if (!profileEditor.passwordsMatch(password, confirmPassword)) {
+            await dbFunctions.setError(
+                "password change", 
+                400,
+                `${locals.user.email} passwords don't match` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: "passwords don't match",
@@ -36,6 +46,11 @@ export const actions = {
         message += "at least one letter and one number";
 
         if (!profileEditor.validNewPassword) {
+            await dbFunctions.setError(
+                "password change", 
+                400,
+                `${locals.user.email} entered an invalid password` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: message,
@@ -46,6 +61,11 @@ export const actions = {
         
         if (!verifyPassword) 
         {
+            await dbFunctions.setError(
+                "password change", 
+                400,
+                `${locals.user.email} entered an incorrect password` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: "password invalid"

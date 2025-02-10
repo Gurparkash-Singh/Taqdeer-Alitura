@@ -4,9 +4,11 @@
     let { form, data } = $props();
 
     let token = $state("");
+    let email = $state("");
 
     if (data.token) {
         token = data.token;
+        email = data.email;
     }
 
     let password = $state("");
@@ -36,6 +38,7 @@
         }
 
         token = form.token;
+        email = form.email;
 
         if (!inMessages && form.invalid) 
         {
@@ -58,6 +61,11 @@
             type="hidden" 
             name="token"
             value={token}
+        />
+        <input 
+            type="hidden" 
+            name="email"
+            value={email}
         />
         <p>
             <label for="password">password:</label>

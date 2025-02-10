@@ -15,6 +15,11 @@ export async function load({ params, url }) {
 
     if (!token)
     {
+        await dbFunctions.setError(
+            "password reset", 
+            400,
+            `${email} tried an invalid token` 
+        );
         return error(404, {
             invalid: true,
             message: "token not found or token expired"
@@ -24,13 +29,18 @@ export async function load({ params, url }) {
     const user = await dbFunctions.getUserByAuthToken(token);
 
     if (!user) {
+        await dbFunctions.setError(
+            "password reset", 
+            400,
+            `${email} tried an invalid token` 
+        );
         return error(404, {
             invalid: true,
             message: "token not found or token expired"
         })
     }
 
-    return {token};
+    return {token, email};
 }
 
 export const actions = {
@@ -38,40 +48,84 @@ export const actions = {
         const data = await request.formData();
 
         const token = data.get("token");
+        const email = data.get("email");
         const password = data.get('password');
         let confirmPassword = data.get('confirm-password');
 
-        const emptyFields = profileEditor.emptyFields([
-            token,
-            password,
-            confirmPassword
-        ]);
+        if (!email || !token)
+        {
+            await dbFunctions.setError(
+                "password reset", 
+                400,
+                `${email} had no email or token`
+            );
+            return fail(400, {
+                invalid: true, 
+                message: "please retry by using the link in the email again",
+                token,
+                email
+            });
+        }
 
-        if (emptyFields) {
+        if (!password || !confirmPassword) {
+            await dbFunctions.setError(
+                "password reset", 
+                400,
+                `${email} left a field empty`
+            );
             return fail(400, {
                 invalid: true, 
                 message: "fill in all fields",
-                token
+                token,
+                email
             });
         }
 
         let [user] = await dbFunctions.getUserByAuthToken(token);
+
+        if (!user) {
+            await dbFunctions.setError(
+                "password reset", 
+                400,
+                `${email} tried an invalid token` 
+            );
+            return fail(400, {
+                invalid: true, 
+                message: "token expired or not found",
+                token,
+                email
+            });
+        }
+
         const token_id = user.id;
+
         [user] = await dbFunctions.getUserByID(user.user_id);
 
         if (!user) {
+            await dbFunctions.setError(
+                "password reset", 
+                400,
+                `${email} tried an invalid token` 
+            );
             return fail(400, {
                 invalid: true, 
-                message: "token expired",
-                token
+                message: "token expired or not found",
+                token,
+                email
             });
         }
 
         if (!profileEditor.passwordsMatch(password, confirmPassword)) {
+            await dbFunctions.setError(
+                "password reset", 
+                400,
+                `${email} passwords don't match` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: "passwords don't match",
-                token
+                token,
+                email
             });
         }
 
@@ -79,10 +133,16 @@ export const actions = {
         message += "at least one letter and one number";
 
         if (!profileEditor.validNewPassword) {
+            await dbFunctions.setError(
+                "password reset", 
+                400,
+                `${email} invalid password` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: message,
-                token
+                token,
+                email
             });
         }
 

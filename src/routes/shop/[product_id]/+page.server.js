@@ -30,6 +30,11 @@ export const actions = {
         let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
 
         if (!session || shopping_session.length === 0) {
+            await dbFunctions.setCriticalError(
+                "shop",
+                500,
+                `Error creating shopping session` 
+            );
             return fail(500, {
                 invalid: true,
                 message: "server failed"
@@ -43,6 +48,11 @@ export const actions = {
         const quantity = data.get("quantity").trim();
 
         if (!product_id || !size || !quantity) {
+            await dbFunctions.setError(
+                "shop",
+                400,
+                `Empty fields` 
+            );
             return fail(400, {
                 invalid: true,
                 message: "missing fields"
@@ -53,6 +63,11 @@ export const actions = {
 
         if (product.length == 0)
         {
+            await dbFunctions.setError(
+                "shop",
+                404,
+                `Invalid product id` 
+            );
             return fail(404, {
                 invalid: true,
                 message: "invalid product id"
@@ -73,6 +88,11 @@ export const actions = {
 
         if (!selected_size)
         {
+            await dbFunctions.setError(
+                "shop",
+                404,
+                `Size not found` 
+            );
             return fail(404, {
                 invalid: true,
                 message: "size not found"
@@ -81,6 +101,11 @@ export const actions = {
 
         if (quantity < 0  || quantity > selected_size.quantity || quantity > 5)
         {
+            await dbFunctions.setError(
+                "shop",
+                400,
+                `Invalid quantity` 
+            );
             return fail(404, {
                 invalid: true,
                 message: "invalid quantity"

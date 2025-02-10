@@ -13,6 +13,11 @@ export const actions = {
 
 
         if (!message || !email) {
+            await dbFunctions.setError(
+                "contact form",
+                400,
+                `${email} left empty fields` 
+            );
             return fail(400, {
                 invalid: true,
                 message: "fill in all fields",
@@ -30,6 +35,11 @@ export const actions = {
 
         if (error)
         {
+            await dbFunctions.setError(
+                "contact form",
+                400,
+                `error sending email to ${email}\nError: ${error}` 
+            );
             if (error.name == 'validation_error')
             {
                 return fail(400, {

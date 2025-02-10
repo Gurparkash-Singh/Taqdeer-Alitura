@@ -10,7 +10,12 @@ export const actions = {
         const email = data.get('email').trim();
         const password = data.get('password');
 
-        if (profileEditor.emptyFields([email, password])) {
+        if (!email || !password) {
+            await dbFunctions.setError(
+                "login", 
+                400,
+                `${email} left empty fields`
+            );
             return fail(400, {
                 invalid: true,
                 message: "fill in all fields",
@@ -22,6 +27,11 @@ export const actions = {
 
         if (!user)
         {
+            await dbFunctions.setError(
+                "login", 
+                400,
+                `${email} does not have an account` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: "email or password invalid",
@@ -33,6 +43,11 @@ export const actions = {
 
         if (!verifyPassword) 
         {
+            await dbFunctions.setError(
+                "login", 
+                400,
+                `${email} did not enter a correct password` 
+            );
             return fail(400, {
                 invalid: true, 
                 message: "email or password invalid",

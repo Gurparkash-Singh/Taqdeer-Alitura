@@ -25,6 +25,11 @@ export const actions = {
 
         if (!user)
         {
+            await dbFunctions.setError(
+                "password reset start", 
+                400,
+                `${email} no user found` 
+            );
             return {
                 success: true, 
                 message:"email has been sent\nplease follow email instructions"
@@ -39,6 +44,8 @@ export const actions = {
         message += `${BASE}`;
         message += "access/reset-password/finish-reset?token="
         message += hashedToken;
+        message += "&email=";
+        message += email;
 
         const { returnData, error } = await resend.emails.send({
             from: 'reset@gurparkashsingh.com',
@@ -49,6 +56,11 @@ export const actions = {
 
         if (error)
         {
+            await dbFunctions.setError(
+                "password reset start", 
+                400,
+                `email not sent to ${email}\nError: ${error.name}` 
+            );
             if (error.name == 'validation_error')
             {
                 return fail(400, {

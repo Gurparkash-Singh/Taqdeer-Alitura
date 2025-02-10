@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { profileEditor } from "$lib/functions/profile-editor.js";
+import { dbFunctions } from '$lib/db/database';
 
 export const actions = {
     register: async ({ cookies, request }) => {
@@ -10,15 +11,13 @@ export const actions = {
         const password = data.get('password');
         const confirmPassword = data.get('confirm-password');
 
-        const emptyFields = profileEditor.emptyFields([
-            name,
-            email,
-            password,
-            confirmPassword
-        ]);
-
-        if (emptyFields)
+        if (!name || !email || !password || !confirmPassword)
         {
+            await dbFunctions.setError(
+                "signup", 
+                400,
+                `${email} left a field empty` 
+            );
             return fail(400, {
                 invalid: true,
                 message: "fill in all fields",
@@ -28,6 +27,11 @@ export const actions = {
         }
 
         if (!profileEditor.passwordsMatch(confirmPassword, password)) {
+            await dbFunctions.setError(
+                "signup", 
+                400,
+                `${email} passwords don't match` 
+            );
             return fail(400, {
                 invalid: true,
                 message: "passwords don't match",
@@ -40,6 +44,11 @@ export const actions = {
         message += "at least one letter and one number";
 
         if (!profileEditor.validNewPassword(password)) {
+            await dbFunctions.setError(
+                "signup", 
+                400,
+                `${email} typed an invalid password` 
+            );
             return fail(400, {
                 invalid: true,
                 message: message,
@@ -51,6 +60,11 @@ export const actions = {
         const invalidEmail = await profileEditor.invalidEmail(email);
 
         if (invalidEmail) {
+            await dbFunctions.setError(
+                "signup", 
+                400,
+                `${email} is invalid\nError: ${invalidEmail}` 
+            );
             return fail(400, {
                 invalid: true,
                 message: invalidEmail,

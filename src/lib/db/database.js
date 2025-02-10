@@ -337,12 +337,11 @@ export const dbFunctions = {
         return admins;
     },
 
-    setError: async (location, id, name) => {
+    setCriticalError: async (location, id, name) => {
         let query = "INSERT INTO Errors (location, error_id, error_name) ";
         query += "VALUES (?, ?, ?);";
 
         try {
-            console.log(location, id, name);
             await db.query(query, [location, id, name]);
 
             const { returnData, error } = await resend.emails.send({
@@ -353,6 +352,29 @@ export const dbFunctions = {
             });
 
             console.log(error);
+        } catch (queryError) {
+            const { returnData, error } = await resend.emails.send({
+                from: 'web-contact@gurparkashsingh.com',
+                to: ['khalsags.fateh@gmail.com'],
+                subject: "Taqdeer Website Error",
+                text: `Error while saving\nError: ${queryError.message}`,
+            });
+            console.log(queryError);
+
+            if (error) {
+                console.log("Resend failed");
+                console.log(error);
+            }
+        }
+    },
+
+    setError: async (location, id, name) => {
+        let query = "INSERT INTO Errors (location, error_id, error_name) ";
+        query += "VALUES (?, ?, ?);";
+
+        try {
+            console.log(location, id, name);
+            await db.query(query, [location, id, name]);
         } catch (queryError) {
             const { returnData, error } = await resend.emails.send({
                 from: 'web-contact@gurparkashsingh.com',

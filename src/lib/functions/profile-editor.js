@@ -5,7 +5,7 @@ import axios from "axios";
 import { getRandomValues } from "node:crypto";
 
 export const profileEditor = {
-    emptyFields: (formData) => {
+    emptyFields: async (formData) => {
 
         formData.forEach(field => {
             if (!field) {
@@ -71,6 +71,7 @@ export const profileEditor = {
             });
         }
         catch (error) {
+            await dbFunctions.setError("email validation", 500, error.message);
             return "something went wrong with email validation";
         }
 

@@ -7,6 +7,11 @@ export async function load({ cookies })
     let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
 
     if (!session || shopping_session.length === 0) {
+        await dbFunctions.setCriticalError(
+            "cart", 
+            400,
+            `shopping session was not created successfully` 
+        );
         error(500);
     }
 
@@ -25,6 +30,11 @@ export const actions = {
         let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
 
         if (!session || shopping_session.length === 0) {
+            await dbFunctions.setCriticalError(
+                "cart", 
+                400,
+                `shopping session was not created successfully` 
+            );
             return fail(500, {
                 invalid: true,
                 message: "server failed"
@@ -38,6 +48,11 @@ export const actions = {
 
         if (!product_id || !size_id)
         {
+            await dbFunctions.setError(
+                "cart", 
+                400,
+                `product id or size id was not passed in` 
+            );
             return fail(400, {
                 invalid: true,
                 message: "missing fields"

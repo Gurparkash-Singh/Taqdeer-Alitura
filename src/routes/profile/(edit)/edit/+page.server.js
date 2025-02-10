@@ -15,6 +15,14 @@ export const actions = {
                 const invalidEmail = await profileEditor.invalidEmail(email);
                 
                 if (invalidEmail) {
+                    await dbFunctions.setError(
+                        "edit profile",
+                        400,
+                        `${locals.user.email} entered an invalid email\n
+                        email: ${email}\n
+                        Error: ${invalidEmail}
+                        ` 
+                    );
                     return fail(400, {
                         invalid: true,
                         message: invalidEmail,

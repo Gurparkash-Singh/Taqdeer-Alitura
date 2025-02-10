@@ -26,6 +26,11 @@ export async function load({ locals, params, url }) {
     const previousTokens = await dbFunctions.getPreviousOTP(locals.user.user_id);
 
     if (submitError == "empty") {
+        await dbFunctions.setError(
+            "account verification",
+            400,
+            `${locals.user.email} Empty fields` 
+        );
         return {
             service: service,
             wait: "fill in all fields"
@@ -33,6 +38,11 @@ export async function load({ locals, params, url }) {
     }
 
     if (submitError == "token") {
+        await dbFunctions.setError(
+            "account verification",
+            400,
+            `${locals.user.email} invalid token` 
+        );
         return {
             service: service,
             wait: "token not found or token expired"
@@ -40,6 +50,11 @@ export async function load({ locals, params, url }) {
     }
 
     if (previousTokens.length > 0) {
+        await dbFunctions.setError(
+            "account verification",
+            400,
+            `${locals.user.email} asked for code too soon`
+        );
         return {
             service: service,
             wait: "please wait 2 minutes before asking for a new code"
@@ -64,6 +79,11 @@ export async function load({ locals, params, url }) {
 
     if (error)
     {
+        await dbFunctions.setError(
+            "account verification",
+            400,
+            `error sending email to ${locals.user.email}\nError: ${error}`
+        );
         if (error.name == 'validation_error')
         {
             return 400, {
@@ -121,6 +141,11 @@ export const actions = {
         const otp = profileEditor.generateOTP();
 
         if (!service) {
+            await dbFunctions.setError(
+                "account verification",
+                400,
+                `${locals.user.email} empty fields`
+            );
             return fail(400, {
                 invalid: true, 
                 message: "fill in all fields",
