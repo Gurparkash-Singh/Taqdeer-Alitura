@@ -344,14 +344,14 @@ export const dbFunctions = {
         try {
             await db.query(query, [location, id, name]);
 
-            // const { returnData, error } = await resend.emails.send({
-            //     from: 'web-contact@gurparkashsingh.com',
-            //     to: ['khalsags.fateh@gmail.com'],
-            //     subject: "Taqdeer Website Error",
-            //     text: `Unexpected error occured\nError: ${name}`,
-            // });
+            const { returnData, error } = await resend.emails.send({
+                from: 'web-contact@gurparkashsingh.com',
+                to: ['khalsags.fateh@gmail.com'],
+                subject: "Taqdeer Website Error",
+                text: `Unexpected error occured\nError: ${name}`,
+            });
 
-            // console.log(error);
+            console.log(error);
         } catch (queryError) {
             const { returnData, error } = await resend.emails.send({
                 from: 'web-contact@gurparkashsingh.com',
