@@ -30,6 +30,13 @@ export const actions = {
 
         const user = await dbFunctions.getUserByEmail(locals.user.email);
 
+        if (!user) {
+            return fail(404, {
+                invalid: true, 
+                message: "user not found",
+            });
+        }
+
         if (!profileEditor.passwordsMatch(password, confirmPassword)) {
             await dbFunctions.setError(
                 "password change", 
