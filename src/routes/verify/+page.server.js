@@ -7,8 +7,8 @@ import { Resend } from 'resend';
 const resend = new Resend(RESEND_API_KEY);
 
 export async function load({ locals, params, url }) {
-    const email = url.searchParams.has('email');
-    const phone = url.searchParams.has('phone');
+    let email = url.searchParams.has('email');
+    let phone = url.searchParams.has('phone');
     const submitError = url.searchParams.get('error');
 
     if (phone && !locals.user.phone) {
@@ -19,6 +19,18 @@ export async function load({ locals, params, url }) {
 
     if (phone) {
         service = "phone";
+    }
+
+    if (locals.user.verified_email) {
+        service = "phone";
+        phone = true;
+        email = false;
+    }
+
+    if (locals.user.verified_phone) {
+        service = "email";
+        email = true;
+        phone = false;
     }
 
     const otp = profileEditor.generateOTP();

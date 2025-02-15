@@ -3,17 +3,22 @@
     import Modal from "$lib/components/Modal.svelte";
     import { modal } from "$lib/shared_state/shared.svelte";
     import LocationModal from "$lib/components/LocationModal.svelte";
+    import { navigating } from "$app/state";
 
     let { data, children } = $props();
 
     let body;
 
-    let stopScroll = $derived(modal.messages.length > 0);
-
     let display = $state(false);
 
     $effect(() => {
-        if (stopScroll) {
+        if (modal.messages.length > 0){
+            body.style.overflow = "hidden";
+        }
+        else if (navigating.to) {
+            body.style.overflow = "hidden";
+        }
+        else if (display) {
             body.style.overflow = "hidden";
         }
         else {
@@ -115,6 +120,12 @@
 	</a>
 </div>
 
+{#if navigating.to}
+    <div id="loading-modal">
+        <h1 id="loading">Loading...</h1>
+    </div>
+{/if}
+
 {@render children()}
 
 <style>
@@ -182,6 +193,24 @@
 	}
 
     .home {
+        color: white;
+    }
+
+    #loading-modal {
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        background-color: #1E1E1E90;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+    }
+
+    #loading {
         color: white;
     }
 
