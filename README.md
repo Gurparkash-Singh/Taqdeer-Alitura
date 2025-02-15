@@ -34,6 +34,7 @@
 - [ ] Verify password reset
 - [ ] Verify email verification
 - [ ] Get Image upload working
+- [ ] Get Phone Numbers working
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
 - [ ] Get location button working
@@ -119,8 +120,8 @@ Products
 Allow if collection, categories, products, images, sizes, components, properties or discounts
 
 Orders
-- [ ] Create a users list with names and emails - make it searchable
-- [ ] On select user show orders and order items
+- [ ] Show all orders
+- [ ] Ability to filter all orders by user name, user email, order date, status
 
 Allow if users, orders or order items
 

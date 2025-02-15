@@ -73,6 +73,7 @@ CREATE TABLE Admin_Permissions (
 -- Possibly update SKU
 CREATE TABLE Products (
     product_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    live BOOLEAN DEFAULT 1,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     sku VARCHAR(255),

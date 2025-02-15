@@ -11,7 +11,7 @@ try {
 } catch (dbError) {
     const { returnData, error } = await resend.emails.send({
         from: 'web-contact@gurparkashsingh.com',
-        to: ['khalsags.fateh@gmail.com'],
+        to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
         subject: "Taqdeer Website Error",
         text: `cannot connect to database\nError: ${dbError.code}`,
     });
@@ -43,7 +43,7 @@ export const dbFunctions = {
     },
 
     getProducts: async (sort_asc = true, limit = 0, offset = 0) => {
-        let query = "SELECT * FROM Products ORDER BY Price ";
+        let query = "SELECT * FROM Products WHERE live = 1 ORDER BY Price ";
 
         if (sort_asc == true)
         {
@@ -72,7 +72,7 @@ export const dbFunctions = {
     },
 
     getProductById: async (id) => {
-        let query = "SELECT * FROM Products WHERE product_id = ?;";
+        let query = "SELECT * FROM Products WHERE product_id = ? AND live = 1;";
 
         const [products] = await db.query(query, id);
 
@@ -346,7 +346,7 @@ export const dbFunctions = {
 
             const { returnData, error } = await resend.emails.send({
                 from: 'web-contact@gurparkashsingh.com',
-                to: ['khalsags.fateh@gmail.com'],
+                to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
                 subject: "Taqdeer Website Error",
                 text: `Unexpected error occured\nError: ${name}`,
             });
@@ -355,7 +355,7 @@ export const dbFunctions = {
         } catch (queryError) {
             const { returnData, error } = await resend.emails.send({
                 from: 'web-contact@gurparkashsingh.com',
-                to: ['khalsags.fateh@gmail.com'],
+                to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
                 subject: "Taqdeer Website Error",
                 text: `Error while saving\nError: ${queryError.message}`,
             });
@@ -378,7 +378,7 @@ export const dbFunctions = {
         } catch (queryError) {
             const { returnData, error } = await resend.emails.send({
                 from: 'web-contact@gurparkashsingh.com',
-                to: ['khalsags.fateh@gmail.com'],
+                to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
                 subject: "Taqdeer Website Error",
                 text: `Error while saving\nError: ${queryError.message}`,
             });
