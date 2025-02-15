@@ -3,15 +3,23 @@
     import { getCountries, getCountryCallingCode, AsYouType } from 'libphonenumber-js';
 	import { isValidPhoneNumber } from 'libphonenumber-js/max';
 
-    let { form } = $props();
+    let { data, form } = $props();
 
     let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
 
-    let countryCode = $state("SA");
-    let phoneNumber = $state("");
+    let userPhone = $state("");
+
+    if (data.user.phone) {
+        userPhone = new AsYouType(data.user.country).input(data.user.phone);
+    }
+
+    let countryCode = $state(data.user ? data.user.country : "SA");
+    let phoneNumber = $state(data.user ? data.user.phone : "");
 
     let enableSubmit = $derived.by(() => {
-        
+        if ( userPhone == phoneNumber) {
+            return false;
+        }
         if (countryCode) {
             if(isValidPhoneNumber(phoneNumber, countryCode)) {
                 return true;
@@ -31,6 +39,11 @@
             if (modal.messages[i].paragraph == form.message) {
                 inMessages = true;
             }
+        }
+
+        if (form.invalid) {
+            countryCode = form.country;
+            phoneNumber = form.phone;
         }
 
         if (!inMessages && form.invalid) 

@@ -48,7 +48,7 @@
         </dd>
         <dt>Name</dt>
         <dd>{data.user.name}</dd>
-        <!-- <dt>
+        <dt>
             Phone
             {#if data.user.phone && !data.user.verified_phone}
                 <a href="/verify?phone=true">verify</a>
@@ -56,7 +56,7 @@
         </dt>
         <dd>
             {data.user.phone}
-        </dd> -->
+        </dd>
         <dt>Date of Birth</dt>
         <dd>{data.user.date_of_birth}</dd>
         <dt>Coupons Available</dt>

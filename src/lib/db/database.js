@@ -1,5 +1,5 @@
 import mysql from "mysql2";
-import { DATABASE_URL } from "$env/static/private";
+import { DATABASE_URL, MODE } from "$env/static/private";
 import { RESEND_API_KEY } from '$env/static/private';
 import { Resend } from 'resend';
 
@@ -9,12 +9,14 @@ export let db;
 try {
     db = mysql.createPool(DATABASE_URL).promise();
 } catch (dbError) {
-    const { returnData, error } = await resend.emails.send({
-        from: 'web-contact@gurparkashsingh.com',
-        to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
-        subject: "Taqdeer Website Error",
-        text: `cannot connect to database\nError: ${dbError.code}`,
-    });
+    if (MODE != "DEVELOPMENT") {
+        const { returnData, error } = await resend.emails.send({
+            from: 'web-contact@gurparkashsingh.com',
+            to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
+            subject: "Taqdeer Website Error",
+            text: `cannot connect to database\nError: ${dbError.code}`,
+        });
+    }
 }
 
 export const dbFunctions = {
@@ -341,6 +343,11 @@ export const dbFunctions = {
         let query = "INSERT INTO Errors (location, error_id, error_name) ";
         query += "VALUES (?, ?, ?);";
 
+        if (MODE == "DEVELOPMENT") {
+            console.log("\n\n\nIN DEVELOPMENT\n\n\n");
+            return
+        }
+
         try {
             await db.query(query, [location, id, name]);
 
@@ -397,5 +404,12 @@ export const dbFunctions = {
         const [permissions] = await db.query(query, admin_id);
 
         return permissions;
+    },
+
+    setPhone: async (country, number, user_id) => {
+        let query = "UPDATE User SET country = ?, telephone = ? WHERE ";
+        query += "user_id = ?;";
+
+        await db.query(query, [country, number, user_id]);
     }
 }

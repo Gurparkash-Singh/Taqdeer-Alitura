@@ -28,13 +28,14 @@
 - [x] Get password reset working
 - [x] Get verify email working
 - [x] Change DB to allow for email list
+- [x] Get Phone Numbers working
 - [ ] Verify cart page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
 - [ ] Verify email verification
 - [ ] Get Image upload working
-- [ ] Get Phone Numbers working
+- [ ] Get phone number verification working
 - [ ] Get checkout working
 - [ ] Add size chart and return policy in products page
 - [ ] Get location button working

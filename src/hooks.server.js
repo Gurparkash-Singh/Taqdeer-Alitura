@@ -61,7 +61,8 @@ export const handle = async ({ event, resolve }) => {
             date_of_birth: birthday,
             verified_email: user.verified_email,
             verified_phone: user.verified_phone,
-            phone: user.telephone
+            phone: user.telephone,
+            country: user.country
         };
     }
 
