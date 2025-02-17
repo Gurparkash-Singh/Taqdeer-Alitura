@@ -74,6 +74,18 @@ export const actions = {
             });
         }
 
+        if (product[0].live != 1) {
+            await dbFunctions.setError(
+                "shop",
+                404,
+                `Tried adding a product that wasn't live` 
+            );
+            return fail(404, {
+                invalid: true,
+                message: "product is not live"
+            });
+        }
+
         const sizes = await dbFunctions.getProductSizes(product_id);
 
         let selected_size;

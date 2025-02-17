@@ -26,11 +26,13 @@
             <h3>{product.name}</h3>
             <h6>{product.size_name}</h6>
         </div>
-        {#await import(`$lib/images/product_images/${product.image_link}.png`) then { default: src }}
-            <a href="/shop/{product.product_id}">
-                <img {src} alt={product.alt_desc} />
-            </a>
-        {/await}
+        {#if product.image_link}
+            {#await import(`$lib/images/product_images/${product.image_link}.png`) then { default: src }}
+                <a href="/shop/{product.product_id}">
+                    <img {src} alt={product.alt_desc} />
+                </a>
+            {/await}
+        {/if}
     </section>
     <p>
         x{product.quantity}

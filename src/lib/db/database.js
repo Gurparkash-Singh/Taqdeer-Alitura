@@ -493,4 +493,41 @@ export const dbFunctions = {
 
         return permissions;
     },
+
+    getAllProducts: async (sort_asc = true, limit = 0, offset = 0) => {
+        let query = "SELECT * FROM Products ORDER BY Price ";
+
+        if (sort_asc == true)
+        {
+            query += "ASC";
+        }
+        else
+        {
+            query += "DESC";
+        }
+
+        if (limit > 0)
+        {
+            query += ` LIMIT ${limit}`;
+        }
+
+        if (offset > 0)
+        {
+            query += ` OFFSET ${offset}`;
+        }
+
+        query += ";";
+
+        const [products] = await db.query(query);
+
+        return products;
+    },
+
+    getAnyProductById: async (id) => {
+        let query = "SELECT * FROM Products WHERE product_id = ?;";
+
+        const [products] = await db.query(query, id);
+
+        return products;
+    },
 }

@@ -6,6 +6,8 @@
 
     let { data, form } = $props();
 
+    let templateColumns = $state(data.sizes.length);
+
     let openInfo = $state(false);
     let openSize = $state(false);
     let openReturn = $state(false);
@@ -23,7 +25,7 @@
     let images = [];
 
     let currentImage = $state(0);
-    let showImage = $state(data.images[0].image_id);
+    let showImage = $state(data.images[0] ? data.images[0].image_id : -1);
 
     let touchStartX = $state(0);
     let touchEndX = $state(0);
@@ -77,7 +79,6 @@
             let max_quantity = data.sizes[this.#size_index].quantity;
             max_quantity = Math.min(5, max_quantity);
 			this.#quantity = Math.max(1, Math.min(max_quantity, value));
-            console.log(max_quantity);
 		}
 	}
 
@@ -111,6 +112,14 @@
         }
         else {
             body.style.overflow = "auto";
+        }
+
+        if (data.sizes.length == 1){
+            selection.size = data.sizes[0].size_id;
+            templateColumns = "1fr";
+        }
+        else {
+            templateColumns = `repeat(${data.sizes.length + 1}, 1fr)`;
         }
     })
 </script>
@@ -191,7 +200,10 @@
         </div>
 
         <section id="product-modifier">
-            <div id="size-selector">
+            <div 
+                id="size-selector"
+                style:grid-template-columns={templateColumns}
+            >
                 <div id="quantity-slider">
                     <button 
                         onclick={() => {
@@ -217,20 +229,22 @@
                         </svg> 
                     </button>
                 </div>
-                {#each data.sizes as size}
-                    {#if size.quantity == 0}
-                        <button class="disabled">{size.size_abbreviation}</button>
-                    {:else}
-                        <button
-                            class:selected={selection.size === size.size_id}
-                            onclick={() => {
-                                selection.size = size.size_id
-                            }}
-                        >
-                            {size.size_abbreviation}
-                        </button>
-                    {/if}
-                {/each}
+                {#if data.sizes.length > 1}
+                    {#each data.sizes as size}
+                        {#if size.quantity == 0}
+                            <button class="disabled">{size.size_abbreviation}</button>
+                        {:else}
+                            <button
+                                class:selected={selection.size === size.size_id}
+                                onclick={() => {
+                                    selection.size = size.size_id
+                                }}
+                            >
+                                {size.size_abbreviation}
+                            </button>
+                        {/if}
+                    {/each}
+                {/if}
             </div>
             <form 
                 method="POST" 
@@ -426,7 +440,7 @@
 
     #size-selector {
         display: inline-grid;
-        grid-template-columns: repeat(5, 1fr);
+        /* grid-template-columns: repeat(5, 1fr); */
         align-items: center;
         justify-items: center;
         row-gap: 10px;

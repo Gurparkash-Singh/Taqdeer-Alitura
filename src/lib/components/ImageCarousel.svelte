@@ -4,7 +4,14 @@
     let images = [];
 
     let modalCurrentImage = $state(selectImage);
-    let showImage = $derived(data.images[modalCurrentImage].image_id);
+    let showImage = $derived.by(() => {
+        if (data.images[0]){
+            return data.images[modalCurrentImage].image_id;
+        }
+        else {
+            return -1;
+        }
+    });
 
     let touchStartX = $state(0);
     let touchEndX = $state(0);

@@ -45,7 +45,7 @@
         object-fit: contain;
     }
 
-    @media screen and (width < 406px) {
+    @media screen and (width < 530px) {
         div {
             height: 90px;
             width: 90px;

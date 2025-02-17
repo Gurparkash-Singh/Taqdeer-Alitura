@@ -17,6 +17,66 @@ CREATE TABLE Collections (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Possibly update SKU
+CREATE TABLE Products (
+    product_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    live BOOLEAN DEFAULT 1,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    sku VARCHAR(255),
+    category_id INT NOT NULL,
+    collection_id INT,
+    price DECIMAL NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES Category(category_id),
+    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id)
+);
+
+CREATE TABLE Sizes_Available (
+	size_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	product_id INT NOT NULL,
+    size_name TEXT NOT NULL,
+    size_abbreviation TEXT NOT NULL,
+    quantity INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+
+CREATE TABLE Images (
+	image_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    image_link TEXT NOT NULL,
+    alt_desc TEXT NOT NULL,
+    main_image BOOLEAN DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    UNIQUE (product_id, main_image)
+);
+
+CREATE TABLE Components (
+	component_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    component_name TEXT NOT NULL,
+    component_description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+
+CREATE TABLE Component_Properties (
+	property_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	component_id INT NOT NULL,
+    property_name TEXT NOT NULL,
+    property_description TEXT,
+    property_value TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (component_id) REFERENCES Components(component_id)
+);
+
 CREATE TABLE Discount (
     discount_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
@@ -68,45 +128,6 @@ CREATE TABLE Admin_Permissions (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (permission_id) REFERENCES Permission_Types(permission_id),
     FOREIGN KEY (type_id) REFERENCES Admin_Type(type_id)
-);
-
--- Possibly update SKU
-CREATE TABLE Products (
-    product_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    live BOOLEAN DEFAULT 1,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    sku VARCHAR(255),
-    category_id INT NOT NULL,
-    collection_id INT,
-    price DECIMAL NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES Category(category_id),
-    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id)
-);
-
-CREATE TABLE Sizes_Available (
-	size_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	product_id INT NOT NULL,
-    size_name TEXT NOT NULL,
-    size_abbreviation TEXT NOT NULL,
-    quantity INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
-);
-
-CREATE TABLE Images (
-	image_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    product_id INT NOT NULL,
-    image_link TEXT NOT NULL,
-    alt_desc TEXT NOT NULL,
-    main_image BOOLEAN DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id),
-    UNIQUE (product_id, main_image)
 );
 
 
@@ -204,27 +225,6 @@ CREATE TABLE Messages (
     broadcast BOOLEAN DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE Components (
-	component_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    product_id INT NOT NULL,
-    component_name TEXT NOT NULL,
-    component_description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
-);
-
-CREATE TABLE Component_Properties (
-	property_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	component_id INT NOT NULL,
-    property_name TEXT NOT NULL,
-    property_description TEXT,
-    property_value TEXT,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (component_id) REFERENCES Components(component_id)
 );
 
 CREATE TABLE Member_Types (

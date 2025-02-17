@@ -75,12 +75,12 @@ VALUES
 
 INSERT INTO Products (name, price, category_id, collection_id, sku)
 VALUES
-("Juthuur Sweats", 459, 1, 1, "FRS01/01"),
+("Juthuur Sweats", 459, 2, 1, "FRS01/01"),
 ("Juthuur Hoodie", 511, 1, 1, "FRS01/02"),
 ("Juthuur Dunes Tee", 324, 1, 1, "FRS01/03"),
 ("Juthuur Sweatshirt", 432, 1, 1, "FRS01/04"),
 ("Juthuur Tee", 324, 1, 1, "FRS01/05"),
-("Juthuur Shorts", 314, 1, 1, "FRS01/06");
+("Juthuur Shorts", 314, 2, 1, "FRS01/06");
 
 INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
