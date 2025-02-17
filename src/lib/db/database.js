@@ -21,7 +21,9 @@ try {
 
 export const dbFunctions = {
     getCategories: async () => {
-        const [result] = await db.query("SELECT category_id, category_name FROM Category;");
+        let query = "SELECT category_id, category_name FROM Category;";
+        
+        const [result] = await db.query(query);
 
         return result;
     },
@@ -411,5 +413,84 @@ export const dbFunctions = {
         query += "user_id = ?;";
 
         await db.query(query, [country, number, user_id]);
-    }
+    },
+
+    getCategoryByID: async (id) => {
+        let query = "SELECT * FROM Category WHERE category_id = ?;";
+
+        const [categories] = await db.query(query, id);
+
+        return categories;
+    },
+
+    getProductsByCategory: async (category) => {
+        let query = "SELECT * FROM Products WHERE category_id = ?;";
+
+        const [products] = await db.query(query, category);
+
+        return products;
+    },
+
+    deleteCategory: async (id) => {
+        let query = "DELETE FROM Category WHERE category_id = ?;";
+
+        await db.query(query, id);
+    },
+
+    addCategory: async (name) => {
+        let query = "INSERT INTO Category (category_name) VALUES (?);";
+
+        await db.query(query, name);
+    },
+
+    updateCategory: async (id, name) => {
+        let query = "UPDATE Category SET category_name = ? WHERE ";
+        query += "category_id = ?;";
+
+        await db.query(query, [name, id]);
+    },
+
+    getCollectionByID: async (id) => {
+        let query = "SELECT * FROM Collections WHERE collection_id = ?;";
+
+        const [categories] = await db.query(query, id);
+
+        return categories;
+    },
+
+    getProductsByCollection: async (collection) => {
+        let query = "SELECT * FROM Products WHERE collection_id = ?;";
+
+        const [products] = await db.query(query, collection);
+
+        return products;
+    },
+
+    deleteCollection: async (id) => {
+        let query = "DELETE FROM Collections WHERE collection_id = ?;";
+
+        await db.query(query, id);
+    },
+
+    addCollection: async (name) => {
+        let query = "INSERT INTO Collections (collection_name) VALUES (?);";
+
+        await db.query(query, name);
+    },
+
+    updateCollection: async (id, name) => {
+        let query = "UPDATE Collections SET collection_name = ? WHERE ";
+        query += "collection_id = ?;";
+
+        await db.query(query, [name, id]);
+    },
+
+    getAdminPermissionsByPermissionID: async (admin_id, permission_id) => {
+        let query = "SELECT * FROM Admin_Type_And_Permission WHERE admin_id = ? ";
+        query += "AND permission_id = ?"
+
+        const [permissions] = await db.query(query, [admin_id, permission_id]);
+
+        return permissions;
+    },
 }

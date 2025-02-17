@@ -42,7 +42,7 @@ VALUES
 ("carts", "Ability to read abandoned carts", 1, 0),
 ("admins", "Ability to read and write admins", 1, 1),
 ("admin types", "Ability to read and write admin types", 1, 1),
-("admin permissions", "Ability to read and write permissions for admins types", 1, 1),
+("admin permissions", "Ability to read permissions for admins types", 1, 0),
 ("errors", "Ability to read errors", 1, 0);
 
 INSERT INTO Admin_Type (admin_type)
@@ -70,7 +70,7 @@ VALUES
 (17, 1, 0),
 (18, 1, 1),
 (19, 1, 1),
-(20, 1, 1),
+(20, 1, 0),
 (21, 1, 0);
 
 INSERT INTO Products (name, price, category_id, collection_id, sku)

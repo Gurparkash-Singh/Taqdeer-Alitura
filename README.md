@@ -114,7 +114,7 @@ Set Delivery Price using address
 
 # For Admin Panel
 Products
-- [ ] create a place to create and update collections and categories
+- [x] create a place to create and update collections and categories
 - [ ] Products, images, sizes, components and properties in one place
 - [ ] Discounts in one place
 

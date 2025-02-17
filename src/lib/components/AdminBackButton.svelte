@@ -1,9 +1,9 @@
 <script>
-    let { children } = $props();
+    let {name, link} = $props();
 </script>
 
 <section id="back">
-    <a href="/admin/settings">
+    <a href={link}>
         <svg 
             width="15" 
             height="15" 
@@ -17,11 +17,9 @@
         <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 12H42M16 24H42M16 36H42M6 12H6.02M6 24H6.02M6 36H6.02" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Admin Panel
+        {name}
     </a>
 </section>
-
-{@render children()}
 
 <style>
     #back {
