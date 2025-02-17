@@ -1,4 +1,4 @@
-DROP VIEW Admin_Type_And_Permission;
+DROP VIEW IF EXISTS Admin_Type_And_Permission;
 
 DROP TABLE IF EXISTS Errors;
 

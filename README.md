@@ -115,7 +115,10 @@ Set Delivery Price using address
 # For Admin Panel
 Products
 - [x] create a place to create and update collections and categories
-- [ ] Products, images, sizes, components and properties in one place
+- [x] Products
+- [ ] images
+- [ ] sizes
+- [ ] components and properties
 - [ ] Discounts in one place
 
 Allow if collection, categories, products, images, sizes, components, properties or discounts

@@ -530,4 +530,40 @@ export const dbFunctions = {
 
         return products;
     },
+
+    updateProductName: async (id, value) => {
+        let query = "UPDATE Products SET name = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
+    },
+
+    updateProductSKU: async (id, value) => {
+        let query = "UPDATE Products SET sku = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
+    },
+
+    updateProductCategory: async (id, value) => {
+        let query = "UPDATE Products SET category_id = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
+    },
+
+    updateProductCollection: async (id, value) => {
+        let query = "UPDATE Products SET collection_id = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
+    },
+
+    updateProductPrice: async (id, value) => {
+        let query = "UPDATE Products SET price = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
+    },
+
+    updateProductLive: async (id, value) => {
+        let query = "UPDATE Products SET live = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
+    }
 }

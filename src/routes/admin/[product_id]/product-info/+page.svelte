@@ -11,8 +11,37 @@
     let price = $state(data.product.price);
     let live = $state(data.product.live == 1 ? true : false);
 
+    let enableSubmit = $derived.by(() => {
+        if (!sku || !name || !category || !collection || !price) {
+            return false;
+        }
 
-    let enableSubmit = true;
+        if (sku != data.product.sku) {
+            return true;
+        }
+
+        if (name != data.product.name) {
+            return true;
+        }
+
+        if (category != data.product.category_id) {
+            return true;
+        }
+
+        if (collection != data.product.collection_id) {
+            return true;
+        } 
+
+        if (price != data.product.price) {
+            return true;
+        }
+
+        if (live != data.product.live) {
+            return true;
+        }
+
+        return false;
+    });
 
     if (form) {
         let inMessages = false;
@@ -44,6 +73,11 @@
 
 <section>
     <form action="?/submit" method="POST">
+        <input 
+            type="hidden" 
+            name="product_id"
+            value={data.product.product_id}
+        >
         <p>
             <label for="sku">sku:</label>
             <input 

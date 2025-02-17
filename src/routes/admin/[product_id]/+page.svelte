@@ -2,8 +2,6 @@
     import AdminBackButton from "$lib/components/AdminBackButton.svelte";
 
     let { data } = $props();
-
-    console.log(data);
 </script>
 
 <AdminBackButton 
