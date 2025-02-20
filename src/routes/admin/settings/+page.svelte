@@ -68,27 +68,4 @@
         height: 20px;
     }
 
-    #back {
-        margin: 40px 0;
-    }
-    
-    #back a {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #d9d9d9;
-        border: none;
-        text-decoration: none;
-        text-align: center;
-        padding: 15px 30px;
-        position: relative;
-    }
-
-    .back-arrow {
-        position: absolute;
-        left: 10px;
-        top: calc(50% - 7.5px);
-    }
-
 </style>

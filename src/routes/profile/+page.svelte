@@ -53,23 +53,23 @@
     <dl>
         <dt>
             Email
-            {#if !data.user.verified_email}
-                <a href="/verify?email=true">verify</a>
-            {/if}
         </dt>
         <dd>
             {data.user.email}
+            {#if !data.user.verified_email}
+                <a href="/verify?email=true">verify</a>
+            {/if}
         </dd>
         <dt>Name</dt>
         <dd>{data.user.name}</dd>
         <dt>
             Phone
-            {#if data.user.phone && !data.user.verified_phone}
-                <a href="/verify?phone=true">verify</a>
-            {/if}
         </dt>
         <dd>
             {data.user.phone}
+            {#if data.user.phone && !data.user.verified_phone}
+                <a href="/verify?phone=true">verify</a>
+            {/if}
         </dd>
         <dt>Date of Birth</dt>
         <dd>{data.user.date_of_birth}</dd>
@@ -119,17 +119,14 @@
         margin-bottom: 40px;
     }
 
-    dt {
+    dd {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
     }
 
-    dt a {
-        background-color: #d9d9d9;
-        border: none;
-        text-decoration: none;
+    dd a {
         text-align: center;
         padding: 5px 30px;
     }

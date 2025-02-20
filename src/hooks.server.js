@@ -44,8 +44,11 @@ export const handle = async ({ event, resolve }) => {
         if (user.date_of_birth)
         {
             birthday = Date.parse(user.date_of_birth);
-            birthday = new Date(birthday);
-            birthday = birthday.toISOString().split('T')[0];
+
+            if (birthday) {
+                birthday = new Date(birthday);
+                birthday = birthday.toISOString().split('T')[0];
+            }
         }
 
         const [admin] = await dbFunctions.getAdmin(user.user_id);

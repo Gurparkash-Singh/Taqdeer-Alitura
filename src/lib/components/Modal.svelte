@@ -7,7 +7,12 @@
 
     let paragraph = $derived.by(() => {
         if (modal.messages.length > 0) {
-            return modal.messages[0].paragraph.split("\n");
+            if (modal.messages[0].paragraph) {
+                return modal.messages[0].paragraph.split("\n");
+            }
+            else {
+                return [];
+            }
         }
         else {
             return [];

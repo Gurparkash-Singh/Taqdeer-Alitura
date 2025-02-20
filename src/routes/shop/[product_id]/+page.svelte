@@ -8,6 +8,8 @@
 
     let templateColumns = $state(data.sizes.length);
 
+    let outOfStock = $state(false);
+
     let openInfo = $state(false);
     let openSize = $state(false);
     let openReturn = $state(false);
@@ -122,6 +124,23 @@
             templateColumns = `repeat(${data.sizes.length + 1}, 1fr)`;
         }
     })
+
+    function outOfStockCalculator() {
+        let out = [];
+        for (let i = 0; i < data.sizes.length; i++){
+            if (data.sizes[i].quantity == 0){
+                out.push(data.sizes);
+            }
+        }
+
+        console.log(data.sizes);
+
+        if (out.length == data.sizes.length) {
+            outOfStock = true;
+        }
+    }
+
+    outOfStockCalculator();
 </script>
 
 <svelte:body bind:this={body}/>
@@ -197,6 +216,9 @@
         <div id="product-name-holder">
             <h1 id="product_name">{data.product[0].name}</h1>
             <p id="product-price">{price}</p>
+            {#if outOfStock}
+                <p style:text-align="center">Out of Stock</p>
+            {/if}
         </div>
 
         <section id="product-modifier">
