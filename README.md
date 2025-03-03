@@ -34,9 +34,11 @@
 - [ ] Verify edit profile
 - [ ] Verify password reset
 - [ ] Verify email verification
-- [ ] Get Image upload working
-- [ ] Get phone number verification working
 - [ ] Get checkout working
+- [ ] Get phone number verification working
+- [ ] Get address book working
+- [ ] Verify address book
+- [ ] Get Image upload working
 - [ ] Add size chart and return policy in products page
 - [ ] Get location button working
 - [ ] Verify location button
@@ -45,8 +47,6 @@
 - [ ] Add ability to save cards
 - [ ] Get payment methods page working
 - [ ] Verify payment methods page
-- [ ] Get address book working
-- [ ] Verify address book
 - [ ] Change DB to allow for multiple coupons on a product
 - [ ] Change DB to allow for multiple coupons on a profile
 - [ ] Change DB to allow for multiple coupons on entire store
@@ -143,3 +143,13 @@ Admin Controls
 - [ ] create an error log
 
 Allow if admins, admin types, admin permissions, errors, permissions
+
+# For Cart Page
+Products - remove products, update quantity (optional), 
+- an area to add discounts using codes and checkout button
+- show applied discounts
+- show subtotal with discounts
+
+Then move to delivery
+
+Then payment and finalize

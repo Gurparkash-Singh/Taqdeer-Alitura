@@ -25,6 +25,7 @@
 		"bcryptjs": "^2.4.3",
 		"libphonenumber-js": "^1.11.19",
 		"mysql2": "^3.11.5",
-		"resend": "^4.1.2"
+		"resend": "^4.1.2",
+		"twilio": "^5.4.5"
 	}
 }

@@ -11,6 +11,8 @@
     let otp = $state("");
     let enableSubmit = $state(true);
 
+    let time = $state("");
+
     if (form) {
         let inMessages = false;
         for (let i = 0; i < modal.messages.length; i++) {
@@ -61,6 +63,29 @@
             formElement.submit();
         }
     })
+
+    function onReload() {
+        enableSubmit = false;
+
+        if (data.time) {
+            time = data.time;
+            const newInterval = setInterval(() => {
+                time -= 1;
+            }, 1000)
+
+            setTimeout(() => {
+                enableSubmit = true;
+
+                clearInterval(newInterval);
+
+                time = "";
+            }, (data.time * 1000));
+        } else {
+            time = "";
+        }
+    }
+
+    onReload()
 </script>
 
 <main>
@@ -91,13 +116,22 @@
                     bind:value={otp}
                 />
             </p>
-            <button 
-                class:disable-submit={!enableSubmit}
-                disabled={!enableSubmit}
-                formaction="?/send"
-            >
-                Send OTP
-            </button>
+            <div id="button-holder">
+                <button 
+                    class:disable-submit={!enableSubmit}
+                    disabled={!enableSubmit}
+                    formaction="?/send"
+                >
+                    Send OTP
+                </button>
+                
+                {#if time}
+                    <p>
+                        {time}s
+                    </p>
+                {/if}
+                
+            </div>
         </form>
     </section>
 </main>
@@ -148,7 +182,6 @@
     }
 
     form button {
-        margin: 20px 0;
         background-color: #bf1e2e;
         color: white;
         border: none;
@@ -171,6 +204,16 @@
         flex-direction: row;
         justify-content: space-between;
         margin: 20px 0;
+    }
+
+    #button-holder {
+        justify-content: flex-start;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    #button-holder p {
+        margin: 10px;
     }
 </style>
 

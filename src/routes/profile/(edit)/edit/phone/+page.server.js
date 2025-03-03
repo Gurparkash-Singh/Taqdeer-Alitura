@@ -38,6 +38,7 @@ export const actions = {
 
         locals.user.phone = phoneNumber.nationalNumber;
         locals.user.country = phoneNumber.country;
+        locals.user.verified_phone = false;
 
         return {
             success: true, 

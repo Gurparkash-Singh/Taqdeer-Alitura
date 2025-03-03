@@ -259,7 +259,8 @@ export const dbFunctions = {
     },
 
     updateEmail: async (newEmail, email) => {
-        let query = "UPDATE User SET email = ? WHERE email = ?;";
+        let query = "UPDATE User SET email = ?, verified_email = 0 ";
+        query += "WHERE email = ?;"
 
         await db.query(query, [newEmail, email]);
     },
@@ -298,7 +299,7 @@ export const dbFunctions = {
 
     getPreviousOTP: async (user_id) => {
         let query = "SELECT * FROM User_OTP WHERE user_id = ? "
-        query += "AND created_at > now() - interval 2 minute;";
+        query += "AND created_at > now() - interval 1 minute;";
 
         const [tokens] = await db.query(query, user_id);
 
@@ -409,8 +410,9 @@ export const dbFunctions = {
     },
 
     setPhone: async (country, number, user_id) => {
-        let query = "UPDATE User SET country = ?, telephone = ? WHERE ";
-        query += "user_id = ?;";
+        let query = "UPDATE User SET country = ?, telephone = ?, ";
+        query += "verified_phone = 0 "
+        query += "WHERE user_id = ?;";
 
         await db.query(query, [country, number, user_id]);
     },

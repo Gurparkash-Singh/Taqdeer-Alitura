@@ -35,6 +35,7 @@ export const actions = {
                 await dbFunctions.updateEmail(email, locals.user.email);
 
                 locals.user.email = email;
+                locals.user.verified_email = false;
             }
         }
 
