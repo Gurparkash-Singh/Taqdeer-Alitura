@@ -20,7 +20,6 @@
 - [x] Verify login page design
 - [x] Upload actual products to DB
 - [x] Verify product page design
-- [x] Redo cart page
 - [x] Get profile page working
 - [x] Get edit profile working
 - [x] Get email validation during signup working
@@ -29,13 +28,21 @@
 - [x] Get verify email working
 - [x] Change DB to allow for email list
 - [x] Get Phone Numbers working
-- [ ] Verify cart page
+- [x] Get checkout working
+- [x] Get phone number verification working
+- [x] Add ability to save cards in DB
+- [x] Change DB to allow for multiple coupons on a product
+- [x] Change DB to allow for multiple coupons on a profile
+- [x] Change DB to allow for multiple coupons on entire store
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
 - [ ] Verify email verification
-- [ ] Get checkout working
-- [ ] Get phone number verification working
+- [ ] Redo cart page
+- [ ] Verify cart page
+- [ ] Finish Delivery Page
+- [ ] Verify Delivery Page
+- [ ] Save order post checkout
 - [ ] Get address book working
 - [ ] Verify address book
 - [ ] Get Image upload working
@@ -44,12 +51,8 @@
 - [ ] Verify location button
 - [ ] Get order history working
 - [ ] Verify order history
-- [ ] Add ability to save cards
 - [ ] Get payment methods page working
 - [ ] Verify payment methods page
-- [ ] Change DB to allow for multiple coupons on a product
-- [ ] Change DB to allow for multiple coupons on a profile
-- [ ] Change DB to allow for multiple coupons on entire store
 - [ ] Add ability to select coupons at checkout
 - [ ] Verify checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
@@ -86,15 +89,6 @@ Sizing contains model information
 Add Table to DB for model size information
 
 Return Policy should be recieved from Tap Payments
-
-Explain to Faris that you need to use resend for forgot password and contact form
-Tell Faris about your email verification idea
-
-# To Verify accounts
-- add a row to the user table called verified
-- set verified to false
-- send code to user
-- ask the user to verify email using code
 
 # Needed in the next 2 weeks
 - [ ] Presentable
@@ -145,11 +139,18 @@ Admin Controls
 Allow if admins, admin types, admin permissions, errors, permissions
 
 # For Cart Page
-Products - remove products, update quantity (optional), 
-- an area to add discounts using codes and checkout button
-- show applied discounts
+- remove products
+- update product quantities (optional)
+- an area to add discounts using codes
+- an area to show applied discounts
 - show subtotal with discounts
+- checkout button
 
-Then move to delivery
+# Delivery
+- Ability to select existing address (if signed in)
+- Add User Details (name, email, phone number with country code)
+- Ability to add new address (regardless of whether a user is logged in)
+- Area to show subtotal, delivery, taxes and total
 
-Then payment and finalize
+# Checkout
+- Tap Payments will handle this portion

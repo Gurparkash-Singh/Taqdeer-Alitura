@@ -79,12 +79,18 @@ CREATE TABLE IF NOT EXISTS Component_Properties (
 
 CREATE TABLE IF NOT EXISTS Discount (
     discount_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255),
-    description TEXT,
-    discount_percent DECIMAL NOT NULL,
+    code VARCHAR(255) NOT NULL UNIQUE,
+    discount_amount DECIMAL NOT NULL,
+    percentage BOOLEAN DEFAULT 1,
     active BOOLEAN DEFAULT 0,
+    product_only BOOLEAN DEFAULT 0,
+    product_id INT,
+    payout_email TEXT,
+    login_required BOOLEAN DEFAULT 0,
+    min_subtotal DECIMAL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
 CREATE TABLE IF NOT EXISTS User (
@@ -130,7 +136,6 @@ CREATE TABLE IF NOT EXISTS Admin_Permissions (
     FOREIGN KEY (type_id) REFERENCES Admin_Type(type_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS Payment_Details (
     payment_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     amount DECIMAL NOT NULL,
@@ -141,13 +146,25 @@ CREATE TABLE IF NOT EXISTS Payment_Details (
 );
 
 CREATE TABLE IF NOT EXISTS Orders (
-    order_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tap_order_id VARCHAR(255) NOT NULL,
     user_email VARCHAR(255) NOT NULL,
     total DECIMAL NOT NULL,
     payment_id INT,
+    status TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (payment_id) REFERENCES Payment_Details(payment_id)
+);
+
+CREATE TABLE IF NOT EXISTS Order_Discounts (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    discount_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
 );
 
 CREATE TABLE IF NOT EXISTS Order_Items (
@@ -163,7 +180,6 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
 );
 
-
 -- User email does NOT refer to users table so guest checkout can work
 CREATE TABLE IF NOT EXISTS User_Addresses (
     address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -174,6 +190,17 @@ CREATE TABLE IF NOT EXISTS User_Addresses (
     postal_code VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     telephone VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS User_Cards (
+    card_id VARCHAR(255) PRIMARY KEY NOT NULL,
+    user_id INT NOT NULL,
+    object TEXT,
+    brand TEXT,
+    first_six_digits TEXT NOT NULL,
+    last_four_digits TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -193,6 +220,16 @@ CREATE TABLE IF NOT EXISTS Shopping_Session (
     token LONGTEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS Cart_Discounts (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    session_id INT NOT NULL,
+    discount_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (session_id) REFERENCES Shopping_Session(id),
+    FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
 );
 
 CREATE TABLE IF NOT EXISTS Cart_Items (
@@ -240,7 +277,46 @@ CREATE TABLE IF NOT EXISTS Members(
     member_type INT NOT NULL,
     user_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (member_type) REFERENCES Member_Types(type_id)
+);
+
+CREATE TABLE IF NOT EXISTS Member_Discount (
+	member_discount_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    code VARCHAR(255) NOT NULL UNIQUE,
+    discount_amount DECIMAL NOT NULL,
+    percentage BOOLEAN DEFAULT 1,
+    active BOOLEAN DEFAULT 0,
+    product_only BOOLEAN DEFAULT 0,
+    product_id INT,
+    payout_email TEXT,
+    min_subtotal DECIMAL DEFAULT 0,
+    member_type INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    FOREIGN KEY (member_type) REFERENCES Member_Types(type_id)
+);
+
+CREATE TABLE IF NOT EXISTS Member_Cart_Discounts (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    session_id INT NOT NULL,
+    discount_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (session_id) REFERENCES Shopping_Session(id),
+    FOREIGN KEY (discount_id) REFERENCES Member_Discount(member_discount_id)
+);
+
+CREATE TABLE IF NOT EXISTS Member_Order_Discounts (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    discount_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (discount_id) REFERENCES Member_Discount(member_discount_id)
 );
 
 CREATE TABLE IF NOT EXISTS User_OTP (

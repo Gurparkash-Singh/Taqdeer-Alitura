@@ -8,6 +8,12 @@ DROP TABLE IF EXISTS Email_List;
 
 DROP TABLE IF EXISTS User_OTP;
 
+DROP TABLE IF EXISTS Member_Order_Discounts;
+
+DROP TABLE IF EXISTS Member_Cart_Discounts;
+
+DROP TABLE IF EXISTS Member_Discount;
+
 DROP TABLE IF EXISTS Members;
 
 DROP TABLE IF EXISTS Member_Types;
@@ -18,13 +24,19 @@ DROP TABLE IF EXISTS Admins;
 
 DROP TABLE IF EXISTS Cart_Items;
 
+DROP TABLE IF EXISTS Cart_Discounts;
+
 DROP TABLE IF EXISTS Shopping_Session;
 
 DROP TABLE IF EXISTS User_Tokens;
 
+DROP TABLE IF EXISTS User_Cards;
+
 DROP TABLE IF EXISTS User_Addresses;
 
 DROP TABLE IF EXISTS Order_Items;
+
+DROP TABLE IF EXISTS Order_Discounts;
 
 DROP TABLE IF EXISTS Orders;
 

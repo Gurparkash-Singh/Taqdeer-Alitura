@@ -2,6 +2,7 @@ import mysql from "mysql2";
 import { DATABASE_URL, MODE } from "$env/static/private";
 import { RESEND_API_KEY } from '$env/static/private';
 import { Resend } from 'resend';
+import { error } from "@sveltejs/kit";
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -347,6 +348,7 @@ export const dbFunctions = {
         query += "VALUES (?, ?, ?);";
 
         if (MODE == "DEVELOPMENT") {
+            console.log(location, id, name);
             console.log("\n\n\nIN DEVELOPMENT\n\n\n");
             return
         }

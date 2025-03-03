@@ -92,13 +92,15 @@
                     openInstallments = !openInstallments;
                 }}
             >
-                Pay in installments
+                Pay
             </button>
             <section 
                 class="collapsable"
                 class:open-section={openInstallments}
             >
-                <p>This will contain a checkout link to pay in installments.</p>
+                <form action="?/checkout" method="POST">
+                    <button type="submit">Checkout</button>
+                </form>
             </section>
 
             <button 
