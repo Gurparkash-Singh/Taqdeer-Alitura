@@ -159,3 +159,16 @@ VALUES
 INSERT INTO Messages (heading, paragraph) VALUES
 ("Welcome", "Thank you for visiting our website and your interest in Taqdeer Alitura.
 Reminder that all members are entitled to 10% off for their first order for each collection");
+
+INSERT INTO Available_Currencies (currency_code)
+VALUES
+("AED"),
+("BHD"),
+("EGP"),
+("EUR"),
+("GBP"),
+("KWD"),
+("OMR"),
+("QAR"),
+("SAR"),
+("USD");

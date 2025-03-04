@@ -569,5 +569,13 @@ export const dbFunctions = {
         let query = "UPDATE Products SET live = ? WHERE product_id = ?;";
 
         await db.query(query, [value, id]);
+    },
+
+    getAvailableCurrencies: async () => {
+        let query = "SELECT currency_code FROM Available_Currencies";
+
+        const [result] = await db.query(query);
+
+        return result;
     }
 }

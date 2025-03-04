@@ -7,5 +7,6 @@ export let numberFormat = $state({
     style: {
         style: "currency",
         currency: "SAR",
-    }
+    },
+    conversion_rate: 1
 })

@@ -358,6 +358,13 @@ CREATE TABLE IF NOT EXISTS Errors (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS Available_Currencies(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    currency_code TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE OR REPLACE VIEW Admin_Type_And_Permission AS
 SELECT Admins.admin_id, Admins.type_id, Permission_Types.permission_id, name, allow_read, allow_write
 FROM Admins

@@ -53,7 +53,6 @@
 - [ ] Verify order history
 - [ ] Get payment methods page working
 - [ ] Verify payment methods page
-- [ ] Add ability to select coupons at checkout
 - [ ] Verify checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
@@ -154,3 +153,16 @@ Allow if admins, admin types, admin permissions, errors, permissions
 
 # Checkout
 - Tap Payments will handle this portion
+
+# Image Sizes required
+## Product Images
+90 X 90
+65 X 65
+Full Size
+
+## Logo
+150 X 150
+170 X 170
+
+## Homepage
+Full Size

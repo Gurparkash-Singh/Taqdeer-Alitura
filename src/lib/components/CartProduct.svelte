@@ -3,7 +3,7 @@
     
     let {product} = $props();
 
-    const floatPrice = parseFloat(product.price);;
+    const floatPrice = $derived(parseFloat(product.price) * numberFormat.conversion_rate);
 
     let price = $derived(floatPrice.toLocaleString(
         numberFormat.area,

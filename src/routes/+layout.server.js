@@ -1,5 +1,6 @@
 import { dbFunctions } from "$lib/db/database";
 import { error } from "@sveltejs/kit";
+import axios from "axios";
 
 export async function load({ cookies, locals })
 {
@@ -34,5 +35,37 @@ export async function load({ cookies, locals })
         num_items += cart_items[i].quantity;
     }
 
-    return {num_items, messages, user: locals.user, admin: locals.admin};
+    let available_currencies = await dbFunctions.getAvailableCurrencies();
+
+    let currency_response;
+
+    try {
+        currency_response = await axios.get(
+            "https://latest.currency-api.pages.dev/v1/currencies/sar.json"
+        );
+    } catch (axiosError) {
+        await dbFunctions.setCriticalError(
+            "checkout",
+            500,
+            JSON.stringify(axiosError.response.data)
+        )
+        error(500);
+    }
+
+    for (let i = 0; i < available_currencies.length; i++) {
+        const currency_code = available_currencies[i].currency_code.toLowerCase();
+
+        let conversion_rate = currency_response.data.sar;
+        conversion_rate = conversion_rate[currency_code];
+
+        available_currencies[i].conversion_rate = conversion_rate;
+    }
+
+    return {
+        num_items, 
+        messages, 
+        user: locals.user, 
+        admin: locals.admin,
+        available_currencies
+    };
 }

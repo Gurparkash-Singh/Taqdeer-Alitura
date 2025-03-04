@@ -6,9 +6,22 @@
     let { data, form } = $props();
 
     let deliveryNum = 20;
-    let floatSubtotal = $state(0);
-    let floatDelivery = $state(0);
-    let floatTotal = $state(0);
+    let floatSubtotal = $derived.by(() => {
+        let tempSubtotal = 0
+        data.cart_items.forEach(item => {
+            tempSubtotal += item.price * item.quantity * numberFormat.conversion_rate;
+        });
+        return tempSubtotal;
+    });
+    let floatDelivery = $derived.by(() => {
+        if (floatSubtotal > 0) {
+            return deliveryNum * numberFormat.conversion_rate
+        }
+        else {
+            return 0;
+        }
+    });
+    let floatTotal = $derived(floatSubtotal + floatDelivery);
 
     let subtotal = $derived(floatSubtotal.toLocaleString(
         numberFormat.area,
@@ -29,26 +42,6 @@
 
     let openInstallments = $state(false);
     let openCoupons = $state(false);
-
-    function calculateValues()
-    {
-        floatSubtotal = 0;
-        floatDelivery = deliveryNum;
-
-        data.cart_items.forEach(item => {
-            floatSubtotal += item.price * item.quantity;
-        });
-
-        floatTotal = floatSubtotal + floatDelivery
-
-        if (floatSubtotal == 0)
-        {
-            floatTotal = 0;
-            floatDelivery = 0;
-        }
-    }
-
-    calculateValues();
 </script>
 
 <main>

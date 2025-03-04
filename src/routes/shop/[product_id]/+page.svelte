@@ -17,7 +17,10 @@
     let display = $state(false);
     let body;
 
-    let floatPrice = parseFloat(data.product[0].price);
+    let floatPrice = $derived.by(() => {
+        const tempPrice = parseFloat(data.product[0].price)
+        return tempPrice * numberFormat.conversion_rate;
+    });
 
     let price = $derived(floatPrice.toLocaleString(
         numberFormat.area,
@@ -132,8 +135,6 @@
                 out.push(data.sizes);
             }
         }
-
-        console.log(data.sizes);
 
         if (out.length == data.sizes.length) {
             outOfStock = true;

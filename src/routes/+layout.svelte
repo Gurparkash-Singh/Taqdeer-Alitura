@@ -38,6 +38,7 @@
     closeDisplay = {() => {
         display = false;
     }}
+    availableCountries={data.available_currencies}
 />
 
 

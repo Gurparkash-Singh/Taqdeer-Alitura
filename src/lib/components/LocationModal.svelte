@@ -1,13 +1,26 @@
 <script>
     import { numberFormat } from "$lib/shared_state/shared.svelte";
 
-    let { display, closeDisplay }= $props();
+    let { display, closeDisplay, availableCountries } = $props();
 
     let thisModal;
+
+    let selected_currency = $state("");
+
+    for (let i = 0; i < availableCountries.length; i++){
+        if (availableCountries[i].currency_code == "SAR"){
+            selected_currency = availableCountries[i];
+        }
+    }
 
     function closeModal() {
         closeDisplay();
     }
+
+    $effect(() => {
+        numberFormat.conversion_rate = selected_currency.conversion_rate;
+        numberFormat.style.currency = selected_currency.currency_code;
+    })
 </script>
 
 <svelte:window 
@@ -32,9 +45,13 @@
         
         <h3>Change Currency</h3>
         <select
-            bind:value={numberFormat.style.currency}
+            bind:value={selected_currency}
         >
-            <option value="SAR">SAR</option>
+            {#each availableCountries as country}
+                <option value={country}>
+                    {country.currency_code}
+                </option>
+            {/each}
         </select>
     </section>
 </div>
