@@ -1,4 +1,5 @@
 <script>
+	import { browser } from "$app/environment";
     import { numberFormat } from "$lib/shared_state/shared.svelte";
 
     let { 
@@ -7,21 +8,21 @@
         availableCountries,
         conversion_rates
     } = $props();
+    
+    let currency_code = browser ? localStorage.getItem("currency_code") : null;
 
-    let selected_currency = $state("SAR");
+    let selected_currency = $state(currency_code ? currency_code : "SAR");
 
     let thisModal;
-
-    export const snapshot = {
-        capture: () => selected_currency,
-        restore: (value) => selected_currency = value
-    }
 
     function closeModal() {
         closeDisplay();
     }
 
     $effect(() => {
+        if (browser) {
+            localStorage.setItem("currency_code", selected_currency);
+        }
         numberFormat.style.currency = selected_currency
         numberFormat.conversion_rate = conversion_rates[numberFormat.style.currency];
     })

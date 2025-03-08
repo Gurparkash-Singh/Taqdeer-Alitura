@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS Order_Discounts (
     discount_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (order_id) REFERENCES Orders(id),
     FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
 );
 
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     quantity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (order_id) REFERENCES Orders(id),
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
     FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
 );
@@ -315,7 +315,7 @@ CREATE TABLE IF NOT EXISTS Member_Order_Discounts (
     discount_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (order_id) REFERENCES Orders(id),
     FOREIGN KEY (discount_id) REFERENCES Member_Discount(member_discount_id)
 );
 
