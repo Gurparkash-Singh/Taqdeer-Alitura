@@ -39,6 +39,7 @@
         display = false;
     }}
     availableCountries={data.available_currencies}
+    conversion_rates={data.conversion_rates}
 />
 
 

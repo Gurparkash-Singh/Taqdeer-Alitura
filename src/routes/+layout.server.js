@@ -52,13 +52,15 @@ export async function load({ cookies, locals })
         error(500);
     }
 
+    let conversion_rates = {}
+
     for (let i = 0; i < available_currencies.length; i++) {
-        const currency_code = available_currencies[i].currency_code.toLowerCase();
+        const currency_code = available_currencies[i].currency_code;
 
         let conversion_rate = currency_response.data.sar;
-        conversion_rate = conversion_rate[currency_code];
+        conversion_rate = conversion_rate[currency_code.toLowerCase()];
 
-        available_currencies[i].conversion_rate = conversion_rate;
+        conversion_rates[currency_code] = conversion_rate;
     }
 
     return {
@@ -66,6 +68,7 @@ export async function load({ cookies, locals })
         messages, 
         user: locals.user, 
         admin: locals.admin,
-        available_currencies
+        available_currencies,
+        conversion_rates
     };
 }

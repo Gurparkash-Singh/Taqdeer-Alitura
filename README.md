@@ -34,26 +34,28 @@
 - [x] Change DB to allow for multiple coupons on a product
 - [x] Change DB to allow for multiple coupons on a profile
 - [x] Change DB to allow for multiple coupons on entire store
+- [x] Get location button working
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
 - [ ] Verify email verification
-- [ ] Redo cart page
+- [ ] Verify location button
+- [ ] Verify checkout
 - [ ] Verify cart page
-- [ ] Finish Delivery Page
 - [ ] Verify Delivery Page
-- [ ] Save order post checkout
-- [ ] Get address book working
+- [ ] Verify post checkout page
 - [ ] Verify address book
+- [ ] Verify order history
+- [ ] Verify payment methods page
+- [ ] Redo cart page
+- [ ] Finish Delivery Page
+- [ ] Save order post checkout
+- [ ] Get post checkout page working
+- [ ] Get payment methods page working
+- [ ] Get address book working
+- [ ] Get order history working
 - [ ] Get Image upload working
 - [ ] Add size chart and return policy in products page
-- [ ] Get location button working
-- [ ] Verify location button
-- [ ] Get order history working
-- [ ] Verify order history
-- [ ] Get payment methods page working
-- [ ] Verify payment methods page
-- [ ] Verify checkout
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
 - [ ] Limit the number of products on first page load

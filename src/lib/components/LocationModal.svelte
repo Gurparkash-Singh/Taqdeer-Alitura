@@ -1,16 +1,20 @@
 <script>
     import { numberFormat } from "$lib/shared_state/shared.svelte";
 
-    let { display, closeDisplay, availableCountries } = $props();
+    let { 
+        display, 
+        closeDisplay, 
+        availableCountries,
+        conversion_rates
+    } = $props();
+
+    let selected_currency = $state("SAR");
 
     let thisModal;
 
-    let selected_currency = $state("");
-
-    for (let i = 0; i < availableCountries.length; i++){
-        if (availableCountries[i].currency_code == "SAR"){
-            selected_currency = availableCountries[i];
-        }
+    export const snapshot = {
+        capture: () => selected_currency,
+        restore: (value) => selected_currency = value
     }
 
     function closeModal() {
@@ -18,8 +22,8 @@
     }
 
     $effect(() => {
-        numberFormat.conversion_rate = selected_currency.conversion_rate;
-        numberFormat.style.currency = selected_currency.currency_code;
+        numberFormat.style.currency = selected_currency
+        numberFormat.conversion_rate = conversion_rates[numberFormat.style.currency];
     })
 </script>
 
@@ -48,7 +52,7 @@
             bind:value={selected_currency}
         >
             {#each availableCountries as country}
-                <option value={country}>
+                <option value={country.currency_code}>
                     {country.currency_code}
                 </option>
             {/each}
