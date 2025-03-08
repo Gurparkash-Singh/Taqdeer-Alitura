@@ -577,5 +577,12 @@ export const dbFunctions = {
         const [result] = await db.query(query);
 
         return result;
+    },
+
+    removeAllFromCart: async (session) => {
+        let query = "DELETE FROM Cart_Items WHERE session_id = ? ";
+        query += "AND product_id > 0 AND size_id > 0";
+
+        await db.query(query, session);
     }
 }

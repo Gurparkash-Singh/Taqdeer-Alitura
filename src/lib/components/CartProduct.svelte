@@ -24,7 +24,6 @@
     <section id="product-info">
         <div>
             <h3>{product.name}</h3>
-            <h6>{product.size_name}</h6>
         </div>
         {#if product.image_link}
             {#await import(`$lib/images/product_images/${product.image_link}.png`) then { default: src }}
@@ -35,6 +34,9 @@
         {/if}
     </section>
     <p>
+        {product.size_name}
+    </p>
+    <p>
         x{product.quantity}
     </p>
     <p>{price}</p>
@@ -43,7 +45,7 @@
 <style>
     .product-card {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         position: relative;
         align-items: center;
         margin-left: 10px;
@@ -64,10 +66,6 @@
         font-weight: normal;
         font-size: 1em;
         margin: 0;
-    }
-
-    .product-card h6 {
-        margin: 0 0 5px 0;
     }
 
     form {

@@ -47,6 +47,9 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
+- [ ] Get Top part for cart page showing
+- [ ] Show payment acceptance icons on cart page
+- [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Redo cart page
 - [ ] Finish Delivery Page
 - [ ] Save order post checkout

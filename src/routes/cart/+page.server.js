@@ -68,6 +68,34 @@ export const actions = {
         };
     },
 
+    clear: async ({cookies, request, locals}) => {
+        const data = await request.formData();
+
+        const session = cookies.get("session");
+        let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
+
+        if (!session || shopping_session.length === 0) {
+            await dbFunctions.setCriticalError(
+                "cart", 
+                400,
+                `shopping session was not created successfully` 
+            );
+            return fail(500, {
+                invalid: true,
+                message: "server failed"
+            });
+        }
+
+        shopping_session = shopping_session[0].id
+
+        await dbFunctions.removeAllFromCart(shopping_session);
+
+        return {
+            success: true,
+            message: "cleared cart"
+        };
+    },
+
     checkout: async ({ cookies, request, locals }) => {
         const data = await request.formData();
 

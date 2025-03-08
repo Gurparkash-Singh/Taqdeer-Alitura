@@ -50,12 +50,17 @@
             <enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
         </a>
 	</div>
+
+    <section id="navigation-icons">
+
+    </section>
     
     <section id="cart">
-        <section>
+        <section id="cart-items-holder">
             <header>
                 <ul>
                     <li>Item name</li>
+                    <li>Size</li>
                     <li>Quantity</li>
                     <li>Cost</li>
                 </ul>
@@ -63,54 +68,70 @@
             {#each data.cart_items as cart_item}
                 <CartProduct product={cart_item}/>
             {/each}
-        </section>
-        <section id="checkout-area">
-            <header>
-                <ul>
-                    <li>Delivery</li>
-                    <li>Discounts</li>
-                    <li>Total</li>
-                </ul>
-            </header>
-            <ul id="order-summary">
-                <li>{delivery}</li>
-                <li>{discounts}%</li>
-                <li>{total}</li>
-            </ul>
-            <button 
-                aria-label="toggle section"
-                class="section-button"
-                class:open-button={!openInstallments}
-                onclick={() => {
-                    openInstallments = !openInstallments;
-                }}
-            >
-                Pay
-            </button>
-            <section 
-                class="collapsable"
-                class:open-section={openInstallments}
-            >
-                <form action="?/checkout" method="POST">
-                    <button type="submit">Checkout</button>
+            {#if data.cart_items.length > 0}
+                <form action="?/clear" method="POST" id="clear-button">
+                    <button  
+                        formaction="?/clear" 
+                        formmethod="POST"
+                        type="submit"
+                    >
+                        clear cart
+                    </button>
                 </form>
-            </section>
-
+            {/if}
+        </section>
+        <section id="price-info">
+            <p>Subtotal</p>
+            <p>{subtotal}</p>
+        </section>
+        <form action="?/checkout" method="POST" id="checkout-form">
             <button 
-                aria-label="toggle section"
-                class="section-button"
-                class:open-button={!openCoupons}
-                onclick={() => {
-                    openCoupons = !openCoupons;
-                }}
+                type="submit"
+                class:disable-submit={data.cart_items.length == 0}
             >
-                Coupons
+                Checkout
+                <svg width="15" height="15" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.0607 13.0607C13.6464 12.4749 13.6464 11.5251 13.0607 10.9393L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L9.87868 12L1.3934 20.4853C0.807611 21.0711 0.807611 22.0208 1.3934 22.6066C1.97919 23.1924 2.92893 23.1924 3.51472 22.6066L13.0607 13.0607ZM10 13.5H12V10.5H10V13.5Z" fill="white"/>
+                </svg>
             </button>
-            <section 
-                class="collapsable"
-                class:open-section={openCoupons}
-            >
-                <p>This will contain coupons.</p>
+        </form>
+        <section id="checkout-area">
+            <section id="extra-info">
+                <button 
+                    aria-label="toggle section"
+                    class="section-button"
+                    class:open-button={!openInstallments}
+                    onclick={() => {
+                        openInstallments = !openInstallments;
+                    }}
+                >
+                    Pay in installments
+                </button>
+                <section 
+                    class="collapsable"
+                    class:open-section={openInstallments}
+                >
+                    <p>
+                        Buy now and pay in four zero interest  installments billed monthly with tabby.
+                    </p>
+                </section>
+
+                <button 
+                    aria-label="toggle section"
+                    class="section-button"
+                    class:open-button={!openCoupons}
+                    onclick={() => {
+                        openCoupons = !openCoupons;
+                    }}
+                >
+                    Coupons
+                </button>
+                <section 
+                    class="collapsable"
+                    class:open-section={openCoupons}
+                >
+                    <p>This will contain coupons.</p>
+                </section>
             </section>
         </section>
     </section>
@@ -134,6 +155,72 @@
 		width: 170px;
 		height: 170px;
 	}
+
+    #cart {
+        display: grid;
+        grid-template-columns: 1fr;
+        margin-bottom: 200px;
+    }
+
+    #cart header ul {
+        list-style-type: none;
+        display: grid;
+        justify-items: center;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        border-bottom: 1px solid grey;
+        padding: 10px 0 10px 10px;
+        align-items: center;
+    }
+
+    #cart header ul li:first-child {
+        justify-self: start;
+    }
+
+    #clear-button {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #clear-button button{
+        background: none;
+        border: none;
+        text-decoration: underline;
+        text-align: end;
+        cursor: pointer;
+    }
+
+    .disable-submit {
+        background-color: #D9D9D9;
+        color: #1E1E1E80;
+    }
+
+    .disable-submit svg path {
+        fill: #1E1E1E80;
+    }
+
+    #checkout-form button {
+        background-color: #bf1e2e;
+        color: white;
+        border: none;
+        padding: 10px 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    #checkout-form button svg {
+        margin-left: 10px;
+    }
+
+    #cart-items-holder {
+        margin-bottom: 20px;
+        padding: 10px 0;
+        border-bottom: 1px solid grey;
+    }
 
     .collapsable {
         font-size: 14px;
@@ -173,41 +260,14 @@
         border-bottom: 1px solid grey;
     }
 
-    #cart {
+    #checkout-area {
         display: grid;
         grid-template-columns: 1fr;
-        margin-bottom: 200px;
     }
 
-    #cart header ul {
-        list-style-type: none;
-        display: grid;
-        justify-items: center;
-        grid-template-columns: 1fr 1fr 1fr;
-        border-bottom: 1px solid grey;
-        padding: 10px 0 10px 10px;
-        align-items: center;
-    }
-
-    #cart header ul li:first-child {
-        justify-self: start;
-    }
-
-    #order-summary {
-        list-style-type: none;
-        display: grid;
-        justify-items: center;
-        grid-template-columns: 1fr 1fr 1fr;
-        margin: 0;
-        padding: 0 0 0 10px;
-        align-items: center;
-    }
-
-    #order-summary li:first-child {
-        justify-self: start;
-    }
-
-    @media screen and (width < 550px) {
-
+    #price-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
     }
 </style>

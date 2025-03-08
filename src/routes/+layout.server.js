@@ -1,3 +1,4 @@
+import { MODE } from "$env/static/private";
 import { dbFunctions } from "$lib/db/database";
 import { error } from "@sveltejs/kit";
 import axios from "axios";
@@ -44,12 +45,34 @@ export async function load({ cookies, locals })
             "https://latest.currency-api.pages.dev/v1/currencies/sar.json"
         );
     } catch (axiosError) {
-        await dbFunctions.setCriticalError(
-            "checkout",
-            500,
-            JSON.stringify(axiosError.response.data)
-        )
-        error(500);
+        if (MODE === "DEVELOPMENT"){
+            currency_response = {
+                data: {
+                    sar: {
+                        "aed": 0.97933333,
+                        "bhd": 0.10026667,
+                        "egp": 13.51472091,
+                        "eur": 0.24612223,
+                        "gbp": 0.20652019,
+                        "kwd": 0.082188105,
+                        "omr": 0.10265457,
+                        "qar": 0.97066667,
+                        "sar": 1,
+                        "usd": 0.26666667
+                    }
+                }
+            }
+            console.log("Using development values for currency rates");
+            console.log("File: /+layout.server.js");
+        }
+        else {
+            await dbFunctions.setCriticalError(
+                "checkout",
+                500,
+                JSON.stringify(axiosError.response.data)
+            )
+            error(500);
+        }
     }
 
     let conversion_rates = {}
