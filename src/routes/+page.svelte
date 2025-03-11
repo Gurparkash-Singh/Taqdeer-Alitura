@@ -108,13 +108,11 @@
 
 <div id="image-holder">
     <enhanced:img 
-        src='$lib/images/homepage.jpg'
-        alt="background"
-        style:object-fit="cover"
-        style:object-position="center center"
-        style:width="100vw"
-        style:height="100vh"
-    >
+        src="$lib/images/homepage.avif" 
+        sizes="min(1000px, 100vw)"
+        class="background-image"
+        alt="The Background"
+    />
 </div>
 
 <div id="svg-holder1" bind:this={svgHolder1}>
@@ -397,6 +395,13 @@
 		position: fixed;
 		z-index: -1;
 	}
+
+    .background-image {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        object-position: center center;
+    }
 
 	#logo {
 		display: flex;

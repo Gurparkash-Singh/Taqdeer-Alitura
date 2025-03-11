@@ -56,7 +56,7 @@
             />
         </p>
         <p>
-            <label for="paswword">password:</label>
+            <label for="password">password:</label>
             <input 
                 type="password" 
                 name="password" 

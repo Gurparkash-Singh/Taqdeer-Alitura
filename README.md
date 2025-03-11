@@ -61,6 +61,7 @@
 - [ ] Add size chart and return policy in products page
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
+- [ ] Use Page Insights to increase performance
 - [ ] Limit the number of products on first page load
 
 # To-Do for minimal viable product
