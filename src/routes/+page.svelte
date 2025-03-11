@@ -1,6 +1,4 @@
 <script>
-	import Logo from '$lib/images/Logo.png';
-	import BackgroundImage from '$lib/images/homepage.jpg';
     import { modal } from '$lib/shared_state/shared.svelte';
 
     let { form, data } = $props();
@@ -109,6 +107,14 @@
 <svelte:window bind:scrollY={verticalScrollPos} bind:innerHeight={windowHeight}/>
 
 <div id="image-holder">
+    <enhanced:img 
+        src='$lib/images/homepage.jpg'
+        alt="background"
+        style:object-fit="cover"
+        style:object-position="center center"
+        style:width="100vw"
+        style:height="100vh"
+    >
 </div>
 
 <div id="svg-holder1" bind:this={svgHolder1}>
@@ -171,7 +177,11 @@
 
 <main bind:clientHeight={bodyHeight}>
 	<section id="logo" bind:this={home}>
-		<img src={Logo} alt="Taqdeer Alitura Logo" />
+		<enhanced:img 
+            src='$lib/images/Logo.png'
+            alt="Taqdeer Alitura Logo" 
+            class="logo-image"
+        />
 		<h1>TAQDEER</h1>
 		<h1>ALITURA</h1>
 	</section>
@@ -382,14 +392,9 @@
     }
 
 	#image-holder {
-		padding: 20px;
 		width: 100vw;
 		height: 100vh;
 		position: fixed;
-		background-image: url('$lib/images/homepage.jpg');
-		background-position: center center;
-		background-size: cover;
-		background-repeat: no-repeat;
 		z-index: -1;
 	}
 
@@ -400,7 +405,15 @@
 		justify-content: center;
 		align-items: center;
 		color: white;
+        position: relative;
 	}
+
+    .logo-image {
+        width: 150px;
+        height: auto;
+        position: absolute;
+        transform: translate(-50%, -35%);
+    }
 
 	#logo h1 {
 		margin: 0;
@@ -408,11 +421,6 @@
 		position: relative;
 		top: 7px;
         color: white;
-	}
-
-	#logo img {
-		width: 150px;
-		position: absolute;
 	}
 
     #svg-holder1 {
@@ -573,8 +581,8 @@
 			top: 7px;
 		}
 
-		#logo img {
-			width: 100px;
-		}
+        .logo-image {
+            width: 100px;
+        }
 	}
 </style>

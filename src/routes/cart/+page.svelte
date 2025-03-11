@@ -190,7 +190,7 @@
         cursor: pointer;
     }
 
-    .disable-submit {
+    #checkout-form button.disable-submit {
         background-color: #D9D9D9;
         color: #1E1E1E80;
     }
