@@ -1,5 +1,5 @@
 import mysql from "mysql2";
-import { DATABASE_URL, MODE } from "$env/static/private";
+import { DATABASE_PASS, MODE, OFFLINE } from "$env/static/private";
 import { RESEND_API_KEY } from '$env/static/private';
 import { Resend } from 'resend';
 import { error } from "@sveltejs/kit";
@@ -8,7 +8,30 @@ const resend = new Resend(RESEND_API_KEY);
 
 export let db;
 try {
-    db = mysql.createPool(DATABASE_URL).promise();
+    if (MODE == "DEVELOPMENT" && OFFLINE == "TRUE") {
+        db = mysql.createPool({
+            host: "localhost",
+            user: "gurp",
+            password: DATABASE_PASS,
+            timezone: "Z",
+            database: "Taqdeer"
+        }).promise();
+    }
+    else{
+        let host = "localhost";
+
+        if (MODE == "DEVELOPMENT") {
+            host = "192.168.2.25"
+        }
+        
+        db = mysql.createPool({
+            host: host,
+            user: "gurp",
+            password: DATABASE_PASS,
+            timezone: "Z",
+            database: "Taqdeer"
+        }).promise();
+    }
 } catch (dbError) {
     if (MODE != "DEVELOPMENT") {
         const { returnData, error } = await resend.emails.send({

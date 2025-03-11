@@ -60,7 +60,7 @@ export const actions = {
         await dbFunctions.storeAuth(cookies.get("session"), user.user_id);
 
         if (admin) {
-            throw redirect(303, '/admin');
+            throw redirect(303, '/admin/settings');
         }
 
         throw redirect(303, '/profile');

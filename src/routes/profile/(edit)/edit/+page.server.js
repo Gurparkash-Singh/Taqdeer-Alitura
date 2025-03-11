@@ -50,7 +50,6 @@ export const actions = {
         if (birthday) {
             if (locals.user.date_of_birth !== birthday) {
                 birthday = new Date(birthday);
-                birthday.setUTCHours(12);
 
                 await dbFunctions.updateDOB(birthday, locals.user.email);
 
