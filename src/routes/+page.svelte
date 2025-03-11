@@ -1,4 +1,6 @@
 <script>
+    import BackgroundImage from "$lib/images/homepage.avif?enhanced";
+    import Logo from '$lib/images/Logo.png?enhanced';
     import { modal } from '$lib/shared_state/shared.svelte';
 
     let { form, data } = $props();
@@ -108,7 +110,7 @@
 
 <div id="image-holder">
     <enhanced:img 
-        src="$lib/images/homepage.avif" 
+        src={BackgroundImage}
         sizes="min(1000px, 100vw)"
         class="background-image"
         alt="The Background"
@@ -176,7 +178,7 @@
 <main bind:clientHeight={bodyHeight}>
 	<section id="logo" bind:this={home}>
 		<enhanced:img 
-            src='$lib/images/Logo.png'
+            src={Logo}
             alt="Taqdeer Alitura Logo" 
             class="logo-image"
         />
