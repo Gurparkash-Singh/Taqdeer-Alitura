@@ -1,7 +1,23 @@
 <script>
     import { modal } from '$lib/shared_state/shared.svelte';
 
-    let { form } = $props();
+    let { data, form } = $props();
+
+    if (data.infoUpdated) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == "updated order information") {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages) {
+            modal.messages.push({
+                heading: "Success",
+                paragraph: "updated order information"
+            });
+        }
+    }
 
     let address1 = $state("");
     let address2 = $state("");

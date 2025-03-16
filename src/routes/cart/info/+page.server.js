@@ -3,6 +3,23 @@ import { dbFunctions } from '$lib/db/database.js';
 import { profileEditor } from '$lib/functions/profile-editor';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 
+export async function load({cookies}) {
+    if (cookies.get("order_id")) {
+        let [order] = await dbFunctions.getCreatedOrderById(cookies.get("order_id"));
+
+        if (order) {
+            return {
+                existing_order: {
+                    name: order.name,
+                    email: order.user_email,
+                    country: order.country,
+                    phone: order.telephone
+                }
+            }
+        }
+    }
+}
+
 export const actions = {
     create: async ({ locals, cookies, request }) => {
         const data = await request.formData();
@@ -54,12 +71,32 @@ export const actions = {
 
         const phoneNumber = parsePhoneNumberFromString(phone, country);
 
+        if (cookies.get("order_id")) {
+            let [order] = await dbFunctions.getCreatedOrderById(cookies.get("order_id"));
+
+            await dbFunctions.updateOrder(
+                cookies.get("order_id"),
+                name, 
+                email,
+                phoneNumber.country,
+                phoneNumber.nationalNumber
+            );
+
+            throw redirect(302, '/cart/delivery?updateInfo=true');
+        }
+
         const result = await dbFunctions.createOrder(
             name, 
             email,
             phoneNumber.country,
             phoneNumber.nationalNumber
         );
+
+        cookies.set('order_id', result.insertId, {
+            path: "/",
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 24
+        });
 
         throw redirect(302, '/cart/delivery');
     }

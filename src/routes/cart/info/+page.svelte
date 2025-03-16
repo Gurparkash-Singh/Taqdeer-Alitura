@@ -10,8 +10,6 @@
     let email = $state(data.user ? data.user.email : "");
     let showMessage = $state(false);
 
-    let display = $state(false);
-
     let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
     let countryCode = $state("SA");
     let phoneNumber = $state("")
@@ -54,6 +52,8 @@
         if (form.invalid) {
             email = form.email;
             name = form.name;
+            countryCode = form.country,
+            phoneNumber = form.phone
         }
 
         if (!inMessages && form.invalid) 
@@ -69,14 +69,14 @@
             });
         }
     }
-</script>
 
-<ConfirmationModal 
-    display = {display}
-    closeDisplay = {() => {
-        display = false;
-    }}
-/>
+    if (data.existing_order) {
+        email = data.existing_order.email;
+        name = data.existing_order.name;
+        countryCode = data.existing_order.country,
+        phoneNumber = data.existing_order.phone
+    }
+</script>
 
 <section>
     <h1>Contact Info</h1>

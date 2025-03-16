@@ -80,10 +80,4 @@
         top: 20px;
         left: 20px;
     }
-
-    select {
-        background-color: #D9D9D9;
-        border: none;
-        padding: 10px;
-    }
  </style>

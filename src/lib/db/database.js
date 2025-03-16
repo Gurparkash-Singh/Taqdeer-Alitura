@@ -613,17 +613,26 @@ export const dbFunctions = {
         query += "(name, user_email, country, telephone, status) VALUES ";
         query += "(?, ?, ?, ?, 'created');";
 
-        const result = await db.query(query, [name, email, country, phone]);
+        const [result] = await db.query(query, [name, email, country, phone]);
 
-        console.log(result);
         return result;
     },
 
-    getOrderByEmail: async (email) => {
-        let query = "SELECT * FROM Orders WHERE user_email = ?;";
+    getCreatedOrderById: async (id) => {
+        let query = "SELECT * FROM Orders WHERE id = ? AND status = 'created';";
 
-        const [order] = await db.query(query, email);
+        const [order] = await db.query(query, id);
 
         return order;
+    },
+
+    updateOrder: async (id, name, email, country, phone) => {
+        let query = "UPDATE Orders ";
+        query += "SET name = ?, user_email = ?, country = ?, telephone = ? WHERE ";
+        query += "id = ?;";
+
+        const [result] = await db.query(query, [name, email, country, phone, id]);
+
+        return result;
     }
 }
