@@ -1,6 +1,6 @@
 import { dbFunctions } from "$lib/db/database";
 import { error, redirect } from "@sveltejs/kit";
-import { TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
+import { PROD_SK_TAP, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
 import axios from "axios";
 
 export async function load({ cookies })
@@ -126,7 +126,7 @@ export const actions = {
             headers: {
                 accept: 'application/json',
                 'content-type': 'application/json',
-                Authorization: `Bearer ${TEST_SK_TAP}`
+                Authorization: `Bearer ${PROD_SK_TAP}`
             },
             data: {
                 amount: 100,

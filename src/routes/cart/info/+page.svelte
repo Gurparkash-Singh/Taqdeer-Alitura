@@ -2,27 +2,37 @@
     import { modal } from '$lib/shared_state/shared.svelte';
     import { getCountries, getCountryCallingCode, AsYouType } from 'libphonenumber-js';
 	import { isValidPhoneNumber } from 'libphonenumber-js/max';
+    import ConfirmationModal from '$lib/components/ConfirmationModal.svelte';
 
     let { data, form } = $props();
 
+    let name = $state(data.user ? data.user.name : "");
+    let email = $state(data.user ? data.user.email : "");
+    let showMessage = $state(false);
+
+    let display = $state(false);
+
     let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
+    let countryCode = $state("SA");
+    let phoneNumber = $state("")
 
-    let userPhone = $state("");
-
-    if (data.user.phone) {
-        userPhone = new AsYouType(data.user.country).input(data.user.phone);
+    if (data.user) {
+        if (data.user.phone) {
+            countryCode = data.user.country;
+            phoneNumber = new AsYouType(data.user.country).input(data.user.phone);
+        }
     }
 
-    let countryCode = $state(data.user.country ? data.user.country : "SA");
-    let phoneNumber = $state(data.user.phone ? data.user.phone : "");
+    $effect(() => {
+        if (phoneNumber) {
+            phoneNumber = new AsYouType(countryCode).input(phoneNumber)
+        }
+    })
 
     let enableSubmit = $derived.by(() => {
-        if ( userPhone == phoneNumber) {
-            return false;
-        }
         if (countryCode) {
             if(isValidPhoneNumber(phoneNumber, countryCode)) {
-                return true;
+                return name && email
             }
             else {
                 return false;
@@ -42,8 +52,8 @@
         }
 
         if (form.invalid) {
-            countryCode = form.country;
-            phoneNumber = form.phone;
+            email = form.email;
+            name = form.name;
         }
 
         if (!inMessages && form.invalid) 
@@ -59,17 +69,39 @@
             });
         }
     }
-
-    $effect(() => {
-        phoneNumber = new AsYouType(countryCode).input(phoneNumber)
-    })
 </script>
 
+<ConfirmationModal 
+    display = {display}
+    closeDisplay = {() => {
+        display = false;
+    }}
+/>
+
 <section>
-    <form action="?/submit" method="POST">
+    <h1>Contact Info</h1>
+    <form action="?/create" method="POST">
+        <p>
+            <label for="name">full name:</label>
+            <input 
+                type="text" 
+                name="name" 
+                id="name"
+                bind:value={name}
+            />
+        </p>
+        <p>
+            <label for="email">email:</label>
+            <input 
+                type="text" 
+                name="email" 
+                id="email"
+                bind:value={email}
+            />
+        </p>
         <p>
             <label for="country">country:</label>
-            <select 
+            <select
                 name="country"
                 id="country"
                 bind:value={countryCode}
@@ -109,6 +141,16 @@
     section {
         max-width: 80%;
         margin: auto;
+    }
+
+    h1 {
+        width: 100%;
+        padding: 20px;
+        border-bottom: 2px solid #D9D9D9;
+    }
+
+    form {
+        padding: 0 20px;
     }
 
     form p {

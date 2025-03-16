@@ -48,6 +48,46 @@ export const profileEditor = {
         return true;
     },
 
+    invalidEmailForCheckout: async (email) => {
+        let data;
+
+        try {
+            data = await axios({
+                method: 'get',
+                url: `https://api.testmail.top/domain/check`,
+                params: {
+                    data: email
+                },
+                headers: {
+                    'Authorization': TESTMAIL_TOKEN,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+        catch (error) {
+            await dbFunctions.setError("email validation", 500, error.message);
+            return "something went wrong with email validation";
+        }
+
+        if (!data.data.result) {
+            switch(data.data.error) {
+                case 31:
+                    return "please check email address syntax"
+                case 32:
+                    return "please check email address syntax"
+                case 34:
+                    return "please check email address syntax"
+                case 37:
+                    return "incoming data is too long"
+                case 777:
+                    return "something went wrong with email validation";
+            }
+            return "invalid email";
+        }
+
+        return false;
+    },
+
     invalidEmail: async (email) => {
         let user = await dbFunctions.getUserByEmail(email);
 

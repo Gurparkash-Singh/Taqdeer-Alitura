@@ -35,6 +35,9 @@
 - [x] Change DB to allow for multiple coupons on a profile
 - [x] Change DB to allow for multiple coupons on entire store
 - [x] Get location button working
+- [x] Show payment acceptance icons on cart page
+- [x] Get Top part for cart page showing
+- [x] Redo cart page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -47,10 +50,6 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Get Top part for cart page showing
-- [ ] Show payment acceptance icons on cart page
-- [ ] Redo Discounts to allow for members to receive discounts without code
-- [ ] Redo cart page
 - [ ] Finish Delivery Page
 - [ ] Save order post checkout
 - [ ] Get post checkout page working
@@ -58,6 +57,7 @@
 - [ ] Get address book working
 - [ ] Get order history working
 - [ ] Get Image upload working
+- [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Add size chart and return policy in products page
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page

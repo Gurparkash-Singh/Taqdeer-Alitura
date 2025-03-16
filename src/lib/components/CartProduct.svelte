@@ -45,7 +45,7 @@
 <style>
     .product-card {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 90px 1fr 1fr 1fr;
         position: relative;
         align-items: center;
         margin-left: 10px;

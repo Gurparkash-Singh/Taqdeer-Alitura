@@ -147,9 +147,12 @@ CREATE TABLE IF NOT EXISTS Payment_Details (
 
 CREATE TABLE IF NOT EXISTS Orders (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    tap_order_id VARCHAR(255) NOT NULL,
+    tap_order_id VARCHAR(255),
+    name TEXT NOT NULL,
     user_email VARCHAR(255) NOT NULL,
-    total DECIMAL NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    telephone VARCHAR(255) NOT NULL,
+    total DECIMAL,
     payment_id INT,
     status TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -180,18 +183,32 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
 );
 
--- User email does NOT refer to users table so guest checkout can work
-CREATE TABLE IF NOT EXISTS User_Addresses (
+CREATE TABLE IF NOT EXISTS Order_Addresses (
     address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    user_email VARCHAR(255) NOT NULL,
+    order_id INT NOT NULL,
     address_line1 VARCHAR(255) NOT NULL,
     address_line2 VARCHAR(255),
     city VARCHAR(255) NOT NULL,
     postal_code VARCHAR(255) NOT NULL,
-    country VARCHAR(255) NOT NULL,
-    telephone VARCHAR(255) NOT NULL,
+    country TEXT NOT NULL,
+    type TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES Orders(id)
+);
+
+-- User email does NOT refer to users table so guest checkout can work
+CREATE TABLE IF NOT EXISTS User_Addresses (
+    address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    address_line1 VARCHAR(255) NOT NULL,
+    address_line2 VARCHAR(255),
+    city VARCHAR(255) NOT NULL,
+    postal_code VARCHAR(255) NOT NULL,
+    country TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS User_Cards (

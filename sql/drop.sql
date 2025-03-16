@@ -36,6 +36,8 @@ DROP TABLE IF EXISTS User_Cards;
 
 DROP TABLE IF EXISTS User_Addresses;
 
+DROP TABLE IF EXISTS Order_Addresses;
+
 DROP TABLE IF EXISTS Order_Items;
 
 DROP TABLE IF EXISTS Order_Discounts;

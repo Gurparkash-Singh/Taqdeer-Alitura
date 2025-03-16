@@ -11,10 +11,9 @@ try {
     if (MODE == "DEVELOPMENT" && OFFLINE == "TRUE") {
         db = mysql.createPool({
             host: "localhost",
-            user: "gurp",
-            password: DATABASE_PASS,
-            timezone: "Z",
-            database: "Taqdeer"
+            user: "root",
+            database: "Taqdeer",
+            timezone: "Z"
         }).promise();
     }
     else{
@@ -28,8 +27,8 @@ try {
             host: host,
             user: "gurp",
             password: DATABASE_PASS,
-            timezone: "Z",
-            database: "Taqdeer"
+            database: "Taqdeer",
+            timezone: "Z"
         }).promise();
     }
 } catch (dbError) {
@@ -607,5 +606,24 @@ export const dbFunctions = {
         query += "AND product_id > 0 AND size_id > 0";
 
         await db.query(query, session);
+    },
+
+    createOrder: async (name, email, country, phone) => {
+        let query = "INSERT INTO Orders ";
+        query += "(name, user_email, country, telephone, status) VALUES ";
+        query += "(?, ?, ?, ?, 'created');";
+
+        const result = await db.query(query, [name, email, country, phone]);
+
+        console.log(result);
+        return result;
+    },
+
+    getOrderByEmail: async (email) => {
+        let query = "SELECT * FROM Orders WHERE user_email = ?;";
+
+        const [order] = await db.query(query, email);
+
+        return order;
     }
 }

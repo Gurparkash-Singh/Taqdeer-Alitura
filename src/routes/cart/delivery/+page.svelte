@@ -1,36 +1,15 @@
 <script>
     import { modal } from '$lib/shared_state/shared.svelte';
-    import { getCountries, getCountryCallingCode, AsYouType } from 'libphonenumber-js';
-	import { isValidPhoneNumber } from 'libphonenumber-js/max';
 
-    let { data, form } = $props();
+    let { form } = $props();
 
-    let regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
-
-    let userPhone = $state("");
-
-    if (data.user.phone) {
-        userPhone = new AsYouType(data.user.country).input(data.user.phone);
-    }
-
-    let countryCode = $state(data.user.country ? data.user.country : "SA");
-    let phoneNumber = $state(data.user.phone ? data.user.phone : "");
+    let address1 = $state("");
+    let address2 = $state("");
+    let city = $state("");
+    let postal_code = $state("");
 
     let enableSubmit = $derived.by(() => {
-        if ( userPhone == phoneNumber) {
-            return false;
-        }
-        if (countryCode) {
-            if(isValidPhoneNumber(phoneNumber, countryCode)) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        else {
-            return false;
-        }
+        return address1 && city && postal_code;
     });
 
     if (form) {
@@ -42,8 +21,7 @@
         }
 
         if (form.invalid) {
-            countryCode = form.country;
-            phoneNumber = form.phone;
+            email = form.email;
         }
 
         if (!inMessages && form.invalid) 
@@ -54,43 +32,35 @@
             });
         }else if (!inMessages && form.success) {
             modal.messages.push({
-                heading: "SUCCESS",
+                heading: "Success",
                 paragraph: form.message
             });
         }
     }
-
-    $effect(() => {
-        phoneNumber = new AsYouType(countryCode).input(phoneNumber)
-    })
 </script>
 
 <section>
-    <form action="?/submit" method="POST">
+    <h1>Delivery Information</h1>
+    <form action="?/login" method="POST">
         <p>
-            <label for="country">country:</label>
-            <select 
-                name="country"
-                id="country"
-                bind:value={countryCode}
-            >
-                {#each getCountries() as country}
-                    {#if country != "IL"}
-                        <option value={country}>
-                            {regionNames.of(country)}: +{getCountryCallingCode(country)}
-                        </option>
-                    {/if}
-                {/each}
-            </select>
+           <label for="address1">address line 1:</label>
+           <input type="text" name="address1" id="address1">
         </p>
         <p>
-            <label for="phone">phone number:</label>
-            <input 
-                type="tel"
-                name="phone"
-                id="phone"
-                bind:value={phoneNumber}
-            >
+            <label for="address2">address line 2:</label>
+            <input type="text" name="address2" id="address2">
+        </p>
+        <p>
+            <label for="city">city:</label>
+            <input type="text" name="city" id="city">
+        </p>
+        <p>
+            <label for="postal">postal code:</label>
+            <input type="text" name="postal" id="postal">
+        </p>
+        <p>
+            <label for="country">country:</label>
+            <input type="text" name="country" id="country">
         </p>
         <button 
             type="submit"
@@ -110,6 +80,10 @@
         max-width: 80%;
         margin: auto;
     }
+    
+    h1 {
+        color: #bf1e2e;
+    }
 
     form p {
         display: flex;
@@ -120,7 +94,7 @@
         margin-bottom: 5px;
     }
 
-    form p input, form p select {
+    form p input {
         background-color: #D9D9D9;
         border: none;
         padding: 10px;
