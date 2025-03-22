@@ -51,6 +51,9 @@
 - [ ] Verify order history
 - [ ] Verify payment methods page
 - [ ] Finish Delivery Page
+- [ ] Save Order stages in database
+- [ ] Only allow /cart/delivery if order_id is in cookies and order status is below paid
+- [ ] Update info if order status is below paid
 - [ ] Save order post checkout
 - [ ] Get post checkout page working
 - [ ] Get payment methods page working

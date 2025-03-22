@@ -71,21 +71,39 @@ export const actions = {
 
         const phoneNumber = parsePhoneNumberFromString(phone, country);
 
+        let user_id = 0;
+
+        if (locals.user) {
+            user_id = locals.user.user_id;
+        }
+
         if (cookies.get("order_id")) {
             let [order] = await dbFunctions.getCreatedOrderById(cookies.get("order_id"));
 
-            await dbFunctions.updateOrder(
-                cookies.get("order_id"),
-                name, 
-                email,
-                phoneNumber.country,
-                phoneNumber.nationalNumber
-            );
-
-            throw redirect(302, '/cart/delivery?updateInfo=true');
+            if (order) {
+                if (
+                    order.name != name 
+                    || order.user_email != email
+                    || order.country != phoneNumber.country
+                    || order.telephone != phoneNumber.nationalNumber
+                ) {
+                    await dbFunctions.updateOrder(
+                        cookies.get("order_id"),
+                        name, 
+                        email,
+                        phoneNumber.country,
+                        phoneNumber.nationalNumber
+                    );
+        
+                    throw redirect(302, '/cart/delivery?updateInfo=true');
+                }
+    
+                throw redirect(302, "/cart/delivery");
+            }
         }
 
         const result = await dbFunctions.createOrder(
+            user_id,
             name, 
             email,
             phoneNumber.country,

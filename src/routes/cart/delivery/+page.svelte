@@ -36,10 +36,6 @@
             }
         }
 
-        if (form.invalid) {
-            email = form.email;
-        }
-
         if (!inMessages && form.invalid) 
         {
             modal.messages.push({

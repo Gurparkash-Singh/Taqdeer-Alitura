@@ -147,6 +147,7 @@ CREATE TABLE IF NOT EXISTS Payment_Details (
 
 CREATE TABLE IF NOT EXISTS Orders (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
     tap_order_id VARCHAR(255),
     name TEXT NOT NULL,
     user_email VARCHAR(255) NOT NULL,
@@ -157,7 +158,8 @@ CREATE TABLE IF NOT EXISTS Orders (
     status TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (payment_id) REFERENCES Payment_Details(payment_id)
+    FOREIGN KEY (payment_id) REFERENCES Payment_Details(payment_id),
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS Order_Discounts (
