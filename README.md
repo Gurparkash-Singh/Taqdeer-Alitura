@@ -82,7 +82,6 @@
 In Case of minimal viable product:
 - [ ] Disable Address Book
 - [ ] Disable Payment Methods
-- [ ] Disable Phone
 
 # Completely Finished
 - Homepage
@@ -175,3 +174,8 @@ Full Size
 
 ## Homepage
 Full Size
+
+# For Conversion Rates
+- Add the rates to localstorage
+- if the rates exist and are not expired use them
+- Update if the rates have expired

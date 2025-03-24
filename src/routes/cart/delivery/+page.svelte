@@ -53,26 +53,50 @@
 
 <section>
     <h1>Delivery Information</h1>
-    <form action="?/login" method="POST">
+    <form action="?/checkout" method="POST">
         <p>
            <label for="address1">address line 1:</label>
-           <input type="text" name="address1" id="address1">
+           <input 
+                type="text" 
+                name="address1" 
+                id="address1"
+                bind:value={address1}
+            >
         </p>
         <p>
             <label for="address2">address line 2:</label>
-            <input type="text" name="address2" id="address2">
+            <input 
+                type="text" 
+                name="address2" 
+                id="address2"
+                bind:value={address2}
+            >
         </p>
         <p>
             <label for="city">city:</label>
-            <input type="text" name="city" id="city">
+            <input 
+                type="text" 
+                name="city" 
+                id="city"
+                bind:value={city}
+            >
         </p>
         <p>
             <label for="postal">postal code:</label>
-            <input type="text" name="postal" id="postal">
+            <input 
+                type="text" 
+                name="postal" 
+                id="postal"
+                bind:value={postal_code}
+            >
         </p>
         <p>
             <label for="country">country:</label>
-            <input type="text" name="country" id="country">
+            <input 
+                type="text" 
+                name="country" 
+                id="country"
+            >
         </p>
         <button 
             type="submit"
@@ -94,7 +118,13 @@
     }
     
     h1 {
-        color: #bf1e2e;
+        width: 100%;
+        padding: 20px;
+        border-bottom: 2px solid #D9D9D9;
+    }
+
+    form {
+        padding: 0 20px;
     }
 
     form p {

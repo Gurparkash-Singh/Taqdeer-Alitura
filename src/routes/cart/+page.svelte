@@ -55,7 +55,10 @@
 
     
 <section id="cart">
-    <section id="cart-items-holder">
+    <section 
+        id="cart-items-holder"
+        class:no-product={data.cart_items.length == 0}
+    >
         <header>
             <ul>
                 <li>Item name</li>
@@ -241,6 +244,10 @@
         margin-bottom: 20px;
         padding: 10px 0;
         border-bottom: 1px solid grey;
+    }
+
+    #cart-items-holder.no-product {
+        border: none;
     }
 
     .collapsable {
