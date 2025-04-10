@@ -51,15 +51,17 @@
 - [ ] Verify order history
 - [ ] Verify payment methods page
 - [ ] Finish Delivery Page
+- [ ] Get address book working
 - [ ] Save Order stages in database
 - [ ] Only allow /cart/delivery if order_id is in cookies and order status is below paid
 - [ ] Update info if order status is below paid
+- [ ] Finish Checkout
 - [ ] Save order post checkout
 - [ ] Get post checkout page working
 - [ ] Get payment methods page working
-- [ ] Get address book working
 - [ ] Get order history working
 - [ ] Get Image upload working
+- [ ] Fix Homepage and Logo image
 - [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Add size chart and return policy in products page
 - [ ] Go back to exact shop settings and scroll to exact product on product page
