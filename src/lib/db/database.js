@@ -608,12 +608,22 @@ export const dbFunctions = {
         await db.query(query, session);
     },
 
-    createOrder: async (user_id, name, email, country, phone) => {
+    createOrderForExistingUser: async (user_id, name, email, country, phone) => {
         let query = "INSERT INTO Orders ";
         query += "(user_id, name, user_email, country, telephone, status) VALUES ";
         query += "(?, ?, ?, ?, ?, 'created');";
 
         const [result] = await db.query(query, [user_id, name, email, country, phone]);
+
+        return result;
+    },
+
+    createOrderForGuest: async (name, email, country, phone) => {
+        let query = "INSERT INTO Orders ";
+        query += "(name, user_email, country, telephone, status) VALUES ";
+        query += "(?, ?, ?, ?, 'created');";
+
+        const [result] = await db.query(query, [name, email, country, phone]);
 
         return result;
     },

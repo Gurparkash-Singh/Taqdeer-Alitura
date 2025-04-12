@@ -88,7 +88,7 @@
     </section>
     <section id="checkout-form">
         <a 
-            href="/cart/info"
+            href="/cart/delivery"
             class:disable-submit={data.cart_items.length == 0}
         >
             Checkout

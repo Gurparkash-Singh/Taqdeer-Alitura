@@ -51,9 +51,10 @@
 - [ ] Verify order history
 - [ ] Verify payment methods page
 - [ ] Finish Delivery Page
+- [ ] Validate Address, save address, get and save delivery rate
 - [ ] Get address book working
 - [ ] Save Order stages in database
-- [ ] Only allow /cart/delivery if order_id is in cookies and order status is below paid
+- [ ] Only allow /cart/review if order_id is in cookies and order status is below paid
 - [ ] Update info if order status is below paid
 - [ ] Finish Checkout
 - [ ] Save order post checkout

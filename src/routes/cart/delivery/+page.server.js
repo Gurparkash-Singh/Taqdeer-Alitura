@@ -1,101 +1,148 @@
-import { dbFunctions } from "$lib/db/database";
-import { redirect } from "@sveltejs/kit";
-import { PROD_SK_TAP, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
-import axios from "axios";
+import { fail, redirect } from '@sveltejs/kit';
+import { dbFunctions } from '$lib/db/database.js';
+import { profileEditor } from '$lib/functions/profile-editor';
+import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 
-export async function load({ locals, params, url, cookies }) {
-    if (!cookies.get("order_id")) {
-        return redirect(302, "/cart/info");
-    }
+export async function load({cookies}) {
+    if (cookies.get("order_id")) {
+        let [order] = await dbFunctions.getCreatedOrderById(cookies.get("order_id"));
 
-    const [order] = await dbFunctions.getCreatedOrderById(
-        cookies.get("order_id")
-    );
-
-    if (!order) {
-        return redirect(302, "/cart/info");
-    }
-
-    const infoUpdated = url.searchParams.has("updateInfo");
-
-    if (infoUpdated) {
-        return {
-            infoUpdated: true
+        if (order) {
+            return {
+                existing_order: {
+                    name: order.name,
+                    email: order.user_email,
+                    country: order.country,
+                    phone: order.telephone
+                }
+            }
         }
     }
 }
 
 export const actions = {
-    checkout: async ({ cookies, request, locals }) => {
+    create: async ({ locals, cookies, request }) => {
         const data = await request.formData();
 
-        const session = cookies.get("session");
-        let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
+        const name = data.get("name").trim();
+        const email = data.get('email').trim();
+        const country = data.get("country");
+        const phone = data.get("phone");
 
-        if (!session || shopping_session.length === 0) {
-            await dbFunctions.setCriticalError(
-                "cart", 
-                500,
-                `shopping session was not created successfully` 
-            );
-            error(500);
-        }
+        const formattedAddress = data.get("formatted-address");
+        const address1 = data.get("address1");
+        const address2 = data.get("address2");
+        const city = data.get("city");
+        const province = data.get("province");
+        const postal = data.get("postal");
+        const delivery_country = data.get("delivery_country");
 
-        if(!locals.admin) {
-            await dbFunctions.setError(
-                "cart", 
-                400,
-                `${session} tried to checkout`
-            );
-            error(400);
-        }
-
-        const options = {
-            method: 'POST',
-            url: 'https://api.tap.company/v2/charges/',
-            headers: {
-                accept: 'application/json',
-                'content-type': 'application/json',
-                Authorization: `Bearer ${TEST_SK_TAP}`
-            },
-            data: {
-                amount: 100,
-                currency: 'SAR',
-                customer_initiated: true,
-                threeDSecure: true,
-                save_card: false,
-                receipt: {email: false, sms: false},
-                customer: {
-                    first_name: 'test', 
-                    email: 'khalsags.fateh@gmail.com'
-                },
-                reference: {order: '1'},
-                merchant: {id: TAP_MERCHANT_ID},
-                source: {id: 'src_all'},
-                redirect: {url: 'https://taqdeeralitura.com/cart'}
+        if (!formattedAddress){
+            if (!address1 || !city || !province || !postal || !delivery_country) {
+                return fail(400, {
+                    invalid: true,
+                    message: "fill in all fields",
+                    name,
+                    email,
+                    country,
+                    phone
+                });
             }
-        };
-
-        let url;
-
-        try {
-            const data = await axios.request(options);
-
-            url = data.data.transaction.url;
-        } catch (axiosError) {
-            await dbFunctions.setCriticalError(
-                "checkout",
-                500,
-                JSON.stringify(axiosError.response.data)
-            )
-            error(500);
         }
 
-        if (url) {
-            throw redirect(302, url);
+        if (!name || !email || !country || !phone) {
+            return fail(400, {
+                invalid: true,
+                message: "fill in all fields",
+                name,
+                email,
+                country,
+                phone
+            });
+        }
+
+        const invalidEmail = await profileEditor.invalidEmailForCheckout(email);
+
+        if (invalidEmail) {
+            await dbFunctions.setError(
+                "checkout information", 
+                400,
+                `${email} is invalid\nError: ${invalidEmail}` 
+            );
+            return fail(400, {
+                invalid: true,
+                message: invalidEmail,
+                name: name,
+                email: "",
+                country,
+                phone
+            });
+        }
+
+        if (!isValidPhoneNumber(phone, country)) {
+            return fail(400, {
+                invalid: true,
+                message: "invalid phone number or country code",
+                name,
+                email,
+                country,
+                phone
+            });
+        }
+
+        const phoneNumber = parsePhoneNumberFromString(phone, country);
+
+        if (cookies.get("order_id")) {
+            let [order] = await dbFunctions.getCreatedOrderById(cookies.get("order_id"));
+
+            if (order) {
+                if (
+                    order.name != name 
+                    || order.user_email != email
+                    || order.country != phoneNumber.country
+                    || order.telephone != phoneNumber.nationalNumber
+                ) {
+                    await dbFunctions.updateOrder(
+                        cookies.get("order_id"),
+                        name, 
+                        email,
+                        phoneNumber.country,
+                        phoneNumber.nationalNumber
+                    );
+        
+                    throw redirect(302, '/cart/review?updated=true');
+                }
+    
+                throw redirect(302, "/cart/review");
+            }
+        }
+
+        let result;
+
+        if (locals.user) {
+            result = await dbFunctions.createOrderForExistingUser(
+                locals.user.user_id,
+                name, 
+                email,
+                phoneNumber.country,
+                phoneNumber.nationalNumber
+            );
         }
         else {
-            error(500);
+            result = await dbFunctions.createOrderForGuest(
+                name, 
+                email,
+                phoneNumber.country,
+                phoneNumber.nationalNumber
+            );
         }
+
+        cookies.set('order_id', result.insertId, {
+            path: "/",
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 24
+        });
+
+        throw redirect(302, '/cart/review');
     }
 }
