@@ -611,7 +611,7 @@ export const dbFunctions = {
     createOrderForExistingUser: async (user_id, name, email, country, phone) => {
         let query = "INSERT INTO Orders ";
         query += "(user_id, name, user_email, country, telephone, status) VALUES ";
-        query += "(?, ?, ?, ?, ?, 'created');";
+        query += "(?, ?, ?, ?, ?, 1);";
 
         const [result] = await db.query(query, [user_id, name, email, country, phone]);
 
@@ -621,7 +621,7 @@ export const dbFunctions = {
     createOrderForGuest: async (name, email, country, phone) => {
         let query = "INSERT INTO Orders ";
         query += "(name, user_email, country, telephone, status) VALUES ";
-        query += "(?, ?, ?, ?, 'created');";
+        query += "(?, ?, ?, ?, 1);";
 
         const [result] = await db.query(query, [name, email, country, phone]);
 
@@ -651,13 +651,13 @@ export const dbFunctions = {
             country
         ]);
 
-        query = "UPDATE Orders SET order_address = ? WHERE order_id = ?";
+        query = "UPDATE Orders SET order_address = ?, status = 2 WHERE id = ?";
 
         await db.query(query, [result.insertId, order_id]);
     },
 
-    getCreatedOrderById: async (id) => {
-        let query = "SELECT * FROM Orders WHERE id = ? AND status = 'created';";
+    getOrderById: async (id) => {
+        let query = "SELECT * FROM Orders WHERE id = ?";
 
         const [order] = await db.query(query, id);
 
@@ -672,5 +672,54 @@ export const dbFunctions = {
         const [result] = await db.query(query, [name, email, country, phone, id]);
 
         return result;
+    },
+
+    updateOrderAddress: async (
+        address_id, 
+        line1, 
+        line2, 
+        city, 
+        province, 
+        postal_code, 
+        country
+    ) => {
+        let query = "UPDATE Order_Addresses ";
+        query += "SET address_line1 = ?, address_line2 = ?, city = ?, province = ?, ";
+        query += "postal_code = ?, country = ? WHERE address_id = ?;";
+
+        const [result] = await db.query(query, [ 
+            line1, 
+            line2, 
+            city, 
+            province, 
+            postal_code, 
+            country,
+            address_id
+        ]);
+    },
+
+    getOrderAddress: async (address_id) => {
+        let query = "SELECT * FROM Order_Addresses WHERE address_id = ?;";
+
+        const [result] = await db.query(query, address_id);
+
+        return result;
+    },
+
+    updateInvalidCart: async (session_id) => {
+        let query = "DELETE FROM Cart_Items WHERE (quantity > ( ";
+        query += "SELECT quantity FROM Sizes_Available ";
+        query += "WHERE product_id = Cart_Items.product_id ";
+        query += "AND size_id = Cart_Items.size_id ";
+        query += ") OR quantity > 5) ";
+        query += "AND session_id = ?;";
+
+        const [result] = await db.query(query, session_id);
+
+        return result.affectedRows > 0;
+    },
+
+    moveItemsToOrder: async (order_id, session_id) => {
+
     }
 }

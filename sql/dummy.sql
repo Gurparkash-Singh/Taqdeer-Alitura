@@ -1,13 +1,11 @@
 -- No Dummy data for:
 -- Discounts
--- Users
 -- Payment_Details
 -- Orders
 -- Order_Items
 -- User_Addresses
 -- Shopping_Session
 -- Cart_Items
--- Admins
 
 Insert Into Category (category_name)
 VALUES

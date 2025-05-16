@@ -16,8 +16,8 @@ export async function load({ cookies })
         error(500);
     }
 
-    shopping_session = shopping_session[0].id
-
+    shopping_session = shopping_session[0].id;
+    
     const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session);
 
     return {cart_items};

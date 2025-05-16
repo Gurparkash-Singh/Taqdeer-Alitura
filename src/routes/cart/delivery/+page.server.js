@@ -6,16 +6,27 @@ import { aramex } from '$lib/functions/aramex';
 
 export async function load({cookies}) {
     if (cookies.get("order_id")) {
-        let [order] = await dbFunctions.getCreatedOrderById(cookies.get("order_id"));
+        let [order] = await dbFunctions.getOrderById(cookies.get("order_id"));
 
-        if (order) {
+        if (order?.status <= 5) {
+
+            let [address] = await dbFunctions.getOrderAddress(order.order_address);
+
+            const existing_order = {
+                name: order.name,
+                email: order.user_email,
+                country: order.country,
+                phone: order.telephone,
+                address1: address?.address_line1, 
+                address2: address?.address_line2,
+                city: address?.city,
+                province: address?.province,
+                postal: address?.postal_code,
+                delivery_country: address?.country
+            }
+
             return {
-                existing_order: {
-                    name: order.name,
-                    email: order.user_email,
-                    country: order.country,
-                    phone: order.telephone
-                }
+                existing_order
             }
         }
     }
@@ -48,7 +59,13 @@ export const actions = {
             name,
             email,
             country,
-            phone
+            phone,
+            address1, 
+            address2,
+            city,
+            province,
+            postal,
+            delivery_country
         }
 
         if (manual) {
@@ -86,7 +103,7 @@ export const actions = {
 
         const phoneNumber = parsePhoneNumberFromString(phone, country);
 
-        await aramex.calculateRate(
+        const rate = await aramex.calculateRate(
             address1, 
             address2,
             city,
@@ -95,69 +112,107 @@ export const actions = {
             delivery_country
         );
 
-        // Get the correct data from google
+        if (rate.HasErrors) {
+            const error = rate.Notifications[0].Message.split("-");
+            const errorType = error[0].trim();
+            if (errorType == "DestinationAddress") {
+                await dbFunctions.setError(
+                    "Invalid order address", 
+                    400,
+                    `${JSON.stringify(data, null, 2)}\n${rate.Notifications}`
+                );
+                returnMessage.message = error[1];
+                return fail(400, returnMessage);
+            }
+            else {
+                await dbFunctions.setError(
+                    "Invalid order address", 
+                    400,
+                    `${JSON.stringify(data, null, 2)}\n${rate.Notifications}`
+                );
+                returnMessage.message = "something went wrong, order not created";
+                return fail(500, returnMessage);
+            }
+        }
 
-        // If order does not exist:
-        //     Create the order and create an address for the order
-        //     Save the order id in cookies
+        if (cookies.get("order_id")) {
+            let [order] = await dbFunctions.getOrderById(cookies.get("order_id"));
 
-        // If order exists:
-        //     Check if (status <= 5) (5 = pending) then update info
-        //     else act as if order does not exist
+            if (order?.status <= 5) {
+                await dbFunctions.updateOrder(
+                    cookies.get("order_id"),
+                    name, 
+                    email,
+                    phoneNumber.country,
+                    phoneNumber.nationalNumber
+                );
 
-        // if (cookies.get("order_id")) {
-        //     let [order] = await dbFunctions.getCreatedOrderById(cookies.get("order_id"));
-
-        //     if (order) {
-        //         if (
-        //             order.name != name
-        //             || order.user_email != email
-        //             || order.country != phoneNumber.country
-        //             || order.telephone != phoneNumber.nationalNumber
-        //         ) {
-        //             await dbFunctions.updateOrder(
-        //                 cookies.get("order_id"),
-        //                 name, 
-        //                 email,
-        //                 phoneNumber.country,
-        //                 phoneNumber.nationalNumber
-        //             );
-        
-        //             throw redirect(302, '/cart/review?updated=true');
-        //         }
-
-
+                if (order.order_address) {
+                    await dbFunctions.updateOrderAddress(
+                        order.order_address,
+                        address1, 
+                        address2,
+                        city,
+                        province,
+                        postal,
+                        delivery_country
+                    );
+                }
+                else {
+                    await dbFunctions.setOrderAddress(
+                        cookies.get("order_id"),
+                        address1, 
+                        address2,
+                        city,
+                        province,
+                        postal,
+                        delivery_country
+                    );
+                }
     
-        //         throw redirect(302, "/cart/review");
-        //     }
-        // }
+                throw redirect(302, "/cart/review?updated=true");
+            }
+        }
 
-        // let result;
+        let result;
 
-        // if (locals.user) {
-        //     result = await dbFunctions.createOrderForExistingUser(
-        //         locals.user.user_id,
-        //         name, 
-        //         email,
-        //         phoneNumber.country,
-        //         phoneNumber.nationalNumber
-        //     );
-        // }
-        // else {
-        //     result = await dbFunctions.createOrderForGuest(
-        //         name, 
-        //         email,
-        //         phoneNumber.country,
-        //         phoneNumber.nationalNumber
-        //     );
-        // }
+        if (locals.user) {
+            result = await dbFunctions.createOrderForExistingUser(
+                locals.user.user_id,
+                name, 
+                email,
+                phoneNumber.country,
+                phoneNumber.nationalNumber
+            );
+        }
+        else {
+            result = await dbFunctions.createOrderForGuest(
+                name, 
+                email,
+                phoneNumber.country,
+                phoneNumber.nationalNumber
+            );
+        }
 
-        // cookies.set('order_id', result.insertId, {
-        //     path: "/",
-        //     sameSite: 'strict',
-        //     maxAge: 60 * 60 * 24
-        // });
+        await dbFunctions.setOrderAddress(
+            result.insertId,
+            address1, 
+            address2,
+            city,
+            province,
+            postal,
+            delivery_country
+        );
 
-        // throw redirect(302, '/cart/review');
+        // Check that the proper amount of items exists
+        // Move items to order
+
+        cookies.set('order_id', result.insertId, {
+            path: "/",
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 24
+        });
+
+        throw redirect(302, '/cart/review');
     }
 }

@@ -76,8 +76,6 @@ export const aramex = {
             console.log(error);
         }
 
-        console.log(result.data);
-
-        return result;
+        return result.data;
     }
 }

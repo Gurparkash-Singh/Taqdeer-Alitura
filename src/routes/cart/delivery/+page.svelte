@@ -112,7 +112,17 @@
             email = form.email;
             name = form.name;
             countryCode = form.country,
-            phoneNumber = form.phone
+            phoneNumber = form.phone,
+
+            address1 = form.address1;
+            address2 = form.address2;
+            city = form.city;
+            province = form.province;
+            postal_code = form.postal;
+            country = form.delivery_country;
+
+            manual = true;
+            showMessage = true;
         }
 
         if (!inMessages && form.invalid) 
@@ -134,7 +144,17 @@
         name = data.existing_order.name;
         countryCode = data.existing_order.country,
         phoneNumber = data.existing_order.phone
+        address1 = data.existing_order.address1;
+        address2 = data.existing_order.address2;
+        city = data.existing_order.city;
+        province = data.existing_order.province;
+        postal_code = data.existing_order.postal;
+        country = data.existing_order.delivery_country;
+
+        manual = true;
+        showMessage = true;
     }
+
 </script>
 
 <Map 
