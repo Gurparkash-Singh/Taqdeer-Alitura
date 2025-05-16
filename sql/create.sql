@@ -145,6 +145,26 @@ CREATE TABLE IF NOT EXISTS Payment_Details (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS Order_Addresses (
+    address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    address_line1 VARCHAR(255) NOT NULL,
+    address_line2 VARCHAR(255),
+    city VARCHAR(255) NOT NULL,
+    province VARCHAR (255) NOT NULL,
+    postal_code VARCHAR(255) NOT NULL,
+    country TEXT NOT NULL,
+    type TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS Order_Status (
+	status_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS Orders (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -153,23 +173,25 @@ CREATE TABLE IF NOT EXISTS Orders (
     user_email VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     telephone VARCHAR(255) NOT NULL,
-    total DECIMAL,
     payment_id INT,
-    status TEXT NOT NULL,
+    status INT DEFAULT 1,
+    order_address INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (payment_id) REFERENCES Payment_Details(payment_id),
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (order_address) REFERENCES Order_Addresses(address_id),
+    FOREIGN KEY (status) REFERENCES Order_Status(status_id)
 );
 
-CREATE TABLE IF NOT EXISTS Order_Discounts (
+CREATE TABLE IF NOT EXISTS Order_Invoice_Items (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
-    discount_id INT NOT NULL,
+    amount DECIMAL NOT NULL,
+    name TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (order_id) REFERENCES Orders(id),
-    FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
+    FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
 
 CREATE TABLE IF NOT EXISTS Order_Items (
@@ -183,20 +205,6 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (order_id) REFERENCES Orders(id),
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
     FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
-);
-
-CREATE TABLE IF NOT EXISTS Order_Addresses (
-    address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    order_id INT NOT NULL,
-    address_line1 VARCHAR(255) NOT NULL,
-    address_line2 VARCHAR(255),
-    city VARCHAR(255) NOT NULL,
-    postal_code VARCHAR(255) NOT NULL,
-    country TEXT NOT NULL,
-    type TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
 
 -- User email does NOT refer to users table so guest checkout can work

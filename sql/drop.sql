@@ -36,13 +36,15 @@ DROP TABLE IF EXISTS User_Cards;
 
 DROP TABLE IF EXISTS User_Addresses;
 
-DROP TABLE IF EXISTS Order_Addresses;
-
 DROP TABLE IF EXISTS Order_Items;
 
-DROP TABLE IF EXISTS Order_Discounts;
+DROP TABLE IF EXISTS Order_Invoice_Items;
 
 DROP TABLE IF EXISTS Orders;
+
+DROP TABLE IF EXISTS Order_Status;
+
+DROP TABLE IF EXISTS Order_Addresses;
 
 DROP TABLE IF EXISTS Payment_Details;
 

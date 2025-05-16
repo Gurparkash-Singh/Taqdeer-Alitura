@@ -38,6 +38,7 @@
 - [x] Show payment acceptance icons on cart page
 - [x] Get Top part for cart page showing
 - [x] Redo cart page
+- [x] Save Order stages in database
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -51,10 +52,9 @@
 - [ ] Verify order history
 - [ ] Verify payment methods page
 - [ ] Finish Delivery Page
-- [ ] Validate Address, save address, get and save delivery rate
+- [ ] Finish Review Page
 - [ ] Get address book working
-- [ ] Save Order stages in database
-- [ ] Only allow /cart/review if order_id is in cookies and order status is below paid
+- [ ] Only allow /cart/review if order_id is in cookies and order status is below pending
 - [ ] Update info if order status is below paid
 - [ ] Finish Checkout
 - [ ] Save order post checkout

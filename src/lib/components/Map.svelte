@@ -17,6 +17,7 @@
     let route = $state("");
     let enable = $state(false);
     let formalAddress = $state("");
+    let addressComponents = $state("");
 
     onMount(async function () {
         const loader = new Loader({
@@ -82,7 +83,9 @@
 
             formalAddress = place.formattedAddress;
 
-            place.addressComponents.forEach(addressComponent => {
+            addressComponents = place.addressComponents;
+
+            addressComponents.forEach(addressComponent => {
                 addressComponent.Eg.forEach(type => {
                     if (type == "administrative_area_level_1") {
                         setValue(type, addressComponent.Gg);
@@ -92,6 +95,9 @@
                     }
                     else if (type == "route") {
                         route = addressComponent.Fg;
+                    }
+                    else if (type == "country") {
+                        setValue(type, addressComponent.Gg);
                     }
                     else {
                         setValue(type, addressComponent.Fg);
@@ -122,7 +128,30 @@
             class:enable-submit={enable}
             class:disable-submit={!enable}
             onclick={() => {
-                setValue("formalAddress", formalAddress)
+                setValue("formalAddress", formalAddress);
+                addressComponents.forEach(addressComponent => {
+                    addressComponent.Eg.forEach(type => {
+                        if (type == "administrative_area_level_1") {
+                            setValue(type, addressComponent.Gg);
+                        }
+                        else if (type == "street_number"){
+                            street_number = addressComponent.Fg;
+                        }
+                        else if (type == "route") {
+                            route = addressComponent.Fg;
+                        }
+                        else if (type == "country") {
+                            setValue(type, addressComponent.Gg);
+                        }
+                        else {
+                            setValue(type, addressComponent.Fg);
+                        }
+                    })
+                });
+
+                if (street_number || route) {
+                    setValue("a1", `${street_number} ${route}`);
+                }
             }}
         >confirm location</button>
     </div>

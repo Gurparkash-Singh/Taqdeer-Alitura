@@ -182,3 +182,14 @@ INSERT INTO Admins (user_id, type_id)
 VALUES
 (1, 1),
 (2, 1);
+
+INSERT INTO Order_Status (name) 
+VALUES
+("created"),
+("address added"),
+("items added"),
+("invoice created"),
+("pending payment"),
+("processing"),
+("shipped"),
+("delivered");

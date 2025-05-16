@@ -30,6 +30,7 @@
     let postal_code = $state("");
     let country = $state("");
     let formalAddress = $state("");
+    let manual = $state(false);
 
     let name = $state(data.user ? data.user.name : "");
     let email = $state(data.user ? data.user.email : "");
@@ -64,19 +65,21 @@
                 country = value;
                 break;
             case "postal_code":
-                postal_code = value;
+                postal_code = value.replace(" ", "");
                 break;
             case "a1":
                 address1 = value;
                 break;
             case "formalAddress":
                 formalAddress = value;
+                manual = false;
                 break;
         }
     }
 
     function manualEntry() {
         showMessage = true;
+        manual = true;
     }
 
     let enableSubmit = $derived.by(() => {
@@ -146,6 +149,11 @@
             name="formatted-address"
             bind:value={formalAddress}
         />
+        <input 
+            type="hidden"
+            name="manual-entry"
+            bind:value={manual}
+        />
         <fieldset 
             class:delivery-visible={showMessage}
             class:delivery-invisible={!showMessage}
@@ -197,7 +205,7 @@
                 >
             </p>
             <p>
-                <label for="delivery_country">country:</label>
+                <label for="delivery_country">country code:</label>
                 <input 
                     type="text" 
                     name="delivery_country" 

@@ -75,7 +75,7 @@ export const handle = async ({ event, resolve }) => {
 export async function handleError({ event, error }) {
 
     if (error.status >= 400 && error.status < 500){
-        await dbFunctions.setError(event.request.url, 404, JSON.stringify(error))
+        await dbFunctions.setError(event.request.url, 404, JSON.stringify(error, null, 2));
         return;
     }
 

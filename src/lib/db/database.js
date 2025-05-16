@@ -628,6 +628,34 @@ export const dbFunctions = {
         return result;
     },
 
+    setOrderAddress: async (
+        order_id, 
+        line1, 
+        line2, 
+        city, 
+        province, 
+        postal_code, 
+        country
+    ) => {
+        let query = "INSERT INTO Order_Addresses ";
+        query += "(address_line1, address_line2, city, province, ";
+        query += "postal_code, country) VALUES ";
+        query += "(?, ?, ?, ?, ?, ?)";
+
+        const [result] = await db.query(query, [ 
+            line1, 
+            line2, 
+            city, 
+            province, 
+            postal_code, 
+            country
+        ]);
+
+        query = "UPDATE Orders SET order_address = ? WHERE order_id = ?";
+
+        await db.query(query, [result.insertId, order_id]);
+    },
+
     getCreatedOrderById: async (id) => {
         let query = "SELECT * FROM Orders WHERE id = ? AND status = 'created';";
 
