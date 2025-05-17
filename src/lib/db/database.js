@@ -720,6 +720,84 @@ export const dbFunctions = {
     },
 
     moveItemsToOrder: async (order_id, session_id) => {
+        let query = "UPDATE Sizes_Available JOIN Cart_Items ";
+        query += "ON Sizes_Available.size_id = Cart_Items.size_id ";
+        query += "SET Sizes_Available.quantity = ";
+        query += "Sizes_Available.quantity - Cart_Items.quantity ";
+        query += "WHERE Cart_Items.session_id = ?;";
+        await db.query(query, session_id);
 
-    }
+        query = "INSERT INTO Order_Items (order_id, product_id, size_id, quantity) ";
+        query += "SELECT ? AS order_id, product_id, size_id, quantity ";
+        query += "FROM Cart_Items WHERE session_id = ?;";
+        await db.query(query, [order_id, session_id]);
+
+        query = "DELETE FROM Cart_Items WHERE session_id = ?;";
+        await db.query(query, session_id);
+
+        query = "UPDATE Orders SET status = 3 WHERE id = ?;";
+        await db.query(query, order_id);
+    },
+
+    getUserAddresses: async (user_id) => {
+        let query = "SELECT * FROM User_Addresses WHERE user_id = ?;";
+
+        const [result] = await db.query(query, user_id);
+
+        return result;
+    },
+
+    setUserAddress: async (
+        user_id, 
+        name,
+        line1, 
+        line2, 
+        city, 
+        province, 
+        postal_code, 
+        country
+    ) => {
+        let query = "INSERT INTO User_Addresses ";
+        query += "(user_id, address_name, address_line1, address_line2, city, province, ";
+        query += "postal_code, country) VALUES ";
+        query += "(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        const [result] = await db.query(query, [ 
+            user_id,
+            name,
+            line1, 
+            line2, 
+            city, 
+            province, 
+            postal_code, 
+            country
+        ]);
+    },
+
+    updateUserAddress: async (
+        address_id, 
+        name,
+        line1, 
+        line2, 
+        city, 
+        province, 
+        postal_code, 
+        country
+    ) => {
+        let query = "UPDATE User_Addresses ";
+        query += "SET address_name = ?, address_line1 = ?, ";
+        query += "address_line2 = ?, city = ?, province = ?, "
+        query += "postal_code = ?, country = ? WHERE address_id = ? ";
+
+        const [result] = await db.query(query, [
+            name,
+            line1, 
+            line2, 
+            city, 
+            province, 
+            postal_code, 
+            country,
+            address_id
+        ]);
+    },
 }

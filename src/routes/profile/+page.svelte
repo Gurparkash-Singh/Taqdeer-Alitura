@@ -66,15 +66,24 @@
             Phone
         </dt>
         <dd>
-            {data.user.phone}
-            {#if data.user.phone && !data.user.verified_phone}
-                <a href="/verify?phone=true">verify</a>
+            {#if data.user.phone}
+                {data.user.phone}
+                {#if !data.user.verified_phone}
+                    <a href="/verify?phone=true">verify</a>
+                {/if}
+            {:else}
+                <a href="/profile/edit/phone" class="alt-link">update</a>
             {/if}
         </dd>
         <dt>Date of Birth</dt>
-        <dd>{data.user.date_of_birth}</dd>
-        <dt>Coupons Available</dt>
-        <dd></dd>
+        <dd>
+            {#if data.user.date_of_birth}
+                {data.user.date_of_birth}
+            {:else}
+                <a href="/profile/edit" class="alt-link">update</a>
+            {/if}
+        </dd>
+        
     </dl>
 </section>
 
@@ -111,8 +120,9 @@
 
     #profile-details dt {
         padding: 5px 40px;
-        margin-bottom: 10px;
+        margin-bottom: 13px;
         border-bottom: 1px solid #D9D9D9;
+        font-weight: bold;
     }
 
     #profile-details dd {
@@ -124,6 +134,10 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .alt-link {
+        padding: 0;
     }
 
     dd a {

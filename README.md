@@ -38,7 +38,11 @@
 - [x] Show payment acceptance icons on cart page
 - [x] Get Top part for cart page showing
 - [x] Redo cart page
+- [x] Finish Delivery Page
 - [x] Save Order stages in database
+- [x] Update info if order status is below paid
+- [x] Only allow /cart/review if order_id is in cookies and order status is below pending
+- [x] Get address book working
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -51,11 +55,7 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Finish Delivery Page
 - [ ] Finish Review Page
-- [ ] Get address book working
-- [ ] Only allow /cart/review if order_id is in cookies and order status is below pending
-- [ ] Update info if order status is below paid
 - [ ] Finish Checkout
 - [ ] Save order post checkout
 - [ ] Get post checkout page working
@@ -63,12 +63,16 @@
 - [ ] Get order history working
 - [ ] Get Image upload working
 - [ ] Fix Homepage and Logo image
-- [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Add size chart and return policy in products page
-- [ ] Go back to exact shop settings and scroll to exact product on product page
-- [ ] Add a close button to product page
+
+# Post Release To Do
+- [ ] Allow selection of address by moving pin on the map
+- [ ] Redo Discounts to allow for members to receive discounts without code
+- [ ] Increase Performance
 - [ ] Use Page Insights to increase performance
 - [ ] Limit the number of products on first page load
+- [ ] Go back to exact shop settings and scroll to exact product on product page
+- [ ] Add a close button to product page
 
 # To-Do for minimal viable product
 - [x] Load products from DB
@@ -182,3 +186,11 @@ Full Size
 - Add the rates to localstorage
 - if the rates exist and are not expired use them
 - Update if the rates have expired
+
+Finish Checkout
+- Requires Review Page
+- Requires Verification of Tap (everything should work as a production build)
+- Requires Post Checkout
+- Requires Production Client Information for Aramex
+- Requires twilio to be in production
+- Itemized checkout

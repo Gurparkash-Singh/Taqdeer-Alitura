@@ -174,6 +174,9 @@
             name="manual-entry"
             bind:value={manual}
         />
+        <select name="saved-address" id="saved-address">
+            <option value="Address1">Address1</option>
+        </select>
         <fieldset 
             class:delivery-visible={showMessage}
             class:delivery-invisible={!showMessage}
@@ -302,6 +305,13 @@
 
     form {
         margin: 0;
+    }
+
+    #saved-address {
+        width: 100%;
+        background-color: #D9D9D9;
+        border: none;
+        padding: 10px;
     }
     
     legend {

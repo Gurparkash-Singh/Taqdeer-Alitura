@@ -68,6 +68,17 @@ export const actions = {
             delivery_country
         }
 
+        const session = cookies.get("session");
+        let [shopping_session] = await dbFunctions.getShoppingSessionByToken(session);
+
+        let cartUpdated = await dbFunctions.updateInvalidCart(shopping_session.id);
+
+        if (cartUpdated) {
+            returnMessage.message = "some items in your cart were removed\n";
+            returnMessage.message += "quantities were not available as selected";
+            return fail(400, returnMessage);
+        }
+
         if (manual) {
             if (!address1 || !city || !province || !postal || !delivery_country) {
                 returnMessage.message = "fill in all address fields";
@@ -174,6 +185,14 @@ export const actions = {
             }
         }
 
+        cartUpdated = await dbFunctions.updateInvalidCart(shopping_session.id);
+
+        if (cartUpdated) {
+            returnMessage.message = "some items in your cart were removed\n";
+            returnMessage.message += "quantities were not available as selected";
+            return fail(400, returnMessage);
+        }
+
         let result;
 
         if (locals.user) {
@@ -194,6 +213,16 @@ export const actions = {
             );
         }
 
+        cartUpdated = await dbFunctions.updateInvalidCart(shopping_session.id);
+
+        if (cartUpdated) {
+            returnMessage.message = "some items in your cart were removed\n";
+            returnMessage.message += "quantities were not available as selected";
+            return fail(400, returnMessage);
+        }
+
+        await dbFunctions.moveItemsToOrder(result.insertId, shopping_session.id);
+
         await dbFunctions.setOrderAddress(
             result.insertId,
             address1, 
@@ -203,9 +232,6 @@ export const actions = {
             postal,
             delivery_country
         );
-
-        // Check that the proper amount of items exists
-        // Move items to order
 
         cookies.set('order_id', result.insertId, {
             path: "/",

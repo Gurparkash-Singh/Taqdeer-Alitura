@@ -1,5 +1,4 @@
 -- Add ability for multiple discounts and discounts on orders
--- Remove total from orders to normalize database (finish step 1 first)
 
 CREATE TABLE IF NOT EXISTS Category (
     category_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -207,13 +206,14 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
 );
 
--- User email does NOT refer to users table so guest checkout can work
 CREATE TABLE IF NOT EXISTS User_Addresses (
     address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
+    address_name TEXT,
     address_line1 VARCHAR(255) NOT NULL,
     address_line2 VARCHAR(255),
     city VARCHAR(255) NOT NULL,
+    province VARCHAR (255) NOT NULL,
     postal_code VARCHAR(255) NOT NULL,
     country TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
