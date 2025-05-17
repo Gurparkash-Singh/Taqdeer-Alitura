@@ -63,7 +63,7 @@
             city = form.city;
             province = form.province;
             postal_code = form.postal;
-            country = form.country;
+            country = form.delivery_country;
             manual = true;
 
             if (form.address_id > 0) {

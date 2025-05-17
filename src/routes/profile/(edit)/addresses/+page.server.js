@@ -68,21 +68,22 @@ export const actions = {
             const error = rate.Notifications[0].Message.split("-");
             const errorType = error[0].trim();
             if (errorType == "DestinationAddress") {
-                await dbFunctions.setError(
-                    "Invalid order address", 
-                    400,
-                    `${JSON.stringify(data, null, 2)}\n${rate.Notifications}`
-                );
                 returnMessage.message = error[1];
+                await dbFunctions.setError(
+                    "Invalid address", 
+                    400,
+                    `${JSON.stringify(returnMessage, null, 2)}\n${JSON.stringify(rate.Notifications, null, 2)}}`
+                );
+                
                 return fail(400, returnMessage);
             }
             else {
+                returnMessage.message = "something went wrong, address not saved";
                 await dbFunctions.setError(
-                    "Invalid order address", 
+                    "Invalid address",
                     500,
-                    `${JSON.stringify(data, null, 2)}\n${rate.Notifications}`
+                    `${JSON.stringify(returnMessage, null, 2)}\n${JSON.stringify(rate.Notifications, null, 2)}}`
                 );
-                returnMessage.message = "something went wrong, order not created";
                 return fail(500, returnMessage);
             }
         }

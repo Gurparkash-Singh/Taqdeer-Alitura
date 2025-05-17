@@ -115,6 +115,7 @@ Return Policy should be recieved from Tap Payments
 - If account exists for the email entered move them to the login page
 - Only allow signups from allowed emails
 - Disable access to the entire website without loging in
+- Move all instances to Production Credentials (twilio, tap and aramex)
 
 Research Inventory management
 Get Delivery Address
@@ -181,16 +182,3 @@ Full Size
 
 ## Homepage
 Full Size
-
-# For Conversion Rates
-- Add the rates to localstorage
-- if the rates exist and are not expired use them
-- Update if the rates have expired
-
-Finish Checkout
-- Requires Review Page
-- Requires Verification of Tap (everything should work as a production build)
-- Requires Post Checkout
-- Requires Production Client Information for Aramex
-- Requires twilio to be in production
-- Itemized checkout
