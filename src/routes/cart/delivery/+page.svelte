@@ -31,6 +31,7 @@
     let country = $state("");
     let formalAddress = $state("");
     let manual = $state(false);
+    let selected_address = $state("add");
 
     let name = $state(data.user ? data.user.name : "");
     let email = $state(data.user ? data.user.email : "");
@@ -155,6 +156,18 @@
         showMessage = true;
     }
 
+    function valueChange(address) {
+        address1 = address.address_line1;
+        address2 = address.address_line2;
+        city = address.city;
+        postal_code = address.postal_code;
+        province = address.province;
+        country = address.country;
+
+        manual = true;
+        showMessage = true;
+    }
+
 </script>
 
 <Map 
@@ -174,9 +187,30 @@
             name="manual-entry"
             bind:value={manual}
         />
-        <select name="saved-address" id="saved-address">
-            <option value="Address1">Address1</option>
-        </select>
+        {#if !data.user}
+            <a href="/profile">login to access addresses</a>
+        {:else if !data.addresses}
+            <a href="/profile/addresses">add an address to get started</a>
+        {:else}
+            <select 
+                name="saved-address" 
+                id="saved-address"
+                onchange={(e) => {
+                    if (selected_address != "add") {
+                        valueChange(selected_address);
+                    }
+                    else {
+                        valueChange({});
+                    }
+                }}
+                bind:value={selected_address}
+            >
+                {#each data.addresses as address}
+                    <option value={address}>{address.address_name}</option>
+                {/each}
+                <option value="add" selected>enter an address</option>
+            </select>
+        {/if}
         <fieldset 
             class:delivery-visible={showMessage}
             class:delivery-invisible={!showMessage}

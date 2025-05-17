@@ -4,7 +4,13 @@ import { profileEditor } from '$lib/functions/profile-editor';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { aramex } from '$lib/functions/aramex';
 
-export async function load({cookies}) {
+export async function load({cookies, locals}) {
+    let addresses;
+
+    if (locals.user) {
+        addresses = await dbFunctions.getUserAddresses(locals.user.user_id);
+    }
+
     if (cookies.get("order_id")) {
         let [order] = await dbFunctions.getOrderById(cookies.get("order_id"));
 
@@ -26,10 +32,13 @@ export async function load({cookies}) {
             }
 
             return {
-                existing_order
+                existing_order,
+                addresses
             }
         }
     }
+
+    return {addresses}
 }
 
 export const actions = {
