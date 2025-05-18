@@ -800,4 +800,28 @@ export const dbFunctions = {
             address_id
         ]);
     },
+
+    getUserCards: async (user_id) => {
+        let query = "SELECT * FROM User_Cards WHERE user_id = ?;";
+
+        const [result] = await db.query(query, user_id);
+
+        return result;
+    },
+
+     getOrderItems: async (id) => {
+        let query = "SELECT ";
+        query += "Order_Items.product_id, Order_Items.size_id, Order_Items.quantity, ";
+        query += "Products.name, Products.description, price, ";
+        query += "image_link, alt_desc, size_name, size_abbreviation ";
+        query += "FROM Order_Items ";
+        query += "JOIN Products ON Products.product_id = Order_Items.product_id ";
+        query += "JOIN Images ON Images.product_id = Order_Items.product_id ";
+        query += "JOIN Sizes_Available ON Sizes_Available.size_id = Order_Items.size_id ";
+        query += "WHERE order_id = ? AND main_image = 1;";
+
+        const [items] = await db.query(query, id);
+
+        return items;
+    },
 }

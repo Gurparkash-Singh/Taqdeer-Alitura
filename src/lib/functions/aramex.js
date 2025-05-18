@@ -1,14 +1,24 @@
 import axios from "axios";
 
 const clientInfo = {
+    Version: "v1.0",
     UserName: "testingapi@aramex.com",
     Password: "R123456789$r",
-    Version: "v1.0",
     AccountNumber: "4004636",
     AccountPin: "442543",
     AccountEntity: "RUH",
     AccountCountryCode: "SA"
 };
+
+// const clientInfo = {
+//     Version: "v1.0",
+//     UserName: "Autad Al Modan",
+//     Password: "Mysoon@2000",
+//     AccountNumber: "72467199",
+//     AccountPin: "466529",
+//     AccountEntity: "RUH",
+//     AccountCountryCode: "SA"
+// }
 
 export const aramex = {
     calculateRate: async (line1, line2, city, state, postal, country) => {

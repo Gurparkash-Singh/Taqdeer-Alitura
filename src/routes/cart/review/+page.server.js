@@ -15,37 +15,24 @@ export async function load({ cookies, params, url })
 
     const [order] = await dbFunctions.getOrderById(order_id);
 
-    if (order?.status > 5) {
+    if (!order || order?.status > 5) {
         throw redirect(302, "/cart");
     }
 
-    return {order, infoUpdated};
+    const [address] = await dbFunctions.getOrderAddress(order.order_address);
+
+    const order_items = await dbFunctions.getOrderItems(order_id);
+
+    return {order, infoUpdated, address, order_items};
 }
 
 export const actions = {
     checkout: async ({ cookies, request, locals }) => {
         const data = await request.formData();
 
-        const session = cookies.get("session");
-        let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
-
-        if (!session || shopping_session.length === 0) {
-            await dbFunctions.setCriticalError(
-                "cart", 
-                500,
-                `shopping session was not created successfully` 
-            );
-            error(500);
-        }
-
-        if(!locals.admin) {
-            await dbFunctions.setError(
-                "cart", 
-                400,
-                `${session} tried to checkout`
-            );
-            error(400);
-        }
+        // Get the order details
+        // Verify the amount
+        // Fill in options accordingly
 
         const options = {
             method: 'POST',
@@ -63,8 +50,12 @@ export const actions = {
                 save_card: false,
                 receipt: {email: false, sms: false},
                 customer: {
-                    first_name: 'test', 
-                    email: 'khalsags.fateh@gmail.com'
+                    first_name: 'test',
+                    email: 'khalsags.fateh@gmail.com',
+                    phone: {
+                        country_code: 965,
+                        number: 51234567
+                    }
                 },
                 reference: {order: '1'},
                 merchant: {id: TAP_MERCHANT_ID},

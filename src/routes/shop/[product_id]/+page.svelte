@@ -364,7 +364,7 @@
             id="return"
             class:open-section={openReturn}
         >
-            <p>This should be recieved from Tap Payments</p>
+            <p>For return or exchanges, please contact support</p>
         </section>
     </section>
 </main>

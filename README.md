@@ -43,6 +43,7 @@
 - [x] Update info if order status is below paid
 - [x] Only allow /cart/review if order_id is in cookies and order status is below pending
 - [x] Get address book working
+- [x] Finish Review Page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -55,12 +56,11 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Finish Review Page
 - [ ] Finish Checkout
 - [ ] Save order post checkout
 - [ ] Get post checkout page working
-- [ ] Get payment methods page working
 - [ ] Get order history working
+- [ ] Get payment methods page working
 - [ ] Get Image upload working
 - [ ] Fix Homepage and Logo image
 - [ ] Add size chart and return policy in products page
@@ -73,6 +73,8 @@
 - [ ] Limit the number of products on first page load
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
+- [ ] Add ability to save an address from the delivery page
+- [ ] Add ability to track shipments
 
 # To-Do for minimal viable product
 - [x] Load products from DB

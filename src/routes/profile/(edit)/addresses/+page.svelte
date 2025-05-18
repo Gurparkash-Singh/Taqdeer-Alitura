@@ -239,6 +239,7 @@
         background-color: #D9D9D9;
         border: none;
         padding: 10px;
+        text-align: center;
     }
     
     /* legend {
