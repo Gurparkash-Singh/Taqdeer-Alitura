@@ -801,6 +801,12 @@ export const dbFunctions = {
         ]);
     },
 
+    deleteUserAddress: async (address_id) => {
+        let query = "DELETE FROM User_Addresses WHERE address_id = ?;";
+
+        await db.query(query, address_id);
+    },
+
     getUserCards: async (user_id) => {
         let query = "SELECT * FROM User_Cards WHERE user_id = ?;";
 

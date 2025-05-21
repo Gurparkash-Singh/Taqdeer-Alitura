@@ -9,6 +9,19 @@ export async function load({ locals }) {
 }
 
 export const actions = {
+    delete: async ({ locals, cookies, request }) => {
+        const data = await request.formData();
+
+        const address_id = data.get("address-id");
+
+        await dbFunctions.deleteUserAddress(address_id );
+
+        return {
+            success: true, 
+            message:"address deleted successfully"
+        }
+    },
+
     create: async ({ locals, cookies, request }) => {
         const data = await request.formData();
 
