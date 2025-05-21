@@ -414,4 +414,23 @@
     .delivery-invisible {
         display: none;
     }
+
+    @media screen and (width < 800px) {
+        fieldset {
+            grid-template-columns: 1fr;
+        }
+
+        form p {
+            margin: 10px 0;
+        }
+
+        legend {
+            padding: 20px 0;
+        }
+
+        form p input, form p select {
+            width: 100%;
+        }
+
+    }
 </style>

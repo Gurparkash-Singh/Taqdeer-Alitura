@@ -61,9 +61,7 @@
     <section id="order-price">
         <article id="product-container">
             {#each data.order_items as item}
-                {#each [1,2,3,4,5] as num}
-                    <OrderProduct product={item} />
-                {/each}
+                <OrderProduct product={item} />
             {/each}
         </article>
         <div></div>
