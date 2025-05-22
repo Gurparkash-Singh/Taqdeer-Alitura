@@ -162,7 +162,7 @@
     }
 
     #product-container {
-        height: 300px;
+        max-height: 300px;
         overflow-y: scroll;
         width: 100%;
         scrollbar-width: thin;
