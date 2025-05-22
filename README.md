@@ -90,7 +90,6 @@
 - [ ] Finish order history
 
 In Case of minimal viable product:
-- [ ] Disable Address Book
 - [ ] Disable Payment Methods
 
 # Completely Finished
@@ -105,8 +104,6 @@ Size chart is a photo should be added to the product images
 Sizing contains model information
 Add Table to DB for model size information
 
-Return Policy should be recieved from Tap Payments
-
 # Needed in the next 2 weeks
 - [ ] Presentable
 - [x] Products need to be added
@@ -120,9 +117,17 @@ Return Policy should be recieved from Tap Payments
 - Disable access to the entire website without loging in
 - Move all instances to Production Credentials (twilio, tap and aramex)
 
-Research Inventory management
-Get Delivery Address
-Set Delivery Price using address
+# For Image Upload
+- Upload images and use them for product images
+- Make sure that uploads are streamed so large files can be uploaded
+- Make sure images can be previewed
+- Make sure multiple images can be uploaded at once
+- Make sure images are trimmed using thumbor and then saved
+- Images should be names as: productname_imageindex.ext and saved to db
+
+# For Critical Error Route
+- A post request should be able to be made to the route with an error message
+- The route should be used to send critical front end error messages
 
 # For Admin Panel
 Products
@@ -156,23 +161,6 @@ Admin Controls
 
 Allow if admins, admin types, admin permissions, errors, permissions
 
-# For Cart Page
-- remove products
-- update product quantities (optional)
-- an area to add discounts using codes
-- an area to show applied discounts
-- show subtotal with discounts
-- checkout button
-
-# Delivery
-- Ability to select existing address (if signed in)
-- Add User Details (name, email, phone number with country code)
-- Ability to add new address (regardless of whether a user is logged in)
-- Area to show subtotal, delivery, taxes and total
-
-# Checkout
-- Tap Payments will handle this portion
-
 # Image Sizes required
 ## Product Images
 90 X 90
@@ -185,15 +173,3 @@ Full Size
 
 ## Homepage
 Full Size
-
-# For Image Upload
-- Upload images and use them for product images
-- Make sure that uploads are streamed so large files can be uploaded
-- Make sure images can be previewed
-- Make sure multiple images can be uploaded at once
-- Make sure images are trimmed using thumbor and then saved
-- Images should be names as: productname_imageindex.ext and saved to db
-
-# For Critical Error Route
-- A post request should be able to be made to the route with an error message
-- The route should be used to send critical front end error messages
