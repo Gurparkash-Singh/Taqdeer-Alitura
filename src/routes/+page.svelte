@@ -1,5 +1,5 @@
 <script>
-    import BackgroundImage from "$lib/images/homepage.avif?enhanced";
+    import BackgroundImage from "$lib/images/homepage.jpg";
     import Logo from '$lib/images/Logo.png?enhanced';
     import { modal } from '$lib/shared_state/shared.svelte';
 
@@ -109,8 +109,8 @@
 <svelte:window bind:scrollY={verticalScrollPos} bind:innerHeight={windowHeight}/>
 
 <div id="image-holder">
-    <enhanced:img 
-        src={BackgroundImage}
+    <img 
+        src={BackgroundImage} 
         alt="background"
         style:object-fit="cover"
         style:object-position="center center"
