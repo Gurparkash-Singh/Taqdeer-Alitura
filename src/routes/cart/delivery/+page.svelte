@@ -3,7 +3,6 @@
     import Map from '$lib/components/Map.svelte';
     import { getCountries, getCountryCallingCode, AsYouType } from 'libphonenumber-js';
 	import { isValidPhoneNumber } from 'libphonenumber-js/max';
-    import ConfirmationModal from '$lib/components/ConfirmationModal.svelte';
 
     let { data, form } = $props();
 
@@ -189,7 +188,7 @@
         />
         {#if !data.user}
             <a href="/profile">login to access addresses</a>
-        {:else if !data.addresses}
+        {:else if data.addresses.length == 0}
             <a href="/profile/addresses">add an address to get started</a>
         {:else}
             <select 
@@ -339,6 +338,16 @@
 
     form {
         margin: 0;
+    }
+
+    form > a {
+        width: 100%;
+        text-align: center;
+        display: block;
+        background-color: #D9D9D9;
+        border: none;
+        padding: 10px;
+        text-decoration: none;
     }
 
     #saved-address {

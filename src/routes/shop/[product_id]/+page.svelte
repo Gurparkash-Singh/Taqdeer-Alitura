@@ -30,7 +30,7 @@
     let images = [];
 
     let currentImage = $state(0);
-    let showImage = $state(data.images[0] ? data.images[0].image_id : -1);
+    let showImage = $derived(images[currentImage]);
 
     let touchStartX = $state(0);
     let touchEndX = $state(0);
@@ -41,7 +41,6 @@
 
     function nextImage() {
         currentImage = (currentImage + 1) % images.length;
-        showImage = images[currentImage];
     }
 
     function prevImage() {
@@ -49,7 +48,6 @@
         if (currentImage == -1) {
             currentImage = images.length - 1;
         }
-        showImage = images[currentImage];
     }
 
     class Product {
@@ -141,6 +139,19 @@
         }
     }
 
+    function removeFromImages(image) {
+        let index = data.images.indexOf(image);
+        if (index > -1) { 
+            data.images.splice(index, 1);
+        }
+
+        index = images.indexOf(image.image_id);
+
+        images.splice(index, 1);
+
+        return "";
+    }
+
     outOfStockCalculator();
 </script>
 
@@ -190,18 +201,22 @@
                 </svg>
             </button>
             {#each data.images as image}
-                <button 
-                    class="carousel-holder"
-                    class:showImage={image.image_id == showImage}
-                    onclick={() => {
-                        display = true;
-                    }}
-                    aria-label="Full Screen Image"
-                >
-                    {#await import(`$lib/images/product_images/${image.image_link}.png`) then { default: src }}
-                        <img {src} alt={image.alt_desc} />
+                    {#await import(`$lib/images/product_images/${image.image_link}.png`)}
+                    Loading...
+                    {:then { default: src }}
+                        <button 
+                            class="carousel-holder"
+                            class:showImage={image.image_id == showImage}
+                            onclick={() => {
+                                display = true;
+                            }}
+                            aria-label="Full Screen Image"
+                        >
+                            <img {src} alt={image.alt_desc} />
+                        </button>
+                    {:catch error}
+                        {removeFromImages(image)}
                     {/await}
-                </button>
             {/each}
             <button 
                 aria-label="next image"

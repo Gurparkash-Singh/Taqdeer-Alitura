@@ -19,8 +19,12 @@
 
 <div>
     {#if displayImage}
-        {#await import(`$lib/images/product_images/${displayImage.image_link}.png`) then { default: src }}
+        {#await import(`$lib/images/product_images/${displayImage.image_link}.png`)}
+            Loading...
+        {:then { default: src }}
             <img {src} alt={displayImage.alt_desc} />
+        {:catch}
+            Image Not Found
         {/await}
     {:else}
         No Image

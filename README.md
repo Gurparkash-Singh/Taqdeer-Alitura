@@ -44,6 +44,7 @@
 - [x] Only allow /cart/review if order_id is in cookies and order status is below pending
 - [x] Get address book working
 - [x] Finish Review Page
+- [x] Fix Homepage and Logo image
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -62,10 +63,10 @@
 - [ ] Get order history working
 - [ ] Get payment methods page working
 - [ ] Get Image upload working
-- [ ] Fix Homepage and Logo image
 - [ ] Add size chart and return policy in products page
 
 # Post Release To Do
+- [ ] Create a critical error route
 - [ ] Allow selection of address by moving pin on the map
 - [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Increase Performance
@@ -184,3 +185,15 @@ Full Size
 
 ## Homepage
 Full Size
+
+# For Image Upload
+- Upload images and use them for product images
+- Make sure that uploads are streamed so large files can be uploaded
+- Make sure images can be previewed
+- Make sure multiple images can be uploaded at once
+- Make sure images are trimmed using thumbor and then saved
+- Images should be names as: productname_imageindex.ext and saved to db
+
+# For Critical Error Route
+- A post request should be able to be made to the route with an error message
+- The route should be used to send critical front end error messages

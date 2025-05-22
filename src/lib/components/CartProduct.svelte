@@ -26,10 +26,14 @@
             <h3>{product.name}</h3>
         </div>
         {#if product.image_link}
-            {#await import(`$lib/images/product_images/${product.image_link}.png`) then { default: src }}
+            {#await import(`$lib/images/product_images/${product.image_link}.png`)}
+                Loading...
+            {:then { default: src }}
                 <a href="/shop/{product.product_id}">
                     <img {src} alt={product.alt_desc} />
                 </a>
+            {:catch}
+                Image Not Found
             {/await}
         {/if}
     </section>

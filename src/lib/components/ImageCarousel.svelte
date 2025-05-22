@@ -5,8 +5,11 @@
 
     let modalCurrentImage = $state(selectImage);
     let showImage = $derived.by(() => {
-        if (data.images[0]){
+        if (data.images[modalCurrentImage]){
             return data.images[modalCurrentImage].image_id;
+        }
+        else if (data.images[0]) {
+            return data.images[0].image_id;
         }
         else {
             return -1;
@@ -36,6 +39,15 @@
             modalCurrentImage = selectImage;
         }
     })
+
+    function removeFromImages(image) {
+        let index = data.images.indexOf(image);
+        if (index > -1) { 
+            data.images.splice(index, 1);
+        }
+
+        return "";
+    }
 </script>
 
 <div 
@@ -65,14 +77,18 @@
         </svg>
     </button>
     {#each data.images as image}
-        <div 
-            class="carousel-holder"
-            class:showImage={image.image_id == showImage}
-        >
-            {#await import(`$lib/images/product_images/${image.image_link}.png`) then { default: src }}
-                <img {src} alt={image.alt_desc} />
+            {#await import(`$lib/images/product_images/${image.image_link}.png`)}
+                Loading...
+            {:then { default: src }}
+                <div 
+                    class="carousel-holder"
+                    class:showImage={image.image_id == showImage}
+                >
+                    <img {src} alt={image.alt_desc} />
+                </div>
+            {:catch}
+                {removeFromImages(image)}
             {/await}
-        </div>
     {/each}
     <button 
         aria-label="next image"
