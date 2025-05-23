@@ -77,18 +77,15 @@
         </svg>
     </button>
     {#each data.images as image}
-            {#await import(`$lib/images/product_images/${image.image_link}.png`)}
-                Loading...
-            {:then { default: src }}
-                <div 
-                    class="carousel-holder"
-                    class:showImage={image.image_id == showImage}
-                >
-                    <img {src} alt={image.alt_desc} />
-                </div>
-            {:catch}
-                {removeFromImages(image)}
-            {/await}
+            <div 
+                class="carousel-holder"
+                class:showImage={image.image_id == showImage}
+            >
+                <img 
+                    src={`/products/${image.image_link}`} 
+                    alt={image.alt_desc} 
+                />
+            </div>
     {/each}
     <button 
         aria-label="next image"

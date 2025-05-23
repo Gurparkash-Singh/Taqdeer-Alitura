@@ -10,9 +10,10 @@
     let collection = $state(data.product.collection_id);
     let price = $state(data.product.price);
     let live = $state(data.product.live == 1 ? true : false);
+    let alt_desc = $state(data.product.description);
 
     let enableSubmit = $derived.by(() => {
-        if (!sku || !name || !category || !collection || !price) {
+        if (!sku || !name || !category || !collection || !price || !alt_desc) {
             return false;
         }
 
@@ -37,6 +38,10 @@
         }
 
         if (live != data.product.live) {
+            return true;
+        }
+
+        if (alt_desc != data.product.description) {
             return true;
         }
 
@@ -94,6 +99,15 @@
                 name="name"
                 id="name"
                 bind:value={name}
+            >
+        </p>
+        <p>
+            <label for="alt_desc">product description:</label>
+            <input 
+                type="text"
+                name="alt_desc"
+                id="alt_desc"
+                bind:value={alt_desc}
             >
         </p>
         <p>

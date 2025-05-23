@@ -2,7 +2,7 @@ import { redirect, error } from "@sveltejs/kit";
 import { dbFunctions } from "$lib/db/database";
 
 export const load = async ({ locals, parent, params }) => {
-     const [product] = await dbFunctions.getAnyProductById(params.product_id);
+    const [product] = await dbFunctions.getAnyProductById(params.product_id);
     
     if (!product)
     {

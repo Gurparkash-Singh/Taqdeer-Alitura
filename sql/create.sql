@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Products (
     product_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     live BOOLEAN DEFAULT 1,
     name VARCHAR(255) NOT NULL,
-    description TEXT,
+    description TEXT NOT NULL,
     sku VARCHAR(255),
     category_id INT NOT NULL,
     collection_id INT,

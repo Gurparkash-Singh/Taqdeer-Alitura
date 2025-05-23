@@ -71,29 +71,29 @@ VALUES
 (20, 1, 0),
 (21, 1, 0);
 
-INSERT INTO Products (name, price, category_id, collection_id, sku)
+INSERT INTO Products (name, price, category_id, collection_id, sku, description)
 VALUES
-("Juthuur Sweats", 459, 2, 1, "FRS01/01"),
-("Juthuur Hoodie", 511, 1, 1, "FRS01/02"),
-("Juthuur Dunes Tee", 324, 1, 1, "FRS01/03"),
-("Juthuur Sweatshirt", 432, 1, 1, "FRS01/04"),
-("Juthuur Tee", 324, 1, 1, "FRS01/05"),
-("Juthuur Shorts", 314, 2, 1, "FRS01/06");
+("Juthuur Sweats", 459, 2, 1, "FRS01/01", "Elegant and heavy oversized sweats"),
+("Juthuur Hoodie", 511, 1, 1, "FRS01/02", "Heavyweight oversized hoodie in olivegreen"),
+("Juthuur Dunes Tee", 324, 1, 1, "FRS01/03", "Black oversized shirts with breast and torso pockets"),
+("Juthuur Sweatshirt", 432, 1, 1, "FRS01/04", "Heavyweight oversized sweatshirt in black"),
+("Juthuur Tee", 324, 1, 1, "FRS01/05", "Oversized white tee with vines printed"),
+("Juthuur Shorts", 314, 2, 1, "FRS01/06", "Black mesh shorts with vines printed");
 
 INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
-(1, "sweats1", "Elegant and heavy oversized sweats", 1),
-(2, "hoodie1", "Heavyweight oversized hoodie in olivegreen", 1),
-(2, "hoodie2", "Heavyweight oversized hoodie in olivegreen", null),
-(3, "dunes1", "Black oversized shirts with breast and torso pockets", 1),
-(3, "dunes2", "Black oversized shirts with breast and torso pockets", null),
-(3, "dunes3", "Black oversized shirts with breast and torso pockets", null),
-(4, "sweatshirt1", "Heavyweight oversized sweatshirt in black", 1),
-(4, "sweatshirt2", "Heavyweight oversized sweatshirt in black", null),
-(5, "tee1", "Oversized white tee with vines printed", 1),
-(5, "tee2", "Oversized white tee with vines printed", null),
-(5, "tee3", "Oversized white tee with vines printed", null),
-(6, "shorts1", "Black mesh shorts with vines printed", 1);
+(1, "sweats1.png", "Elegant and heavy oversized sweats", 1),
+(2, "hoodie1.png", "Heavyweight oversized hoodie in olivegreen", 1),
+(2, "hoodie2.png", "Heavyweight oversized hoodie in olivegreen", null),
+(3, "dunes1.png", "Black oversized shirts with breast and torso pockets", 1),
+(3, "dunes2.png", "Black oversized shirts with breast and torso pockets", null),
+(3, "dunes3.png", "Black oversized shirts with breast and torso pockets", null),
+(4, "sweatshirt1.png", "Heavyweight oversized sweatshirt in black", 1),
+(4, "sweatshirt2.png", "Heavyweight oversized sweatshirt in black", null),
+(5, "tee1.png", "Oversized white tee with vines printed", 1),
+(5, "tee2.png", "Oversized white tee with vines printed", null),
+(5, "tee3.png", "Oversized white tee with vines printed", null),
+(6, "shorts1.png", "Black mesh shorts with vines printed", 1);
 
 INSERT INTO Components (product_id, component_name)
 VALUES

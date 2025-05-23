@@ -8,24 +8,11 @@
             displayImage = element;
         }
     });
-
-    let id = $state(2);
-
-    if (product.product_id == 1)
-    {
-        id = 1
-    }
 </script>
 
 <div>
     {#if displayImage}
-        {#await import(`$lib/images/product_images/${displayImage.image_link}.png`)}
-            Loading...
-        {:then { default: src }}
-            <img {src} alt={displayImage.alt_desc} />
-        {:catch}
-            Image Not Found
-        {/await}
+        <img src={`/products/${displayImage.image_link}`} alt={displayImage.alt_desc} />
     {:else}
         No Image
     {/if}

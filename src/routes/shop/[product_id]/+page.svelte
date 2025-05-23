@@ -201,22 +201,16 @@
                 </svg>
             </button>
             {#each data.images as image}
-                    {#await import(`$lib/images/product_images/${image.image_link}.png`)}
-                    Loading...
-                    {:then { default: src }}
-                        <button 
-                            class="carousel-holder"
-                            class:showImage={image.image_id == showImage}
-                            onclick={() => {
-                                display = true;
-                            }}
-                            aria-label="Full Screen Image"
-                        >
-                            <img {src} alt={image.alt_desc} />
-                        </button>
-                    {:catch error}
-                        {removeFromImages(image)}
-                    {/await}
+                <button 
+                    class="carousel-holder"
+                    class:showImage={image.image_id == showImage}
+                    onclick={() => {
+                        display = true;
+                    }}
+                    aria-label="Full Screen Image"
+                >
+                    <img src={`/products/${image.image_link}`} alt={image.alt_desc} />
+                </button>
             {/each}
             <button 
                 aria-label="next image"

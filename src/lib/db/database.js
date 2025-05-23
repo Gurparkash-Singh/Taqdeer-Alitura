@@ -593,6 +593,12 @@ export const dbFunctions = {
         await db.query(query, [value, id]);
     },
 
+    updateProductDescription: async (id, value) => {
+        let query = "UPDATE Products SET description = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
+    },
+
     getAvailableCurrencies: async () => {
         let query = "SELECT currency_code FROM Available_Currencies";
 
@@ -830,4 +836,41 @@ export const dbFunctions = {
 
         return items;
     },
+
+    addImage: async (product_id, link, alt_desc) => {
+        let query = "INSERT INTO Images (product_id, image_link, alt_desc) ";
+        query += "VALUES (?, ?, ?);";
+        
+        await db.query(query, [product_id, link, alt_desc]);
+    },
+
+    setMainImage: async (product_id, image_id) => {
+        let query = "UPDATE Images SET main_image = null WHERE product_id = ?;";
+
+        await db.query(query, product_id);
+
+        query = "UPDATE Images SET main_image = 1 WHERE image_id = ?;";
+
+        await db.query(query, image_id);
+    },
+
+    setAltDesc: async (product_id, alt_desc) => {
+        let query = "UPDATE Images SET alt_desc = ? WHERE product_id = ?;";
+
+        await db.query(query, [alt_desc, product_id]);
+    },
+
+    getImage: async (image_id) => {
+        let query = "SELECT * FROM Images WHERE image_id = ?;";
+
+        const [result] = await db.query(query, image_id);
+
+        return result;
+    },
+
+    deleteImage: async (id) => {
+        let query = "DELETE FROM Images WHERE image_id = ?;";
+
+        await db.query(query, id);
+    }
 }

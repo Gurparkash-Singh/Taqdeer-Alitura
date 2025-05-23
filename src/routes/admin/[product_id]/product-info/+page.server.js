@@ -13,6 +13,7 @@ export const actions = {
         const collection = data.get("collection_id");
         const price = data.get("price");
         const live = data.get("live");
+        const alt_desc = data.get("alt_desc");
 
         if (!product_id) {
             return fail(404, {
@@ -75,6 +76,14 @@ export const actions = {
         else {
             if (product.live != 0) {
                 await dbFunctions.updateProductLive(product_id, 0);
+            }
+        }
+
+        if (alt_desc)
+        {
+            if (product.description != alt_desc) {
+                await dbFunctions.updateProductDescription(product_id, alt_desc);
+                await dbFunctions.setAltDesc(product_id, alt_desc);
             }
         }
 
