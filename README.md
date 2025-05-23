@@ -45,6 +45,7 @@
 - [x] Get address book working
 - [x] Finish Review Page
 - [x] Fix Homepage and Logo image
+- [x] Get Image upload working
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -62,10 +63,10 @@
 - [ ] Get post checkout page working
 - [ ] Get order history working
 - [ ] Get payment methods page working
-- [ ] Get Image upload working
 - [ ] Add size chart and return policy in products page
 
 # Post Release To Do
+- [ ] Get thumbor to trim uploaded images
 - [ ] Create a critical error route
 - [ ] Allow selection of address by moving pin on the map
 - [ ] Redo Discounts to allow for members to receive discounts without code
@@ -117,14 +118,6 @@ Add Table to DB for model size information
 - Disable access to the entire website without loging in
 - Move all instances to Production Credentials (twilio, tap and aramex)
 
-# For Image Upload
-- Upload images and use them for product images
-- Make sure that uploads are streamed so large files can be uploaded
-- Make sure images can be previewed
-- Make sure multiple images can be uploaded at once
-- Make sure images are trimmed using thumbor and then saved
-- Images should be names as: productname_imageindex.ext and saved to db
-
 # For Critical Error Route
 - A post request should be able to be made to the route with an error message
 - The route should be used to send critical front end error messages
@@ -133,7 +126,7 @@ Add Table to DB for model size information
 Products
 - [x] create a place to create and update collections and categories
 - [x] Products
-- [ ] images
+- [x] images
 - [ ] sizes
 - [ ] components and properties
 - [ ] Discounts in one place
