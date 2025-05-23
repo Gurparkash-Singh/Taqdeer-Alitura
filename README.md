@@ -66,11 +66,11 @@
 - [ ] Get Image upload working
 
 # For Image Upload
-- Upload all images to custom image server
-- Get server hooked up to media.taqdeeralitura.com
-- Get thumbor to trim images before saving
-- Make sure image links work
-- Make sure upload happens through image server
+- [x] Upload all images to custom image server
+- [x] Get server hooked up to media.taqdeeralitura.com
+- [x] Make sure image links work
+- [ ] Make sure upload happens through image server
+- [ ] Get thumbor to trim images before saving
 
 # Post Release To Do
 - [ ] Create a critical error route
