@@ -18,7 +18,12 @@ export const POST = (async ({ params, request }) => {
     if (!product) return new Response('No product found', { status: 400 });
 
     const random = randomUUID();
-    let tempFolder = "static/products/";
+    let tempFolder = "~/Documents/Image-Server/static/products";
+
+    if (MODE == "DEVELOPMENT") {
+        tempFolder = "static/products/";
+    }
+    
     const filename = `product${product_id}_${random}.${ext}`;
 
     const diskStream = fs.createWriteStream(tempFolder + filename);

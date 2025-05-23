@@ -209,7 +209,7 @@
                     }}
                     aria-label="Full Screen Image"
                 >
-                    <img src={`/products/${image.image_link}`} alt={image.alt_desc} />
+                    <img src={`${image.image_link}`} alt={image.alt_desc} />
                 </button>
             {/each}
             <button 

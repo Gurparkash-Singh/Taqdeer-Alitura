@@ -45,7 +45,6 @@
 - [x] Get address book working
 - [x] Finish Review Page
 - [x] Fix Homepage and Logo image
-- [x] Get Image upload working
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -64,9 +63,16 @@
 - [ ] Get order history working
 - [ ] Get payment methods page working
 - [ ] Add size chart and return policy in products page
+- [ ] Get Image upload working
+
+# For Image Upload
+- Upload all images to custom image server
+- Get server hooked up to media.taqdeeralitura.com
+- Get thumbor to trim images before saving
+- Make sure image links work
+- Make sure upload happens through image server
 
 # Post Release To Do
-- [ ] Get thumbor to trim uploaded images
 - [ ] Create a critical error route
 - [ ] Allow selection of address by moving pin on the map
 - [ ] Redo Discounts to allow for members to receive discounts without code

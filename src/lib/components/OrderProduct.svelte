@@ -16,7 +16,7 @@
         <h3>{product.name}</h3>
         {#if product.image_link}
             <a href="/shop/{product.product_id}">
-                <img src={`/products/${product.image_link}`} alt={product.alt_desc} />
+                <img src={`${product.image_link}`} alt={product.alt_desc} />
             </a>
         {/if}
     </section>

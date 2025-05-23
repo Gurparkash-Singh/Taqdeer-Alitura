@@ -116,7 +116,7 @@
 
         >
             <img 
-                src={`/products/${image.image_link}`} 
+                src={`${image.image_link}`} 
                 alt={image.alt_desc} 
             />
         </button>

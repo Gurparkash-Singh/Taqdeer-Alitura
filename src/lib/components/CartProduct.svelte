@@ -28,7 +28,7 @@
         {#if product.image_link}
             <a href="/shop/{product.product_id}">
                 <img 
-                    src={`/products/${product.image_link}`} 
+                    src={`${product.image_link}`} 
                     alt={product.alt_desc} 
                 />
             </a>
