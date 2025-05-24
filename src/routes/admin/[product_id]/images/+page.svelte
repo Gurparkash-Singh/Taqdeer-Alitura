@@ -1,5 +1,6 @@
 <script>
 	import { invalidateAll } from "$app/navigation";
+	import { PUBLIC_MODE } from "$env/static/public";
     import AdminBackButton from "$lib/components/AdminBackButton.svelte";
     import { modal } from "$lib/shared_state/shared.svelte";
 
@@ -31,8 +32,14 @@
 
     async function uploadFile(file) {
         const ext = file.name.split(".")[1];
+        
+        let url = "http://0.0.0.0:8000";
+        if (PUBLIC_MODE == "DEVELOPMENT") {
+            url = "https://media.taqdeeralitura.com"
+        }
+        
         const res = await fetch(
-            `/upload/${data.product.product_id}x${ext}`, 
+            `${url}/upload/${data.product.product_id}/${ext}`, 
             {
                 method: 'POST',
                 body: file
