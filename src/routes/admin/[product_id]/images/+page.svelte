@@ -3,6 +3,7 @@
 	import { PUBLIC_MODE } from "$env/static/public";
     import AdminBackButton from "$lib/components/AdminBackButton.svelte";
     import { modal } from "$lib/shared_state/shared.svelte";
+	import { preventDefault } from "svelte/legacy";
 
     let { data, form } = $props();
 
@@ -34,7 +35,7 @@
         const ext = file.name.split(".")[1];
         
         let url = "http://0.0.0.0:8000";
-        if (PUBLIC_MODE == "DEVELOPMENT") {
+        if (PUBLIC_MODE != "DEVELOPMENT") {
             url = "https://media.taqdeeralitura.com"
         }
         
@@ -49,11 +50,11 @@
         let message;
         let invalid = false;
         if (res.ok){
-            message = "Uploaded Successfully";
+            message = "uploaded successfully";
             invalidateAll();
         }
         else {
-            message = 'Failed to upload file';
+            message = 'failed to upload file';
             invalid = true;
         }
 
@@ -76,6 +77,70 @@
                 paragraph: message
             });
         }
+    }
+
+    async function deleteImages(images) {
+        let message;
+
+        for (let i = 0; i < images.length; i++) {
+            message = await deleteImage(images[i]);
+        }
+        
+        message = message.message;
+        let invalid = message.invalid;
+
+        if (!invalid) {
+            invalidateAll();
+        }
+
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == message) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages && invalid) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: message
+            });
+        }else if (!inMessages) {
+            modal.messages.push({
+                heading: "SUCCESS",
+                paragraph: message
+            });
+        }
+    }
+
+    async function deleteImage(image_id) {
+        let url = "http://0.0.0.0:8000";
+        if (PUBLIC_MODE != "DEVELOPMENT") {
+            url = "https://media.taqdeeralitura.com"
+        }
+
+         const res = await fetch(
+            `${url}/delete/${image_id}/${data.product.product_id}`, 
+            {
+                method: 'POST'
+            }
+        );
+
+        let message = {
+            message: "image deleted successfully",
+            invalid: false
+        }
+
+        if (res.ok){
+            message.message = "image deleted successfully";
+        }
+        else {
+            message.message = 'failed to delete image';
+            message.invalid = true;
+        }
+
+        return message;
     }
 
     if (form) {
@@ -166,9 +231,10 @@
     </button>
 
     <button 
-        type="submit"
-        class:disable-submit={!enableDelete}
-        disabled={!enableDelete}
+        onclick={(e) => {
+            e.preventDefault();
+            deleteImages(selected_images);
+        }}
     >
         Delete
         <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">

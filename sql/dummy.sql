@@ -82,18 +82,18 @@ VALUES
 
 INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
-(1, "http://media.taqdeeralitura.com/products/sweats1.png", "Elegant and heavy oversized sweats", 1),
-(2, "http://media.taqdeeralitura.com/products/hoodie1.png", "Heavyweight oversized hoodie in olivegreen", 1),
-(2, "http://media.taqdeeralitura.com/products/hoodie2.png", "Heavyweight oversized hoodie in olivegreen", null),
-(3, "http://media.taqdeeralitura.com/products/dunes1.png", "Black oversized shirts with breast and torso pockets", 1),
-(3, "http://media.taqdeeralitura.com/products/dunes2.png", "Black oversized shirts with breast and torso pockets", null),
-(3, "http://media.taqdeeralitura.com/products/dunes3.png", "Black oversized shirts with breast and torso pockets", null),
-(4, "http://media.taqdeeralitura.com/products/sweatshirt1.png", "Heavyweight oversized sweatshirt in black", 1),
-(4, "http://media.taqdeeralitura.com/products/sweatshirt2.png", "Heavyweight oversized sweatshirt in black", null),
-(5, "http://media.taqdeeralitura.com/products/tee1.png", "Oversized white tee with vines printed", 1),
-(5, "http://media.taqdeeralitura.com/products/tee2.png", "Oversized white tee with vines printed", null),
-(5, "http://media.taqdeeralitura.com/products/tee3.png", "Oversized white tee with vines printed", null),
-(6, "http://media.taqdeeralitura.com/products/shorts1.png", "Black mesh shorts with vines printed", 1);
+(1, "https://media.taqdeeralitura.com/products/sweats1.png", "Elegant and heavy oversized sweats", 1),
+(2, "https://media.taqdeeralitura.com/products/hoodie1.png", "Heavyweight oversized hoodie in olivegreen", 1),
+(2, "https://media.taqdeeralitura.com/products/hoodie2.png", "Heavyweight oversized hoodie in olivegreen", null),
+(3, "https://media.taqdeeralitura.com/products/dunes1.png", "Black oversized shirts with breast and torso pockets", 1),
+(3, "https://media.taqdeeralitura.com/products/dunes2.png", "Black oversized shirts with breast and torso pockets", null),
+(3, "https://media.taqdeeralitura.com/products/dunes3.png", "Black oversized shirts with breast and torso pockets", null),
+(4, "https://media.taqdeeralitura.com/products/sweatshirt1.png", "Heavyweight oversized sweatshirt in black", 1),
+(4, "https://media.taqdeeralitura.com/products/sweatshirt2.png", "Heavyweight oversized sweatshirt in black", null),
+(5, "https://media.taqdeeralitura.com/products/tee1.png", "Oversized white tee with vines printed", 1),
+(5, "https://media.taqdeeralitura.com/products/tee2.png", "Oversized white tee with vines printed", null),
+(5, "https://media.taqdeeralitura.com/products/tee3.png", "Oversized white tee with vines printed", null),
+(6, "https://media.taqdeeralitura.com/products/shorts1.png", "Black mesh shorts with vines printed", 1);
 
 INSERT INTO Components (product_id, component_name)
 VALUES
