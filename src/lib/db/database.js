@@ -738,11 +738,15 @@ export const dbFunctions = {
         query += "FROM Cart_Items WHERE session_id = ?;";
         await db.query(query, [order_id, session_id]);
 
-        query = "DELETE FROM Cart_Items WHERE session_id = ?;";
-        await db.query(query, session_id);
-
         query = "UPDATE Orders SET status = 3 WHERE id = ?;";
         await db.query(query, order_id);
+    },
+
+    createOrderInvoiceItem: async (order_id, amount, name) => {
+        let query = "INSERT INTO Order_Invoice_Items (order_id, amount, name) ";
+        query += "VALUES (?, ?, ?);";
+
+        await db.query(query, [order_id, amount, name]);
     },
 
     getUserAddresses: async (user_id) => {
@@ -872,5 +876,47 @@ export const dbFunctions = {
         let query = "DELETE FROM Images WHERE image_id = ?;";
 
         await db.query(query, id);
+    },
+
+    getOrderInvoice: async (order_id) => {
+        let query = "SELECT * FROM Order_Invoice_Items WHERE order_id = ?;";
+
+        const [result] = await db.query(query, order_id);
+
+        return result;
+    },
+
+    getOrderInvoiceWithoutDelivery: async (order_id) => {
+        let query = "SELECT * FROM Order_Invoice_Items WHERE order_id = ? ";
+        query += "AND name <> 'delivery'";
+        
+        const [result] = await db.query(query, order_id);
+
+        return result;
+    },
+
+    getOrderDelivery: async (order_id) => {
+        let query = "SELECT * FROM Order_Invoice_Items WHERE order_id = ? ";
+        query += "AND name = 'delivery'";
+        
+        const [result] = await db.query(query, order_id);
+
+        return result;
+    },
+
+    updateDeliveryRate: async (order_id, amount) => {
+        let query = "UPDATE Order_Invoice_Items SET ";
+        query += "amount = ? WHERE order_id = ? AND name = 'delivery';";
+
+        await db.query(query, [amount, order_id]);
+    },
+
+    getOrderInvoiceTotal: async (order_id) => {
+        let query = "SELECT sum(amount) as total FROM Order_Invoice_Items ";
+        query += "WHERE order_id = ?;";
+
+        const [result] = await db.query(query, order_id);
+
+        return result;
     }
 }

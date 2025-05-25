@@ -22,11 +22,11 @@
         }
     }
 
-    let deliveryNum = 20;
+    let deliveryNum = data.delivery.amount;
     let floatSubtotal = $derived.by(() => {
         let tempSubtotal = 0
-        data.order_items.forEach(item => {
-            tempSubtotal += item.price * item.quantity * numberFormat.conversion_rate;
+        data.order_invoice_items.forEach(item => {
+            tempSubtotal += item.amount * numberFormat.conversion_rate;
         });
         return tempSubtotal;
     });
@@ -78,6 +78,11 @@
     </section>
 
     <form action="?/checkout" method="post">
+        <input 
+            type="hidden" 
+            name="currency"
+            value={numberFormat.style.currency}
+        >
         <button type="submit">
             Checkout
             <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">

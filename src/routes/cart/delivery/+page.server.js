@@ -189,6 +189,11 @@ export const actions = {
                         delivery_country
                     );
                 }
+
+                await dbFunctions.updateDeliveryRate(
+                    cookies.get("order_id"),
+                    rate.TotalAmount.Value,
+                )
     
                 throw redirect(302, "/cart/review?updated=true");
             }
@@ -241,6 +246,24 @@ export const actions = {
             postal,
             delivery_country
         );
+
+        const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session.id);
+
+        for (let i = 0; i < cart_items.length; i++) {
+            await dbFunctions.createOrderInvoiceItem(
+                result.insertId, 
+                cart_items[i].price * cart_items[i].quantity,
+                cart_items[i].name
+            )
+        }
+
+        await dbFunctions.createOrderInvoiceItem(
+            result.insertId,
+            rate.TotalAmount.Value,
+            "delivery"
+        )
+
+        await dbFunctions.removeAllFromCart(shopping_session.id);
 
         cookies.set('order_id', result.insertId, {
             path: "/",

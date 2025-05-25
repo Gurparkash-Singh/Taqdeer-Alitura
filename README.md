@@ -46,6 +46,7 @@
 - [x] Finish Review Page
 - [x] Fix Homepage and Logo image
 - [x] Get Image upload working
+- [x] Finish Checkout
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -58,7 +59,6 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Finish Checkout
 - [ ] Save order post checkout
 - [ ] Get post checkout page working
 - [ ] Get order history working
@@ -66,7 +66,7 @@
 - [ ] Add size chart and return policy in products page
 
 # Post Release To Do
-- [ ] Get thumbor to trim images before saving
+- [ ] Add security to image server by authenticating user before upload or delete
 - [ ] Create a critical error route
 - [ ] Allow selection of address by moving pin on the map
 - [ ] Redo Discounts to allow for members to receive discounts without code
