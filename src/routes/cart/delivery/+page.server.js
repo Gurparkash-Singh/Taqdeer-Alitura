@@ -15,8 +15,10 @@ export async function load({cookies, locals}) {
         let [order] = await dbFunctions.getOrderById(cookies.get("order_id"));
 
         if (order?.status <= 5) {
-
-            let [address] = await dbFunctions.getOrderAddress(order.order_address);
+            let address;
+            if (order.order_address) {
+                [address] = await dbFunctions.getOrderAddress(order.order_address);
+            }
 
             const existing_order = {
                 name: order.name,
@@ -28,7 +30,8 @@ export async function load({cookies, locals}) {
                 city: address?.city,
                 province: address?.province,
                 postal: address?.postal_code,
-                delivery_country: address?.country
+                delivery_country: address?.country,
+                address_id: address.user_address_id
             }
 
             return {
@@ -51,6 +54,9 @@ export const actions = {
         const email = data.get('email').trim();
         const country = data.get("country");
         const phone = data.get("phone");
+
+        let address_id = data.get("address-id");
+        const address_name = data.get("addressName");
 
         const formattedAddress = data.get("formatted-address");
         let address1 = data.get("address1");
@@ -86,6 +92,47 @@ export const actions = {
             returnMessage.message = "some items in your cart were removed\n";
             returnMessage.message += "quantities were not available as selected";
             return fail(400, returnMessage);
+        }
+
+        if (address_id == 0) {
+            if (!address_name) {
+                returnMessage.message = "fill in address name";
+                return fail(400, returnMessage);
+            }
+        }
+        else if (address_id > 0) {
+            const [user_address] = await dbFunctions.getUserAddressById(address_id);
+
+            if (!user_address) {
+                returnMessage.message = "address not found";
+                return fail(404, returnMessage);
+            }
+
+            returnMessage.message = "address components do not match selected address";
+
+            if (user_address.address_line1 != address1) {
+                return fail(400, returnMessage)
+            }
+
+            if (user_address.address_line2 != address2) {
+                return fail(400, returnMessage)
+            }
+
+            if (user_address.city != city) {
+                return fail(400, returnMessage)
+            }
+
+            if (user_address.province != province) {
+                return fail(400, returnMessage)
+            }
+
+            if (user_address.postal_code != postal) {
+                return fail(400, returnMessage)
+            }
+
+            if (user_address.country != country) {
+                return fail(400, returnMessage)
+            }
         }
 
         if (manual) {
@@ -167,6 +214,21 @@ export const actions = {
                     phoneNumber.nationalNumber
                 );
 
+                if (address_id == 0){
+                    const address_result = await dbFunctions.setUserAddress(
+                        locals.user.user_id,
+                        address_name,
+                        address1, 
+                        address2,
+                        city,
+                        province,
+                        postal,
+                        delivery_country
+                    );
+
+                    address_id = address_result.insertId;
+                }
+
                 if (order.order_address) {
                     await dbFunctions.updateOrderAddress(
                         order.order_address,
@@ -175,7 +237,8 @@ export const actions = {
                         city,
                         province,
                         postal,
-                        delivery_country
+                        delivery_country,
+                        address_id
                     );
                 }
                 else {
@@ -186,7 +249,8 @@ export const actions = {
                         city,
                         province,
                         postal,
-                        delivery_country
+                        delivery_country,
+                        address_id
                     );
                 }
 
@@ -237,6 +301,21 @@ export const actions = {
 
         await dbFunctions.moveItemsToOrder(result.insertId, shopping_session.id);
 
+        if (address_id == 0){
+            const address_result = await dbFunctions.setUserAddress(
+                locals.user.user_id,
+                address_name,
+                address1, 
+                address2,
+                city,
+                province,
+                postal,
+                delivery_country
+            );
+
+            address_id = address_result.insertId;
+        }
+
         await dbFunctions.setOrderAddress(
             result.insertId,
             address1, 
@@ -244,7 +323,8 @@ export const actions = {
             city,
             province,
             postal,
-            delivery_country
+            delivery_country,
+            address_id
         );
 
         const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session.id);

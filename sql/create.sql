@@ -1,4 +1,12 @@
 -- Add ability for multiple discounts and discounts on orders
+CREATE TABLE IF NOT EXISTS Errors (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    error_id INT,
+    location TEXT NOT NULL,
+    error_name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 CREATE TABLE IF NOT EXISTS Category (
     category_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -100,6 +108,7 @@ CREATE TABLE IF NOT EXISTS User (
     country VARCHAR(255),
     telephone VARCHAR(255),
     date_of_birth DATE,
+    tap_customer_id TEXT,
     verified_email BOOLEAN DEFAULT 0,
     verified_phone BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -144,8 +153,24 @@ CREATE TABLE IF NOT EXISTS Payment_Details (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS User_Addresses (
+    address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    address_name TEXT,
+    address_line1 VARCHAR(255) NOT NULL,
+    address_line2 VARCHAR(255),
+    city VARCHAR(255) NOT NULL,
+    province VARCHAR (255) NOT NULL,
+    postal_code VARCHAR(255) NOT NULL,
+    country TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
 CREATE TABLE IF NOT EXISTS Order_Addresses (
     address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_address_id INT,
     address_line1 VARCHAR(255) NOT NULL,
     address_line2 VARCHAR(255),
     city VARCHAR(255) NOT NULL,
@@ -204,21 +229,6 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (order_id) REFERENCES Orders(id),
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
     FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
-);
-
-CREATE TABLE IF NOT EXISTS User_Addresses (
-    address_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    address_name TEXT,
-    address_line1 VARCHAR(255) NOT NULL,
-    address_line2 VARCHAR(255),
-    city VARCHAR(255) NOT NULL,
-    province VARCHAR (255) NOT NULL,
-    postal_code VARCHAR(255) NOT NULL,
-    country TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS User_Cards (
@@ -372,15 +382,6 @@ CREATE TABLE IF NOT EXISTS Contact_Form_Emails(
     message LONGTEXT NOT NULL,
     error BOOLEAN DEFAULT 0,
     error_name TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS Errors (
-	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    error_id INT,
-    location TEXT NOT NULL,
-    error_name TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

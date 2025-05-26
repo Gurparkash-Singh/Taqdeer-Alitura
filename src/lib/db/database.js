@@ -641,21 +641,36 @@ export const dbFunctions = {
         city, 
         province, 
         postal_code, 
-        country
+        country,
+        user_address_id
     ) => {
         let query = "INSERT INTO Order_Addresses ";
         query += "(address_line1, address_line2, city, province, ";
-        query += "postal_code, country) VALUES ";
-        query += "(?, ?, ?, ?, ?, ?)";
+        query += "postal_code, country";
+        if (user_address_id > 0) {
+            query += ", user_address_id"
+        }
+        query += ") VALUES (?, ?, ?, ?, ?, ?";
+        if (user_address_id > 0)
+        {
+            query += ", ?";
+        }
+        query += ");";
 
-        const [result] = await db.query(query, [ 
+        let queryArray = [ 
             line1, 
             line2, 
             city, 
             province, 
             postal_code, 
             country
-        ]);
+        ];
+
+        if (user_address_id > 0) {
+            queryArray.push(user_address_id);
+        }
+
+        const [result] = await db.query(query, queryArray);
 
         query = "UPDATE Orders SET order_address = ?, status = 2 WHERE id = ?";
 
@@ -687,21 +702,36 @@ export const dbFunctions = {
         city, 
         province, 
         postal_code, 
-        country
+        country,
+        user_address_id
     ) => {
         let query = "UPDATE Order_Addresses ";
         query += "SET address_line1 = ?, address_line2 = ?, city = ?, province = ?, ";
-        query += "postal_code = ?, country = ? WHERE address_id = ?;";
+        query += "postal_code = ?, country = ? ";
+        if (user_address_id > 0) {
+            query += ", user_address_id = ?"
+        }
+        else {
+            query += ", user_address_id = null ";
+        }
+        query += "WHERE address_id = ?;";
 
-        const [result] = await db.query(query, [ 
+        let queryArray = [
             line1, 
             line2, 
             city, 
             province, 
             postal_code, 
             country,
-            address_id
-        ]);
+        ];
+
+        if (user_address_id > 0) {
+            queryArray.push(user_address_id);
+        }
+
+        queryArray.push(address_id);
+
+        const [result] = await db.query(query, queryArray);
     },
 
     getOrderAddress: async (address_id) => {
@@ -782,6 +812,8 @@ export const dbFunctions = {
             postal_code, 
             country
         ]);
+
+        return result;
     },
 
     updateUserAddress: async (
@@ -916,6 +948,14 @@ export const dbFunctions = {
         query += "WHERE order_id = ?;";
 
         const [result] = await db.query(query, order_id);
+
+        return result;
+    },
+
+    getUserAddressById: async (id) => {
+        let query = "SELECT * FROM User_Addresses WHERE address_id = ?;";
+
+        const [result] = await db.query(query, id);
 
         return result;
     }

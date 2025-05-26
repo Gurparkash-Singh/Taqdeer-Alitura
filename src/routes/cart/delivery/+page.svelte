@@ -6,22 +6,7 @@
 
     let { data, form } = $props();
 
-    if (data.infoUpdated) {
-        let inMessages = false;
-        for (let i = 0; i < modal.messages.length; i++) {
-            if (modal.messages[i].paragraph == "updated order information") {
-                inMessages = true;
-            }
-        }
-
-        if (!inMessages) {
-            modal.messages.push({
-                heading: "Success",
-                paragraph: "updated order information"
-            });
-        }
-    }
-
+    let addressName = $state("");
     let address1 = $state("");
     let address2 = $state("");
     let city = $state("");
@@ -30,7 +15,7 @@
     let country = $state("");
     let formalAddress = $state("");
     let manual = $state(false);
-    let selected_address = $state("add");
+    let selected_address = $state("save");
 
     let name = $state(data.user ? data.user.name : "");
     let email = $state(data.user ? data.user.email : "");
@@ -73,6 +58,9 @@
             case "formalAddress":
                 formalAddress = value;
                 manual = false;
+                if (selected_address === "save") {
+                    showMessage = true;
+                }
                 break;
         }
     }
@@ -85,11 +73,15 @@
     let enableSubmit = $derived.by(() => {
         if (countryCode) {
             if(isValidPhoneNumber(phoneNumber, countryCode)) {
+                const returnVal = name && email && address1;
                 if (!showMessage) {
-                    return name && email && address1 && formalAddress;
+                    return returnVal && formalAddress;
                 }
 
-                return name && email && address1 && city && postal_code && province && country;
+                if (selected_address === "save") {
+                    return returnVal && city && postal_code && province && country && addressName;
+                }
+                return returnVal && city && postal_code && province && country;
             }
             else {
                 return false;
@@ -151,11 +143,24 @@
         postal_code = data.existing_order.postal;
         country = data.existing_order.delivery_country;
 
+        if (data.existing_order.address_id) {
+            for (let i = 0; i < data.addresses.length; i++) {
+                if (data.existing_order.address_id == data.addresses[i].address_id){
+                    selected_address = data.addresses[i];
+                    break;
+                }
+            }
+        }
+        else {
+            selected_address = "add";
+        }
+
         manual = true;
         showMessage = true;
     }
 
     function valueChange(address) {
+        console.log(address.address_id);
         address1 = address.address_line1;
         address2 = address.address_line2;
         city = address.city;
@@ -186,16 +191,19 @@
             name="manual-entry"
             bind:value={manual}
         />
+        <input 
+            type="hidden"
+            name="address-id"
+            value={selected_address === "save" ? 0 : selected_address.address_id}
+        />
         {#if !data.user}
             <a href="/profile">login to access addresses</a>
-        {:else if data.addresses.length == 0}
-            <a href="/profile/addresses">add an address to get started</a>
         {:else}
             <select 
                 name="saved-address" 
                 id="saved-address"
                 onchange={(e) => {
-                    if (selected_address != "add") {
+                    if (selected_address != "add" || selected_address != "save") {
                         valueChange(selected_address);
                     }
                     else {
@@ -207,7 +215,8 @@
                 {#each data.addresses as address}
                     <option value={address}>{address.address_name}</option>
                 {/each}
-                <option value="add" selected>enter an address</option>
+                <option value="save" selected>save an address</option>
+                <option value="add">enter an address</option>
             </select>
         {/if}
         <fieldset 
@@ -215,6 +224,17 @@
             class:delivery-invisible={!showMessage}
         >
             <legend>Delivery Information</legend>
+            {#if selected_address === "save"}
+                <p>
+                    <label for="addressName">address name:</label>
+                    <input 
+                            type="text" 
+                            name="addressName" 
+                            id="addressName"
+                            bind:value={addressName}
+                    >
+                </p>
+            {/if}
             <p>
                 <label for="address1">address line 1:</label>
                 <input 
