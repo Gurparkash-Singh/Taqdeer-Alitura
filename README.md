@@ -47,6 +47,8 @@
 - [x] Fix Homepage and Logo image
 - [x] Get Image upload working
 - [x] Finish Checkout
+- [x] Add ability to save an address from the delivery page
+- [x] Get order history working
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -61,7 +63,6 @@
 - [ ] Verify payment methods page
 - [ ] Save order post checkout
 - [ ] Get post checkout page working
-- [ ] Get order history working
 - [ ] Get payment methods page working
 - [ ] Add size chart and return policy in products page
 
@@ -75,7 +76,6 @@
 - [ ] Limit the number of products on first page load
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
-- [ ] Add ability to save an address from the delivery page
 - [ ] Add ability to track shipments
 
 # To-Do for minimal viable product

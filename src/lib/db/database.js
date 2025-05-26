@@ -958,5 +958,13 @@ export const dbFunctions = {
         const [result] = await db.query(query, id);
 
         return result;
+    },
+
+    getUserOrders: async (id) => {
+        let query = "SELECT * FROM Orders WHERE user_id = ? AND status > 5;";
+
+        const [result] = await db.query(query, id);
+
+        return result;
     }
 }

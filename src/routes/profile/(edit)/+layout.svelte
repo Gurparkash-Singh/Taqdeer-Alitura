@@ -2,11 +2,16 @@
     import { page } from "$app/state";
 
     let { children } = $props();
+
+    let order_regex = /\/profile\/orders\/[0-9]*/
+
+    let order = page.url.pathname === "/profile/orders"
+    || page.url.pathname.match(order_regex);
 </script>
 
 <section id="menu">
-    {#if page.url.pathname === "/profile/orders"}
-        <a href="/profile">
+    {#if order}
+        <a href="./">
             <svg 
                 width="15" 
                 height="15" 

@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS Orders (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     tap_order_id VARCHAR(255),
+    tracking_id VARCHAR(255),
     name TEXT NOT NULL,
     user_email VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
