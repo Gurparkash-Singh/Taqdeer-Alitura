@@ -1,6 +1,7 @@
 <script>
     import CartProduct from '$lib/components/CartProduct.svelte';
     import { numberFormat } from '$lib/shared_state/shared.svelte';
+    import { modal } from '$lib/shared_state/shared.svelte';
 
     const payment_images = import.meta.glob(
 		'$lib/images/payment_logos/*.png',
@@ -13,6 +14,24 @@
 	);
 
     let { data, form } = $props();
+
+    if (data.product_errors) {
+        let inMessages = false;
+        let paragraph = "Some products from your order might not be available\n";
+        paragraph += "or they might not be available with the same size and quantity";
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == paragraph) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages) {
+            modal.messages.push({
+                heading: "WARNING",
+                paragraph: paragraph
+            });
+        }
+    }
 
     let deliveryNum = 20;
     let floatSubtotal = $derived.by(() => {

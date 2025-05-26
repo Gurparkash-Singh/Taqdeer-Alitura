@@ -51,6 +51,7 @@
 - [x] Get order history working
 - [x] Save order post checkout
 - [x] Get post checkout page working
+- [x] Enable Order Again button in /profile/orders
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -63,7 +64,6 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Enable Order Again button in /profile/orders
 - [ ] Create Shipment and get tracking info
 - [ ] Get payment methods page working
 - [ ] Save card if so choosen

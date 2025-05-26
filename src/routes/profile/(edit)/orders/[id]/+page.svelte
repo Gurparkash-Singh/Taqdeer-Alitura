@@ -1,7 +1,30 @@
 <script>
     import OrderDetails from "$lib/components/OrderDetails.svelte";
+    import { modal } from "$lib/shared_state/shared.svelte";
 
-    let { data } = $props();
+    let { data, form } = $props();
+
+    if (form) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == form.message) {
+                inMessages = true;
+            }
+        }
+        
+        if (!inMessages && form.invalid) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: form.message
+            });
+        }else if (!inMessages && form.success) {
+            modal.messages.push({
+                heading: "Success",
+                paragraph: form.message
+            });
+        }
+    }
 </script>
 
 <section id="order-ref">
@@ -9,7 +32,14 @@
         <dt>Order number:</dt>
         <dd>{data.order.tap_receipt}</dd>
         <dd class="reference-link">
-            <button>Order again</button>
+            <form action="?/submit" method="POST">
+                <input 
+                    type="hidden" 
+                    name="order-id"
+                    value={data.order.id}
+                >
+                <button type="submit">Order again</button>
+            </form>
         </dd>
         <dt>Tracking number:</dt>
         <dd>{data.order.tracking_number}</dd>

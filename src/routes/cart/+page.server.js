@@ -2,7 +2,7 @@ import { dbFunctions } from "$lib/db/database";
 import { error, redirect } from "@sveltejs/kit";
 import axios from "axios";
 
-export async function load({ cookies })
+export async function load({ cookies, url })
 {
     const session = cookies.get("session");
     let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
@@ -16,11 +16,17 @@ export async function load({ cookies })
         error(500);
     }
 
+    let product_errors = false;
+
+    if (url.searchParams.has("product_errors")) {
+        product_errors = true;
+    }
+
     shopping_session = shopping_session[0].id;
     
     const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session);
 
-    return {cart_items};
+    return {cart_items, product_errors};
 }
 
 export const actions = {
