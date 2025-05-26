@@ -966,5 +966,13 @@ export const dbFunctions = {
         const [result] = await db.query(query, id);
 
         return result;
+    },
+
+    saveTapDetails: async (order_id, tap_id, tap_order_id, receipt) => {
+        let query = "UPDATE Orders SET tap_charge_id = ?, ";
+        query += "tap_order_id = ?, tap_receipt = ?, status = 6 WHERE ";
+        query += "id = ?;";
+
+        await db.query(query, [tap_id, tap_order_id, receipt, order_id]);
     }
 }

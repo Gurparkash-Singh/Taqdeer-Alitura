@@ -9,6 +9,8 @@ export async function load({ cookies, params, url }) {
 
     const infoUpdated = url.searchParams.has("updated");
 
+    const declined = url.searchParams.has("declined");
+
     if (!order_id) {
         throw redirect(302, "/cart");
     }
@@ -29,6 +31,7 @@ export async function load({ cookies, params, url }) {
     return {
         order,
         infoUpdated,
+        declined,
         address,
         order_items,
         order_invoice_items,
@@ -137,7 +140,7 @@ export const actions = {
                 reference: { order: order_id },
                 merchant: { id: TAP_MERCHANT_ID },
                 source: { id: 'src_all' },
-                redirect: { url: 'https://taqdeeralitura.com/cart' }
+                redirect: { url: 'https://taqdeeralitura.com/orders' }
             }
         };
 

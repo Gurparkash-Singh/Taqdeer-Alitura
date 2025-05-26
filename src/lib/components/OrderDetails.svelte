@@ -10,8 +10,6 @@
         delivery_amount, 
         order_invoice_items,
         order_items,
-        tracking_number,
-        order_number
     } = $props();
 
     let deliveryNum = delivery_amount;
@@ -49,23 +47,6 @@
 </script>
 
 <article>
-    <section id="order-ref">
-        <dl>
-            <dt>Order number:</dt>
-            <dd>{order_number}</dd>
-            <dd class="reference-link">
-                <a href="/profile/orders">Order history</a>
-            </dd>
-            <dt>Tracking number:</dt>
-            <dd>{tracking_number}</dd>
-            <dd class="reference-link">
-                <a href="https://www.aramex.com/us/en/track/shipments">
-                    Track order
-                </a>
-            </dd>
-        </dl>
-    </section>
-
     <section id="order-price">
         <article id="product-container">
             {#each order_items as item}
@@ -146,22 +127,6 @@
 </article>
 
 <style>
-    #order-ref {
-        width: 100%;
-        border-bottom: 2px solid #D9D9D9;
-        padding: 20px 0;
-    }
-
-    #order-ref dl {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        row-gap: 20px;
-    }
-
-    .reference-link {
-        justify-self: end;
-    }
-
     #order-price {
         display: grid;
         grid-template-columns: 1fr 2px 1fr;

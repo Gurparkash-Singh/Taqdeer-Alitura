@@ -10,7 +10,7 @@
     <article>
         <a href={`/profile/orders/${order.id}`}>
             <h2>Order number:</h2>
-            <p>{order.tap_order_id ? order.tap_order_id : 123456789}</p>
+            <p>{order.tap_receipt ? order.tap_receipt : "no number"}</p>
         </a>
     </article>
 {/each}

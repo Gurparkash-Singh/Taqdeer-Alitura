@@ -49,6 +49,8 @@
 - [x] Finish Checkout
 - [x] Add ability to save an address from the delivery page
 - [x] Get order history working
+- [x] Save order post checkout
+- [x] Get post checkout page working
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -61,9 +63,10 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Save order post checkout
-- [ ] Get post checkout page working
+- [ ] Enable Order Again button in /profile/orders
+- [ ] Create Shipment and get tracking info
 - [ ] Get payment methods page working
+- [ ] Save card if so choosen
 - [ ] Add size chart and return policy in products page
 
 # Post Release To Do

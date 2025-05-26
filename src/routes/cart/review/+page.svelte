@@ -22,6 +22,23 @@
         }
     }
 
+    if (data.declined) {
+        let inMessages = false;
+        let paragraph = "payment unsuccessfull";
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == paragraph) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages) {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: paragraph
+            });
+        }
+    }
+
     let deliveryNum = data.delivery.amount;
     let floatSubtotal = $derived.by(() => {
         let tempSubtotal = 0
