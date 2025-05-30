@@ -52,6 +52,7 @@
 - [x] Save order post checkout
 - [x] Get post checkout page working
 - [x] Enable Order Again button in /profile/orders
+- [x] Create Shipment and get tracking info
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -64,12 +65,13 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Create Shipment and get tracking info
 - [ ] Get payment methods page working
 - [ ] Save card if so choosen
 - [ ] Add size chart and return policy in products page
+- [ ] Make sure to create shipment based on order information
 
 # Post Release To Do
+- [ ] Finish Admin Panel
 - [ ] Add security to image server by authenticating user before upload or delete
 - [ ] Create a critical error route
 - [ ] Allow selection of address by moving pin on the map
@@ -90,8 +92,10 @@
 - [x] Edit Database to be able to save sizes
 - [x] Finish profile
 - [x] Finish edit profile
-- [ ] Implement Checkout
-- [ ] Finish order history
+- [x] Implement Checkout
+- [x] Finish order history
+- [ ] Fix Client Details for shipment
+- [ ] Move all credentials to production
 
 In Case of minimal viable product:
 - [ ] Disable Payment Methods
@@ -120,6 +124,7 @@ Add Table to DB for model size information
 - Only allow signups from allowed emails
 - Disable access to the entire website without loging in
 - Move all instances to Production Credentials (twilio, tap and aramex)
+- Fix Client Details for shipment
 
 # For Critical Error Route
 - A post request should be able to be made to the route with an error message
@@ -128,11 +133,12 @@ Add Table to DB for model size information
 # For Admin Panel
 Products
 - [x] create a place to create and update collections and categories
-- [x] Products
-- [x] images
-- [ ] sizes
-- [ ] components and properties
-- [ ] Discounts in one place
+- [x] update products
+- [x] add and delete images
+- [ ] add product
+- [ ] add and update sizes and quantities
+- [ ] add and update components and properties
+- [ ] add and delete discounts in one place
 
 Allow if collection, categories, products, images, sizes, components, properties or discounts
 

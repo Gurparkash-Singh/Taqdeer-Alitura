@@ -974,5 +974,11 @@ export const dbFunctions = {
         query += "id = ?;";
 
         await db.query(query, [tap_id, tap_order_id, receipt, order_id]);
-    }
+    },
+
+    addAramexShipmentId: async (order_id, tracking_id) => {
+        let query = "UPDATE Orders SET tracking_id = ? WHERE id = ?;";
+
+        await db.query(query, [tracking_id, order_id]);
+    },
 }

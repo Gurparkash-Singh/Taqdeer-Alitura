@@ -2,6 +2,8 @@ import { dbFunctions } from "$lib/db/database";
 import { error, fail, redirect } from "@sveltejs/kit";
 import { PROD_SK_TAP, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
 import axios from "axios";
+import { aramex } from "$lib/functions/aramex";
+import { getCountryCallingCode } from "libphonenumber-js";
 
 export async function load({ cookies, params, url }) {
     const tap_id = url.searchParams.get("tap_id");
@@ -63,10 +65,52 @@ export async function load({ cookies, params, url }) {
     const [order] = await dbFunctions.getOrderById(order_id);
 
     if (!order) {
+        dbFunctions.setCriticalError(
+            "orders",
+            500,
+            `order not found for order: ${order_id}`
+        );
         error(500);
     }
 
     const [address] = await dbFunctions.getOrderAddress(order.order_address);
+
+    if (!address) {
+        dbFunctions.setCriticalError(
+            "orders",
+            500,
+            `address not found for order: ${order_id}`
+        );
+        error(500);
+    }
+
+    const aramexResult = await aramex.createShipment(
+        address.address_line1,
+        address.address_line2,
+        address.city,
+        address.province,
+        address.postal_code,
+        address.country,
+        order.user_email,
+        getCountryCallingCode(order.country),
+        order.telephone,
+        order.user_email
+    )
+
+    if (aramexResult.HasErrors) {
+        const errors = aramexResult.Notifications;
+        await dbFunctions.setError(
+            "orders",
+            500,
+            `${JSON.stringify(errors, null, 2)}}`
+        );
+        error(500);
+    }
+
+    console.log(JSON.stringify(aramexResult, null, 2));
+    console.log(aramexResult.Shipments[0].ID);
+
+    await dbFunctions.addAramexShipmentId(aramexResult.Shipments[0].ID);
 
     const order_items = await dbFunctions.getOrderItems(order_id);
 
