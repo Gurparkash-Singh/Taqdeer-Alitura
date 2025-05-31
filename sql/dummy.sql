@@ -183,7 +183,7 @@ VALUES
 	"fandeejani2002@gmail.com", 
     "$2a$10$lWBrWw3etB4Oi.HSixcx9.cHtQz70xm4CuxjZi3wBnVJSzxAEE9hq", 
     "Faris Andeejani",
-    null
+    "cus_TS01A1220251928l2RY3105207"
 );
 
 INSERT INTO Admins (user_id, type_id)

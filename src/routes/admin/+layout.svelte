@@ -21,6 +21,7 @@
 		max-width: 500px;
 		margin: auto;
         width: 80%;
+        padding-bottom: 100px;
 	}
 
     #image-holder {

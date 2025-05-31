@@ -23,6 +23,14 @@
 </script>
 
 <section id="menu">
+    {#if data.admin} 
+        <a href="/admin/settings">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 12H42M16 24H42M16 36H42M6 12H6.02M6 24H6.02M6 36H6.02" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Admin Panel
+        </a>
+    {/if}
     <a href="/profile/orders">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 12H42M16 24H42M16 36H42M6 12H6.02M6 24H6.02M6 36H6.02" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -50,42 +58,47 @@
 </section>
 
 <section id="profile-details">
-    <dl>
-        <dt>
-            Email
-        </dt>
-        <dd>
-            {data.user.email}
-            {#if !data.user.verified_email}
-                <a href="/verify?email=true">verify</a>
-            {/if}
-        </dd>
-        <dt>Name</dt>
-        <dd>{data.user.name}</dd>
-        <dt>
-            Phone
-        </dt>
-        <dd>
-            {#if data.user.phone}
-                {data.user.phone}
-                {#if !data.user.verified_phone}
-                    <a href="/verify?phone=true">verify</a>
+    {#if data.user}
+        <dl>
+            <dt>
+                Email
+            </dt>
+            <dd>
+                {#if data.user.email}
+                    {data.user.email}
+                    {#if !data.user.verified_email}
+                        <a href="/verify?email=true">verify</a>
+                    {/if}
                 {/if}
-            {:else}
-                <a href="/profile/edit/phone" class="alt-link">update</a>
-            {/if}
-        </dd>
-        <dt>Date of Birth</dt>
-        <dd>
-            {#if data.user.date_of_birth}
-                {data.user.date_of_birth}
-            {:else}
-                <a href="/profile/edit" class="alt-link">update</a>
-            {/if}
-        </dd>
-        
-    </dl>
+            </dd>
+            <dt>Name</dt>
+            <dd>{data.user.name}</dd>
+            <dt>
+                Phone
+            </dt>
+            <dd>
+                {#if data.user.phone}
+                    {data.user.phone}
+                    {#if !data.user.verified_phone}
+                        <a href="/verify?phone=true">verify</a>
+                    {/if}
+                {:else}
+                    <a href="/profile/edit/phone" class="alt-link">update</a>
+                {/if}
+            </dd>
+            <dt>Date of Birth</dt>
+            <dd>
+                {#if data.user.date_of_birth}
+                    {data.user.date_of_birth}
+                {:else}
+                    <a href="/profile/edit" class="alt-link">update</a>
+                {/if}
+            </dd>
+            
+        </dl>
+    {/if}
 </section>
+<a href="/logout">Logout</a>
 
 <style>
     #menu {
@@ -143,6 +156,10 @@
     dd a {
         text-align: center;
         padding: 5px 30px;
+    }
+
+    a[href="/admin/settings"] {
+        grid-column: 1 / span 2;
     }
 
 </style>
