@@ -995,5 +995,11 @@ export const dbFunctions = {
         const [result] = await db.query(query, card_id);
 
         return result;
+    },
+
+    deleteCard: async (card_id) => {
+        let query = "DELETE FROM User_Cards WHERE card_id = ?;";
+
+        await db.query(query, card_id);
     }
 }

@@ -159,7 +159,31 @@ export const profileEditor = {
                 500,
                 JSON.stringify(axiosError.response.data)
             )
-            error(500);
+            throw axiosError;
+        }
+    },
+
+    deleteCardFromTap: async (customer_id, card_id) => {
+        const options = {
+            method: 'DELETE',
+            url: `https://api.tap.company/v2/card/${customer_id}/${card_id}`,
+            headers: {
+                accept: 'application/json',
+                'content-type': 'application/json',
+                Authorization: `Bearer ${TEST_SK_TAP}`
+            }
+        };
+
+        try {
+            const data = await axios.request(options);
+            return data;
+        } catch (axiosError) {
+            await dbFunctions.setCriticalError(
+                "remove customer card",
+                500,
+                JSON.stringify(axiosError.response.data)
+            )
+            throw axiosError;
         }
     },
 

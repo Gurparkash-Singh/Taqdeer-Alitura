@@ -185,7 +185,6 @@
             }}
             class:selected={selected_images.indexOf(image.image_id) != -1}
             class="product-links"
-
         >
             <img 
                 src={`${image.image_link}`} 
