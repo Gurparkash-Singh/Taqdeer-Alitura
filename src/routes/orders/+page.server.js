@@ -28,6 +28,8 @@ export async function load({ cookies, params, url }) {
     let card_object;
     let save_card;
     let receipt;
+    let amount;
+    let provider;
 
     try {
         const data = await axios.request(options);
@@ -37,6 +39,8 @@ export async function load({ cookies, params, url }) {
         card_object = data.data?.card;
         save_card = data.data?.save_card;
         receipt = data.data?.receipt?.id;
+        amount = data.data?.amount;
+        provider = data.data?.source.payment_method;
     } catch (axiosError) {
         await dbFunctions.setCriticalError(
             "orders",
@@ -60,7 +64,19 @@ export async function load({ cookies, params, url }) {
 
     // if save_card then save card_object
 
-    await dbFunctions.saveTapDetails(order_id, tap_id, tap_order_id, receipt);
+    const paymentInsertResult = await dbFunctions.addPaymentDetails(
+        amount,
+        provider,
+        payment_status
+    );
+
+    await dbFunctions.saveTapDetails(
+        order_id, 
+        tap_id, 
+        tap_order_id, 
+        receipt,
+        paymentInsertResult.insertId
+    );
 
     const [order] = await dbFunctions.getOrderById(order_id);
 

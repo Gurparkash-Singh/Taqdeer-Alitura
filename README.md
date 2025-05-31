@@ -70,6 +70,11 @@
 - [ ] Add size chart and return policy in products page
 - [ ] Make sure to create shipment based on order information
 
+# For Payment Methods
+- [ ] In /cards/add tokenize and verify card to save it
+- [ ] In /cart/review tokenize card and use it
+- [ ] In /orders save card id
+
 ------------------------------
 # ASK FARIS TO CREATE AN ORDER
 - [ ] Save his tap customer id

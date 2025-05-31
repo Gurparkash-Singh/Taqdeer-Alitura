@@ -92,14 +92,16 @@
 		grid-template-columns: 1fr 1fr 1fr;
         justify-items: center;
         align-items: center;
+        column-gap: 10px;
+        row-gap: 10px;
 	}
 
     article {
         background-color: #d9d9d9;
-        margin: 10px 10px;
         text-align: center;
         width: 150px;
         height: 100px;
+        justify-self: start;
     }
 
     article button, article a {
@@ -153,15 +155,33 @@
         fill: #1E1E1E80;
     }
 
-    @media screen and (width < 575px) {
-        section {
-            grid-template-columns: 1fr 1fr;
+    @media screen and (width >= 600px) {
+        section article:nth-child(3n - 1) {
+            justify-self: center;
+        }
+
+        section article:nth-child(3n) {
+            justify-self: end;
         }
     }
 
-    @media screen and (width < 375px) {
+    @media screen and (width < 600px) {
+        section {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        section article:nth-child(2n) {
+            justify-self: end;
+        }
+    }
+
+    @media screen and (width < 400px) {
         section {
             grid-template-columns: 1fr;
+        }
+
+        article {
+            width: 100%;
         }
     }
 </style>

@@ -968,12 +968,12 @@ export const dbFunctions = {
         return result;
     },
 
-    saveTapDetails: async (order_id, tap_id, tap_order_id, receipt) => {
+    saveTapDetails: async (order_id, tap_id, tap_order_id, receipt, payment_id) => {
         let query = "UPDATE Orders SET tap_charge_id = ?, ";
-        query += "tap_order_id = ?, tap_receipt = ?, status = 6 WHERE ";
-        query += "id = ?;";
+        query += "tap_order_id = ?, tap_receipt = ?, payment_id = ?, ";
+        query += "status = 6 WHERE id = ?;";
 
-        await db.query(query, [tap_id, tap_order_id, receipt, order_id]);
+        await db.query(query, [tap_id, tap_order_id, receipt, payment_id, order_id]);
     },
 
     addAramexShipmentId: async (order_id, tracking_id) => {
@@ -1001,5 +1001,26 @@ export const dbFunctions = {
         let query = "DELETE FROM User_Cards WHERE card_id = ?;";
 
         await db.query(query, card_id);
+    },
+
+    addPaymentDetails: async (amount, provider, status) => {
+        let query = "INSERT INTO Payment_Details (amount, provider, status) ";
+        query += "VALUES (?,?,?);";
+
+        const [result] = await db.query(query, [amount, provider, status]);
+
+        return result;
+    },
+
+    getUserOrdersAndPaymentDetails: async (id) => {
+        let query = "SELECT Orders.id, Orders.tap_receipt, ";
+        query += "Payment_Details.created_at FROM Orders ";
+        query += "LEFT JOIN Payment_Details ON ";
+        query += "Orders.payment_id = Payment_Details.payment_id ";
+        query += "WHERE user_id = ? AND Orders.status > 5;";
+
+        const [result] = await db.query(query, id);
+
+        return result;
     }
 }
