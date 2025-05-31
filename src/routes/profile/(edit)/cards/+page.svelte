@@ -1,6 +1,6 @@
 <script>
     import { modal } from "$lib/shared_state/shared.svelte";
-    
+
     let {data, form} = $props();
 
     let selected_cards = $state([]);
@@ -50,6 +50,18 @@
             </button>
         </article>
     {/each}
+    <article>
+        <a 
+            href="./cards/add" 
+            aria-label="add card"
+            id="add-button"
+        >
+            <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve">
+                <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 
+            455,242.5 "/>
+            </svg>
+        </a>
+    </article>
 </section>
 
 <form 
@@ -86,15 +98,20 @@
         background-color: #d9d9d9;
         margin: 10px 10px;
         text-align: center;
+        width: 150px;
+        height: 100px;
     }
 
-    article button {
+    article button, article a {
         background-color: transparent;
         border: none;
         cursor: pointer;
         width: 100%;
         height: 100%;
-        padding: 10px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .selected {
@@ -120,6 +137,11 @@
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
+    }
+
+    #add-button svg {
+        width: 25px;
+        height: 25px;
     }
 
     #update-form .disable-submit {

@@ -104,6 +104,25 @@
         </a>
     {/if}
 
+    {#if page.url.pathname === "/profile/cards/add"}
+        <a href="/profile/cards">
+            <svg 
+                width="15" 
+                height="15" 
+                viewBox="0 0 17 30" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                class="back-arrow"
+            >
+                <path d="M0.585786 13.5858C-0.195262 14.3668 -0.195262 15.6332 0.585786 16.4142L13.3137 29.1421C14.0948 29.9232 15.3611 29.9232 16.1421 29.1421C16.9232 28.3611 16.9232 27.0948 16.1421 26.3137L4.82843 15L16.1421 3.68629C16.9232 2.90524 16.9232 1.63891 16.1421 0.857864C15.3611 0.0768152 14.0948 0.0768152 13.3137 0.857864L0.585786 13.5858ZM5.5 13L2 13L2 17L5.5 17L5.5 13Z" fill="#1E1E1E"/>
+            </svg>
+            <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 20H46M6 8H42C44.2091 8 46 9.79086 46 12V36C46 38.2091 44.2091 40 42 40H6C3.79086 40 2 38.2091 2 36V12C2 9.79086 3.79086 8 6 8Z" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Payment Methods
+        </a>
+    {/if}
+
     {#if page.url.pathname === "/profile/addresses"}
         <a href="/profile">
             <svg 

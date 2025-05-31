@@ -5,33 +5,6 @@ import { fail } from "@sveltejs/kit";
 export async function load({locals}) {
     let cards = await dbFunctions.getUserCards(locals.user.user_id);
 
-    cards = [
-        {
-            card_id: 1,
-            user_id: locals.user.user_id,
-            object: "CARD",
-            brand: "MASTERCARD",
-            first_six_digits: "5779",
-            last_four_digits: "6771",
-        },
-        {
-            card_id: 2,
-            user_id: locals.user.user_id,
-            object: "CARD",
-            brand: "MASTERCARD",
-            first_six_digits: "5779",
-            last_four_digits: "6772",
-        },
-        {
-            card_id: 3,
-            user_id: locals.user.user_id,
-            object: "CARD",
-            brand: "MASTERCARD",
-            first_six_digits: "5779",
-            last_four_digits: "6773",
-        },
-    ]
-
     return {cards};
 }
 
