@@ -1,4 +1,4 @@
-import { TESTMAIL_TOKEN } from "$env/static/private";
+import { TESTMAIL_TOKEN, TEST_SK_TAP } from "$env/static/private";
 import bcrypt from "bcryptjs";
 import { dbFunctions } from '$lib/db/database.js';
 import axios from "axios";
@@ -134,10 +134,41 @@ export const profileEditor = {
         return false;
     },
 
+    createUserInTap: async (name, email) => {
+        const options = {
+            method: 'POST',
+            url: 'https://api.tap.company/v2/customers',
+            headers: {
+                accept: 'application/json',
+                'content-type': 'application/json',
+                Authorization: `Bearer ${TEST_SK_TAP}`
+            },
+            data: {
+                first_name: name,
+                email: email
+            }
+        };
+
+        let customer_id;
+        try {
+            const data = await axios.request(options);
+            return data.data.id;
+        } catch (axiosError) {
+            await dbFunctions.setCriticalError(
+                "create tap customer",
+                500,
+                JSON.stringify(axiosError.response.data)
+            )
+            error(500);
+        }
+    },
+
     createUser: async (email, password, name, session) => {
         const encryptedPass = await bcrypt.hash(password, 10);
 
-        const [user] = await dbFunctions.createUser(email, encryptedPass, name);
+        const tap_id = await profileEditor.createUserInTap(name, email);
+
+        const [user] = await dbFunctions.createUser(email, encryptedPass, name, tap_id);
 
         await dbFunctions.storeAuth(session, user.user_id);
     },

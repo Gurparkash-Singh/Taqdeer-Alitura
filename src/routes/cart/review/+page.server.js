@@ -3,8 +3,9 @@ import { error, fail, redirect } from "@sveltejs/kit";
 import { PROD_SK_TAP, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
 import axios from "axios";
 import { getCountryCallingCode } from "libphonenumber-js";
+import { profileEditor } from "$lib/functions/profile-editor";
 
-export async function load({ cookies, params, url }) {
+export async function load({ cookies, url, locals }) {
     const order_id = cookies.get("order_id");
 
     const infoUpdated = url.searchParams.has("updated");
@@ -28,6 +29,12 @@ export async function load({ cookies, params, url }) {
     const order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);
     const [delivery] = await dbFunctions.getOrderDelivery(order_id);
 
+    let cards;
+
+    if (locals.user) {
+        cards = await dbFunctions.getUserCards(locals.user.user_id);
+    }
+
     return {
         order,
         infoUpdated,
@@ -35,7 +42,8 @@ export async function load({ cookies, params, url }) {
         address,
         order_items,
         order_invoice_items,
-        delivery
+        delivery,
+        cards
     };
 }
 
@@ -44,12 +52,43 @@ export const actions = {
         const data = await request.formData();
 
         const currency_code = data.get("currency");
+        const save_card = data.get("save_card");
+        let card = data.get("card");
 
         const order_id = cookies.get("order_id");
 
         const [order_total] = await dbFunctions.getOrderInvoiceTotal(order_id);
 
         const [order] = await dbFunctions.getOrderById(order_id);
+
+        let user_tap_id;
+        let user;
+
+        if (order.user_id) {
+            [user] = await dbFunctions.getUserByID(order.user_id);
+
+            if (!user) {
+                return fail(404, {
+                    invalid: true,
+                    message: "user not found"
+                });
+            }
+
+            if (user.tap_customer_id) {
+                user_tap_id = user.tap_customer_id;
+            }
+            else {
+                const customer_id = await profileEditor.createUserInTap(
+                    user.name, 
+                    user.email
+                );
+                await dbFunctions.saveTapCustomer(customer_id, user.user_id);
+
+                user = await dbFunctions.getUserByID(order.user_id);
+
+                user_tap_id = user.tap_customer_id;
+            }
+        }
 
         let currency_response;
 
@@ -84,7 +123,10 @@ export const actions = {
                     500,
                     JSON.stringify(axiosError.response.data)
                 )
-                error(500);
+                return fail(500, {
+                    invalid: true,
+                    message: "something went wrong"
+                });
             }
         }
 
@@ -144,6 +186,51 @@ export const actions = {
             }
         };
 
+        if (user_tap_id) {
+            options.data.customer = {
+                phone: {
+                    country_code: getCountryCallingCode(order.country),
+                    number: order.telephone
+                },
+                id: user_tap_id
+            }
+        }
+        else if (save_card && !user) {
+            return fail(404, {
+                invalid: true,
+                message: "user not found"
+            })
+        }
+        else if (save_card && !user.tap_customer_id) {
+            return fail(500, {
+                invalid: true,
+                message: "something went wrong"
+            })
+        }
+
+        if (card) {
+            // Tokenize saved card and use it
+            if (!locals.user) {
+                return fail(404, {
+                    invalid: true,
+                    message: "user not found"
+                });
+            }
+
+            [card] = await dbFunctions.getCardById(card);
+
+            if (!card || card.user_id != locals.user.user_id) {
+                return fail(404, {
+                    invalid: true,
+                    message: "card not found"
+                });
+            }
+        }
+
+        if (save_card) {
+            options.data.save_card = true;
+        }
+
         let url;
 
         try {
@@ -156,14 +243,20 @@ export const actions = {
                 500,
                 JSON.stringify(axiosError.response.data)
             )
-            error(500);
+            return fail(500, {
+                invalid: true,
+                message: "something went wrong"
+            });
         }
 
         if (url) {
             throw redirect(302, url);
         }
         else {
-            error(500);
+            return fail(500, {
+                invalid: true,
+                message: "something went wrong"
+            });
         }
     }
 }

@@ -171,10 +171,20 @@ VALUES
 ("SAR"),
 ("USD");
 
-INSERT INTO User (email, password, name)
+INSERT INTO User (email, password, name, tap_customer_id)
 VALUES
-('khalsags.fateh@gmail.com', '$2a$10$QbGwZJ4F.OR2.90g.unEJOXbNjfOGRC8qwrFu3gsx8T/FezCg2Jf6', 'Gurparkash Singh Randhawa'),
-("fandeejani2002@gmail.com", "$2a$10$lWBrWw3etB4Oi.HSixcx9.cHtQz70xm4CuxjZi3wBnVJSzxAEE9hq", "Faris Andeejani");
+(
+	'khalsags.fateh@gmail.com', 
+    '$2a$10$QbGwZJ4F.OR2.90g.unEJOXbNjfOGRC8qwrFu3gsx8T/FezCg2Jf6', 
+    'Gurparkash Singh Randhawa',
+    "cus_TS05A0920250306k8J73105846"
+),
+(
+	"fandeejani2002@gmail.com", 
+    "$2a$10$lWBrWw3etB4Oi.HSixcx9.cHtQz70xm4CuxjZi3wBnVJSzxAEE9hq", 
+    "Faris Andeejani",
+    null
+);
 
 INSERT INTO Admins (user_id, type_id)
 VALUES

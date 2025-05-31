@@ -223,12 +223,12 @@ export const dbFunctions = {
         return properties;
     },
 
-    createUser: async (email, pass, name) => {
-        let query = "INSERT INTO User (email, password, name) "
-        query += "VALUES (?, ?, ?);";
+    createUser: async (email, pass, name, tap_id) => {
+        let query = "INSERT INTO User (email, password, name, tap_customer_id) "
+        query += "VALUES (?, ?, ?, ?);";
 
         await db.query(
-            query, [email, pass, name]
+            query, [email, pass, name, tap_id]
         );
 
         query = "SELECT * FROM User WHERE email = ?;";
@@ -981,4 +981,19 @@ export const dbFunctions = {
 
         await db.query(query, [tracking_id, order_id]);
     },
+
+    saveTapCustomer: async (tap_id, user_id) => {
+        let query = "UPDATE User SET tap_customer_id = ? ";
+        query += "WHERE user_id = ?;";
+
+        await db.query(query, [tap_id, user_id]);
+    },
+
+    getCardById: async (card_id) => {
+        let query = "SELECT * FROM User_Cards WHERE card_id = ?;";
+
+        const [result] = await db.query(query, card_id);
+
+        return result;
+    }
 }

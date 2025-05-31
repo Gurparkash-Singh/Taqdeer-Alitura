@@ -70,6 +70,11 @@
 - [ ] Add size chart and return policy in products page
 - [ ] Make sure to create shipment based on order information
 
+------------------------------
+# ASK FARIS TO CREATE AN ORDER
+- [ ] Save his tap customer id
+------------------------------
+
 # Post Release To Do
 - [ ] Finish Admin Panel
 - [ ] Add security to image server by authenticating user before upload or delete

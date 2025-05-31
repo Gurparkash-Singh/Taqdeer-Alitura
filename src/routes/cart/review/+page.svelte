@@ -3,7 +3,7 @@
     import OrderProduct from "$lib/components/OrderProduct.svelte";
     import { numberFormat } from '$lib/shared_state/shared.svelte';
 
-    let {data} = $props();
+    let {data, form} = $props();
 
     if (data.infoUpdated) {
         let inMessages = false;
@@ -18,6 +18,28 @@
             modal.messages.push({
                 heading: "Success",
                 paragraph: paragraph
+            });
+        }
+    }
+
+    if (form) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == form.message) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages && form.invalid) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: form.message
+            });
+        }else if (!inMessages && form.success) {
+            modal.messages.push({
+                heading: "Success",
+                paragraph: form.message
             });
         }
     }
@@ -71,6 +93,8 @@
         numberFormat.area, 
         numberFormat.style
     ));
+
+    let selected_card = $state("save");
 </script>
 
 <section>
@@ -100,6 +124,40 @@
             name="currency"
             value={numberFormat.style.currency}
         >
+        {#if !data.user}
+            <a href="/profile">login to access cards</a>
+        {:else}
+            <select 
+                name="selected_card" 
+                id="selected_card"
+                bind:value={selected_card}
+            >
+                {#each data.cards as card}
+                    <option value={card}>
+                        &bull;&bull;&bull;&bull; {card.last_four_digits}
+                    </option>
+                {/each}
+                <option value="save" selected>enter and save a card</option>
+                <option value="add">enter card without saving</option>
+                <option value="add">other payment option</option>
+            </select>
+
+            {#if selected_card == "save"}
+                <input 
+                    type="hidden" 
+                    name="save_card"
+                    value="true"
+                >
+            {:else if selected_card == "add"}
+                <input type="hidden" name="add" value="true">
+            {:else if selected_card}
+                <input 
+                    type="hidden" 
+                    name="card"
+                    value={selected_card.card_id}
+                >
+            {/if}
+        {/if}
         <button type="submit">
             Checkout
             <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -220,6 +278,14 @@
 
     form {
         width: 100%;
+    }
+
+    form select {
+        background-color: #D9D9D9;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
     }
 
     form button {
