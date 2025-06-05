@@ -10,11 +10,9 @@ const clientInfo = {
     AccountCountryCode: "SA"
 };
 
-// Update Shipper Contact Details for create Shipment
-
 // const clientInfo = {
 //     Version: "v1.0",
-//     UserName: "Autad Al Modan",
+//     UserName: "fandeejani2002@gmail.com",
 //     Password: "Mysoon@2000",
 //     AccountNumber: "72467199",
 //     AccountPin: "466529",
@@ -119,7 +117,7 @@ export const aramex = {
                     },
                     Contact: {
                         PersonName: "Faris Andeejani",
-                        CompanyName: "Taqdeer Alitura",
+                        CompanyName: "Autad Al Modan",
                         PhoneNumber1: "9660503217416",
                         PhoneNumber2: "",
                         CellPhone: "9660503217416",
