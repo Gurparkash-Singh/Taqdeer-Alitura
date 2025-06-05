@@ -120,10 +120,10 @@ export const aramex = {
                     Contact: {
                         PersonName: "Faris Andeejani",
                         CompanyName: "Taqdeer Alitura",
-                        PhoneNumber1: "966571427069",
+                        PhoneNumber1: "9660503217416",
                         PhoneNumber2: "",
-                        CellPhone: "966571427069",
-                        EmailAddress: clientInfo.UserName,
+                        CellPhone: "9660503217416",
+                        EmailAddress: "fandeejani2002@gmail.com",
                         Type: ""
                     }
                 },
