@@ -53,6 +53,8 @@
 - [x] Get post checkout page working
 - [x] Enable Order Again button in /profile/orders
 - [x] Create Shipment and get tracking info
+- [x] Make it so that /cart/delivery cannot be accessed without having items
+- [x] Add ability to cancel order from review page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -65,22 +67,13 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Get payment methods page working
-- [ ] Save card if so choosen
 - [ ] Add size chart and return policy in products page
 - [ ] Make sure to create shipment based on order information
-
-# For Payment Methods
-- [ ] In /cards/add tokenize and verify card to save it
-- [ ] In /cart/review tokenize card and use it
-- [ ] In /orders save card id
-
-------------------------------
-# ASK FARIS TO CREATE AN ORDER
-- [ ] Save his tap customer id
-------------------------------
+- [ ] Add ability to create pickup from admin panel
 
 # Post Release To Do
+- [ ] Get payment methods page working
+- [ ] Save card if so choosen
 - [ ] Finish Admin Panel
 - [ ] Add security to image server by authenticating user before upload or delete
 - [ ] Create a critical error route
@@ -185,3 +178,9 @@ Full Size
 
 ## Homepage
 Full Size
+
+
+# For Payment Methods
+- [ ] In /cards/add tokenize and verify card to save it
+- [ ] In /cart/review tokenize card and use it
+- [ ] In /orders save card id

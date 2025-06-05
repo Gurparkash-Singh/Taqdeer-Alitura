@@ -2,6 +2,8 @@
     import { modal } from "$lib/shared_state/shared.svelte";
     import OrderProduct from "$lib/components/OrderProduct.svelte";
     import { numberFormat } from '$lib/shared_state/shared.svelte';
+	import { preventDefault } from "svelte/legacy";
+	import ConfirmationModal from "$lib/components/ConfirmationModal.svelte";
 
     let {data, form} = $props();
 
@@ -61,6 +63,9 @@
         }
     }
 
+    let display = $state(false);
+    let cancelForm;
+
     let deliveryNum = data.delivery.amount;
     let floatSubtotal = $derived.by(() => {
         let tempSubtotal = 0
@@ -97,6 +102,17 @@
     let selected_card = $state("save");
 </script>
 
+<ConfirmationModal 
+    display = {display}
+    closeDisplay = {() => {
+        display = false;
+    }}
+    confirm={() => {
+        cancelForm.submit();
+    }}
+    question="Cancel Order?"
+/>
+
 <section>
 
     <section id="order-price">
@@ -118,47 +134,34 @@
         </section>
     </section>
 
+    <form action="?/cancel" method="post" bind:this={cancelForm}>
+        <input 
+            type="hidden" 
+            name="currency"
+            value={numberFormat.style.currency}
+        >
+        <button 
+            type="submit"
+            onclick={(e) => {
+                e.preventDefault();
+
+                display = true;
+            }}
+        >
+            Cancel Order
+            <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.0607 13.0607C13.6464 12.4749 13.6464 11.5251 13.0607 10.9393L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L9.87868 12L1.3934 20.4853C0.807611 21.0711 0.807611 22.0208 1.3934 22.6066C1.97919 23.1924 2.92893 23.1924 3.51472 22.6066L13.0607 13.0607ZM10 13.5H12V10.5H10V13.5Z" fill="black"/>
+            </svg>
+        </button>
+    </form>
+
     <form action="?/checkout" method="post">
         <input 
             type="hidden" 
             name="currency"
             value={numberFormat.style.currency}
         >
-        {#if !data.user}
-            <a href="/profile">login to access cards</a>
-        {:else}
-            <select 
-                name="selected_card" 
-                id="selected_card"
-                bind:value={selected_card}
-            >
-                {#each data.cards as card}
-                    <option value={card}>
-                        &bull;&bull;&bull;&bull; {card.last_four_digits}
-                    </option>
-                {/each}
-                <option value="save" selected>enter and save a card</option>
-                <option value="add">enter card without saving</option>
-                <option value="add">other payment option</option>
-            </select>
-
-            {#if selected_card == "save"}
-                <input 
-                    type="hidden" 
-                    name="save_card"
-                    value="true"
-                >
-            {:else if selected_card == "add"}
-                <input type="hidden" name="add" value="true">
-            {:else if selected_card}
-                <input 
-                    type="hidden" 
-                    name="card"
-                    value={selected_card.card_id}
-                >
-            {/if}
-        {/if}
-        <button type="submit">
+        <button type="submit" id="checkout">
             Checkout
             <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M13.0607 13.0607C13.6464 12.4749 13.6464 11.5251 13.0607 10.9393L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L9.87868 12L1.3934 20.4853C0.807611 21.0711 0.807611 22.0208 1.3934 22.6066C1.97919 23.1924 2.92893 23.1924 3.51472 22.6066L13.0607 13.0607ZM10 13.5H12V10.5H10V13.5Z" fill="white"/>
@@ -280,18 +283,16 @@
         width: 100%;
     }
 
-    form select {
+    /*form select {
         background-color: #D9D9D9;
         border: none;
         padding: 10px;
         width: 100%;
         text-align: center;
-    }
+    }*/
 
     form button {
         margin: 20px 0;
-        background-color: #bf1e2e;
-        color: white;
         border: none;
         padding: 10px 10px;
         width: 100%;
@@ -300,6 +301,11 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+    }
+
+    #checkout {
+        background-color: #bf1e2e;
+        color: white;
     }
 
     @media screen and (width < 550px) {

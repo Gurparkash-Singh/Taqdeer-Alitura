@@ -26,6 +26,19 @@ export const actions = {
     add: async ({ cookies, request }) => {
         const data = await request.formData();
 
+        const order_id = cookies.get("order_id");
+
+        if (order_id) {
+            const [order] = await dbFunctions.getOrderById(order_id);
+    
+            if (order?.status < 6) {
+                return fail(500, {
+                    invalid: true,
+                    message: "cannot update order"
+                });
+            }
+        }
+
         const session = cookies.get("session");
         let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
 

@@ -18,7 +18,7 @@ export async function load({ cookies, url, locals }) {
 
     const [order] = await dbFunctions.getOrderById(order_id);
 
-    if (!order || order?.status > 5) {
+    if (!order || order?.status >= 6) {
         throw redirect(302, "/cart");
     }
 
@@ -150,6 +150,8 @@ export const actions = {
             });
         }
 
+        await dbFunctions.setOrderToPending(order_id);
+
         if (!available) {
             return fail(404, {
                 message: "invalid currency code"
@@ -258,5 +260,12 @@ export const actions = {
                 message: "something went wrong"
             });
         }
+    },
+
+    cancel: async ({ cookies, request, locals }) => {
+        const order_id = cookies.get("order_id");
+
+        const [order] = await dbFunctions.getOrderById(order_id);
+        await dbFunctions.cancelOrder(order_id);
     }
 }

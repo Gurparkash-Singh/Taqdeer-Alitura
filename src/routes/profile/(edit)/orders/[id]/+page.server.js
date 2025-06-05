@@ -19,7 +19,7 @@ export async function load({ locals, params }) {
         error(404);
     }
 
-    if (order.status < 6) {
+    if (order.status < 7) {
         error(404);
     }
 

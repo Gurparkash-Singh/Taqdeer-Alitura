@@ -40,6 +40,16 @@ export async function load({cookies, locals}) {
             }
         }
     }
+    else {
+        const session = cookies.get("session");
+        let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
+        shopping_session = shopping_session[0].id;
+        const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session);
+
+        if (cart_items.length == 0){
+            throw redirect(302, "/cart");
+        }
+    }
 
     return {addresses}
 }
@@ -94,7 +104,7 @@ export const actions = {
             return fail(400, returnMessage);
         }
 
-        if (address_id == 0) {
+        if (address_id === 0) {
             if (!address_name) {
                 returnMessage.message = "fill in address name";
                 return fail(400, returnMessage);
@@ -214,7 +224,7 @@ export const actions = {
                     phoneNumber.nationalNumber
                 );
 
-                if (address_id == 0){
+                if (address_id === 0){
                     const address_result = await dbFunctions.setUserAddress(
                         locals.user.user_id,
                         address_name,
@@ -301,7 +311,7 @@ export const actions = {
 
         await dbFunctions.moveItemsToOrder(result.insertId, shopping_session.id);
 
-        if (address_id == 0){
+        if (address_id === 0){
             const address_result = await dbFunctions.setUserAddress(
                 locals.user.user_id,
                 address_name,

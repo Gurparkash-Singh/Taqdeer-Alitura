@@ -147,8 +147,7 @@ export const aramex = {
                         Type: ""
                     }
                 },
-                ShippingDateTime: "\/Date(1740042000000+0300)\/",
-                DueDate: "\/Date(1740042000000+0300)\/",
+                ShippingDateTime: `\/Date(${Date.now().valueOf()})\/`,
                 Details: {
                     Dimensions: null,
                     ActualWeight: {

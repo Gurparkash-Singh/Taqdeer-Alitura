@@ -7,6 +7,16 @@ export async function load({ cookies, url })
     const session = cookies.get("session");
     let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
 
+    let order_id = cookies.get("order_id");
+
+    if (order_id) {
+        const [order] = await dbFunctions.getOrderById(order_id);
+
+        if (order?.status <= 5) {
+            throw redirect(302, "/cart/review");
+        }
+    }
+
     if (!session || shopping_session.length === 0) {
         await dbFunctions.setCriticalError(
             "cart", 

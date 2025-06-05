@@ -198,6 +198,7 @@ VALUES
 ("items added"),
 ("invoice created"),
 ("pending payment"),
+("cancelled"),
 ("processing"),
 ("shipped"),
 ("delivered");
