@@ -15,7 +15,7 @@
     let country = $state("");
     let formalAddress = $state("");
     let manual = $state(false);
-    let selected_address = $state("save");
+    let selected_address = $state("add");
 
     let name = $state(data.user ? data.user.name : "");
     let email = $state(data.user ? data.user.email : "");
