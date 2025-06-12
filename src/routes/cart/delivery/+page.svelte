@@ -15,7 +15,7 @@
     let country = $state("");
     let formalAddress = $state("");
     let manual = $state(false);
-    let selected_address = $state("add");
+    let selected_address = $state("save");
 
     let name = $state(data.user ? data.user.name : "");
     let email = $state(data.user ? data.user.email : "");
@@ -30,6 +30,9 @@
             countryCode = data.user.country;
             phoneNumber = new AsYouType(data.user.country).input(data.user.phone);
         }
+    }
+    else {
+        selected_address = "add";
     }
 
     $effect(() => {
