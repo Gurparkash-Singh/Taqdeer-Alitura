@@ -142,11 +142,11 @@ Products
 - [x] create a place to create and update collections and categories
 - [x] update products
 - [x] add and delete images
+- [x] add and update sizes and quantities
 - [ ] add product
-- [ ] add and update sizes and quantities
 - [ ] add and update components and properties
 - [ ] add and delete discounts in one place
-- [ ] update description
+- [x] update description
 - [ ] update sizing info
 
 Allow if collection, categories, products, images, sizes, components, properties or discounts

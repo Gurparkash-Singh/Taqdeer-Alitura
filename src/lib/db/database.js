@@ -1066,5 +1066,55 @@ export const dbFunctions = {
         query += "Sizes_Available.quantity + Order_Items.quantity ";
         query += "WHERE Order_Items.id = ?;";
         await db.query(query, order_id);
+    },
+
+    getSizeById: async (size_id) => {
+        let query = "SELECT * FROM Sizes_Available WHERE size_id = ?;";
+
+        const [sizes] = await db.query(query, size_id);
+
+        return sizes;
+    },
+
+    addProductSize: async (product_id, size_name, size_abbr, quantity) => {
+        let query = "INSERT INTO Sizes_Available (product_id, size_name, ";
+        query += "size_abbreviation, quantity) VALUES (?, ?, ?, ?);";
+
+        await db.query(query, [
+            product_id, 
+            size_name, 
+            size_abbr, 
+            quantity
+        ]);
+    },
+
+    updateProductSize: async (size_id, size_name, size_abbr, quantity) => {
+        let query = "UPDATE Sizes_Available SET size_name = ?, ";
+        query += "size_abbreviation = ?, quantity = ? WHERE ";
+        query += "size_id = ?;";
+
+        await db.query(query, [
+            size_name,
+            size_abbr,
+            quantity,
+            size_id
+        ]);
+    },
+
+    deleteSize: async (size_id) => {
+        let query = "DELETE FROM Sizes_Available WHERE size_id = ?;";
+
+        try {
+            await db.query(query, size_id);
+        } catch (error) {
+            if (error.code == "ER_ROW_IS_REFERENCED_2") {
+                return false;
+            }
+            else{
+                throw error;
+            }
+        }
+
+        return true;
     }
 }
