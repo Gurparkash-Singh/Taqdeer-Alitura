@@ -210,7 +210,8 @@ export const dbFunctions = {
 
     getComponentProperties: async (id) => {
         let query = "SELECT Components.component_id, component_name, ";
-        query += "property_name, property_value ";
+        query += "property_name, property_value, ";
+        query += "Component_Properties.property_id ";
         query += "FROM Components ";
         query += "JOIN Component_Properties ON ";
         query += "Components.component_id ";
@@ -1116,5 +1117,61 @@ export const dbFunctions = {
         }
 
         return true;
+    },
+
+    getComponentById: async (id) => {
+        let query = "SELECT * FROM Components WHERE component_id = ?;";
+
+        const [result] = await db.query(query, id);
+
+        return result;
+    },
+
+    addComponent: async (product_id, component_name, description) => {
+        let query = "INSERT INTO Components (product_id, component_name, ";
+        query += "component_description) VALUES (?, ?, ?);";
+
+        await db.query(query, [product_id, component_name, description]);
+    },
+
+    updateComponent: async (id, component_name, description) => {
+        let query = "UPDATE Components SET component_name = ?, ";
+        query += "component_description = ? WHERE component_id = ?;";
+
+        await db.query(query, [component_name, description, id]);
+    },
+
+    deleteComponent: async (id) => {
+        let query = "DELETE FROM Components WHERE component_id = ?;";
+
+        await db.query(query, id);
+    },
+
+    getPropertyById: async (id) => {
+        let query = "SELECT * FROM Component_Properties WHERE property_id = ?;";
+
+        const [result] = await db.query(query, id);
+
+        return result;
+    },
+
+    addProperty: async (component_id, name, value) => {
+        let query = "INSERT INTO Component_Properties (component_id, ";
+        query += "property_name, property_value) VALUES (?, ?, ?);";
+
+        await db.query(query, [component_id, name, value]);
+    },
+
+    updateProperty: async (id, name, value) => {
+        let query = "UPDATE Component_Properties SET property_name = ?, ";
+        query += "property_value = ? WHERE property_id = ?;";
+
+        await db.query(query, [name, value, id]);
+    },
+
+    deleteProperty: async (id) => {
+        let query = "DELETE FROM Component_Properties WHERE property_id = ?;";
+
+        await db.query(query, id);
     }
 }

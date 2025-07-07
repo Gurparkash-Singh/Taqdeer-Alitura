@@ -143,10 +143,9 @@ Products
 - [x] update products
 - [x] add and delete images
 - [x] add and update sizes and quantities
+- [x] add and update components and properties
 - [ ] add product
-- [ ] add and update components and properties
 - [ ] add and delete discounts in one place
-- [x] update description
 - [ ] update sizing info
 
 Allow if collection, categories, products, images, sizes, components, properties or discounts
