@@ -104,7 +104,7 @@ export const actions = {
             return fail(400, returnMessage);
         }
 
-        if (address_id === 0) {
+        if (address_id === "0") {
             if (!address_name) {
                 returnMessage.message = "fill in address name";
                 return fail(400, returnMessage);
@@ -180,13 +180,41 @@ export const actions = {
 
         const phoneNumber = parsePhoneNumberFromString(phone, country);
 
+        const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session.id);
+
+        let item_quantity = 0;
+        let customs_value = 0;
+
+        if (cookies.get("order_id")) {
+            let [order] = await dbFunctions.getOrderById(cookies.get("order_id"));
+            
+            const order_items = await dbFunctions.getOrderItems(cookies.get("order_id"));
+            
+            if ((order?.status <= 5)) {
+                for (let i = 0; i < order_items.length; i++) {
+                    item_quantity += order_items[i].quantity;
+                    customs_value += order_items[i].quantity * order_items[i].price;
+                }
+            }
+        }
+
+        if (item_quantity === 0) {
+            for (let i = 0; i < cart_items.length; i++) {
+                item_quantity += cart_items[i].quantity;
+                customs_value += cart_items[i].quantity * cart_items[i].price;
+            }
+        }
+
         const rate = await aramex.calculateRate(
             address1, 
             address2,
             city,
             province,
             postal,
-            delivery_country
+            delivery_country,
+            item_quantity,
+            customs_value,
+            0.5
         );
 
         if (rate.HasErrors) {
@@ -224,7 +252,7 @@ export const actions = {
                     phoneNumber.nationalNumber
                 );
 
-                if (address_id === 0){
+                if (address_id === "0"){
                     const address_result = await dbFunctions.setUserAddress(
                         locals.user.user_id,
                         address_name,
@@ -311,7 +339,8 @@ export const actions = {
 
         await dbFunctions.moveItemsToOrder(result.insertId, shopping_session.id);
 
-        if (address_id === 0){
+        if (address_id === "0"){
+            console.log("Running");
             const address_result = await dbFunctions.setUserAddress(
                 locals.user.user_id,
                 address_name,
@@ -336,8 +365,6 @@ export const actions = {
             delivery_country,
             address_id
         );
-
-        const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session.id);
 
         for (let i = 0; i < cart_items.length; i++) {
             await dbFunctions.createOrderInvoiceItem(

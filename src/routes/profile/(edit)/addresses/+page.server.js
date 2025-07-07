@@ -74,7 +74,10 @@ export const actions = {
             city,
             province,
             postal,
-            delivery_country
+            delivery_country,
+            1,
+            1,
+            1
         );
 
         if (rate.HasErrors) {

@@ -68,17 +68,21 @@
 - [ ] Verify order history
 - [ ] Verify payment methods page
 - [ ] Add size chart and return policy in products page
-- [ ] Make sure to create shipment based on order information
-- [ ] Add ability to create pickup from admin panel
+- [ ] Insert weights to DB
+- [ ] Add up the weight for all products
+- [ ] Set the weight in create Shipment
+- [ ] Add astrisks to required fields for all forms
 
 # Post Release To Do
-- [ ] Get payment methods page working
-- [ ] Save card if so choosen
 - [ ] Finish Admin Panel
 - [ ] Add security to image server by authenticating user before upload or delete
+- [ ] Redo Discounts to allow for members to receive discounts without code
+- [ ] Add ability to create pickup from admin panel
+- [ ] Create routine pickups
+- [ ] Get payment methods page working
+- [ ] Save card if so choosen
 - [ ] Create a critical error route
 - [ ] Allow selection of address by moving pin on the map
-- [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Increase Performance
 - [ ] Use Page Insights to increase performance
 - [ ] Limit the number of products on first page load
@@ -142,16 +146,19 @@ Products
 - [ ] add and update sizes and quantities
 - [ ] add and update components and properties
 - [ ] add and delete discounts in one place
+- [ ] update description
+- [ ] update sizing info
 
 Allow if collection, categories, products, images, sizes, components, properties or discounts
 
 Orders
 - [ ] Show all orders
 - [ ] Ability to filter all orders by user name, user email, order date, status
+- [ ] Ability to create pickups
 
 Allow if users, orders or order items
 
-Member Controls
+User Controls
 - [ ] seperate place for messages
 - [ ] seperate place for members and member types
 - [ ] seperate place to read contact form emails

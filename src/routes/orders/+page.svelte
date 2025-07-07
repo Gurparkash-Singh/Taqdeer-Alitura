@@ -32,7 +32,7 @@
                 <a href="/profile/orders">Order history</a>
             </dd>
             <dt>Tracking number:</dt>
-            <dd>{data.order.tracking_number}</dd>
+            <dd>{data.order.tracking_id}</dd>
             <dd class="reference-link">
                 <a href="https://www.aramex.com/us/en/track/shipments">
                     Track order

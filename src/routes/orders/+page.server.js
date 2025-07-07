@@ -100,35 +100,49 @@ export async function load({ cookies, params, url }) {
         error(500);
     }
 
-    const aramexResult = await aramex.createShipment(
-        address.address_line1,
-        address.address_line2,
-        address.city,
-        address.province,
-        address.postal_code,
-        address.country,
-        order.user_email,
-        getCountryCallingCode(order.country),
-        order.telephone,
-        order.user_email
-    )
+    const order_items = await dbFunctions.getOrderItems(order_id);
 
-    if (aramexResult.HasErrors) {
-        const errors = aramexResult.Notifications;
-        await dbFunctions.setError(
-            "orders",
-            500,
-            `${JSON.stringify(errors, null, 2)}}`
-        );
-        error(500);
+    let num_items = 0;
+    let customs_value = 0;
+    let weight = 0.5;
+
+    for (let i = 0; i < order_items.length; i++) {
+        num_items += order_items[i].quantity;
+        customs_value += order_items[i].quantity * order_items[i].price;
     }
 
-    console.log(JSON.stringify(aramexResult, null, 2));
-    console.log(aramexResult.Shipments[0].ID);
+    if (!order.tracking_id) {
+        const aramexResult = await aramex.createShipment(
+            address.address_line1,
+            address.address_line2,
+            address.city,
+            address.province,
+            address.postal_code,
+            address.country,
+            order.name,
+            getCountryCallingCode(order.country),
+            order.telephone,
+            order.user_email,
+            num_items,
+            customs_value,
+            weight
+        )
 
-    await dbFunctions.addAramexShipmentId(aramexResult.Shipments[0].ID);
+        if (aramexResult.HasErrors) {
+            const errors = aramexResult.Notifications;
+            await dbFunctions.setError(
+                "orders",
+                500,
+                `${JSON.stringify(errors, null, 2)}}`
+            );
+            error(500);
+        }
 
-    const order_items = await dbFunctions.getOrderItems(order_id);
+        console.log(JSON.stringify(aramexResult, null, 2));
+        console.log(aramexResult.Shipments[0].ID);
+
+        await dbFunctions.addAramexShipmentId(order_id, aramexResult.Shipments[0].ID);
+    }
 
     const order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);
     const [delivery] = await dbFunctions.getOrderDelivery(order_id);

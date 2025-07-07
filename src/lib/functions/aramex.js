@@ -1,27 +1,54 @@
 import axios from "axios";
 
-const clientInfo = {
-    Version: "v1.0",
-    UserName: "testingapi@aramex.com",
-    Password: "R123456789$r",
-    AccountNumber: "4004636",
-    AccountPin: "442543",
-    AccountEntity: "RUH",
-    AccountCountryCode: "SA"
+const taqdeerShipmentInfo = {
+    Line1: "8775 Al Shairah",
+    Line2: "",
+    Line3: "",
+    PostCode: "12444",
+    City: "Riyadh",
+    State: "Riyadh Province",
+    CountryCode: "SA",
+    PersonName: "Faris Andeejani",
+    CompanyName: "Autad Al Modan",
+    PhoneNumber1: "9660503217416",
+    PhoneNumber2: "",
+    CellPhone: "9660503217416",
+    EmailAddress: "fandeejani2002@gmail.com",
+    Type: ""
 };
 
 // const clientInfo = {
 //     Version: "v1.0",
-//     UserName: "fandeejani2002@gmail.com",
-//     Password: "Mysoon@2000",
-//     AccountNumber: "72467199",
-//     AccountPin: "466529",
+//     UserName: "testingapi@aramex.com",
+//     Password: "R123456789$r",
+//     AccountNumber: "4004636",
+//     AccountPin: "442543",
 //     AccountEntity: "RUH",
 //     AccountCountryCode: "SA"
-// }
+// };
+
+const clientInfo = {
+    Version: "v1.0",
+    UserName: "fandeejani2002@gmail.com",
+    Password: "Mysoon@2000",
+    AccountNumber: "72467199",
+    AccountPin: "466529",
+    AccountEntity: "RUH",
+    AccountCountryCode: "SA"
+}
 
 export const aramex = {
-    calculateRate: async (line1, line2, city, state, postal, country) => {
+    calculateRate: async (
+        line1, 
+        line2, 
+        city, 
+        state, 
+        postal, 
+        country,
+        num_items,
+        customs_value,
+        weight
+    ) => {
         let data = {
             ClientInfo: clientInfo,
             DestinationAddress: {
@@ -34,30 +61,27 @@ export const aramex = {
                 CountryCode: country
             },
             OriginAddress: {
-                Line1: "8775 Al Shairah",
-                Line2: "",
-                Line3: "",
-                PostCode: "12444",
-                City: "Riyadh",
-                State: "Riyadh Province",
-                CountryCode: "SA"
+                Line1: taqdeerShipmentInfo.Line1,
+                Line2: taqdeerShipmentInfo.Line2,
+                Line3: taqdeerShipmentInfo.Line3,
+                PostCode: taqdeerShipmentInfo.PostCode,
+                City: taqdeerShipmentInfo.City,
+                State: taqdeerShipmentInfo.State,
+                CountryCode: taqdeerShipmentInfo.CountryCode
             },
             PreferredCurrencyCode: "SAR",
             ShipmentDetails: {
                 Dimensions: null,
                 ActualWeight: {
                     Unit: "KG",
-                    Value: 1
+                    Value: weight
                 },
                 ChargeableWeight: null,
                 DescriptionOfGoods: null,
                 GoodsOriginCountry: null,
-                NumberOfPieces: 1,
-                ProductGroup: "DOM",
-                ProductType: "ONP",
+                NumberOfPieces: num_items,
                 PaymentType: "P",
                 PaymentOptions: "",
-                CustomsValueAmount: null,
                 CashOnDeliveryAmount: null,
                 InsuranceAmount: null,
                 CashAdditionalAmount: null,
@@ -69,9 +93,23 @@ export const aramex = {
             }
         };
 
+        if (country === "SA") {
+            data.ShipmentDetails.ProductGroup = "DOM";
+            data.ShipmentDetails.ProductType = "ONP";
+            data.ShipmentDetails.CustomsValueAmount = null;
+        }
+        else {
+            data.ShipmentDetails.ProductGroup = "EXP";
+            data.ShipmentDetails.ProductType = "EPX";
+            data.ShipmentDetails.CustomsValueAmount = {
+                CurrencyCode: "SAR",
+                Value: customs_value
+            };
+        }
+
         let config = {
             method: 'post',
-            url: 'https://ws.sbx.aramex.net/ShippingAPI.V2/RateCalculator/Service_1_0.svc/json/CalculateRate',
+            url: 'https://ws.aramex.net/ShippingAPI.V2/RateCalculator/Service_1_0.svc/xml/CalculateRate',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -99,30 +137,36 @@ export const aramex = {
         name,
         country_code,
         phone_number,
-        email
+        email,
+        num_items,
+        customs_value,
+        weight
     ) => {
+        // Shipping Date = The date Aramex receives the shipment to be shipped out.
+        // Due Date = The date specified for shipment to be delivered to the consignee.
+        // Customs Value = Value of the item
         let data = {
             ClientInfo: clientInfo,
             Shipments: [{
                 Shipper: {
                     AccountNumber: clientInfo.AccountNumber,
                     PartyAddress: {
-                        Line1: "8775 Al Shairah",
-                        Line2: "",
-                        Line3: "",
-                        City: "Riyadh",
-                        StateOrProvinceCode: "RUH",
-                        PostCode: "12444",
-                        CountryCode: "SA"
+                        Line1: taqdeerShipmentInfo.Line1,
+                        Line2: taqdeerShipmentInfo.Line2,
+                        Line3: taqdeerShipmentInfo.Line3,
+                        City: taqdeerShipmentInfo.City,
+                        StateOrProvinceCode: taqdeerShipmentInfo.State,
+                        PostCode: taqdeerShipmentInfo.PostCode,
+                        CountryCode: taqdeerShipmentInfo.CountryCode
                     },
                     Contact: {
-                        PersonName: "Faris Andeejani",
-                        CompanyName: "Autad Al Modan",
-                        PhoneNumber1: "9660503217416",
-                        PhoneNumber2: "",
-                        CellPhone: "9660503217416",
-                        EmailAddress: "fandeejani2002@gmail.com",
-                        Type: ""
+                        PersonName: taqdeerShipmentInfo.PersonName,
+                        CompanyName: taqdeerShipmentInfo.CompanyName,
+                        PhoneNumber1: taqdeerShipmentInfo.PhoneNumber1,
+                        PhoneNumber2: taqdeerShipmentInfo.PhoneNumber2,
+                        CellPhone: taqdeerShipmentInfo.CellPhone,
+                        EmailAddress: taqdeerShipmentInfo.EmailAddress,
+                        Type: taqdeerShipmentInfo.Type
                     }
                 },
                 Consignee: {
@@ -138,6 +182,7 @@ export const aramex = {
                     },
                     Contact: {
                         PersonName: name,
+                        CompanyName: name,
                         PhoneNumber1: country_code + phone_number,
                         PhoneNumber2: "",
                         CellPhone: country_code + phone_number,
@@ -150,17 +195,14 @@ export const aramex = {
                     Dimensions: null,
                     ActualWeight: {
                         Unit: "KG",
-                        Value: 1
+                        Value: weight
                     },
                     ChargeableWeight: null,
-                    DescriptionOfGoods: null,
-                    GoodsOriginCountry: null,
-                    NumberOfPieces: 1,
-                    ProductGroup: "DOM",
-                    ProductType: "ONP",
+                    DescriptionOfGoods: "Clothing",
+                    GoodsOriginCountry: "SA",
+                    NumberOfPieces: num_items,
                     PaymentType: "P",
                     PaymentOptions: "",
-                    CustomsValueAmount: null,
                     CashOnDeliveryAmount: null,
                     InsuranceAmount: null,
                     CashAdditionalAmount: null,
@@ -172,11 +214,29 @@ export const aramex = {
                 },
                 TransportType: 0
             }],
+            LabelInfo: {
+                ReportID: 9729,
+                ReportType: "URL"
+            }
         };
+
+        if (country === "SA") {
+            data.Shipments[0].Details.ProductGroup = "DOM";
+            data.Shipments[0].Details.ProductType = "ONP";
+            data.Shipments[0].Details.CustomsValueAmount = null;
+        }
+        else {
+            data.Shipments[0].Details.ProductGroup = "EXP";
+            data.Shipments[0].Details.ProductType = "EPX";
+            data.Shipments[0].Details.CustomsValueAmount = {
+                CurrencyCode: "SAR",
+                Value: customs_value
+            };
+        }
 
         let config = {
             method: 'post',
-            url: 'https://ws.sbx.aramex.net/ShippingAPI.V2/Shipping/Service_1_0.svc/json/CreateShipments',
+            url: 'https://ws.aramex.net/ShippingAPI.V2/Shipping/Service_1_0.svc/xml/CreateShipments',
             headers: {
                 'Content-Type': 'application/json'
             },

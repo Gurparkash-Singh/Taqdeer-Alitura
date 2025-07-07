@@ -63,22 +63,6 @@
                 map.setZoom(17);
             }
 
-            // 
-            // update Info
-            // let content = '<div id="infowindow-content">' +
-            //     '<span id="place-displayname" class="title">' + place.displayName + '</span><br />' +
-            //     '<span id="place-address">' + place.formattedAddress + '</span>' +
-            //     '</div>';
-            // infoWindow.setContent(content);
-            // infoWindow.setPosition(center);
-            // infoWindow.open({
-            //     map,
-            //     anchor: marker,
-            //     shouldFocus: false,
-            // });
-            //
-
-
             marker.position = place.location;
 
             formalAddress = place.formattedAddress;
@@ -86,21 +70,21 @@
             addressComponents = place.addressComponents;
 
             addressComponents.forEach(addressComponent => {
-                addressComponent.Eg.forEach(type => {
+                addressComponent.Dg.forEach(type => {
                     if (type == "administrative_area_level_1") {
-                        setValue(type, addressComponent.Gg);
+                        setValue(type, addressComponent.Fg);
                     }
                     else if (type == "street_number"){
-                        street_number = addressComponent.Fg;
+                        street_number = addressComponent.Eg;
                     }
                     else if (type == "route") {
-                        route = addressComponent.Fg;
+                        route = addressComponent.Eg;
                     }
                     else if (type == "country") {
-                        setValue(type, addressComponent.Gg);
+                        setValue(type, addressComponent.Fg);
                     }
                     else {
-                        setValue(type, addressComponent.Fg);
+                        setValue(type, addressComponent.Eg);
                     }
                 })
             });
