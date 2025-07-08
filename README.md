@@ -81,7 +81,6 @@
 - [ ] Create routine pickups
 - [ ] Get payment methods page working
 - [ ] Save card if so choosen
-- [ ] Create a critical error route
 - [ ] Allow selection of address by moving pin on the map
 - [ ] Increase Performance
 - [ ] Use Page Insights to increase performance
@@ -101,7 +100,7 @@
 - [x] Finish edit profile
 - [x] Implement Checkout
 - [x] Finish order history
-- [ ] Fix Client Details for shipment
+- [x] Fix Client Details for shipment
 - [ ] Move all credentials to production
 
 In Case of minimal viable product:
@@ -151,7 +150,7 @@ Products
 Allow if collection, categories, products, images, sizes, components, properties or discounts
 
 Orders
-- [ ] Show all orders
+- [x] Show all orders
 - [ ] Ability to filter all orders by user name, user email, order date, status
 - [ ] Ability to create pickups
 

@@ -1,4 +1,5 @@
 <script>
+	import AdminBackButton from "$lib/components/AdminBackButton.svelte";
     import OrderDetails from "$lib/components/OrderDetails.svelte";
     import { modal } from "$lib/shared_state/shared.svelte";
 
@@ -27,6 +28,8 @@
     }
 </script>
 
+<AdminBackButton link="./" name="All Orders" />
+
 <section id="order-ref">
     <dl>
         <dt>Order number:</dt>
@@ -38,7 +41,7 @@
                     name="order-id"
                     value={data.order.id}
                 >
-                <button type="submit">Order again</button>
+                <button type="submit">Print label</button>
             </form>
         </dd>
         <dt>Tracking number:</dt>

@@ -1028,6 +1028,19 @@ export const dbFunctions = {
         return result;
     },
 
+    getAllOrdersAndPaymentDetails: async () => {
+        let query = "SELECT Orders.id, Orders.tap_receipt, Orders.name, ";
+        query += "Orders.user_email, Orders.created_at, Order_Status.name AS status, ";
+        query += "Payment_Details.created_at AS payment_date FROM Orders ";
+        query += "JOIN Order_Status ON Order_Status.status_id = Orders.status ";
+        query += "LEFT JOIN Payment_Details ON ";
+        query += "Orders.payment_id = Payment_Details.payment_id ";
+
+        const [result] = await db.query(query);
+
+        return result;
+    },
+
     checkOrderForItem: async (order_id, product_id, size_id) => {
         let query = "SELECT * FROM Order_Items ";
         query += "WHERE order_id = ? AND product_id = ? AND size_id = ?;";

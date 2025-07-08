@@ -11,7 +11,7 @@
         <article>
             <a href={`/profile/orders/${order.id}`}>
                 <p>Order Date:</p>
-                {#if order.create_at}
+                {#if order.created_at}
                     {new Date(order.created_at).toISOString().split("T")[0]}
                 {:else}
                     unable to get date
