@@ -14,7 +14,7 @@
     {#if displayImage}
         <img src={`${displayImage.image_link}`} alt={displayImage.alt_desc} />
     {:else}
-        No Image
+        {product.name}
     {/if}
 </div>
 

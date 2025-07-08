@@ -1186,5 +1186,28 @@ export const dbFunctions = {
         let query = "DELETE FROM Component_Properties WHERE property_id = ?;";
 
         await db.query(query, id);
+    },
+
+    getPropertiesByComponentId: async (id) => {
+        let query = "SELECT * FROM Component_Properties WHERE ";
+        query += "component_id = ?;";
+
+        const [result] = await db.query(query, id);
+
+        return result;
+    },
+
+    createProduct: async (name, sku, category, collection, price, alt_desc) => {
+        let query = "INSERT INTO Products (name, price, category_id, ";
+        query += "collection_id, sku, description, live) VALUES (?, ?, ?, ?, ?, ?, 0);";
+
+        await db.query(query, [
+            name,
+            price,
+            category,
+            collection,
+            sku,
+            alt_desc
+        ]);
     }
 }

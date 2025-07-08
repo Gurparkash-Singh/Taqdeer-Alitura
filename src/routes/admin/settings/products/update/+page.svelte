@@ -7,6 +7,7 @@
     let { categories, products, collections } = data;
 
     let filteredProducts = $state(products);
+    let buttonText = $state("Live");
 
     let selected_category = $state(0);
     let selected_price = $state(0);
@@ -61,12 +62,34 @@
             });
         }
 
+        if (buttonText === "Live") {
+            filteredProducts = filteredProducts.filter((products) => {
+                return products.live == 1;
+            });
+        }
+        else {
+            filteredProducts = filteredProducts.filter((products) => {
+                return products.live == 0;
+            });
+        }
+
         sortProductsByPrice();
     }
+
+    filterProducts();
 </script>
 
 <AdminBackButton link="/admin/settings/products" name="Products Panel" />
 
+<button id="live-button" onclick={(e) => {
+    if (buttonText === "Live"){
+        buttonText = "Not Live"
+    }
+    else {
+        buttonText = "Live"
+    }
+    filterProducts();
+}}>{buttonText}</button>
 <section id="shop">
     <header>
         <div>
@@ -226,6 +249,21 @@
 </section>
 
 <style>
+    #live-button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: -20px 0 20px 0;
+        border: none;
+        border-radius: 0;
+        padding: 10px 15px;
+        background-color: #D9D9D9;
+    }
+
+    #live-button:hover {
+        background-color: #ECECEC;
+    }
+
 	#shop {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;

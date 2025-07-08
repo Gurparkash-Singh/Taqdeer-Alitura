@@ -13,7 +13,7 @@
     let alt_desc = $state(data.product.description);
 
     let enableSubmit = $derived.by(() => {
-        if (!sku || !name || !category || !collection || !price || !alt_desc) {
+        if (!sku || !name || !category || !price || !alt_desc) {
             return false;
         }
 
@@ -136,6 +136,7 @@
                     {collection.collection_name}
                 </option>
             {/each}
+            <option value={null}>No Collection</option>
             </select>
         </p>
         <p>

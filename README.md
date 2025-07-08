@@ -55,6 +55,7 @@
 - [x] Create Shipment and get tracking info
 - [x] Make it so that /cart/delivery cannot be accessed without having items
 - [x] Add ability to cancel order from review page
+- [x] Add ability to make an entire collection live 
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -72,6 +73,9 @@
 - [ ] Add up the weight for all products
 - [ ] Set the weight in create Shipment
 - [ ] Add astrisks to required fields for all forms
+- [ ] Send an uploading message while image uploads
+- [ ] Fix Image Server
+- [ ] Get Logout Working
 
 # Post Release To Do
 - [ ] Finish Admin Panel
@@ -140,10 +144,10 @@ Add Table to DB for model size information
 Products
 - [x] create a place to create and update collections and categories
 - [x] update products
+- [x] add product
 - [x] add and delete images
 - [x] add and update sizes and quantities
 - [x] add and update components and properties
-- [ ] add product
 - [ ] add and delete discounts in one place
 - [ ] update sizing info
 

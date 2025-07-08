@@ -2,8 +2,8 @@ import { dbFunctions } from "$lib/db/database"
 import { fail } from "@sveltejs/kit";
 
 export const load = async ({ locals, params }) => {
-   const properties = await dbFunctions.getComponentProperties(params.component_id);
-
+   const properties = await dbFunctions.getPropertiesByComponentId(params.component_id);
+   
    return {properties};
 }
 
