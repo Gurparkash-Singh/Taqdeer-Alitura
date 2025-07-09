@@ -9,6 +9,8 @@
 
     let selected_images = $state([]);
 
+    let uploadModal;
+
     let enableSubmit = $derived(selected_images.length == 1);
     let enableDelete = $derived(selected_images.length > 0);
 
@@ -32,20 +34,22 @@
     }
 
     async function uploadFile(file) {
-        const ext = file.name.split(".")[1];
-        
         let url = "http://0.0.0.0:8000";
         if (PUBLIC_MODE != "DEVELOPMENT") {
             url = "https://media.taqdeeralitura.com"
         }
+
+        uploadModal.style.display = "flex";
         
         const res = await fetch(
-            `${url}/upload/${data.product.product_id}/${ext}`, 
+            `${url}/upload/${data.product.product_id}/${file.name}`, 
             {
                 method: 'POST',
                 body: file
             }
         );
+
+        uploadModal.style.display = "none";
 
         let message;
         let invalid = false;
@@ -166,6 +170,10 @@
     }
 </script>
 
+<div id="upload-modal" bind:this={uploadModal}>
+    <h1>Uploading...</h1>
+</div>
+
 <AdminBackButton 
     link={`./`} 
     name={`${data.product.name} Panel`}
@@ -243,6 +251,21 @@
 </form>
 
 <style>
+    #upload-modal {
+        color: white;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        background-color: #1E1E1E90;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+    }
+
     section {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
