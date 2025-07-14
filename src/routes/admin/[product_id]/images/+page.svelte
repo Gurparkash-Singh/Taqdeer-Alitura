@@ -34,7 +34,7 @@
     }
 
     async function uploadFile(file) {
-        let url = "http://0.0.0.0:8000";
+        let url = "https://media.taqdeeralitura.com";
         if (PUBLIC_MODE != "DEVELOPMENT") {
             url = "https://media.taqdeeralitura.com"
         }

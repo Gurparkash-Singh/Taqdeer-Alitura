@@ -98,7 +98,7 @@
         </dl>
     {/if}
 </section>
-<a href="/logout">Logout</a>
+<a href="/profile/logout">Logout</a>
 
 <style>
     #menu {

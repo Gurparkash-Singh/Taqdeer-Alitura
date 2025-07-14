@@ -92,12 +92,24 @@ CREATE TABLE IF NOT EXISTS Discount (
     active BOOLEAN DEFAULT 0,
     product_only BOOLEAN DEFAULT 0,
     product_id INT,
+    collection_only BOOLEAN DEFAULT 0,
+    collection_id INT,
+    category_only BOOLEAN DEFAULT 0,
+    category_id INT,
+    required_num_item INT,
+	max_uses_per_cart INT,
+	max_uses_per_user INT,
+	max_uses_overall INT,
+	max_discount_value DECIMAL,
     payout_email TEXT,
     login_required BOOLEAN DEFAULT 0,
     min_subtotal DECIMAL DEFAULT 0,
+    expires_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    FOREIGN KEY (category_id) REFERENCES Category(category_id),
+    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id)
 );
 
 CREATE TABLE IF NOT EXISTS User (
@@ -234,6 +246,16 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (size_id) REFERENCES Sizes_Available(size_id)
 );
 
+CREATE TABLE IF NOT EXISTS Order_Discounts (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    discount_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES Orders(id),
+    FOREIGN KEY (discount_id) REFERENCES Discount(discount_id)
+);
+
 CREATE TABLE IF NOT EXISTS User_Cards (
     card_id VARCHAR(255) PRIMARY KEY NOT NULL,
     user_id INT NOT NULL,
@@ -330,13 +352,25 @@ CREATE TABLE IF NOT EXISTS Member_Discount (
     active BOOLEAN DEFAULT 0,
     product_only BOOLEAN DEFAULT 0,
     product_id INT,
-    payout_email TEXT,
+    collection_only BOOLEAN DEFAULT 0,
+    collection_id INT,
+    category_only BOOLEAN DEFAULT 0,
+    category_id INT,
+    required_num_item INT,
+	max_uses_per_cart INT,
+	max_uses_per_user INT,
+	max_uses_overall INT,
+	max_discount_value DECIMAL,
     min_subtotal DECIMAL DEFAULT 0,
+    payout_email TEXT,
     member_type INT NOT NULL,
+    expires_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
-    FOREIGN KEY (member_type) REFERENCES Member_Types(type_id)
+    FOREIGN KEY (member_type) REFERENCES Member_Types(type_id),
+    FOREIGN KEY (category_id) REFERENCES Category(category_id),
+    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id)
 );
 
 CREATE TABLE IF NOT EXISTS Member_Cart_Discounts (

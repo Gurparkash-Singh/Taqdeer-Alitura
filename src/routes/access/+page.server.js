@@ -55,13 +55,7 @@ export const actions = {
             });
         }
 
-        const [admin] = await dbFunctions.getAdmin(user.user_id);
-
         await dbFunctions.storeAuth(cookies.get("session"), user.user_id);
-
-        if (admin) {
-            throw redirect(303, '/admin/settings');
-        }
 
         throw redirect(303, '/profile');
     }

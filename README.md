@@ -56,6 +56,8 @@
 - [x] Make it so that /cart/delivery cannot be accessed without having items
 - [x] Add ability to cancel order from review page
 - [x] Add ability to make an entire collection live 
+- [x] Send an uploading message while image uploads
+- [x] Get Logout Working
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -73,9 +75,7 @@
 - [ ] Add up the weight for all products
 - [ ] Set the weight in create Shipment
 - [ ] Add astrisks to required fields for all forms
-- [ ] Send an uploading message while image uploads
 - [ ] Fix Image Server
-- [ ] Get Logout Working
 
 # Post Release To Do
 - [ ] Finish Admin Panel

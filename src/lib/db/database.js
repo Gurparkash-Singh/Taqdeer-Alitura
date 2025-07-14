@@ -253,6 +253,13 @@ export const dbFunctions = {
         await db.query(query, [id, session]);
     },
 
+    removeAuth: async (session) => {
+        let query = "UPDATE User_Tokens SET expires_at = now() ";
+        query += "WHERE token = ?;";
+
+        await db.query(query, session);
+    },
+
     storeToken: async (session, id) => {
         let query = "INSERT INTO User_Tokens (user_id, token, expires_at) ";
         query += "VALUES (?, ?, now()+interval 15 minute);";

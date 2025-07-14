@@ -27,9 +27,6 @@
 
 <style>
     div {
-        height: 115px;
-        width: 115px;
-        background-color: #D9D9D9;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -38,20 +35,24 @@
     }
 
     img {
-        max-width: 90px;
-        height: 90px;
-        object-fit: contain;
+        width: 115px;
+        height: 173px;
+        object-fit: cover;
     }
 
     @media screen and (width < 406px) {
-        div {
-            height: 90px;
-            width: 90px;
-        }
-
         img {
-            max-width: 65px;
-            height: 65px;
+            width: 90px;
+            height: 135px;
+            object-fit: cover;
+        }
+    }
+
+    @media screen and (width < 350px) {
+        img {
+            width: 65px;
+            height: 98px;
+            object-fit: cover;
         }
     }
 </style>

@@ -359,7 +359,7 @@
 
     .product-links {
         width: 115px;
-        height: 115px;
+        height: 173px;
         padding: 0;
         margin: 10px;
     }
@@ -400,7 +400,7 @@
 
         .product-links {
             width: 90px;
-            height: 90px;
+            height: 135px;
             margin: calc((100vw - 320px) / 6) 0;
         }
 
@@ -421,8 +421,8 @@
         }
 
         .product-links {
-            width: 90px;
-            height: 90px;
+            width: 65px;
+            height: 98px;
             margin: calc((100vw - 290px) / 6) 0;
         }
     }
