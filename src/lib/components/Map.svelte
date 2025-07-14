@@ -142,11 +142,6 @@
 </section>
 
 <style>
-    section {
-        max-width: 80%;
-        margin: auto;
-    }
-
     #map {
         height: 200px;
         width: 100%;

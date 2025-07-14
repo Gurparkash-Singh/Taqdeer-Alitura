@@ -1,5 +1,5 @@
 <script>
-    let { children, data } = $props();
+    let { children } = $props();
 </script>
 
 <main>
@@ -9,8 +9,6 @@
         </a>
 	</div>
 
-    <h1>Welcome, {data.user.name}</h1>
-
     {@render children()}
 </main>
 
@@ -18,7 +16,6 @@
 	main {
 		max-width: 500px;
 		margin: auto;
-        width: 80%;
         padding-bottom: 100px;
 	}
 
@@ -33,8 +30,4 @@
 		width: 170px;
 		height: 170px;
 	}
-
-    h1 {
-        color: #BF1E2E;
-    }
 </style>

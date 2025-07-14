@@ -2,8 +2,7 @@
     let { children, data } = $props();
 </script>
 
-
-<h1>Welcome, Admin</h1>
+<h1>Welcome, {data.user.name}</h1>
 
 {@render children()}
 

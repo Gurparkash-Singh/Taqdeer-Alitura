@@ -63,176 +63,149 @@
     }
 </script>
 
-<main>
-	<main>
-        <div id="image-holder">
-            <a href="/" aria-label="Link to Home">
-                <img src="./Logo.svg" alt="Taqdeer Alitura Logo" id="Logo" />
-            </a>
-        </div>
-    </main>
-
-	<section id="shop">
-		<header>
-			<div>
-				<button id="category-select" onclick={toggle_shop_menu}>
-					SHOP
-					<svg
-						width="24"
-						height="14"
-						viewBox="0 0 24 14"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97918 22.6066 1.3934C22.0208 0.807612 21.0711 0.807612 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807612 1.97918 0.807612 1.3934 1.3934C0.807612 1.97918 0.807612 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 11V12H13.5V11H10.5Z"
-							fill="#1E1E1E"
-						/>
-					</svg>
-				</button>
-				<ul class:open_menu={open_shop_menu}>
-					{#each categories as category}
-                    <li
-                        class:selected={selected_category == category.category_id}
-                        class:lastListElement={category === categories[categories.length - 1]}
+<section id="shop">
+    <header>
+        <div>
+            <button id="category-select" onclick={toggle_shop_menu}>
+                SHOP
+                <svg
+                    width="24"
+                    height="14"
+                    viewBox="0 0 24 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97918 22.6066 1.3934C22.0208 0.807612 21.0711 0.807612 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807612 1.97918 0.807612 1.3934 1.3934C0.807612 1.97918 0.807612 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 11V12H13.5V11H10.5Z"
+                        fill="#1E1E1E"
+                    />
+                </svg>
+            </button>
+            <ul class:open_menu={open_shop_menu}>
+                {#each categories as category}
+                <li
+                    class:selected={selected_category == category.category_id}
+                    class:lastListElement={category === categories[categories.length - 1]}
+                >
+                    <button 
+                        onclick={() => {
+                            selected_category = category.category_id;
+                            filterProducts();
+                            toggle_shop_menu();
+                        }}
                     >
-                        <button 
+                        {category.category_name}
+                        {#if category !== categories[categories.length - 1]}
+                            <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
+                            </svg>
+                        {/if}
+                    </button>
+                </li>
+                {/each}
+            </ul>
+        </div>
+        <div>
+            <button id="sort" onclick={toggle_sort_menu}>
+                sort price
+                <svg
+                    width="24"
+                    height="14"
+                    viewBox="0 0 24 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97918 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807612 1.97918 0.807612 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 10L10.5 12L13.5 12L13.5 10L10.5 10Z"
+                        fill="#1E1E1E"
+                    />
+                </svg>
+            </button>
+            <ul class:open_menu={open_sort_menu} id="sort-menu">
+                <li class:selected={selected_price == 0}>
+                    <button
+                        onclick={() => {
+                            selected_price = 0;
+                            sortProductsByPrice();
+                            toggle_sort_menu();
+                        }}
+                    >
+                        Ascending
+
+                        <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
+                        </svg>
+                    </button>
+                </li>
+                <li 
+                    class:selected={selected_price == 1}
+                    class="lastListElement"
+                >
+                    <button
+                        onclick={() => {
+                            selected_price = 1;
+                            sortProductsByPrice();
+                            toggle_sort_menu();
+                        }}
+                    >
+                        Descending
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <button id="collection" onclick={toggle_collections_menu}>
+                collection
+                <svg
+                    width="24"
+                    height="14"
+                    viewBox="0 0 24 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97918 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807612 1.97918 0.807612 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 10L10.5 12L13.5 12L13.5 10L10.5 10Z"
+                        fill="#1E1E1E"
+                    />
+                </svg>
+            </button>
+            <ul class:open_menu={open_collections_menu}>
+                {#each collections as collection}
+                    <li
+                        class:selected={
+                            selected_collection == collection.collection_id
+                        }
+                        class:lastListElement={
+                            collection === collections[collections.length - 1]
+                        }
+                    >
+                        <button
                             onclick={() => {
-                                selected_category = category.category_id;
+                                selected_collection = collection.collection_id;
                                 filterProducts();
-                                toggle_shop_menu();
+                                toggle_collections_menu();
                             }}
                         >
-                            {category.category_name}
-                            {#if category !== categories[categories.length - 1]}
+                            {collection.collection_name}
+                            {#if collection !== collections[collections.length - 1]}
                                 <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
                                 </svg>
                             {/if}
                         </button>
                     </li>
-					{/each}
-				</ul>
-			</div>
-			<div>
-				<button id="sort" onclick={toggle_sort_menu}>
-					sort price
-					<svg
-						width="24"
-						height="14"
-						viewBox="0 0 24 14"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97918 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807612 1.97918 0.807612 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 10L10.5 12L13.5 12L13.5 10L10.5 10Z"
-							fill="#1E1E1E"
-						/>
-					</svg>
-				</button>
-				<ul class:open_menu={open_sort_menu} id="sort-menu">
-					<li class:selected={selected_price == 0}>
-                        <button
-                            onclick={() => {
-                                selected_price = 0;
-                                sortProductsByPrice();
-                                toggle_sort_menu();
-                            }}
-                        >
-                            Ascending
-
-                            <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
-                            </svg>
-                        </button>
-                    </li>
-					<li 
-                        class:selected={selected_price == 1}
-                        class="lastListElement"
-                    >
-                        <button
-                            onclick={() => {
-                                selected_price = 1;
-                                sortProductsByPrice();
-                                toggle_sort_menu();
-                            }}
-                        >
-                            Descending
-                        </button>
-                    </li>
-				</ul>
-			</div>
-			<div>
-				<button id="collection" onclick={toggle_collections_menu}>
-					collection
-					<svg
-						width="24"
-						height="14"
-						viewBox="0 0 24 14"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M10.9393 13.0607C11.5251 13.6464 12.4749 13.6464 13.0607 13.0607L22.6066 3.51472C23.1924 2.92893 23.1924 1.97918 22.6066 1.3934C22.0208 0.807611 21.0711 0.807611 20.4853 1.3934L12 9.87868L3.51472 1.3934C2.92893 0.807612 1.97918 0.807612 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L10.9393 13.0607ZM10.5 10L10.5 12L13.5 12L13.5 10L10.5 10Z"
-							fill="#1E1E1E"
-						/>
-					</svg>
-				</button>
-				<ul class:open_menu={open_collections_menu}>
-                    {#each collections as collection}
-                        <li
-                            class:selected={
-                                selected_collection == collection.collection_id
-                            }
-                            class:lastListElement={
-                                collection === collections[collections.length - 1]
-                            }
-                        >
-                            <button
-                                onclick={() => {
-                                    selected_collection = collection.collection_id;
-                                    filterProducts();
-                                    toggle_collections_menu();
-                                }}
-                            >
-                                {collection.collection_name}
-                                {#if collection !== collections[collections.length - 1]}
-                                    <svg width="85" height="1" viewBox="0 0 103 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <line x1="4.37114e-08" y1="0.5" x2="103" y2="0.500009" stroke="#D9D9D9"/>
-                                    </svg>
-                                {/if}
-                            </button>
-                        </li>
-                    {/each}
-				</ul>
-			</div>
-		</header>
-		{#each filteredProducts as product (product.product_id)}
-			<a href="/shop/{product.product_id}" class="product-links">
-                <ProductCard product={product} images={data.images}/>
-            </a>
-		{/each}
-	</section>
-</main>
+                {/each}
+            </ul>
+        </div>
+    </header>
+    {#each filteredProducts as product (product.product_id)}
+        <a href="/shop/{product.product_id}" class="product-links">
+            <ProductCard product={product} images={data.images}/>
+        </a>
+    {/each}
+</section>
 
 <style>
-	main {
-		max-width: 500px;
-		margin: auto;
-	}
-
-	#image-holder {
-		display: flex;
-		justify-content: center;
-		width: 100%;
-		margin-top: -28px;
-	}
-
-	#Logo {
-		width: 170px;
-		height: 170px;
-	}
-
 	#shop {
 		display: flex;
 		flex-direction: row;

@@ -364,11 +364,6 @@
 </section>
 
 <style>
-    section {
-        max-width: 80%;
-        margin: auto;
-    }
-
     form {
         margin: 0;
     }

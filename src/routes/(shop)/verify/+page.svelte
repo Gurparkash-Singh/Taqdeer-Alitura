@@ -87,77 +87,48 @@
     onReload()
 </script>
 
-<main>
-    <div id="image-holder">
-		<a href="/" aria-label="Link to Home">
-            <img src="/Logo.svg" alt="Taqdeer Alitura Logo" id="Logo" />
-        </a>
-	</div>
-
-    <section>
-        <h1>VERIFY ACCOUNT</h1>
-        <form 
-            action="?/submit" 
-            method="POST"
-            bind:this={formElement}
-        >
+<section>
+    <h1>VERIFY ACCOUNT</h1>
+    <form 
+        action="?/submit" 
+        method="POST"
+        bind:this={formElement}
+    >
+        <input 
+            type="hidden" 
+            name="service"
+            bind:value={service}
+        />
+        <p>
+            <label for="otp">code:</label>
             <input 
-                type="hidden" 
-                name="service"
-                bind:value={service}
+                type="text" 
+                name="otp" 
+                id="otp"
+                bind:value={otp}
             />
-            <p>
-                <label for="otp">code:</label>
-                <input 
-                    type="text" 
-                    name="otp" 
-                    id="otp"
-                    bind:value={otp}
-                />
-            </p>
-            <div id="button-holder">
-                <button 
-                    class:disable-submit={!enableSubmit}
-                    disabled={!enableSubmit}
-                    formaction="?/send"
-                >
-                    Send OTP
-                </button>
-                
-                {#if time}
-                    <p>
-                        {time}s
-                    </p>
-                {/if}
-                
-            </div>
-        </form>
-    </section>
-</main>
+        </p>
+        <div id="button-holder">
+            <button 
+                class:disable-submit={!enableSubmit}
+                disabled={!enableSubmit}
+                formaction="?/send"
+            >
+                Send OTP
+            </button>
+            
+            {#if time}
+                <p>
+                    {time}s
+                </p>
+            {/if}
+            
+        </div>
+    </form>
+</section>
 
 <style>
-	main {
-		display: flex;
-        flex-direction: column;
-		justify-content: center;
-        align-items: center;
-        max-width: 500px;
-        margin: auto;
-	}
-
-    #image-holder {
-		display: flex;
-		justify-content: center;
-		width: 100%;
-		margin-top: -28px;
-	}
-
-	#Logo {
-		width: 170px;
-		height: 170px;
-	}
-
-    h1 {
+	h1 {
         color: #bf1e2e;
     }
 
