@@ -154,6 +154,7 @@
                         type="text" 
                         name="name" 
                         id="name"
+                        required
                         bind:value={name}
                 >
             </p>
@@ -163,6 +164,7 @@
                         type="text" 
                         name="address1" 
                         id="address1"
+                        required
                         bind:value={address1}
                 >
             </p>
@@ -181,6 +183,7 @@
                     type="text" 
                     name="city" 
                     id="city"
+                    required
                     bind:value={city}
                 >
             </p>
@@ -190,6 +193,7 @@
                     type="text" 
                     name="province" 
                     id="province"
+                    required
                     bind:value={province}
                 >
             </p>
@@ -199,6 +203,7 @@
                     type="text" 
                     name="postal" 
                     id="postal"
+                    required
                     bind:value={postal_code}
                 >
             </p>
@@ -208,6 +213,7 @@
                     type="text" 
                     name="delivery_country" 
                     id="delivery_country"
+                    required
                     bind:value={country}
                 >
             </p>

@@ -234,6 +234,7 @@
                             type="text" 
                             name="addressName" 
                             id="addressName"
+                            required
                             bind:value={addressName}
                     >
                 </p>
@@ -244,6 +245,7 @@
                         type="text" 
                         name="address1" 
                         id="address1"
+                        required
                         bind:value={address1}
                 >
             </p>
@@ -262,6 +264,7 @@
                     type="text" 
                     name="city" 
                     id="city"
+                    required
                     bind:value={city}
                 >
             </p>
@@ -271,6 +274,7 @@
                     type="text" 
                     name="province" 
                     id="province"
+                    required
                     bind:value={province}
                 >
             </p>
@@ -280,6 +284,7 @@
                     type="text" 
                     name="postal" 
                     id="postal"
+                    required
                     bind:value={postal_code}
                 >
             </p>
@@ -289,6 +294,7 @@
                     type="text" 
                     name="delivery_country" 
                     id="delivery_country"
+                    required
                     bind:value={country}
                 >
             </p>
@@ -302,6 +308,7 @@
                     type="text" 
                     name="name" 
                     id="name"
+                    required
                     bind:value={name}
                 />
             </p>
@@ -311,6 +318,7 @@
                     type="text" 
                     name="email" 
                     id="email"
+                    required
                     bind:value={email}
                 />
             </p>
@@ -319,6 +327,7 @@
                 <select
                     name="country"
                     id="country"
+                    required
                     bind:value={countryCode}
                 >
                     {#each getCountries() as country}
@@ -336,6 +345,7 @@
                     type="tel"
                     name="phone"
                     id="phone"
+                    required
                     bind:value={phoneNumber}
                 >
             </p>

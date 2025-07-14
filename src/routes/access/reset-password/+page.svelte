@@ -39,6 +39,7 @@
                 type="text" 
                 name="email" 
                 id="email"
+                required
                 bind:value={email}
             />
         </p>

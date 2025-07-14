@@ -60,6 +60,7 @@
                 type="text" 
                 name="name" 
                 id="name"
+                required
                 bind:value={name}
             />
         </p>
@@ -69,6 +70,7 @@
                 type="text" 
                 name="email" 
                 id="email"
+                required
                 bind:value={email}
             />
         </p>
@@ -80,6 +82,7 @@
                 id="password"
                 title="Must contain at least one number and one letter, and at least 8 characters"
                 bind:value={password}
+                required
                 oninput={() => {
                     showMessage = true;
                     if (has8 && hasUpperLetter && hasNumber && hasLowerLetter) {
@@ -122,6 +125,7 @@
                 type="password" 
                 name="confirm-password" 
                 id="confirm-password"
+                required
                 bind:value={confirmPassword}
             />
         </p>

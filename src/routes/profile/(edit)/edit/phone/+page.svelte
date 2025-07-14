@@ -72,6 +72,7 @@
             <select 
                 name="country"
                 id="country"
+                required
                 bind:value={countryCode}
             >
                 {#each getCountries() as country}
@@ -89,6 +90,7 @@
                 type="tel"
                 name="phone"
                 id="phone"
+                required
                 bind:value={phoneNumber}
             >
         </p>

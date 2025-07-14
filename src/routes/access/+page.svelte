@@ -52,6 +52,7 @@
                 type="text"
                 name="email"
                 id="email"
+                required
                 bind:value={email}
             />
         </p>
@@ -61,6 +62,7 @@
                 type="password" 
                 name="password" 
                 id="password"
+                required
                 bind:value={password}
             />
         </p>

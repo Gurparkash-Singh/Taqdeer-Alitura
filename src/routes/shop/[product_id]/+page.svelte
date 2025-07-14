@@ -1,5 +1,4 @@
 <script>
-    import Logo from '$lib/images/Logo.png?enhanced';
     import { modal } from '$lib/shared_state/shared.svelte';
     import ImageModal from '$lib/components/ImageModal.svelte';
     import { numberFormat } from '$lib/shared_state/shared.svelte';
@@ -169,7 +168,7 @@
 <main>
     <div id="image-holder">
 		<a href="/" aria-label="Link to Home">
-            <enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
+            <img src="/Logo.svg" alt="Taqdeer Alitura Logo" id="Logo" />
         </a>
 	</div>
 

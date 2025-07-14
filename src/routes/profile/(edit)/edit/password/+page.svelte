@@ -53,6 +53,7 @@
                 type="password" 
                 name="old-password" 
                 id="old-password"
+                required
                 bind:value={oldPassword}
             />
         </p>
@@ -63,6 +64,7 @@
                 name="password" 
                 id="password"
                 title="Must contain at least one number and one letter, and at least 8 characters"
+                required
                 bind:value={password}
                 oninput={() => {
                     showMessage = true;
@@ -106,6 +108,7 @@
                 type="password" 
                 name="confirm-password" 
                 id="confirm-password"
+                required
                 bind:value={confirmPassword}
             />
         </p>

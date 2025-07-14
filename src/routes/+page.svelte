@@ -1,6 +1,5 @@
 <script>
     import BackgroundImage from "$lib/images/homepage.jpg";
-    import Logo from '$lib/images/Logo.png?enhanced';
     import { modal } from '$lib/shared_state/shared.svelte';
 
     let { form, data } = $props();
@@ -179,8 +178,8 @@
 
 <main bind:clientHeight={bodyHeight}>
 	<section id="logo" bind:this={home}>
-		<enhanced:img 
-            src={Logo}
+		<img 
+            src="/Logo.svg"
             alt="Taqdeer Alitura Logo" 
             class="logo-image"
         />
@@ -214,6 +213,7 @@
                     rows="3"
                     cols="5"
                     placeholder="Contact Us"
+                    required
                     bind:value={emailBody}
                 ></textarea>
                 <!-- <div id="form-controls"> -->
@@ -223,6 +223,7 @@
                             type="text"
                             name="email"
                             id="email"
+                            required
                             placeholder="example@example.com"
                             bind:value={email}
                         >
@@ -414,7 +415,6 @@
         width: 150px;
         height: auto;
         position: absolute;
-        transform: translate(-50%, -35%);
     }
 
 	#logo h1 {
