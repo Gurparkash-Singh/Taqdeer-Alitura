@@ -15,6 +15,7 @@
 <style>
 	main {
 		max-width: 500px;
+        min-height: 100vh;
 		margin: auto;
         padding-bottom: 100px;
 	}
