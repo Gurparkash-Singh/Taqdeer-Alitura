@@ -58,6 +58,7 @@
 - [x] Add ability to make an entire collection live 
 - [x] Send an uploading message while image uploads
 - [x] Get Logout Working
+- [x] Add (optional) to fields that are optional in forms
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -74,7 +75,6 @@
 - [ ] Insert weights to DB
 - [ ] Add up the weight for all products
 - [ ] Set the weight in create Shipment
-- [ ] Add astrisks to required fields for all forms
 - [ ] Fix Image Server
 
 # Post Release To Do

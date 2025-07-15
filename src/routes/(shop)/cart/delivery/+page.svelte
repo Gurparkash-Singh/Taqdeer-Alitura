@@ -250,7 +250,7 @@
                 >
             </p>
             <p>
-                <label for="address2">address line 2:</label>
+                <label for="address2">address line 2 (optional):</label>
                 <input 
                     type="text" 
                     name="address2" 
