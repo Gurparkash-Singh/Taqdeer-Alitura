@@ -117,7 +117,7 @@
             >
         </p>
         <p>
-            <label for="property_value">property value:</label>
+            <label for="property_value">property value (optional):</label>
             <input 
                 type="text"
                 name="property_value"

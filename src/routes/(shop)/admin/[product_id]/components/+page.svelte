@@ -117,7 +117,7 @@
             >
         </p>
         <p>
-            <label for="desc">component description:</label>
+            <label for="desc">component description (optional):</label>
             <input 
                 type="text"
                 name="desc"
