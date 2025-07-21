@@ -8,16 +8,6 @@ DROP TABLE IF EXISTS Email_List;
 
 DROP TABLE IF EXISTS User_OTP;
 
-DROP TABLE IF EXISTS Member_Order_Discounts;
-
-DROP TABLE IF EXISTS Member_Cart_Discounts;
-
-DROP TABLE IF EXISTS Member_Discount;
-
-DROP TABLE IF EXISTS Members;
-
-DROP TABLE IF EXISTS Member_Types;
-
 DROP TABLE IF EXISTS Messages;
 
 DROP TABLE IF EXISTS Admins;
@@ -42,9 +32,9 @@ DROP TABLE IF EXISTS Orders;
 
 DROP TABLE IF EXISTS Order_Status;
 
-DROP TABLE IF EXISTS Order_Addresses;
-
 DROP TABLE IF EXISTS User_Addresses;
+
+DROP TABLE IF EXISTS Addresses;
 
 DROP TABLE IF EXISTS Payment_Details;
 
@@ -54,9 +44,13 @@ DROP TABLE IF EXISTS Admin_Type;
 
 DROP TABLE IF EXISTS Permission_Types;
 
-DROP TABLE IF EXISTS User;
-
 DROP TABLE IF EXISTS Discount;
+
+DROP TABLE IF EXISTS Members;
+
+DROP TABLE IF EXISTS Member_Types;
+
+DROP TABLE IF EXISTS User;
 
 DROP TABLE IF EXISTS Component_Properties;
 
@@ -64,9 +58,17 @@ DROP TABLE IF EXISTS Components;
 
 DROP TABLE IF EXISTS Images;
 
-DROP TABLE IF EXISTS Sizes_Available;
+DROP TABLE IF EXISTS Product_Configuration;
+
+DROP TABLE IF EXISTS Product_Item;
 
 DROP TABLE IF EXISTS Products;
+
+DROP TABLE IF EXISTS Variation_Option;
+
+DROP TABLE IF EXISTS Product_Variations;
+
+DROP TABLE IF EXISTS Product_Type;
 
 DROP TABLE IF EXISTS Collections;
 
