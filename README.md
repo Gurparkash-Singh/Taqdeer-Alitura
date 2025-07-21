@@ -71,6 +71,9 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
+- [ ] Add permissions for product type
+- [ ] Add permissions for product items
+- [ ] Add permissions for product variations and variation options
 - [ ] Add size chart and return policy in products page
 - [ ] Insert weights to DB
 - [ ] Add up the weight for all products
@@ -146,8 +149,11 @@ Products
 - [x] update products
 - [x] add product
 - [x] add and delete images
-- [x] add and update sizes and quantities
 - [x] add and update components and properties
+- [ ] add and update product types
+- [ ] add and update product variations
+- [ ] add and update variation options
+- [ ] add and update product items (also add variations to products)
 - [ ] add and delete discounts in one place
 - [ ] update sizing info
 
@@ -193,3 +199,36 @@ Full Size
 - [ ] In /cards/add tokenize and verify card to save it
 - [ ] In /cart/review tokenize card and use it
 - [ ] In /orders save card id
+
+
+Pre-Launch:
+1. Pre-Migration:
+- [x] Add (optional) to forms
+- [ ] Add size chart in products page
+- [ ] Insert weights to DB
+- [ ] Use the weights to create shipments
+- [ ] QA testing
+
+2. Migration:
+- [ ] Buy Server
+- [ ] Ensure DB accuracy
+- [ ] Upload Product Photos
+
+3. Post-Migration:
+- [ ] Adjust Home Page to look like the image
+
+
+Launch:
+- [ ] Allow access to the entire website to everyone
+- [ ] Finished Website
+
+
+Post-Launch: 
+- [ ] Add ability to create pickup from admin panel
+- [ ] Create routine pickups
+- [ ] Get payment methods page working
+- [ ] Save card if so choosen
+- [ ] Allow selection of address by moving pin on the map
+- [ ] Add a close button to product page
+- [ ] Go back to exact shop settings and scroll to exact product on product page
+- [ ] Add ability to track shipments

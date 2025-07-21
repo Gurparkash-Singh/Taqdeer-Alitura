@@ -18,7 +18,7 @@
     if (data.product_errors) {
         let inMessages = false;
         let paragraph = "Some products from your order might not be available\n";
-        paragraph += "or they might not be available with the same size and quantity";
+        paragraph += "or they might not be available with the same quantity";
         for (let i = 0; i < modal.messages.length; i++) {
             if (modal.messages[i].paragraph == paragraph) {
                 inMessages = true;
@@ -33,7 +33,6 @@
         }
     }
 
-    let deliveryNum = 20;
     let floatSubtotal = $derived.by(() => {
         let tempSubtotal = 0
         data.cart_items.forEach(item => {
@@ -41,29 +40,10 @@
         });
         return tempSubtotal;
     });
-    let floatDelivery = $derived.by(() => {
-        if (floatSubtotal > 0) {
-            return deliveryNum * numberFormat.conversion_rate
-        }
-        else {
-            return 0;
-        }
-    });
-    let floatTotal = $derived(floatSubtotal + floatDelivery);
 
     let subtotal = $derived(floatSubtotal.toLocaleString(
         numberFormat.area,
         numberFormat.style,
-    ));
-
-    let delivery = $derived(floatDelivery.toLocaleString(
-        numberFormat.area,
-        numberFormat.style,
-    ));
-
-    let total = $derived(floatTotal.toLocaleString(
-        numberFormat.area, 
-        numberFormat.style
     ));
 
     let discounts = 0;
@@ -82,7 +62,7 @@
             <ul>
                 <li>Item name</li>
                 <li>Size</li>
-                <li>Quantity</li>
+                <li>Amount</li>
                 <li>Cost</li>
             </ul>
         </header>
@@ -337,6 +317,10 @@
         .payment-logos {
             width: 40px;
             height: auto;
+        }
+
+        #cart header ul {
+            font-size: 9pt;
         }
     }
 </style>

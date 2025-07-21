@@ -22,7 +22,15 @@
     </section>
     <section id="details">
         <p>
-            {product.size_name}
+            {#if product.variations}
+                {#if product.variations.Size}
+                    {product.variations.Size}
+                {:else}
+                    N/A
+                {/if}
+            {:else}
+                N/A
+            {/if}
         </p>
         <p>
             x{product.quantity}

@@ -4,26 +4,45 @@ import { fail } from "@sveltejs/kit";
 
 export async function load({params})
 {
-    const product = await dbFunctions.getProductById(params.product_id);
+    const [product] = await dbFunctions.getProductById(params.product_id);
 
-    if (product.length == 0)
+    if (!product)
     {
         error(404);
     }
 
     const images = await dbFunctions.getImagesByProductId(params.product_id);
 
-    const sizes = await dbFunctions.getProductSizes(params.product_id);
+    const product_variations = await dbFunctions.getProductVariations(
+        params.product_id
+    );
+
+    const product_variation_options = await dbFunctions.getProductVariationOptions(
+        params.product_id
+    );
+
+    const product_items = await dbFunctions.getProductItems(params.product_id);
+
+    const outOfStock = await dbFunctions.getProductOutOfStock(params.product_id);
 
     const components = await dbFunctions.getProductComponents(params.product_id);
 
     const properties = await dbFunctions.getComponentProperties(params.product_id);
 
-    return {product, images, sizes, components, properties};
+    return {
+        product,
+        images,
+        product_variations,
+        product_variation_options,
+        product_items,
+        outOfStock,
+        components, 
+        properties
+    };
 }
 
 export const actions = {
-    add: async ({ cookies, request }) => {
+    add: async ({ cookies, request, params }) => {
         const data = await request.formData();
 
         const order_id = cookies.get("order_id");
@@ -40,9 +59,9 @@ export const actions = {
         }
 
         const session = cookies.get("session");
-        let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
+        const [shopping_session] = await dbFunctions.getShoppingSessionByToken(session);
 
-        if (!session || shopping_session.length === 0) {
+        if (!session || !shopping_session) {
             await dbFunctions.setCriticalError(
                 "shop",
                 500,
@@ -54,13 +73,10 @@ export const actions = {
             });
         }
 
-        shopping_session = shopping_session[0].id
-
-        const product_id = data.get("product").trim();
-        const size = data.get("size").trim();
         const quantity = data.get("quantity").trim();
+        const item_id = data.get("item");
 
-        if (!product_id || !size || !quantity) {
+        if (!quantity || !item_id) {
             await dbFunctions.setError(
                 "shop",
                 400,
@@ -72,60 +88,47 @@ export const actions = {
             });
         }
 
-        const product = await dbFunctions.getProductById(product_id);
+        const [item] = await dbFunctions.getItemById(item_id);
 
-        if (product.length == 0)
-        {
+        if (!item) {
             await dbFunctions.setError(
                 "shop",
-                404,
-                `Invalid product id` 
+                400,
+                `Invalid Product Item` 
             );
-            return fail(404, {
+            return fail(400, {
                 invalid: true,
-                message: "invalid product id"
+                message: "item not found"
             });
         }
 
-        if (product[0].live != 1) {
+        if (item.product_id != params.product_id) {
             await dbFunctions.setError(
                 "shop",
-                404,
-                `Tried adding a product that wasn't live` 
+                400,
+                `Product Item does not match expected product` 
             );
-            return fail(404, {
+            return fail(400, {
                 invalid: true,
-                message: "product is not live"
+                message: "product not found"
             });
         }
 
-        const sizes = await dbFunctions.getProductSizes(product_id);
+        const [product] = await dbFunctions.getProductById(params.product_id);
 
-        let selected_size;
-
-        for (let i = 0; i < sizes.length; i++)
-        {
-            if (sizes[i].size_id == size)
-            {
-                selected_size = sizes[i];
-            }
-        }
-
-        if (!selected_size)
-        {
-            await dbFunctions.setError(
+        if (!product) {
+             await dbFunctions.setError(
                 "shop",
-                404,
-                `Size not found` 
+                400,
+                `Product not found` 
             );
-            return fail(404, {
+            return fail(400, {
                 invalid: true,
-                message: "size not found"
+                message: "product not found"
             });
         }
 
-        if (quantity < 0  || quantity > selected_size.quantity || quantity > 5)
-        {
+        if (quantity < 0  || quantity > item.quantity || quantity > 5) {
             await dbFunctions.setError(
                 "shop",
                 400,
@@ -137,37 +140,39 @@ export const actions = {
             });
         }
 
-        const current_item = await dbFunctions.checkCartForProduct(
-            shopping_session,
-            product_id,
-            size
+        // Check cart for item
+        // Then add if not already added, Update if added and remove if quantity = 0
+
+        const [item_in_cart] = await dbFunctions.checkCartForProduct(
+            shopping_session.id, 
+            item_id
         );
 
-        if (current_item.length === 0)
-        {
-            if (quantity == 0)
-            {
+        if (!item_in_cart) {
+            if (quantity === 0) {
                 return {
                     success: true,
                     message: "nothing to add"
                 };
             }
-            await dbFunctions.addToCart(shopping_session, product_id, size, quantity);
+
+            await dbFunctions.addToCart(shopping_session.id, item_id, quantity);
             return {
                 success: true,
                 message: "added to cart"
-            };
+            }
         }
 
-        if (quantity == 0) {
-            await dbFunctions.removeFromCart(shopping_session, product_id, size);
+        if (quantity === 0) {
+            await dbFunctions.removeFromCart(shopping_session.id, item_id);
             return {
                 success: true,
-                message: "removed item from cart"
+                message: "removed from cart"
             };
         }
 
-        await dbFunctions.updateCart(shopping_session, product_id, size, quantity);
+        await dbFunctions.updateCart(shopping_session.id, item_id, quantity);
+
         return {
             success: true,
             message: "updated cart"

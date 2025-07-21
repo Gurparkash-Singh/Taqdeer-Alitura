@@ -4,15 +4,16 @@
 
     let { data, form } = $props();
 
-    let sku = $state("");
     let name = $state("");
     let category = $state("");
     let collection = $state("");
     let price = $state("");
     let alt_desc = $state("");
+    let description = $state();
+    let type = $state();
 
     let enableSubmit = $derived.by(() => {
-        if (sku && name && price && alt_desc){
+        if (name && price && alt_desc && category && description && type){
             return true;
         }
 
@@ -25,15 +26,6 @@
 <section>
     <form action="?/submit" method="POST">
         <p>
-            <label for="sku">sku:</label>
-            <input 
-                type="text"
-                name="sku"
-                id="sku"
-                bind:value={sku}
-            >
-        </p>
-        <p>
             <label for="name">name:</label>
             <input 
                 type="text"
@@ -43,7 +35,16 @@
             >
         </p>
         <p>
-            <label for="alt_desc">product description:</label>
+            <label for="description">description:</label>
+            <input 
+                type="text"
+                name="description"
+                id="description"
+                bind:value={description}
+            >
+        </p>
+        <p>
+            <label for="alt_desc">product image description:</label>
             <input 
                 type="text"
                 name="alt_desc"
@@ -78,6 +79,20 @@
                 </option>
             {/each}
             <option value={null}>No Collection</option>
+            </select>
+        </p>
+        <p>
+            <label for="type_id">product type:</label>
+            <select
+                name="type_id"
+                id="type_id"
+                bind:value={type}
+            >
+            {#each data.product_types as product_type}
+                <option value={product_type.id}>
+                    {product_type.name}
+                </option>
+            {/each}
             </select>
         </p>
         <p>

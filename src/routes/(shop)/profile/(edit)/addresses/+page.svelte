@@ -20,7 +20,7 @@
             return 0;
         }
         else {
-            return selected_address.address_id;
+            return selected_address.id;
         }
     })
 

@@ -9,7 +9,7 @@
         address, 
         delivery_amount, 
         order_invoice_items,
-        order_items,
+        order_items
     } = $props();
 
     let deliveryNum = delivery_amount;
@@ -71,27 +71,27 @@
             <p>
                 Street: 
                 <span>
-                    {address.address_line1}
+                    {address?.address_line1}
                 </span>
             </p>
             <div></div>
             <p>
                 City: 
                 <span>
-                    {address.city}
+                    {address?.city}
                 </span>
             </p>
             <p>
                 State/Province: 
                 <span>
-                    {address.province}
+                    {address?.province}
                 </span>
             </p>
             <div></div>
             <p>
                 Postal Code: 
                 <span>
-                    {address.postal_code}
+                    {address?.postal_code}
                 </span>
             </p>
         </section>

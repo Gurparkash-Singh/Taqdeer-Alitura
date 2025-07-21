@@ -44,7 +44,9 @@
         <dt>Tracking number:</dt>
         <dd>{data.order.tracking_id}</dd>
         <dd class="reference-link">
-            <a href="https://www.aramex.com/us/en/track/shipments">
+            <a 
+                href={`https://www.aramex.com/us/en/track/results?source=aramex&ShipmentNumber=${data.order.tracking_id}`}
+            >
                 Track order
             </a>
         </dd>

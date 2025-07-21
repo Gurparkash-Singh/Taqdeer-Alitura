@@ -3,6 +3,8 @@
 
     let { data } = $props();
 
+    let order_span = data.admin ? false : true;
+
     if (data.verified) {
         let inMessages = false;
         for (let i = 0; i < modal.messages.length; i++) {
@@ -31,7 +33,10 @@
             Admin Panel
         </a>
     {/if}
-    <a href="/profile/orders">
+    <a 
+        href="/profile/orders"
+        class:order_span={order_span}
+    >
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 12H42M16 24H42M16 36H42M6 12H6.02M6 24H6.02M6 36H6.02" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -43,12 +48,12 @@
         </svg>
         Edit Profile
     </a>
-    <a href="/profile/cards">
+    <!-- <a href="/profile/cards">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2 20H46M6 8H42C44.2091 8 46 9.79086 46 12V36C46 38.2091 44.2091 40 42 40H6C3.79086 40 2 38.2091 2 36V12C2 9.79086 3.79086 8 6 8Z" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Payment Methods
-    </a>
+    </a> -->
     <a href="/profile/addresses">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M24 14C24 11.8783 23.1571 9.84344 21.6569 8.34315C20.1566 6.84285 18.1217 6 16 6H4V36H18C19.5913 36 21.1174 36.6321 22.2426 37.7574C23.3679 38.8826 24 40.4087 24 42M24 14V42M24 14C24 11.8783 24.8429 9.84344 26.3431 8.34315C27.8434 6.84285 29.8783 6 32 6H44V36H30C28.4087 36 26.8826 36.6321 25.7574 37.7574C24.6321 38.8826 24 40.4087 24 42" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -158,8 +163,12 @@
         padding: 5px 30px;
     }
 
-    a[href="/admin/settings"] {
+    .order_span {
         grid-column: 1 / span 2;
     }
+
+    /* a[href="/admin/settings"] {
+        grid-column: 1 / span 2;
+    } */
 
 </style>

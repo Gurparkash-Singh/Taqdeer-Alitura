@@ -5,86 +5,144 @@
 
     let { data, form } = $props();
 
-    let templateColumns = $state(data.sizes.length);
+    class Product {
+        #product_modifiers = $state({});
+        #product_items = $state({});
+        #quantity = $state(0);
+        #selected_item = $state(null);
 
-    let outOfStock = $state(false);
+        constructor() {
+            for (let i = 0; i < data.product_variations.length; i++) {
+                const variation = data.product_variations[i].id;
+                this.#product_items[variation] = {};
+            }
 
-    let openInfo = $state(false);
-    let openSize = $state(false);
-    let openReturn = $state(false);
+            for (let i = 0; i < data.product_items.length; i++){
+                const product_item = data.product_items[i];
+                for (let variation in product_item.variations) {
+                    const option_id = product_item.variations[variation];
 
+                    if (!this.#product_items[variation][option_id]) {
+                        this.#product_items[variation][option_id] = [];
+                    }
+
+                    if (product_item.quantity > 0) {
+                        this.#product_items[variation][option_id].push(product_item);
+                    }
+                }
+
+                if (!this.#selected_item) {
+                    if (product_item.quantity > 0) {
+                        this.#selected_item = product_item;
+                    }
+                }
+            }
+
+            if (!this.selected_item) {
+                return;
+            }
+
+            for (let variation in this.selected_item.variations) {
+                this.product_modifiers[variation] = this.selected_item.variations[variation];
+            }
+		}
+
+        get quantity() {
+			return this.#quantity;
+		}
+
+        set quantity(value) {
+            const max_quantity = Math.min(5, this.#selected_item.quantity);
+            this.#quantity = Math.max(0, Math.min(max_quantity, value));
+        }
+
+        get product_modifiers() {
+            return this.#product_modifiers;
+        }
+
+        update_modifiers(variation_id, option_id) {
+            if (!this.#product_items[variation_id]){
+                return;
+            }
+
+            if (!this.#product_items[variation_id][option_id]) {
+                return;
+            }
+
+            if (this.#product_items[variation_id][option_id].length === 0) {
+                return;
+            }
+
+            this.#product_modifiers[variation_id] = option_id;
+
+            let selected_array = this.#product_items[variation_id][option_id];
+
+            for (let i = 0; i < selected_array.length; i++) {
+                let found = true;
+                for (let variation in selected_array[i].variations) {
+                    if (!this.product_modifiers[variation]){
+                        found = false;
+                        break;
+                    }
+
+                    const option = selected_array[i].variations[variation];
+
+                    if (this.product_modifiers[variation] != option) {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    this.#selected_item = selected_array[i];
+                    this.#quantity = 0;
+                    break;
+                }
+            }
+        }
+
+        get product_items() {
+            return this.#product_items;
+        }
+
+        get selected_item() {
+            return this.#selected_item;
+        }
+    }
+
+    let selection = new Product();
+
+    // For Images and image modal
+    let images = [];
     let display = $state(false);
+    let currentImage = $state(0);
+    let showImage = $derived(images[currentImage]);
+    let touchStartX = $state(0);
+    let touchEndX = $state(0);
     let body;
 
+    // For Price
     let floatPrice = $derived.by(() => {
-        const tempPrice = parseFloat(data.product[0].price)
+        const tempPrice = parseFloat(data.product.default_price)
         return tempPrice * numberFormat.conversion_rate;
     });
 
     let price = $derived(floatPrice.toLocaleString(
         numberFormat.area,
-        numberFormat.style,
+        numberFormat.style
     ));
 
-    let images = [];
+    // For product variations if there are more than 1
+    let product_variations = $state([]);
 
-    let currentImage = $state(0);
-    let showImage = $derived(images[currentImage]);
+    // grid template columns for all option selectors
+    let templateColumns = $state(0);
+    let templateDictionary = $state({});
 
-    let touchStartX = $state(0);
-    let touchEndX = $state(0);
-
-    for (let i = 0; i < data.images.length; i++) {
-        images.push(data.images[i].image_id);
-    }
-
-    function nextImage() {
-        currentImage = (currentImage + 1) % images.length;
-    }
-
-    function prevImage() {
-        currentImage = (currentImage - 1);
-        if (currentImage == -1) {
-            currentImage = images.length - 1;
-        }
-    }
-
-    class Product {
-		#size = $state(-1);
-		#quantity = $state(0);
-        #size_index = $state(-1);
-
-		constructor(quantity) {
-			this.#quantity = quantity;
-		}
-
-		get size() {
-			return this.#size;
-		}
-
-		get quantity() {
-			return this.#quantity;
-		}
-
-		set size(value) {
-			for (let i = 0; i < data.sizes.length; i++)
-            {
-                if (data.sizes[i].size_id == value) {
-                    this.#size = value;
-                    this.#size_index = i;
-                }
-            }
-            this.quantity = 1;
-		}
-
-		set quantity(value) {
-            let max_quantity = data.sizes[this.#size_index].quantity;
-            max_quantity = Math.min(5, max_quantity);
-			this.#quantity = Math.max(1, Math.min(max_quantity, value));
-		}
-	}
-
-    const selection = new Product(0);
+    // For collapsable sections
+    let openInfo = $state(false);
+    let openSize = $state(false);
+    let openReturn = $state(false);
 
     if (form) {
         let inMessages = false;
@@ -108,6 +166,46 @@
         }
     }
 
+    for (let i = 0; i < data.images.length; i++) {
+        images.push(data.images[i].image_id);
+    }
+
+    for (let i = 1; i < data.product_variations.length; i++) {
+        product_variations.push(data.product_variations[i]);
+    }
+
+    function calculateTemplateColumns() {
+        templateDictionary = {};
+        
+        for (let i = 0; i < data.product_variation_options.length; i++){
+            const currentVariation = data.product_variation_options[i].variation_id;
+            if (templateDictionary[currentVariation]) {
+                templateDictionary[currentVariation] += 1;
+            }
+            else {
+                templateDictionary[currentVariation] = 1;
+            }
+        }
+
+        let currentId;
+
+        if (data.product_variations.length > 0) {
+            currentId = data.product_variations[0].id;
+            templateColumns = templateDictionary[currentId];
+        }
+    }
+
+    function nextImage() {
+        currentImage = (currentImage + 1) % images.length;
+    }
+
+    function prevImage() {
+        currentImage = (currentImage - 1);
+        if (currentImage == -1) {
+            currentImage = images.length - 1;
+        }
+    }
+
     $effect(() => {
         if (display) {
             body.style.overflow = "hidden";
@@ -115,43 +213,9 @@
         else {
             body.style.overflow = "auto";
         }
-
-        if (data.sizes.length == 1){
-            selection.size = data.sizes[0].size_id;
-            templateColumns = "1fr";
-        }
-        else {
-            templateColumns = `repeat(${data.sizes.length + 1}, 1fr)`;
-        }
     })
 
-    function outOfStockCalculator() {
-        let out = [];
-        for (let i = 0; i < data.sizes.length; i++){
-            if (data.sizes[i].quantity == 0){
-                out.push(data.sizes);
-            }
-        }
-
-        if (out.length == data.sizes.length) {
-            outOfStock = true;
-        }
-    }
-
-    function removeFromImages(image) {
-        let index = data.images.indexOf(image);
-        if (index > -1) { 
-            data.images.splice(index, 1);
-        }
-
-        index = images.indexOf(image.image_id);
-
-        images.splice(index, 1);
-
-        return "";
-    }
-
-    outOfStockCalculator();
+    calculateTemplateColumns();
 </script>
 
 <svelte:body bind:this={body}/>
@@ -174,11 +238,9 @@
         ontouchend={(e) => {
             touchEndX = event.changedTouches[0].screenX;
             if (touchEndX < touchStartX) {
-                console.log('Swiped Left');
                 nextImage();
             }
             if(touchEndX > touchStartX) {
-                console.log('Swiped Right');
                 prevImage();
             }
         }}
@@ -216,17 +278,53 @@
     </div>
 
     <div id="product-name-holder">
-        <h1 id="product_name">{data.product[0].name}</h1>
+        <h1 id="product-name">{data.product.name}</h1>
         <p id="product-price">{price}</p>
-        {#if outOfStock}
+        {#if data.outOfStock}
             <p style:text-align="center">Out of Stock</p>
         {/if}
     </div>
 
-    <section id="product-modifier">
-        <div 
+    <section class="product-modifier">
+        {#each product_variations as variation}
+            <div
+                class="options-selector"
+                style:flex-basis="100%"
+            >
+                {#each data.product_variation_options as option}
+                    {#if variation.id === option.variation_id}
+                        {#if !selection.product_items[option.variation_id][option.option_id]}
+                            <button
+                            class="disabled"
+                            >
+                                {option.value}
+                            </button>
+                        {:else if selection.product_items[option.variation_id][option.option_id].length === 0}
+                            <button
+                                class="disabled"
+                            >
+                                {option.value}
+                            </button>
+                        {:else}
+                            <button
+                                class:selected={selection.product_modifiers[option.variation_id] === option.option_id}
+                                onclick={() => {
+                                    selection.update_modifiers(
+                                        option.variation_id, 
+                                        option.option_id
+                                    )
+                                }}
+                            >
+                                {option.value}
+                            </button>
+                        {/if}
+                    {/if}
+                {/each}
+            </div>
+        {/each}
+        <div
             id="size-selector"
-            style:grid-template-columns={templateColumns}
+            style:grid-template-columns={`repeat(${templateColumns + 1}, 1fr)`}
         >
             <div id="quantity-slider">
                 <button 
@@ -243,7 +341,7 @@
                 <p id="quantity-displayer">{selection.quantity}</p>
                 <button 
                     onclick={() => {
-                        selection.quantity -= 1;
+                        selection.quantity = selection.quantity - 1;
                     }}
                     id="quantity-down"
                     aria-label="decrease quantity"
@@ -253,19 +351,35 @@
                     </svg> 
                 </button>
             </div>
-            {#if data.sizes.length > 1}
-                {#each data.sizes as size}
-                    {#if size.quantity == 0}
-                        <button class="disabled">{size.size_abbreviation}</button>
-                    {:else}
-                        <button
-                            class:selected={selection.size === size.size_id}
-                            onclick={() => {
-                                selection.size = size.size_id
-                            }}
-                        >
-                            {size.size_abbreviation}
-                        </button>
+
+            {#if data.product_variations.length >= 1}
+                {#each data.product_variation_options as option}
+                    {#if option.variation_id === data.product_variations[0].id}
+                        {#if !selection.product_items[option.variation_id][option.option_id]}
+                            <button
+                            class="disabled"
+                            >
+                                {option.value}
+                            </button>
+                        {:else if selection.product_items[option.variation_id][option.option_id].length === 0}
+                            <button
+                                class="disabled"
+                            >
+                                {option.value}
+                            </button>
+                        {:else}
+                            <button
+                                class:selected={selection.product_modifiers[option.variation_id] === option.option_id}
+                                onclick={() => {
+                                    selection.update_modifiers(
+                                        option.variation_id, 
+                                        option.option_id
+                                    )
+                                }}
+                            >
+                                {option.value}
+                            </button>
+                        {/if}
                     {/if}
                 {/each}
             {/if}
@@ -274,14 +388,16 @@
             method="POST" 
             action="?/add" 
             id="cart-button"
-
         >
             <input type="hidden" name="quantity" value={selection.quantity}/>
-            <input type="hidden" name="size" value={selection.size}/>
-            <input type="hidden" name="product" value={data.product[0].product_id} />
+            <input 
+                type="hidden" 
+                name="item" 
+                value={selection.selected_item ? selection.selected_item.item_id : 0}
+            />
             <button
-                class:disabled={selection.size == -1}
-                disabled={selection.size == -1}
+                class:disabled={selection.quantity === 0}
+                disabled={selection.quantity === 0}
             >
                 Add to cart
             </button>
@@ -370,7 +486,7 @@
 </section>
 
 <style>
-	#product {
+    #product {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -402,10 +518,6 @@
         display: flex;
     }
 
-    #product-name-holder {
-        position: relative;
-    }
-
     #image-carousel > button {
         background-color: transparent;
         border: none;
@@ -425,7 +537,11 @@
         right: 0%;
     }
 
-    #product_name {
+    #product-name-holder {
+        position: relative;
+    }
+
+    #product-name {
         text-align: center;
     }
 
@@ -433,7 +549,7 @@
         text-align: center;
     }
 
-    #product-modifier {
+    .product-modifier {
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -442,17 +558,7 @@
         flex-wrap: wrap;
     }
 
-    #size-selector {
-        display: inline-grid;
-        /* grid-template-columns: repeat(5, 1fr); */
-        align-items: center;
-        justify-items: center;
-        row-gap: 10px;
-        column-gap: 10px;
-        margin: 0 10px;
-    }
-
-    #product-modifier button {
+    .product-modifier button {
         display: inline-flex;
         background-color: #D9D9D9;
         border: none;
@@ -462,25 +568,32 @@
         justify-content: center;
     }
 
-    #size-selector .selected {
+    .options-selector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        row-gap: 10px;
+        column-gap: 10px;
+        margin: 0 10px;
+    }
+
+    #size-selector {
+        display: inline-grid;
+        align-items: center;
+        justify-items: center;
+        row-gap: 10px;
+        column-gap: 10px;
+        margin: 0 10px;
+    }
+
+    .options-selector .selected, #size-selector .selected {
         color: white;
         background-color: #BF1E2E;
     }
 
-    #size-selector .disabled {
+    .options-selector .disabled, #size-selector .disabled {
         opacity: 0.5;
         cursor: not-allowed;
-    }
-
-    #cart-button button {
-        color: white;
-        background-color: #BF1E2E;
-        width: 110px;
-    }
-
-    #cart-button button.disabled {
-        background-color: #D9D9D9;
-        color: #1E1E1E80;
     }
 
     #quantity-slider {
@@ -500,6 +613,17 @@
         padding: 16px;
         text-align: center;
         width: 50px;
+    }
+
+    #cart-button button {
+        color: white;
+        background-color: #BF1E2E;
+        width: 110px;
+    }
+
+    #cart-button button.disabled {
+        background-color: #D9D9D9;
+        color: #1E1E1E80;
     }
 
     .collapsable {

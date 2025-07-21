@@ -163,7 +163,6 @@
     }
 
     function valueChange(address) {
-        console.log(address.address_id);
         address1 = address.address_line1;
         address2 = address.address_line2;
         city = address.city;
@@ -290,13 +289,20 @@
             </p>
             <p>
                 <label for="delivery_country">country code:</label>
-                <input 
-                    type="text" 
-                    name="delivery_country" 
+                <select
+                    name="delivery_country"
                     id="delivery_country"
                     required
                     bind:value={country}
                 >
+                    {#each getCountries() as country}
+                        {#if country != "IL"}
+                            <option value={country}>
+                                {regionNames.of(country)}: {country}
+                            </option>
+                        {/if}
+                    {/each}
+                </select>
             </p>
         </fieldset>
 

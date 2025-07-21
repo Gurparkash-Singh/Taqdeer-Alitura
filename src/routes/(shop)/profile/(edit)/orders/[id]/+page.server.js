@@ -74,6 +74,8 @@ export const actions = {
         shopping_session = shopping_session.id;
 
         const order_items = await dbFunctions.getOrderItems(order_id);
+        error(500);
+        return;
 
         const product_errors = false;
 
@@ -112,6 +114,10 @@ export const actions = {
             {
                 product_errors = true;
             }
+
+            throw error(500);
+
+            return;
 
             const [current_item] = await dbFunctions.checkCartForProduct(
                 shopping_session,

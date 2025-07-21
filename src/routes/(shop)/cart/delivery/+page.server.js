@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { dbFunctions } from '$lib/db/database.js';
 import { profileEditor } from '$lib/functions/profile-editor';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
@@ -44,9 +44,18 @@ export async function load({cookies, locals}) {
         const session = cookies.get("session");
         let shopping_session = await dbFunctions.getShoppingSessionByToken(session);
         shopping_session = shopping_session[0].id;
-        const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session);
+        
+        let num_items = 0;
 
-        if (cart_items.length == 0){
+        [num_items] = await dbFunctions.getTotalCartQuantity(shopping_session);
+
+        if (!num_items){
+            throw redirect(302, "/cart");
+        }
+
+        num_items = num_items.quantity;
+
+        if (!num_items || num_items == 0) {
             throw redirect(302, "/cart");
         }
     }
@@ -179,7 +188,7 @@ export const actions = {
         }
 
         const phoneNumber = parsePhoneNumberFromString(phone, country);
-
+        
         const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session.id);
 
         let item_quantity = 0;
@@ -253,7 +262,7 @@ export const actions = {
                 );
 
                 if (address_id === "0"){
-                    const address_result = await dbFunctions.setUserAddress(
+                    address_id = await dbFunctions.setUserAddress(
                         locals.user.user_id,
                         address_name,
                         address1, 
@@ -263,34 +272,18 @@ export const actions = {
                         postal,
                         delivery_country
                     );
-
-                    address_id = address_result.insertId;
                 }
 
-                if (order.order_address) {
-                    await dbFunctions.updateOrderAddress(
-                        order.order_address,
-                        address1, 
-                        address2,
-                        city,
-                        province,
-                        postal,
-                        delivery_country,
-                        address_id
-                    );
-                }
-                else {
-                    await dbFunctions.setOrderAddress(
-                        cookies.get("order_id"),
-                        address1, 
-                        address2,
-                        city,
-                        province,
-                        postal,
-                        delivery_country,
-                        address_id
-                    );
-                }
+                await dbFunctions.updateOrderAddress(
+                    cookies.get("order_id"),
+                    address1, 
+                    address2,
+                    city,
+                    province,
+                    postal,
+                    delivery_country,
+                    address_id
+                );
 
                 await dbFunctions.updateDeliveryRate(
                     cookies.get("order_id"),
@@ -340,8 +333,7 @@ export const actions = {
         await dbFunctions.moveItemsToOrder(result.insertId, shopping_session.id);
 
         if (address_id === "0"){
-            console.log("Running");
-            const address_result = await dbFunctions.setUserAddress(
+            address_id = await dbFunctions.setUserAddress(
                 locals.user.user_id,
                 address_name,
                 address1, 
@@ -351,8 +343,6 @@ export const actions = {
                 postal,
                 delivery_country
             );
-
-            address_id = address_result.insertId;
         }
 
         await dbFunctions.setOrderAddress(

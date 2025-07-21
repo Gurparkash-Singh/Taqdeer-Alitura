@@ -12,6 +12,8 @@ export const load = async ({ locals, parent, params }) => {
 
     const collections = await dbFunctions.getCollections();
 
+    const product_types = await dbFunctions.getProductTypes();
+
     const productsAllowance = [];
 
     for (let i = 0; i < permissions.length; i++) {
@@ -56,7 +58,8 @@ export const load = async ({ locals, parent, params }) => {
     return {
         productsAllowance,
         categories,
-        collections
+        collections,
+        product_types
     }
 }
 
@@ -64,14 +67,15 @@ export const actions = {
     submit: async ({ locals, cookies, request }) => {
         const data = await request.formData();
 
-        const sku = data.get("sku");
         const name = data.get("name");
         const category = data.get("category_id");
         const collection = data.get("collection_id");
         const price = data.get("price");
         const alt_desc = data.get("alt_desc");
+        const description = data.get("description");
+        const type = data.get("type_id");
 
-        if (!name || !sku || !price || !alt_desc || !category) {
+        if (!name || !price || !alt_desc || !category || !description || !type) {
             return fail(400, {
                 invalid: true,
                 message: "Fill in all required fields"
@@ -87,6 +91,15 @@ export const actions = {
             });
         }
 
+        [found] = await dbFunctions.getProductTypeById(type);
+
+        if (!found) {
+            return fail(400, {
+                invalid: true,
+                message: "Invalid type id"
+            });
+        }
+
         if (collection) {
             [found] = await dbFunctions.getCollectionByID(collection);
 
@@ -97,10 +110,26 @@ export const actions = {
                 });
             }
 
-            await dbFunctions.createProduct(name, sku, category, collection, price, alt_desc);
+            await dbFunctions.createProduct(
+                name,
+                category,
+                collection,
+                price,
+                alt_desc,
+                description,
+                type
+            );
         }
         else {
-            await dbFunctions.createProduct(name, sku, category, null, price, alt_desc);
+            await dbFunctions.createProduct(
+                name,
+                category,
+                null,
+                price,
+                alt_desc,
+                description,
+                type
+            );
         }
 
         return {

@@ -29,12 +29,9 @@ export async function load({ cookies, locals })
 
     let num_items = 0;
 
-    const cart_items = await dbFunctions.getItemsForCurrentSession(shopping_session);
+    [num_items] = await dbFunctions.getTotalCartQuantity(shopping_session);
 
-    for (let i = 0; i < cart_items.length; i++)
-    {
-        num_items += cart_items[i].quantity;
-    }
+    num_items = num_items.quantity;
 
     let available_currencies = await dbFunctions.getAvailableCurrencies();
 

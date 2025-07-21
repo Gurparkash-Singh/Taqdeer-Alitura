@@ -1,12 +1,3 @@
--- No Dummy data for:
--- Discounts
--- Payment_Details
--- Orders
--- Order_Items
--- User_Addresses
--- Shopping_Session
--- Cart_Items
-
 Insert Into Category (category_name)
 VALUES
 ("Tops"),
@@ -17,7 +8,6 @@ VALUES
 INSERT INTO Collections (collection_name)
 VALUES
 ("Juthuur");
-
 
 INSERT INTO Permission_Types (name, description, readable, writeable)
 VALUES
@@ -71,14 +61,25 @@ VALUES
 (20, 1, 0),
 (21, 1, 0);
 
-INSERT INTO Products (name, price, category_id, collection_id, sku, description)
+INSERT INTO Product_Type (name) VALUE ("Clothing");
+
+INSERT INTO Product_Variations(type_id, name) VALUE (1, "Size");
+
+INSERT INTO Variation_Option (variation_id, value) 
 VALUES
-("Juthuur Sweats", 459, 2, 1, "FRS01/01", "Elegant and heavy oversized sweats"),
-("Juthuur Hoodie", 511, 1, 1, "FRS01/02", "Heavyweight oversized hoodie in olivegreen"),
-("Juthuur Dunes Tee", 324, 1, 1, "FRS01/03", "Black oversized shirts with breast and torso pockets"),
-("Juthuur Sweatshirt", 432, 1, 1, "FRS01/04", "Heavyweight oversized sweatshirt in black"),
-("Juthuur Tee", 324, 1, 1, "FRS01/05", "Oversized white tee with vines printed"),
-("Juthuur Shorts", 314, 2, 1, "FRS01/06", "Black mesh shorts with vines printed");
+(1, "S"),
+(1, "M"),
+(1, "L"),
+(1, "XL");
+
+INSERT INTO Products (type_id, name, default_price, category_id, collection_id, description, image_alt_desc)
+VALUES
+(1, "Juthuur Sweats", 459, 2, 1, "Elegant and heavy oversized sweats", "Elegant and heavy oversized sweats"),
+(1, "Juthuur Hoodie", 511, 1, 1, "Heavyweight oversized hoodie in olivegreen", "Heavyweight oversized hoodie in olivegreen"),
+(1, "Juthuur Dunes Tee", 324, 1, 1, "Black oversized shirts with breast and torso pockets", "Black oversized shirts with breast and torso pockets"),
+(1, "Juthuur Sweatshirt", 432, 1, 1, "Heavyweight oversized sweatshirt in black", "Heavyweight oversized sweatshirt in black"),
+(1, "Juthuur Tee", 324, 1, 1, "Oversized white tee with vines printed", "Oversized white tee with vines printed"),
+(1, "Juthuur Shorts", 314, 2, 1, "Black mesh shorts with vines printed", "Black mesh shorts with vines printed");
 
 INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
@@ -126,33 +127,59 @@ VALUES
 (6, "100% Recycled Polyester"),
 (6, "Made In Istanbul");
 
-
-INSERT INTO Sizes_Available (product_id, size_name, size_abbreviation, quantity)
+INSERT INTO Product_Item (product_id, sku, quantity, price)
 VALUES
-(1, "Small", "S", 20),
-(1, "Medium", "M", 20),
-(1, "Large", "L", 20),
-(1, "Extra Large", "XL", 20),
-(2, "Small", "S", 20),
-(2, "Medium", "M", 20),
-(2, "Large", "L", 20),
-(2, "Extra Large", "XL", 20),
-(3, "Small", "S", 20),
-(3, "Medium", "M", 20),
-(3, "Large", "L", 20),
-(3, "Extra Large", "XL", 20),
-(4, "Small", "S", 20),
-(4, "Medium", "M", 20),
-(4, "Large", "L", 20),
-(4, "Extra Large", "XL", 20),
-(5, "Small", "S", 20),
-(5, "Medium", "M", 20),
-(5, "Large", "L", 20),
-(5, "Extra Large", "XL", 20),
-(6, "Small", "S", 20),
-(6, "Medium", "M", 20),
-(6, "Large", "L", 20),
-(6, "Extra Large", "XL", 20);
+(1, "FRS01/01", 20, 459),
+(1, "FRS01/01", 20, 459),
+(1, "FRS01/01", 20, 459),
+(1, "FRS01/01", 20, 459),
+(2, "FRS01/02", 20, 511),
+(2, "FRS01/02", 20, 511),
+(2, "FRS01/02", 20, 511),
+(2, "FRS01/02", 20, 511),
+(3, "FRS01/03", 20, 324),
+(3, "FRS01/03", 20, 324),
+(3, "FRS01/03", 20, 324),
+(3, "FRS01/03", 20, 324),
+(4, "FRS01/04", 20, 432),
+(4, "FRS01/04", 20, 432),
+(4, "FRS01/04", 20, 432),
+(4, "FRS01/04", 20, 432),
+(5, "FRS01/05", 20, 324),
+(5, "FRS01/05", 20, 324),
+(5, "FRS01/05", 20, 324),
+(5, "FRS01/05", 20, 324),
+(6, "FRS01/06", 20, 314),
+(6, "FRS01/06", 20, 314),
+(6, "FRS01/06", 20, 314),
+(6, "FRS01/06", 20, 314);
+
+INSERT INTO Product_Configuration (product_item, variation_option)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 1),
+(6, 2),
+(7, 3),
+(8, 4),
+(9, 1),
+(10, 2),
+(11, 3),
+(12, 4),
+(13, 1),
+(14, 2),
+(15, 3),
+(16, 4),
+(17, 1),
+(18, 2),
+(19, 3),
+(20, 4),
+(21, 1),
+(22, 2),
+(23, 3),
+(24, 4);
 
 INSERT INTO Messages (heading, paragraph) VALUES
 ("Welcome", "Thank you for visiting our website and your interest in Taqdeer Alitura.

@@ -18,6 +18,7 @@
         min-height: 100vh;
 		margin: auto;
         padding-bottom: 100px;
+        width: 80%;
 	}
 
     #image-holder {

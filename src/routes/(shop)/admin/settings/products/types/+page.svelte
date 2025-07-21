@@ -4,11 +4,43 @@
 
     let { data, form } = $props();
 
-    let selectedSize = $state("Add");
+    let selectedType = $state("Add");
 
     let newName = $state("");
-    let abbreviation = $state("");
-    let quantity = $state("");
+    let parentType = $state(null);
+
+    let submitValue = $derived.by(() => {
+        if (selectedType == "Add") {
+            return "Add";
+        }
+        return "Update";
+    });
+
+    let enableSubmit = $derived.by(() => {
+        if (selectedType == "Add" && newName){
+            return true;
+        }
+
+        for (let i = 0; i < data.product_types.length; i++) {
+            if (data.product_types[i].id == selectedType) {
+                if (data.product_types[i].name != newName) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    });
+
+    let enableDelete = $derived.by(() => {
+        for (let i = 0; i < data.product_types.length; i++) {
+            if (data.product_types[i].id == selectedType) {
+                return true;
+            }
+        }
+
+        return false;
+    })
 
     if (form) {
         let inMessages = false;
@@ -16,13 +48,6 @@
             if (modal.messages[i].paragraph == form.message) {
                 inMessages = true;
             }
-        }
-
-        if (form.invalid) {
-            selectedSize = form.size_id > 0 ? form.size_id : "Add"
-            newName = form.size_name;
-            abbreviation = form.size_abbr;
-            quantity = form.quantity;
         }
 
         if (!inMessages && form.invalid) 
@@ -39,115 +64,64 @@
         }
     }
 
-    let submitValue = $derived.by(() => {
-        if (selectedSize == "Add") {
-            return "Add";
-        }
-        return "Update";
-    });
-
-    let enableSubmit = $derived.by(() => {
-        if (selectedSize == "Add"){
-            if (newName && abbreviation && quantity) {
-                return true;
-            }
-        }
-
-        for (let i = 0; i < data.sizes.length; i++) {
-            if (data.sizes[i].size_id == selectedSize) {
-                if (newName && data.sizes[i].size_name != newName) {
-                    return true;
-                }
-
-                if (abbreviation && data.sizes[i].size_abbreviation != abbreviation) {
-                    return true;
-                }
-
-                if (quantity && data.sizes[i].quantity != quantity) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    });
-
-    let enableDelete = $derived.by(() => {
-        for (let i = 0; i < data.sizes.length; i++) {
-            if (data.sizes[i].size_id == selectedSize) {
-                return true;
-            }
-        }
-
-        return false;
-    })
-
     $effect(() => {
-        if (selectedSize == "Add"){
+        if (selectedType == "Add"){
             newName = "";
-            abbreviation = "";
-            quantity = "";
         }
         else {
-            for (let i = 0; i < data.sizes.length; i++) {
-                if (data.sizes[i].size_id == selectedSize) {
-                    newName = data.sizes[i].size_name;
-                    abbreviation = data.sizes[i].size_abbreviation;
-                    quantity = data.sizes[i].quantity;
+            for (let i = 0; i < data.product_types.length; i++) {
+                if (data.product_types[i].id == selectedType) {
+                    newName = data.product_types[i].name;
                 }
             }
         }
     })
 </script>
 
-<AdminBackButton 
-    link={`./`} 
-    name={`${data.product.name} Panel`}
-/>
+<AdminBackButton link="/admin/settings/products" name="Products Panel" />
 
 <section>
     <form action="?/submit" method="POST">
         <p>
-            <label for="currentSize">Size:</label>
+            <label for="currentType">type:</label>
             <select 
-                name="currentSize"
-                id="currentSize"
-                bind:value={selectedSize}
+                name="currentType"
+                id="currentType"
+                bind:value={selectedType}
             >
-                {#each data.sizes as size}
-                    <option value={size.size_id}>
-                        {size.size_name}
+                {#each data.product_types as type}
+                    <option value={type.id}>
+                        {type.name}
                     </option>
                 {/each}
-               <option value="Add">Add New Size</option>
+               <option value="Add">Add New Type</option>
             </select>
         </p>
         <p>
-            <label for="size_name">size name:</label>
+            <label for="type_name">type name:</label>
             <input 
                 type="text"
-                name="size_name"
-                id="size_name"
+                name="type_name"
+                id="type_name"
                 bind:value={newName}
             >
         </p>
         <p>
-            <label for="size_abbr">size abbreviation:</label>
-            <input 
-                type="text"
-                name="size_abbr"
-                id="size_abbr"
-                bind:value={abbreviation}
+            <label for="parentType">parent type:</label>
+            <select 
+                name="parentType"
+                id="parentType"
+                bind:value={parentType}
             >
-        </p>
-        <p>
-            <label for="quantity">quantity:</label>
-            <input 
-                type="text"
-                name="quantity"
-                id="quantity"
-                bind:value={quantity}
-            >
+                {#each data.product_types as type}
+                    {#if !type.id === selectedType}
+                        <option value={type.id}>
+                            {type.name}
+                        </option>
+                    {/if}
+                {/each}
+                <option value={null}>No parent</option>
+            </select>
         </p>
         <div>
             <button 
@@ -172,9 +146,6 @@
                     <path d="M13.0607 13.0607C13.6464 12.4749 13.6464 11.5251 13.0607 10.9393L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L9.87868 12L1.3934 20.4853C0.807611 21.0711 0.807611 22.0208 1.3934 22.6066C1.97919 23.1924 2.92893 23.1924 3.51472 22.6066L13.0607 13.0607ZM10 13.5H12V10.5H10V13.5Z" fill="white"/>
                 </svg>
             </button>
-        </div>
-        <div>
-            <a href="./sizes/size-chart">update size chart</a>
         </div>
     </form>
 </section>

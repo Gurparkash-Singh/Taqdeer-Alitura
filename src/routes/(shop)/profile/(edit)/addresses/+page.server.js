@@ -14,7 +14,7 @@ export const actions = {
 
         const address_id = data.get("address-id");
 
-        await dbFunctions.deleteUserAddress(address_id );
+        await dbFunctions.deleteUserAddress(address_id);
 
         return {
             success: true, 
@@ -122,8 +122,9 @@ export const actions = {
             }
         }
         else {
-             await dbFunctions.updateUserAddress(
+            await dbFunctions.updateUserAddress(
                 address_id,
+                locals.user.user_id,
                 name,
                 address1, 
                 address2,

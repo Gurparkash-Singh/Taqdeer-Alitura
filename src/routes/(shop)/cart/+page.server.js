@@ -60,23 +60,22 @@ export const actions = {
 
         shopping_session = shopping_session[0].id
 
-        const product_id = data.get("product_id").trim();
-        const size_id = data.get("size_id").trim();
+        const item_id = data.get("item_id").trim();
 
-        if (!product_id || !size_id)
+        if (!item_id)
         {
             await dbFunctions.setError(
                 "cart", 
                 400,
-                `product id or size id was not passed in` 
+                `missing item id` 
             );
             return fail(400, {
                 invalid: true,
                 message: "missing fields"
             });
         }
+        await dbFunctions.removeFromCart(shopping_session, item_id);
 
-        await dbFunctions.removeFromCart(shopping_session, product_id, size_id);
         return {
             success: true,
             message: "removed item from cart"

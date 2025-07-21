@@ -57,7 +57,7 @@
 <OrderDetails 
     order={data.order}
     address={data.address}
-    delivery_amount={data.delivery.amount}
+    delivery_amount={data.delivery ? data.delivery.amount : 0}
     order_invoice_items={data.order_invoice_items}
     order_items={data.order_items}
 />

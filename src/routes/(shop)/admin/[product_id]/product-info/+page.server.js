@@ -6,10 +6,11 @@ export const actions = {
         const data = await request.formData();
 
         const product_id = data.get("product_id");
-        const sku = data.get("sku");
+        const description = data.get("description");
         const name = data.get("name");
         const category = data.get("category_id");
         const collection = data.get("collection_id");
+        const product_type = data.get("type_id");
         const price = data.get("price");
         const live = data.get("live");
         const alt_desc = data.get("alt_desc");
@@ -17,6 +18,7 @@ export const actions = {
         let setLive = false;
         let resetLive = false;
         let setCategory = false;
+        let setType = false;
         let setCollection = false;
         let resetCollection = false;
 
@@ -41,7 +43,8 @@ export const actions = {
                 const images = await dbFunctions.getImagesByProductId(product_id);
 
                 let message = "to make product live, ";
-                message += "you must have at least 1 image, 1 component and 1 size";
+                message += "you must have at least 1 image, 1 component ";
+                message += "and 1 product item"
 
                 if (!images || images.length === 0) {
                     return fail(400, {
@@ -50,9 +53,9 @@ export const actions = {
                     });
                 }
 
-                const sizes = await dbFunctions.getProductSizes(product_id);
+                const product_items = await dbFunctions.getProductItems(product_id);
 
-                if (!sizes || sizes.length === 0) {
+                if (!product_items || product_items.length === 0) {
                     return fail(400, {
                         invalid: true,
                         message: message
@@ -112,6 +115,21 @@ export const actions = {
             }
         }
 
+        if (product_type) {
+            if (product_type != product.type_id){
+                let [found] = await dbFunctions.getProductTypeById(product_type);
+
+                if (!found) {
+                    return fail(400, {
+                        invalid: true,
+                        message: "invalid type id"
+                    })
+                }
+
+                setType = true;
+            }
+        }
+
         if (setLive) {
             await dbFunctions.updateProductLive(product_id, 1);
         }
@@ -141,16 +159,17 @@ export const actions = {
             );
         }
 
+        if (setType) {
+            await dbFunctions.updateProductType(
+                product_id,
+                product_type
+            )
+        }
+
         if (name)
         {
             if (product.name != name) {
                 await dbFunctions.updateProductName(product_id, name);
-            }
-        }
-
-        if (sku) {
-            if (sku != product.sku) {
-                await dbFunctions.updateProductSKU(product_id, sku);
             }
         }
 
@@ -160,10 +179,16 @@ export const actions = {
             }
         }
 
+        if (description) {
+            if (product.description != description) {
+                await dbFunctions.updateProductDescription(product_id, description);
+            }
+        }
+
         if (alt_desc)
         {
-            if (product.description != alt_desc) {
-                await dbFunctions.updateProductDescription(product_id, alt_desc);
+            if (product.image_alt_desc != alt_desc) {
+                await dbFunctions.updateProductImageDesc(product_id, alt_desc);
                 await dbFunctions.setAltDesc(product_id, alt_desc);
             }
         }

@@ -1,6 +1,7 @@
 import { fail } from "@sveltejs/kit";
 import { RESEND_API_KEY } from '$env/static/private';
 import { Resend } from 'resend';
+import { dbFunctions } from "$lib/db/database";
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -26,6 +27,8 @@ export const actions = {
             })
         }
 
+        dbFunctions.saveContactForm(email, message);
+
         const { returnData, error } = await resend.emails.send({
             from: 'web-contact@gurparkashsingh.com',
             to: ['khalsags.fateh@gmail.com', email],
@@ -38,8 +41,9 @@ export const actions = {
             await dbFunctions.setError(
                 "contact form",
                 400,
-                `error sending email to ${email}\nError: ${error}` 
+                `error sending email to ${email}\nError: ${JSON.stringify(error, null, 2)}` 
             );
+
             if (error.name == 'validation_error')
             {
                 return fail(400, {

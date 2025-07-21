@@ -4,21 +4,18 @@
 
     let { data, form } = $props();
 
-    let sku = $state(data.product.sku);
     let name = $state(data.product.name);
     let category = $state(data.product.category_id);
     let collection = $state(data.product.collection_id);
-    let price = $state(data.product.price);
+    let price = $state(data.product.default_price);
     let live = $state(data.product.live == 1 ? true : false);
-    let alt_desc = $state(data.product.description);
+    let alt_desc = $state(data.product.image_alt_desc);
+    let description = $state(data.product.description);
+    let type = $state(data.product.type_id);
 
     let enableSubmit = $derived.by(() => {
-        if (!sku || !name || !category || !price || !alt_desc) {
+        if (!name || !category || !price || !alt_desc || !type || !description) {
             return false;
-        }
-
-        if (sku != data.product.sku) {
-            return true;
         }
 
         if (name != data.product.name) {
@@ -33,7 +30,7 @@
             return true;
         } 
 
-        if (price != data.product.price) {
+        if (price != data.product.default_price) {
             return true;
         }
 
@@ -41,7 +38,15 @@
             return true;
         }
 
-        if (alt_desc != data.product.description) {
+        if (alt_desc != data.product.image_alt_desc) {
+            return true;
+        }
+
+        if (description != data.product.description) {
+            return true;
+        }
+
+        if (type != data.product.type) {
             return true;
         }
 
@@ -84,15 +89,6 @@
             value={data.product.product_id}
         >
         <p>
-            <label for="sku">sku:</label>
-            <input 
-                type="text"
-                name="sku"
-                id="sku"
-                bind:value={sku}
-            >
-        </p>
-        <p>
             <label for="name">name:</label>
             <input 
                 type="text"
@@ -102,7 +98,16 @@
             >
         </p>
         <p>
-            <label for="alt_desc">product description:</label>
+            <label for="description">description:</label>
+            <input 
+                type="text"
+                name="description"
+                id="description"
+                bind:value={description}
+            >
+        </p>
+        <p>
+            <label for="alt_desc">product image description:</label>
             <input 
                 type="text"
                 name="alt_desc"
@@ -137,6 +142,20 @@
                 </option>
             {/each}
             <option value={null}>No Collection</option>
+            </select>
+        </p>
+        <p>
+            <label for="type_id">product type:</label>
+            <select
+                name="type_id"
+                id="type_id"
+                bind:value={type}
+            >
+            {#each data.product_types as product_type}
+                <option value={product_type.id}>
+                    {product_type.name}
+                </option>
+            {/each}
             </select>
         </p>
         <p>

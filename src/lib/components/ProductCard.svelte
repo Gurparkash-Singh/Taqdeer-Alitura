@@ -8,13 +8,6 @@
             displayImage = element;
         }
     });
-
-    let id = $state(2);
-
-    if (product.product_id == 1)
-    {
-        id = 1
-    }
 </script>
 
 <div>

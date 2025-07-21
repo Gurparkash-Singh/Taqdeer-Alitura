@@ -35,10 +35,10 @@
     function sortProductsByPrice()
     {
         if (selected_price == 0) {
-            filteredProducts.sort((a, b) => a.price - b.price);
+            filteredProducts.sort((a, b) => a.default_price - b.default_price);
         }
         else {
-            filteredProducts.sort((a, b) => b.price - a.price);
+            filteredProducts.sort((a, b) => b.default_price - a.default_price);
         }
     }
 
