@@ -1,5 +1,7 @@
 DROP VIEW IF EXISTS Admin_Type_And_Permission;
 
+DROP TABLE IF EXISTS Early_Access;
+
 DROP TABLE IF EXISTS Available_Currencies;
 
 DROP TABLE IF EXISTS Contact_Form_Emails;

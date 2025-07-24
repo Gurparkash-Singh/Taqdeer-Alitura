@@ -214,8 +214,7 @@ Pre-Launch:
 - [ ] Upload Product Photos
 
 3. Post-Migration:
-- [ ] Adjust Home Page to look like the image
-
+- [x] Adjust Home Page to look like the image
 
 Launch:
 - [ ] Allow access to the entire website to everyone
@@ -231,3 +230,12 @@ Post-Launch:
 - [ ] Add a close button to product page
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add ability to track shipments
+
+# Fix Pre Launch Mode
+- [ ] Move /access to (shop)
+- [ ] Delete /access/+layout.svelte
+- [ ] Remove everything below first if in /access/+layout.server.js
+- [ ] SET EARLY_ACCESS to FALSE in .env
+- [ ] Move everything from (shop)/home to routes and delete (shop)/home
+- [ ] Remove if (url.pathname === "/") from routes/+layout.svelte
+- [ ] Remove load function from routes/+page.server.js

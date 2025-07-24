@@ -417,6 +417,10 @@ CREATE TABLE IF NOT EXISTS Available_Currencies(
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS Early_Access (
+	email VARCHAR(255) PRIMARY KEY NOT NULL
+);
+
 CREATE OR REPLACE VIEW Admin_Type_And_Permission AS
 SELECT Admins.admin_id, PT1.permission_id, PT1.name,
 (

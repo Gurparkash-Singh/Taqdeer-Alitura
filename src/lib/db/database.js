@@ -1316,5 +1316,28 @@ export const dbFunctions = {
         query += "WHERE product_id = ?;";
 
         await db.query(query, [product_id, type_id]);
+    },
+
+    earlyAccess: async (email) => {
+        let query = "SELECT * FROM Early_Access ";
+        query += "WHERE email = ?;";
+
+        const [[result]] = await db.query(query, email);
+
+        return result;
+    },
+
+    emailListSignup: async (email) => {
+        let query = "INSERT INTO Email_List (email) VALUES (?);";
+
+        await db.query(query, email);
+    },
+
+    getEmailListUser: async (email) => {
+        let query = "SELECT * FROM Email_List WHERE email = ?;";
+
+        const [result] = await db.query(query, email);
+
+        return result;
     }
 }

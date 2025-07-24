@@ -4,8 +4,25 @@
 
     let { form, data } = $props();
 
-    let email = $state("");
-    let enableSend = $derived(email ? true : false);
+    let verticalScrollPos = $state(0);
+    let arrow1;
+    let svgHolder1;
+    let arrow2;
+    let svgHolder2;
+    let windowHeight = $state(0);
+    let bodyHeight = $state(0);
+    let arrow1ScrollTo = $state(0);
+    let arrow2ScrollTo = $state(0);
+    let arrow1aria = $state("Scroll to about");
+    let arrow2aria = $state("Scroll to Contact")
+
+    let home;
+    let about;
+    let contact;
+
+    let email = $state(data.user ? data.user.email : "");
+    let emailBody = $state("");
+    let enableSend = $state(false);
 
     if (form) {
         let inMessages = false;
@@ -17,6 +34,7 @@
 
         if (form.invalid) {
             email = form.email;
+            emailBody = form.body;
         }
 
         if (!inMessages && form.invalid) 
@@ -32,7 +50,62 @@
             });
         }
     }
+
+    $effect(() => {
+        if (verticalScrollPos > windowHeight / 2) {
+            arrow1.style.rotate = "180deg";
+
+            arrow2.style.visibility = "visible";
+            svgHolder2.style.position = "absolute";
+            svgHolder2.style.top = "calc(200vh - 85px)";
+
+            arrow1ScrollTo = 0;
+        }
+        else {
+            arrow1.style.rotate = "0deg";
+            arrow1ScrollTo = 1;
+
+            arrow2.style.visibility = "hidden";
+        }
+
+        if (verticalScrollPos > windowHeight*1.4) {
+            arrow2.style.rotate = "180deg";
+            arrow2ScrollTo = 0;
+        }
+        else {
+            arrow2.style.rotate = "0deg";
+            arrow2ScrollTo = 1;
+        }
+
+        if (verticalScrollPos > windowHeight - 60) {
+            svgHolder1.style.position = "fixed";
+            svgHolder1.style.top = "20px";
+        }
+        else {
+            svgHolder1.style.position = "absolute";
+            svgHolder1.style.top = "calc(100vh - 40px)";
+        }
+
+        if (verticalScrollPos > windowHeight * 2 - 105) {
+            svgHolder2.style.position = "fixed";
+            svgHolder2.style.top = "20px";
+        }
+        else {
+            svgHolder2.style.position = "absolute";
+            svgHolder2.style.top = "calc(200vh - 68px)";
+        }
+
+        if (email && emailBody) {
+            enableSend = true;
+        }
+        else {
+            enableSend = false;
+        }
+    })
+
 </script>
+
+<svelte:window bind:scrollY={verticalScrollPos} bind:innerHeight={windowHeight}/>
 
 <div id="image-holder">
     <img 
@@ -45,29 +118,125 @@
     >
 </div>
 
-<main>
-	<section id="contact">
+<div id="svg-holder1" bind:this={svgHolder1}>
+    <button
+        class="arrow-button"
+        bind:this={arrow1}
+        onclick={() => {
+            if (arrow1ScrollTo == 0) {
+                if(arrow2ScrollTo == 0) {
+                    about.scrollIntoView();
+                }
+                else {
+                    home.scrollIntoView();
+                }
+            }
+            else {
+                about.scrollIntoView();
+            }
+        }}
+        aria-label={arrow1aria}
+    >
+        <svg 
+            width="20"
+            height="20"
+            viewBox="0 0 74 42"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            id="scroll-arrow"
+        >
+            <path
+                d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
+                fill="white"
+            />
+        </svg>
+    </button>
+</div>
+
+<div id="svg-holder2" bind:this={svgHolder2}>
+    <button
+        class="arrow-button"
+        bind:this={arrow2}
+        aria-label={arrow2aria}
+        onclick={() => {
+            if (arrow2ScrollTo == 1) {
+                contact.scrollIntoView();
+            }
+            else {
+                about.scrollIntoView();
+            }
+        }}
+    >
+        <svg width="20" height="20" viewBox="0 0 74 42" fill="none" xmlns="http://www.w3.org/2000/svg" id="scroll-arrow2">
+            <path
+                d="M33.4645 40.5355C35.4171 42.4882 38.5829 42.4882 40.5355 40.5355L72.3553 8.71573C74.308 6.76311 74.308 3.59728 72.3553 1.64466C70.4027 -0.307962 67.2369 -0.307962 65.2843 1.64466L37 29.9289L8.71573 1.64466C6.76311 -0.307959 3.59728 -0.307959 1.64466 1.64466C-0.307962 3.59728 -0.307962 6.76311 1.64466 8.71573L33.4645 40.5355ZM32 35L32 37L42 37L42 35L32 35Z"
+                fill="white"
+            />
+        </svg>
+    </button>
+</div>
+
+<main bind:clientHeight={bodyHeight}>
+	<section id="logo" bind:this={home}>
+		<img 
+            src="/Logo.svg"
+            alt="Taqdeer Alitura Logo" 
+            class="logo-image"
+        />
+		<h1>TAQDEER</h1>
+		<h1>ALITURA</h1>
+	</section>
+	<section id="about" bind:this={about}>
+		<h1>ABOUT US</h1>
+		<p>
+			Taqdeer Alitura is a streetwear label that stands for inclusion and equality by seamlessly
+			bridging the unacquainted. The words Taqdeer, an Arabic word for appreciation or a Kazakh word
+			for destiny, and Alitura, a Latin word for sustenance and a reminder of the interconnectedness
+			of nature, together could roughly translate to naturally destined or appreciation for nature.
+			The name hints at the mission and philosophy of the brand; to reinvent Middle Eastern fashion
+			by creating a culture of love for what was and where it has taken us. This push, in the
+			brand's beginnings and for as long as possible, will, as the name suggests, leverage Arabic
+			culture, an appreciation for nature, and contemporary western fashion as placeholders in the
+			marriage it promises to deliver on.
+		</p>
+	</section>
+	<section id="contact" bind:this={contact}>
+		<h1>CONTACT</h1>
 		<div>
-            <form action="?/send" method="POST" id="contact-form-element">
-                <p>
-                    <label for="email">Email: </label>
+			<p id="contact-p">
+                Please feel free to write to us regarding anything you might need.
+            </p>
+			<form action="?/send" method="POST" id="contact-form-element">
+				<textarea 
+                    name="contact-form"
+                    id="contact-form"
+                    rows="3"
+                    cols="5"
+                    placeholder="Contact Us"
+                    required
+                    bind:value={emailBody}
+                ></textarea>
+                <!-- <div id="form-controls"> -->
+                    <p>
+                        <label for="email">Email: </label>
+                        <input 
+                            type="text"
+                            name="email"
+                            id="email"
+                            required
+                            placeholder="example@example.com"
+                            bind:value={email}
+                        >
+                    </p>
                     <input 
-                        type="text"
-                        name="email"
-                        id="email"
-                        required
-                        placeholder="example@example.com"
-                        bind:value={email}
+                        type="submit" 
+                        value="Send" 
+                        id="form-button"
+                        class:enable-send={enableSend}
+                        class:disable-send={!enableSend}
+                        disabled={!enableSend}
                     >
-                </p>
-                <input 
-                    type="submit" 
-                    value="Send" 
-                    id="form-button"
-                    class:enable-send={enableSend}
-                    class:disable-send={!enableSend}
-                    disabled={!enableSend}
-                >
+                <!-- </div> -->
 			</form>
 			<ul>
 				<li>
@@ -220,11 +389,77 @@
 		color: white;
 	}
 
+    .arrow-button {
+        background: transparent;
+        border: none;
+    }
+
 	#image-holder {
 		width: 100vw;
 		height: 100vh;
 		position: fixed;
 		z-index: -1;
+	}
+
+	#logo {
+		display: flex;
+		height: 100vh;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		color: white;
+        position: relative;
+	}
+
+    .logo-image {
+        width: 150px;
+        height: auto;
+        position: absolute;
+    }
+
+	#logo h1 {
+		margin: 0;
+		font-size: 20px;
+		position: relative;
+		top: 7px;
+        color: white;
+	}
+
+    #svg-holder1 {
+        z-index: 3;
+        left: calc(50% - 10px);
+    }
+
+    #svg-holder2 {
+        z-index: 2;
+        left: calc(50% - 10px);
+    }
+
+	#about {
+		margin: -25px 25px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	#about h1 {
+		text-align: center;
+        color: white;
+	}
+
+	#about p {
+		background-color: #cb2d2d;
+		padding: 15px 25px;
+		color: white;
+        font-size: 14px;
+        max-width: 89%;
+        line-height: 1.5;
+	}
+
+	#about p::first-letter {
+		padding-left: 50px;
 	}
 
 	#contact {
@@ -236,6 +471,11 @@
         flex-direction: column;
 		justify-content: center;
 		align-items: center;
+	}
+
+	#contact h1 {
+		text-align: center;
+        color: white;
 	}
 
 	#contact div {
@@ -254,6 +494,17 @@
         color: white;
         line-height: 1.5;
     }
+
+	#contact-p::first-letter {
+		padding-left: 50px;
+	}
+
+	#contact textarea {
+		width: 100%;
+		height: 150px;
+        resize: none;
+        font-size: 14px;
+	}
 
     #contact label {
         color: white;
@@ -319,4 +570,21 @@
         margin-bottom: 20px;
         display: inline;
     }
+
+    /* @media screen and (width >= 430px) {
+        #contact-form-element p {
+            margin: 20px 0 10px 10px;
+        }
+    } */
+
+	@media screen and( width >= 1000px) {
+		#logo h1 {
+			font-size: 20px;
+			top: 7px;
+		}
+
+        .logo-image {
+            width: 100px;
+        }
+	}
 </style>

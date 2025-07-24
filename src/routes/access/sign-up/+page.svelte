@@ -1,10 +1,10 @@
 <script>
     import { modal } from '$lib/shared_state/shared.svelte';
 
-    let { form } = $props();
+    let { data, form } = $props();
 
     let name = $state("");
-    let email = $state("");
+    let email = $state(data.email);
     let password = $state("");
     let confirmPassword = $state("");
     let showMessage = $state(false);

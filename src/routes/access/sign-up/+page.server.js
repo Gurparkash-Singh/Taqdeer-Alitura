@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { profileEditor } from "$lib/functions/profile-editor.js";
 import { dbFunctions } from '$lib/db/database';
+import { EARLY_ACCESS } from '$env/static/private';
 
 export const actions = {
     register: async ({ cookies, request }) => {
@@ -24,6 +25,19 @@ export const actions = {
                 name: name,
                 email: email
             });
+        }
+
+        if (EARLY_ACCESS === "TRUE") {
+            const allowed = await dbFunctions.earlyAccess(email);
+
+            if (!allowed) {
+                return fail(400, {
+                    invalid: true,
+                    message: "invalid email",
+                    name: name,
+                    email: email
+                });
+            }
         }
 
         if (!profileEditor.passwordsMatch(confirmPassword, password)) {

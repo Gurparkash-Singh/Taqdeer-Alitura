@@ -1,9 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 
-export function load({locals}) {
-    if (locals.user) {
-        return;
+export function load({locals, cookies}) {
+    if (!locals.user) {
+        throw redirect(302, "/");
     }
-
-    
 }
