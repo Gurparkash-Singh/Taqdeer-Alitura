@@ -4,7 +4,7 @@ export async function load({locals})
 {
     const categories = await dbFunctions.getCategories();
 
-    const collections = await dbFunctions.getCollections();
+    const collections = await dbFunctions.getLiveCollections();
 
     const products = await dbFunctions.getProducts();
 

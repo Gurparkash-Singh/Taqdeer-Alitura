@@ -27,6 +27,7 @@ export const actions = {
 
         const collection_id = data.get("currentCollection");
         const collection_name = data.get('collection_name');
+        const live = data.get("live");
 
         if (!collection_id || !collection_name) {
             return fail(400, {
@@ -41,7 +42,7 @@ export const actions = {
             await dbFunctions.addCollection(collection_name);
         }
         else {
-            await dbFunctions.updateCollection(collection_id, collection_name);
+            await dbFunctions.updateCollection(collection_id, collection_name, live);
         }
 
         return {

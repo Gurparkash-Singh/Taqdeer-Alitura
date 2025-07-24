@@ -55,8 +55,14 @@ export const dbFunctions = {
         return result;
     },
 
+    getLiveCollections: async () => {
+        const [result] = await db.query("SELECT collection_id, collection_name FROM Collections WHERE live = 1;");
+
+        return result;
+    },
+
     getCollections: async () => {
-        const [result] = await db.query("SELECT collection_id, collection_name FROM Collections;");
+        const [result] = await db.query("SELECT collection_id, collection_name, live FROM Collections;");
 
         return result;
     },
@@ -74,7 +80,10 @@ export const dbFunctions = {
     },
 
     getProducts: async (sort_asc = true, limit = 0, offset = 0) => {
-        let query = "SELECT * FROM Products WHERE live = 1 ORDER BY default_price ";
+        let query = "SELECT P.* FROM Products AS P ";
+        query += "LEFT JOIN Collections ON P.collection_id = Collections.collection_id ";
+        query += "WHERE P.live = 1 AND Collections.live = 1 ";
+        query += "ORDER BY default_price ";
 
         if (sort_asc == true)
         {
@@ -103,7 +112,9 @@ export const dbFunctions = {
     },
 
     getProductById: async (id) => {
-        let query = "SELECT * FROM Products WHERE product_id = ? AND live = 1;";
+        let query = "SELECT P.* FROM Products AS P ";
+        query += "LEFT JOIN Collections ON P.collection_id = Collections.collection_id ";
+        query += "WHERE product_id = ? AND P.live = 1 AND Collections.live = 1;"
 
         const [products] = await db.query(query, id);
 
@@ -585,9 +596,15 @@ export const dbFunctions = {
         await db.query(query, name);
     },
 
-    updateCollection: async (id, name) => {
-        let query = "UPDATE Collections SET collection_name = ? WHERE ";
-        query += "collection_id = ?;";
+    updateCollection: async (id, name, live) => {
+        let query = "UPDATE Collections SET collection_name = ? ";
+        if (live){
+            query += ", live = 1 ";
+        }
+        else {
+            query += ", live = 0 ";
+        }
+        query += "WHERE collection_id = ?;";
 
         await db.query(query, [name, id]);
     },
@@ -977,6 +994,7 @@ export const dbFunctions = {
 
     getOrderItems: async (id) => {
         let query = "SELECT name, OI.*, PI.price, PI.sku, Images.*, ";
+        query += "PI.weight, ";
         query += "(";
         query += "SELECT JSON_OBJECTAGG";
         query += "(Product_Variations.name, Variation_Option.value) ";

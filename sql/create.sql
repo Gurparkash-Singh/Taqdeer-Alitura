@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS Collections (
 	collection_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     collection_name VARCHAR(255) NOT NULL,
     description TEXT,
+    live BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -76,6 +77,7 @@ CREATE TABLE IF NOT EXISTS Product_Item (
     sku VARCHAR(255),
     quantity INT NOT NULL,
     price DECIMAL,
+    weight DECIMAL NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
@@ -195,8 +197,10 @@ CREATE TABLE IF NOT EXISTS Permission_Types (
     description VARCHAR(255),
     readable BOOLEAN DEFAULT 1,
     writeable BOOLEAN NOT NULL,
+    parent_permission INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (parent_permission) REFERENCES Permission_Types(permission_id)
 );
 
 CREATE TABLE IF NOT EXISTS Admin_Type (
@@ -414,8 +418,13 @@ CREATE TABLE IF NOT EXISTS Available_Currencies(
 );
 
 CREATE OR REPLACE VIEW Admin_Type_And_Permission AS
-SELECT Admins.admin_id, Admins.type_id, Permission_Types.permission_id, name, allow_read, allow_write
-FROM Admins
-JOIN Admin_Type ON Admins.type_id = Admin_Type.type_id
-JOIN Admin_Permissions ON Admin_Permissions.type_id = Admin_Type.type_id
-JOIN Permission_Types ON Admin_Permissions.permission_id = Permission_Types.permission_id;
+SELECT Admins.admin_id, PT1.permission_id, PT1.name,
+(
+	SELECT PT2.name FROM Permission_Types AS PT2
+    WHERE PT1.parent_permission = PT2.permission_id
+) AS parent_permission_name, PT1.parent_permission,
+AT.admin_type, AT.type_id, Admin_Permissions.allow_read, Admin_Permissions.allow_write
+FROM Permission_Types AS PT1
+JOIN Admin_Permissions ON Admin_Permissions.permission_id = PT1.permission_id
+JOIN Admin_Type AS AT ON AT.type_id = Admin_Permissions.type_id
+JOIN Admins ON Admins.type_id = AT.type_id;

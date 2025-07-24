@@ -5,33 +5,40 @@ VALUES
 ("Outerwear");
 
 
-INSERT INTO Collections (collection_name)
+INSERT INTO Collections (collection_name, live)
 VALUES
-("Juthuur");
+("Juthuur", 1);
 
-INSERT INTO Permission_Types (name, description, readable, writeable)
+INSERT INTO Permission_Types (name, description, parent_permission, readable, writeable)
 VALUES
-("collections", "Ability to read and write collections", 1, 1),
-("categories", "Ability to read and write categories", 1, 1),
-("products", "Ability to read and write products", 1, 1),
-("images", "Ability to read and write product images", 1, 1),
-("sizes", "Ability to read and write sizes for products", 1, 1),
-("components", "Ability to read and write product components", 1, 1),
-("component properties", "Ability to read and write properties for components", 1, 1),
-("discounts", "Ability to read and write discounts", 1, 1),
-("users", "Ability to get a list of users (names and emails)", 1, 0),
-("orders", "Ability to read orders for a given user", 1, 0),
-("orders items", "Ability to read order items for a given user", 1, 0),
-("messages", "Ability to read and write messages", 1, 1),
-("members", "Ability to read and write members", 1, 1),
-("member types", "Ability to read and write member types", 1, 1),
-("contact form", "Ability to read contact form emails", 1, 0),
-("email list", "Ability to read and write users from email list", 1, 1),
-("carts", "Ability to read abandoned carts", 1, 0),
-("admins", "Ability to read and write admins", 1, 1),
-("admin types", "Ability to read and write admin types", 1, 1),
-("admin permissions", "Ability to read permissions for admins types", 1, 0),
-("errors", "Ability to read errors", 1, 0);
+("products", "The ability to access product settings", null, 1, 1),
+("orders", "The ability to access order related settings", null, 1, 1),
+("users", "The ability to access user related settings", null, 1, 1),
+("admins", "The ability to access admin related settings", null, 1, 1),
+("product types", "The ability to add, update and delete product types", 1, 1, 1),
+("product variations", "The ability to add, update and delete variations on a product type (ex add Size / Colour to Clothing", 5, 1, 1),
+("variation options", "The ability to add, update and delete options for a variation (ex add XXL to Size", 6, 1, 1),
+("update products", "The ability to add and update products", 1, 1, 1),
+("components", "The ability to add, update and delete product components", 8, 1, 1),
+("component properties", "The ability to add, update and delete properties for components", 9, 1, 1),
+("collections", "The ability to see all collections and add, update and delete collections", 1, 1, 1),
+("categories", "The ability to see all categories and add, update and delete categories", 1, 1, 1),
+("discounts", "The ability to add, update and delete discounts", 1, 1, 1),
+("product info", "The ability to update product info", 8, 1, 1),
+("images", "The ability to add and delete product images and change main image", 8, 1, 1),
+("product items", "The ability to update product items", 8, 1, 1),
+("sizing info", "The ability to update sizing info for a product", 8, 1, 1),
+("all orders", "The ability to see all orders and print labels", 2, 1, 1),
+("create pickups", "The ability to create order pickups", 2, 1, 1),
+("messages", "The ability to add, update and remove messages shown to users", 3, 1, 1),
+("members", "The ability to add and remove members", 3, 1, 1),
+("member types", "The ability to add, update and remove member types", 3, 1, 1),
+("contact form emails", "The ability to read contact form emails", 3, 1, 0),
+("email list", "The ability to add and remove users from the email list", 3, 1, 1),
+("abandoned carts", "The ability to see abandoned carts", 3, 1, 0),
+("admin types", "The ability to add, update and remove admin types", 4, 1, 1),
+("update admins", "The ability to add and remove admins", 4, 1, 1),
+("errors", "The ability to see the error log", 4, 1, 0);
 
 INSERT INTO Admin_Type (admin_type)
 VALUES
@@ -59,7 +66,14 @@ VALUES
 (18, 1, 1),
 (19, 1, 1),
 (20, 1, 0),
-(21, 1, 0);
+(21, 1, 0),
+(22, 1, 1),
+(23, 1, 1),
+(24, 1, 1),
+(25, 1, 0),
+(26, 1, 1),
+(27, 1, 0),
+(28, 1, 1);
 
 INSERT INTO Product_Type (name) VALUE ("Clothing");
 
@@ -127,32 +141,32 @@ VALUES
 (6, "100% Recycled Polyester"),
 (6, "Made In Istanbul");
 
-INSERT INTO Product_Item (product_id, sku, quantity, price)
+INSERT INTO Product_Item (product_id, sku, quantity, price, weight)
 VALUES
-(1, "FRS01/01", 20, 459),
-(1, "FRS01/01", 20, 459),
-(1, "FRS01/01", 20, 459),
-(1, "FRS01/01", 20, 459),
-(2, "FRS01/02", 20, 511),
-(2, "FRS01/02", 20, 511),
-(2, "FRS01/02", 20, 511),
-(2, "FRS01/02", 20, 511),
-(3, "FRS01/03", 20, 324),
-(3, "FRS01/03", 20, 324),
-(3, "FRS01/03", 20, 324),
-(3, "FRS01/03", 20, 324),
-(4, "FRS01/04", 20, 432),
-(4, "FRS01/04", 20, 432),
-(4, "FRS01/04", 20, 432),
-(4, "FRS01/04", 20, 432),
-(5, "FRS01/05", 20, 324),
-(5, "FRS01/05", 20, 324),
-(5, "FRS01/05", 20, 324),
-(5, "FRS01/05", 20, 324),
-(6, "FRS01/06", 20, 314),
-(6, "FRS01/06", 20, 314),
-(6, "FRS01/06", 20, 314),
-(6, "FRS01/06", 20, 314);
+(1, "FRS01/01", 20, 459, 500),
+(1, "FRS01/01", 20, 459, 500),
+(1, "FRS01/01", 20, 459, 500),
+(1, "FRS01/01", 20, 459, 500),
+(2, "FRS01/02", 20, 511, 500),
+(2, "FRS01/02", 20, 511, 500),
+(2, "FRS01/02", 20, 511, 500),
+(2, "FRS01/02", 20, 511, 500),
+(3, "FRS01/03", 20, 324, 500),
+(3, "FRS01/03", 20, 324, 500),
+(3, "FRS01/03", 20, 324, 500),
+(3, "FRS01/03", 20, 324, 500),
+(4, "FRS01/04", 20, 432, 500),
+(4, "FRS01/04", 20, 432, 500),
+(4, "FRS01/04", 20, 432, 500),
+(4, "FRS01/04", 20, 432, 500),
+(5, "FRS01/05", 20, 324, 500),
+(5, "FRS01/05", 20, 324, 500),
+(5, "FRS01/05", 20, 324, 500),
+(5, "FRS01/05", 20, 324, 500),
+(6, "FRS01/06", 20, 314, 500),
+(6, "FRS01/06", 20, 314, 500),
+(6, "FRS01/06", 20, 314, 500),
+(6, "FRS01/06", 20, 314, 500);
 
 INSERT INTO Product_Configuration (product_item, variation_option)
 VALUES

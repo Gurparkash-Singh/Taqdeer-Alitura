@@ -7,6 +7,7 @@
     let selectedCollection = $state("Add");
 
     let newName = $state("");
+    let live = $state(false);
 
     let submitValue = $derived.by(() => {
         if (selectedCollection == "Add") {
@@ -23,6 +24,10 @@
         for (let i = 0; i < data.collections.length; i++) {
             if (data.collections[i].collection_id == selectedCollection) {
                 if (data.collections[i].collection_name != newName) {
+                    return true;
+                }
+
+                if (data.collections[i].live != live) {
                     return true;
                 }
             }
@@ -71,6 +76,7 @@
             for (let i = 0; i < data.collections.length; i++) {
                 if (data.collections[i].collection_id == selectedCollection) {
                     newName = data.collections[i].collection_name;
+                    live = data.collections[i].live;
                 }
             }
         }
@@ -103,6 +109,15 @@
                 name="collection_name"
                 id="collection_name"
                 bind:value={newName}
+            >
+        </p>
+        <p>
+            <label for="live">live:</label>
+            <input 
+                type="checkbox"
+                name="live"
+                id="live"
+                bind:checked={live}
             >
         </p>
         <div>

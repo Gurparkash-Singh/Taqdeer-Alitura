@@ -104,12 +104,15 @@ export async function load({ cookies, params, url }) {
 
     let num_items = 0;
     let customs_value = 0;
-    let weight = 0.5;
+    let weight = 0;
 
     for (let i = 0; i < order_items.length; i++) {
         num_items += order_items[i].quantity;
         customs_value += order_items[i].quantity * order_items[i].price;
+        weight += order_items[i].weight;
     }
+
+    weight = weight / 1000;
 
     if (!order.tracking_id) {
         const aramexResult = await aramex.createShipment(

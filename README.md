@@ -59,6 +59,10 @@
 - [x] Send an uploading message while image uploads
 - [x] Get Logout Working
 - [x] Add (optional) to fields that are optional in forms
+- [x] Insert weights to DB
+- [x] Add up the weight for all products
+- [x] Set the weight in create Shipment
+- [x] Collection Live functionality
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -75,9 +79,7 @@
 - [ ] Add permissions for product items
 - [ ] Add permissions for product variations and variation options
 - [ ] Add size chart and return policy in products page
-- [ ] Insert weights to DB
-- [ ] Add up the weight for all products
-- [ ] Set the weight in create Shipment
+- [ ] Email templates
 - [ ] Fix Image Server
 
 # Post Release To Do
@@ -111,7 +113,7 @@
 - [ ] Move all credentials to production
 
 In Case of minimal viable product:
-- [ ] Disable Payment Methods
+- [x] Disable Payment Methods
 
 # Completely Finished
 - Homepage
@@ -125,10 +127,6 @@ Size chart is a photo should be added to the product images
 Sizing contains model information
 Add Table to DB for model size information
 
-# Needed in the next 2 weeks
-- [ ] Presentable
-- [x] Products need to be added
-
 # Before Launch
 - Move Homepage to look like the one in the image
 - When an email is entered add them to the email list
@@ -136,8 +134,7 @@ Add Table to DB for model size information
 - If account exists for the email entered move them to the login page
 - Only allow signups from allowed emails
 - Disable access to the entire website without loging in
-- Move all instances to Production Credentials (twilio, tap and aramex)
-- Fix Client Details for shipment
+- Move all instances to Production Credentials (twilio, tap, resend and aramex)
 
 # For Critical Error Route
 - A post request should be able to be made to the route with an error message
@@ -204,9 +201,11 @@ Full Size
 Pre-Launch:
 1. Pre-Migration:
 - [x] Add (optional) to forms
+- [x] Insert weights to DB
+- [x] Use the weights to create shipments
+- [x] Collection Live functionality
 - [ ] Add size chart in products page
-- [ ] Insert weights to DB
-- [ ] Use the weights to create shipments
+- [ ] Email templates
 - [ ] QA testing
 
 2. Migration:
