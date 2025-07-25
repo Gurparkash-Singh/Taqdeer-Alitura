@@ -18,3 +18,7 @@ body {
 button, a {
     color: #1E1E1E;
 }
+
+h1 {
+    font-size: 2em;
+}

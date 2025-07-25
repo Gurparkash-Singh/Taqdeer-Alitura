@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import { dbFunctions } from '$lib/db/database';
 import { profileEditor } from '$lib/functions/profile-editor';
-import { RESEND_API_KEY, BASE } from '$env/static/private';
+import { RESEND_API_KEY, BASE, RESEND_EMAIL } from '$env/static/private';
 import { Resend } from 'resend';
 import { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } from "$env/static/private";
 import { TWILIO_SERVICE_CODE } from '$env/static/private';
@@ -117,7 +117,7 @@ export async function load({ locals, params, url }) {
     message += "<p>Form will auto submit</p>";
 
     const { returnData, error } = await resend.emails.send({
-        from: 'verify@gurparkashsingh.com',
+        from: RESEND_EMAIL,
         to: [locals.user.email],
         subject: "Taqdeer account verification code",
         html: message

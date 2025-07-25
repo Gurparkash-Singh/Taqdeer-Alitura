@@ -1,7 +1,8 @@
 import { error, fail, redirect } from "@sveltejs/kit";
-import { MODE, RESEND_API_KEY } from '$env/static/private';
+import { MODE, RESEND_API_KEY, RESEND_EMAIL } from '$env/static/private';
 import { Resend } from 'resend';
 import { dbFunctions } from "$lib/db/database";
+import { createEmailListEmail } from "$lib/email_templates/email_list";
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -60,11 +61,13 @@ export const actions = {
             })
         }
 
+        const email_message = createEmailListEmail();
+
         const { returnData, error } = await resend.emails.send({
-            from: 'web-contact@gurparkashsingh.com',
+            from: RESEND_EMAIL,
             to: ['khalsags.fateh@gmail.com', email],
             subject: "Taqdeer Website Message",
-            text: "You've been added to the email list"
+            html: email_message
         });
 
         if (error)

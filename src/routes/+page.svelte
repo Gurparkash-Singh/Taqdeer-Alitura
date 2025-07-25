@@ -34,6 +34,16 @@
     }
 </script>
 
+<svelte:head>
+    <meta name="description" 
+    content="
+        Taqdeer Alitura Pre-Launch Page
+        Use this page to signup for our newsletter,
+        so that we can let you know when we launch.
+    "
+    >
+</svelte:head>
+
 <div id="image-holder">
     <img 
         src={BackgroundImage} 
@@ -46,6 +56,11 @@
 </div>
 
 <main>
+    <div id="logo-holder">
+        <a href="/" aria-label="Link to Home">
+            <img src="/Logo2.svg" alt="Taqdeer Alitura Logo" id="Logo" />
+        </a>
+    </div>
 	<section id="contact">
 		<div>
             <form action="?/send" method="POST" id="contact-form-element">
@@ -218,6 +233,8 @@
 		justify-content: center;
 		z-index: 2;
 		color: white;
+        align-items: center;
+        height: 100vh;
 	}
 
 	#image-holder {
@@ -231,11 +248,9 @@
 		margin: 0 25px;
 		z-index: 2;
         position: relative;
-        height: 100vh;
         display: flex;
         flex-direction: column;
 		justify-content: center;
-		align-items: center;
 	}
 
 	#contact div {
@@ -246,7 +261,6 @@
 		background-color: #cb2d2d;
 		color: white;
         position: relative;
-        max-width: 89%;
         font-size: 14px;
 	}
 
@@ -319,4 +333,16 @@
         margin-bottom: 20px;
         display: inline;
     }
+
+    #logo-holder {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+        height: 140px;
+        margin: -175px 0 35px 0;
+	}
+
+	#Logo {
+		height: 140px;
+	}
 </style>

@@ -29,6 +29,10 @@
     modal.messages = data.messages;
 </script>
 
+<svelte:head>
+    <title>Taqdeer Alitura</title>
+</svelte:head>
+
 <svelte:body bind:this={body}/>
 
 <Modal />

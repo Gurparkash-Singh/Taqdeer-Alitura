@@ -2,7 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from "bcryptjs";
 import { profileEditor } from '$lib/functions/profile-editor';
 import { dbFunctions } from '$lib/db/database.js';
-import { RESEND_API_KEY, BASE } from '$env/static/private';
+import { RESEND_API_KEY, BASE, RESEND_EMAIL } from '$env/static/private';
 import { Resend } from 'resend';
 
 const resend = new Resend(RESEND_API_KEY);
@@ -48,7 +48,7 @@ export const actions = {
         message += email;
 
         const { returnData, error } = await resend.emails.send({
-            from: 'reset@gurparkashsingh.com',
+            from: RESEND_EMAIL,
             to: [email],
             subject: "Taqdeer password reset link",
             text: message,

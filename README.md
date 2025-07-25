@@ -81,6 +81,7 @@
 - [ ] Add size chart and return policy in products page
 - [ ] Email templates
 - [ ] Fix Image Server
+- [ ] Give each page a meta description and maybe a different title
 
 # Post Release To Do
 - [ ] Finish Admin Panel
@@ -111,6 +112,7 @@
 - [x] Finish order history
 - [x] Fix Client Details for shipment
 - [ ] Move all credentials to production
+- [ ] Make sure emails have a png logo to point to
 
 In Case of minimal viable product:
 - [x] Disable Payment Methods
@@ -135,6 +137,7 @@ Add Table to DB for model size information
 - Only allow signups from allowed emails
 - Disable access to the entire website without loging in
 - Move all instances to Production Credentials (twilio, tap, resend and aramex)
+- Make sure emails have a png logo to point to
 
 # For Critical Error Route
 - A post request should be able to be made to the route with an error message
@@ -239,3 +242,9 @@ Post-Launch:
 - [ ] Move everything from (shop)/home to routes and delete (shop)/home
 - [ ] Remove if (url.pathname === "/") from routes/+layout.svelte
 - [ ] Remove load function from routes/+page.server.js
+
+# Email Templates For:
+- [x] Added to email list
+- [ ] Verification Code
+- [ ] Password Reset
+- [ ] Reciept

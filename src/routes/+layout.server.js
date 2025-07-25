@@ -1,4 +1,4 @@
-import { MODE } from "$env/static/private";
+import { EARLY_ACCESS, MODE } from "$env/static/private";
 import { dbFunctions } from "$lib/db/database";
 import { error } from "@sveltejs/kit";
 import axios from "axios";
@@ -23,6 +23,10 @@ export async function load({ cookies, locals })
     }
     else {
         messages = []
+    }
+
+    if (EARLY_ACCESS === "TRUE"){
+        messages = [];
     }
 
     shopping_session = shopping_session[0].id;

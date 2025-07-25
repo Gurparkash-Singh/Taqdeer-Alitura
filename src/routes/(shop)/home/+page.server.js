@@ -1,5 +1,5 @@
 import { error, fail } from "@sveltejs/kit";
-import { MODE, RESEND_API_KEY } from '$env/static/private';
+import { MODE, RESEND_API_KEY, RESEND_EMAIL } from '$env/static/private';
 import { Resend } from 'resend';
 import { dbFunctions } from "$lib/db/database";
 
@@ -36,9 +36,9 @@ export const actions = {
         dbFunctions.saveContactForm(email, message);
 
         const { returnData, error } = await resend.emails.send({
-            from: 'web-contact@gurparkashsingh.com',
-            to: ['khalsags.fateh@gmail.com', email],
-            subject: "Taqdeer Website Message",
+            from: RESEND_EMAIL,
+            to: ['khalsags.fateh@gmail.com', "sandee.ceo@gmail.com"],
+            subject: `Taqdeer Website Message from ${email}`,
             text: message
         });
 
