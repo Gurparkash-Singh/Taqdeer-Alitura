@@ -204,8 +204,7 @@ Pre-Launch:
 - [x] Use the weights to create shipments
 - [x] Collection Live functionality
 - [x] Add size chart in products page
-- [ ] Email templates
-- [ ] QA testing
+- [x] Adjust Home Page to look like the image
 
 2. Migration:
 - [ ] Buy Server
@@ -213,7 +212,8 @@ Pre-Launch:
 - [ ] Upload Product Photos
 
 3. Post-Migration:
-- [x] Adjust Home Page to look like the image
+- [ ] Email templates
+- [ ] QA testing
 
 Launch:
 - [ ] Allow access to the entire website to everyone

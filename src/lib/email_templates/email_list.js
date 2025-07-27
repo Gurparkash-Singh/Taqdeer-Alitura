@@ -4,7 +4,7 @@ export function createEmailListEmail() {
 
 <head>
     <meta content="width=device-width" name="viewport" />
-    <link rel="preload" as="image" href="https://taqdeeralitura.com/Logo.svg" />
+    <link rel="preload" as="image" href="https://taqdeeralitura.com/Logo.png" />
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
     <meta name="x-apple-disable-message-reformatting" />
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
@@ -24,7 +24,7 @@ export function createEmailListEmail() {
                         <tbody style="width:100%">
                             <tr style="width:100%">
                                 <td align="center" data-id="__react-email-column">
-                                    <a href="https://taqdeeralitura.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img class="" alt="Taqdeer Alitura Logo" height="143" src="https://taqdeeralitura.com/Logo.svg" style="display:block;outline:none;border:none;text-decoration:none;max-width:100%;border-radius:8px" width="143" /></a>
+                                    <a href="https://taqdeeralitura.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img class="" alt="Taqdeer Alitura Logo" height="143" src="https://taqdeeralitura.com/Logo.png" style="display:block;outline:none;border:none;text-decoration:none;max-width:100%;border-radius:8px" width="143" /></a>
                                 </td>
                             </tr>
                         </tbody>
