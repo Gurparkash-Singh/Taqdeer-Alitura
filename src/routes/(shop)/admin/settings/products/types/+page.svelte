@@ -106,23 +106,6 @@
                 bind:value={newName}
             >
         </p>
-        <p>
-            <label for="parentType">parent type:</label>
-            <select 
-                name="parentType"
-                id="parentType"
-                bind:value={parentType}
-            >
-                {#each data.product_types as type}
-                    {#if !type.id === selectedType}
-                        <option value={type.id}>
-                            {type.name}
-                        </option>
-                    {/if}
-                {/each}
-                <option value={null}>No parent</option>
-            </select>
-        </p>
         <div>
             <button 
                 type="submit"

@@ -29,6 +29,30 @@ export async function load({params})
 
     const properties = await dbFunctions.getComponentProperties(params.product_id);
 
+    const size_chart_components = await dbFunctions.getSizeChartComponents(
+        params.product_id
+    );
+
+    let size_chart_values = await dbFunctions.getSizeChartValues(params.product_id);
+
+    let temp_values = [[]];
+    let current_component;
+
+    if (size_chart_values.length > 0) {
+        current_component = size_chart_values[0].size;
+    }
+
+    let current_array = 0;
+
+    for (let i = 0; i < size_chart_values.length; i++) {
+        if (current_component !== size_chart_values[i].size) {
+            current_component = size_chart_values[i].size;
+            temp_values.push([]);
+            current_array++;
+        }
+        temp_values[current_array].push(size_chart_values[i]);
+    }
+
     return {
         product,
         images,
@@ -37,7 +61,9 @@ export async function load({params})
         product_items,
         outOfStock,
         components, 
-        properties
+        properties,
+        size_chart_components,
+        size_chart_values: temp_values
     };
 }
 

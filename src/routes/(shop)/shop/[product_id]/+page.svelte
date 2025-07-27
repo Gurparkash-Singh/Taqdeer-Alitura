@@ -144,6 +144,8 @@
     let openSize = $state(false);
     let openReturn = $state(false);
 
+    let sizeChartUnit = $state(0);
+
     if (form) {
         let inMessages = false;
         for (let i = 0; i < modal.messages.length; i++) {
@@ -463,7 +465,94 @@
         id="size"
         class:open-section={openSize}
     >
-        <p>This will contain the sizing info for the model</p>
+        {#if data.product.size_chart_above_text}
+            <p>{data.product.size_chart_above_text}</p>
+        {:else}
+            <div
+                style:height="14px"
+            ></div>
+        {/if}
+
+        <div id="table-buttons">
+            <button 
+                id="convert_to_cm"
+                class:selected={sizeChartUnit === 0}
+                onclick={(e) => {sizeChartUnit = 0;}}
+            >
+                cm
+            </button>
+            <button 
+                id="convert_to_inches"
+                class:selected={sizeChartUnit === 1}
+                onclick={(e) => {sizeChartUnit = 1;}}
+            >
+                in
+            </button>
+        </div>
+        <table
+            style:display={sizeChartUnit === 0 ? "block" : "none"}
+        >
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    {#each data.size_chart_components as component}
+                        <th>{component.name}</th>
+                    {/each}
+                </tr>
+            </thead>
+            <tbody>
+                {#each data.size_chart_values as components_array}
+                        <tr>
+                            <th>
+                                {
+                                    components_array.length > 0 ? 
+                                    components_array[0].size : null
+                                }
+                            </th>
+                            {#each components_array as component}
+                                <td>{component.value}</td>
+                            {/each}
+                        </tr>
+                    {/each}
+            </tbody>
+        </table>
+
+        <table
+            style:display={sizeChartUnit === 1 ? "block" : "none"}
+        >
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    {#each data.size_chart_components as component}
+                        <th>{component.name}</th>
+                    {/each}
+                </tr>
+            </thead>
+            <tbody>
+                {#each data.size_chart_values as components_array}
+                        <tr>
+                            <th>
+                                {
+                                    components_array.length > 0 ? 
+                                    components_array[0].size : null
+                                }
+                            </th>
+                            {#each components_array as component}
+                                {@const inch_value = Number(component.value) / 2.54}
+                                <td>{inch_value.toFixed(2)}</td>
+                            {/each}
+                        </tr>
+                    {/each}
+            </tbody>
+        </table>
+
+        {#if data.product.size_chart_below_text}
+            <p>{data.product.size_chart_below_text}</p>
+        {:else}
+            <div
+                style:height="14px"
+            ></div>
+        {/if}
     </section>
 
     <button 
@@ -676,6 +765,42 @@
     .open-return-button {
         margin-bottom: 100px;
         border-bottom: 1px solid grey;
+    }
+
+    table {
+        text-align: left;
+    }
+
+    th {
+        font-size: 9pt;
+    }
+
+    td {
+        font-size: 8pt;
+    }
+
+    #table-buttons {
+        display: flex;
+    }
+
+    #table-buttons button {
+        display: inline-flex;
+        background-color: #D9D9D9;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        justify-content: center;
+        font-size: 9pt;
+        width: 35px;
+    }
+
+    #table-buttons .selected {
+        color: white;
+        background-color: #BF1E2E;
+    }
+
+    #convert_to_inches {
+        margin-right: 5px
     }
 
     @media screen and (width < 650px) {

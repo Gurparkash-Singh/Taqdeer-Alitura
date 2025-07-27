@@ -159,9 +159,9 @@ export const dbFunctions = {
     },
 
     getProductVariations: async (product_id) => {
-        let query = "SELECT PV.* FROM Product_Variations AS PV ";
-        query += "JOIN Products ON Products.type_id = PV.type_id ";
-        query += "WHERE product_id = ?;";
+        let query = "SELECT * FROM Product_Variation_Options ";
+        query += "WHERE product_id = ?";
+        query += "ORDER BY product_id ASC, id ASC;";
 
         const [result] = await db.query(query, product_id);
 
@@ -169,11 +169,10 @@ export const dbFunctions = {
     },
 
     getProductVariationOptions: async (product_id) => {
-        let query = "SELECT VO.id AS option_id, ";
-        query += "PV.id AS variation_id, value FROM Variation_Option AS VO ";
-        query += "JOIN Product_Variations AS PV ON PV.id = VO.variation_id ";
-        query += "JOIN Products ON PV.type_id = Products.type_id ";
-        query += "WHERE product_id = 1; ";
+        let query = "SELECT VO.id AS option_id, PVO.id AS variation_id, ";
+        query += "value FROM Product_Variation_Options AS PVO ";
+        query += "JOIN Variation_Option AS VO ON PVO.id = VO.variation_id ";
+        query += "WHERE product_id = ?;";
 
         const [result] = await db.query(query, product_id);
 
@@ -1315,7 +1314,7 @@ export const dbFunctions = {
         let query = "UPDATE Products SET type_id = ? ";
         query += "WHERE product_id = ?;";
 
-        await db.query(query, [product_id, type_id]);
+        await db.query(query, [type_id, product_id]);
     },
 
     earlyAccess: async (email) => {
@@ -1337,6 +1336,28 @@ export const dbFunctions = {
         let query = "SELECT * FROM Email_List WHERE email = ?;";
 
         const [result] = await db.query(query, email);
+
+        return result;
+    },
+
+    getSizeChartComponents: async (product_id) => {
+        let query = "SELECT * FROM Product_Size_Chart_Components ";
+        query += "WHERE product_id = ? ";
+        query += "ORDER BY component_id";
+
+        const [result] = await db.query(query, product_id);
+
+        return result;
+    },
+
+    getSizeChartValues: async (id) => {
+        let query = "SELECT component_id, Size_Chart_Values.value, ";
+        query += "VO.value AS size FROM Size_Chart_Values ";
+        query += "JOIN Variation_Option AS VO ON VO.id = Size_Chart_Values.option_id ";
+        query += "WHERE product_id = ? ";
+        query += "ORDER BY Size_Chart_Values.option_id ASC, component_id ASC;";
+
+        const [result] = await db.query(query, id);
 
         return result;
     }

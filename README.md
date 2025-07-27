@@ -63,6 +63,7 @@
 - [x] Add up the weight for all products
 - [x] Set the weight in create Shipment
 - [x] Collection Live functionality
+- [x] Add size chart and return policy in products page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -78,7 +79,6 @@
 - [ ] Add permissions for product type
 - [ ] Add permissions for product items
 - [ ] Add permissions for product variations and variation options
-- [ ] Add size chart and return policy in products page
 - [ ] Email templates
 - [ ] Fix Image Server
 - [ ] Give each page a meta description and maybe a different title
@@ -124,10 +124,6 @@ In Case of minimal viable product:
 - Login page
 - Forgot password design
 - Product page
-
-Size chart is a photo should be added to the product images
-Sizing contains model information
-Add Table to DB for model size information
 
 # Before Launch
 - Move Homepage to look like the one in the image
@@ -207,7 +203,7 @@ Pre-Launch:
 - [x] Insert weights to DB
 - [x] Use the weights to create shipments
 - [x] Collection Live functionality
-- [ ] Add size chart in products page
+- [x] Add size chart in products page
 - [ ] Email templates
 - [ ] QA testing
 
