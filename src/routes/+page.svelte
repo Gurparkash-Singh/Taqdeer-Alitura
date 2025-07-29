@@ -64,6 +64,11 @@
 	<section id="contact">
 		<div>
             <form action="?/send" method="POST" id="contact-form-element">
+                <p
+                    style="margin: 10px 0 10px 0"
+                >
+                    signup to our email newsletter.
+                </p>
                 <p>
                     <label for="email">Email: </label>
                     <input 
@@ -314,7 +319,7 @@
         flex-direction: row;
         align-items: flex-end;
         justify-content: flex-start;
-        margin: 20px 10px 10px 0;
+        margin: 10px 10px 10px 0;
     }
 
     #contact-form-element p input {

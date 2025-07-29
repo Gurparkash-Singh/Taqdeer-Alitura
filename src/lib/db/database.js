@@ -1360,5 +1360,26 @@ export const dbFunctions = {
         const [result] = await db.query(query, id);
 
         return result;
+    },
+
+    addUnsubscribeToken: async (email, token) => {
+        let query = "INSERT INTO Email_Unsubscribe_Token ";
+        query += "(email, token) VALUES (?, ?);";
+
+        await db.query(query, [email, token]);
+    },
+
+    getEmailUnsubscribeToken: async (token) => {
+        let query = "SELECT * FROM Email_Unsubscribe_Token WHERE token = ?;";
+
+        const [result] = await db.query(query, token);
+
+        return result;
+    },
+
+    unsubscribe: async (email) => {
+        let query = "DELETE FROM Email_List WHERE email = ? AND id > 0;";
+
+        await db.query(query, email);
     }
 }

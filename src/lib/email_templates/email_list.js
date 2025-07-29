@@ -1,4 +1,4 @@
-export function createEmailListEmail() {
+export function createEmailListEmail(unsubscribe_link) {
     const email = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="en">
 
@@ -24,7 +24,7 @@ export function createEmailListEmail() {
                         <tbody style="width:100%">
                             <tr style="width:100%">
                                 <td align="center" data-id="__react-email-column">
-                                    <a href="https://taqdeeralitura.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img class="" alt="Taqdeer Alitura Logo" height="143" src="https://taqdeeralitura.com/Logo.png" style="display:block;outline:none;border:none;text-decoration:none;max-width:100%;border-radius:8px" width="143" /></a>
+                                    <a href="https://taqdeeralitura.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img class="" alt="Taqdeer Alitura Logo" height="81" src="https://taqdeeralitura.com/Logo.png" style="display:block;outline:none;border:none;text-decoration:none;max-width:100%;border-radius:8px" width="143" /></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -49,7 +49,7 @@ export function createEmailListEmail() {
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
                         <span>Sincerely,</span>
                     </p>
-                    <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
+                                        <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
                         <span>Taqdeer Alitura Team</span>
                     </p>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left"></p>
@@ -61,7 +61,8 @@ export function createEmailListEmail() {
                                     <br />
                                     <hr class="divider" style="width:100%;border:none;border-top:1px solid #eaeaea;padding-bottom:1em;border-width:2px" />
                                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
-                                        <span>You are receiving this email because you opted in via our site.</span>
+                                        <span>You are receiving this email because you opted in via
+                                            our site.</span><br /><br /><span>Want to change how you receive these emails?</span><br /><span>You can </span><span><a href="${unsubscribe_link}" rel="noopener noreferrer nofollow" ses:no-track="true" style="color:#0670DB;text-decoration-line:none;text-decoration:underline;font-weight:400" target="_blank">unsubscribe from this list</a></span><span>.</span>
                                     </p>
                                 </td>
                             </tr>

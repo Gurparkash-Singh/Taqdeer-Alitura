@@ -1,11 +1,12 @@
 <script>
-    import Logo from '$lib/images/Logo.png?enhanced';
     import { page } from '$app/state';
 </script>
 
 <main>
     <div id="image-holder">
-		<enhanced:img src={Logo} alt="Taqdeer Alitura Logo" id="Logo" />
+        <a href="/">
+            <img src="/Logo.svg" alt="Taqdeer Alitura Logo" id="Logo" />
+        </a>
 	</div>
 
     <section id="error-info">

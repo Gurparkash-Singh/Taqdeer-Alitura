@@ -1,8 +1,9 @@
 import { error, fail, redirect } from "@sveltejs/kit";
-import { MODE, RESEND_API_KEY, RESEND_EMAIL } from '$env/static/private';
+import { BASE, MODE, RESEND_API_KEY, RESEND_EMAIL } from '$env/static/private';
 import { Resend } from 'resend';
 import { dbFunctions } from "$lib/db/database";
 import { createEmailListEmail } from "$lib/email_templates/email_list";
+import bcrypt from "bcryptjs";
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -61,13 +62,25 @@ export const actions = {
             })
         }
 
-        const email_message = createEmailListEmail();
+        const token = cookies.get("session");
+
+        const hashedToken = await bcrypt.hash(token.concat(email), 12);
+
+        const unsubscribe = `${BASE}/unsubscribe?token=${hashedToken}`;
+
+        const email_message = createEmailListEmail(
+            unsubscribe
+        );
 
         const { returnData, error } = await resend.emails.send({
             from: RESEND_EMAIL,
             to: ['khalsags.fateh@gmail.com', email],
             subject: "Taqdeer Website Message",
-            html: email_message
+            html: email_message,
+            headers: {
+                'List-Unsubscribe': `<${unsubscribe}>`,
+                "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
+            },
         });
 
         if (error)
@@ -95,6 +108,14 @@ export const actions = {
         }
 
         await dbFunctions.emailListSignup(email);
+
+        await resend.contacts.create({
+            email: email,
+            unsubscribed: false,
+            audienceId: 'dfb7bdbd-6d1a-45af-a821-7ad17950d191',
+        });
+
+        await dbFunctions.addUnsubscribeToken(email, hashedToken);
 
         return {
             success: true,

@@ -47,7 +47,7 @@
 />
 
 
-{#if page.url.pathname !== "/"}
+{#if page.url.pathname !== "/" && page.url.pathname !== "/unsubscribe"}
     <div id="change-language">
         <button 
             aria-label="change language"

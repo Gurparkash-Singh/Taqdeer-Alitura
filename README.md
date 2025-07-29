@@ -64,6 +64,7 @@
 - [x] Set the weight in create Shipment
 - [x] Collection Live functionality
 - [x] Add size chart and return policy in products page
+- [x] Finish Unsubscribe page
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -76,9 +77,8 @@
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Add permissions for product type
-- [ ] Add permissions for product items
-- [ ] Add permissions for product variations and variation options
+- [ ] Use Permissions correctly
+- [ ] Add Size chart permissions
 - [ ] Email templates
 - [ ] Fix Image Server
 - [ ] Give each page a meta description and maybe a different title
@@ -89,15 +89,15 @@
 - [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Add ability to create pickup from admin panel
 - [ ] Create routine pickups
-- [ ] Get payment methods page working
-- [ ] Save card if so choosen
-- [ ] Allow selection of address by moving pin on the map
 - [ ] Increase Performance
 - [ ] Use Page Insights to increase performance
 - [ ] Limit the number of products on first page load
 - [ ] Go back to exact shop settings and scroll to exact product on product page
 - [ ] Add a close button to product page
 - [ ] Add ability to track shipments
+- [ ] Allow selection of address by moving pin on the map
+- [ ] Get payment methods page working
+- [ ] Save card if so choosen
 
 # To-Do for minimal viable product
 - [x] Load products from DB
@@ -132,7 +132,7 @@ In Case of minimal viable product:
 - If account exists for the email entered move them to the login page
 - Only allow signups from allowed emails
 - Disable access to the entire website without loging in
-- Move all instances to Production Credentials (twilio, tap, resend and aramex)
+- Move all instances to Production Credentials (google, twilio, tap, resend and aramex)
 - Make sure emails have a png logo to point to
 
 # For Critical Error Route
@@ -205,6 +205,7 @@ Pre-Launch:
 - [x] Collection Live functionality
 - [x] Add size chart in products page
 - [x] Adjust Home Page to look like the image
+- [x] Finish Unsubscribe page
 
 2. Migration:
 - [ ] Buy Server

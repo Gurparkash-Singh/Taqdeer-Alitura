@@ -41,7 +41,7 @@ export const actions = {
         const hashedToken = await bcrypt.hash(token.concat(user.name), 12);
 
         let message = "Password Reset Link expires in 15 minutes: \n";
-        message += `${BASE}`;
+        message += `${BASE}/`;
         message += "access/reset-password/finish-reset?token="
         message += hashedToken;
         message += "&email=";
