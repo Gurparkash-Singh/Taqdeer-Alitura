@@ -324,8 +324,6 @@ export const dbFunctions = {
             return users;
         }
 
-        console.log(users);
-
         return;
     },
 
@@ -461,9 +459,7 @@ export const dbFunctions = {
         query += "VALUES (?, ?, ?);";
 
         if (MODE == "DEVELOPMENT") {
-            console.log(location, id, name);
-            console.log("\n\n\nIN DEVELOPMENT\n\n\n");
-            return
+            return;
         }
 
         try {
@@ -475,8 +471,6 @@ export const dbFunctions = {
                 subject: "Taqdeer Website Error",
                 text: `Unexpected error occured\nError: ${name}`,
             });
-
-            console.log(error);
         } catch (queryError) {
             const { returnData, error } = await resend.emails.send({
                 from: 'web-contact@gurparkashsingh.com',
@@ -784,6 +778,10 @@ export const dbFunctions = {
     ) => {
         let address_id = user_address_id;
 
+        if (!(address_id > 0)){
+            user_address_id = null;
+        }
+
         if (!user_address_id) {
             const result = await dbFunctions.setAddress(
                 line1, 
@@ -796,8 +794,6 @@ export const dbFunctions = {
 
             address_id = result.address_id;
         }
-
-        console.log(user_address_id, address_id);
 
         let query = "UPDATE Orders SET order_address = ?, status = 2 WHERE id = ?";
 
@@ -816,6 +812,10 @@ export const dbFunctions = {
     ) => {
         let address_id = user_address_id;
 
+        if (!(address_id > 0)){
+            address_id = null;
+        }
+
         if (!user_address_id) {
             const result = await dbFunctions.setAddress(
                 line1, 
@@ -828,8 +828,6 @@ export const dbFunctions = {
 
             address_id = result.address_id;
         }
-
-        console.log(user_address_id, address_id);
 
         let query = "UPDATE Orders SET order_address = ? WHERE id = ?";
 

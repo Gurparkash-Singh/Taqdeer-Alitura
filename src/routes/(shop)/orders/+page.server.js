@@ -1,9 +1,14 @@
 import { dbFunctions } from "$lib/db/database";
 import { error, fail, redirect } from "@sveltejs/kit";
-import { PROD_SK_TAP, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
+import { PROD_SK_TAP, RESEND_API_KEY, RESEND_EMAIL, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
 import axios from "axios";
 import { aramex } from "$lib/functions/aramex";
 import { getCountryCallingCode } from "libphonenumber-js";
+import { createReceiptProduct } from "$lib/email_templates/receipt_product";
+import { createReceipt } from "$lib/email_templates/receipt";
+import { Resend } from "resend";
+
+const resend = new Resend(RESEND_API_KEY);
 
 export async function load({ cookies, params, url }) {
     const tap_id = url.searchParams.get("tap_id");
@@ -102,7 +107,13 @@ export async function load({ cookies, params, url }) {
 
     const order_items = await dbFunctions.getOrderItems(order_id);
 
+    let order_invoice_items;
+    let delivery;
+
     if (!order.tracking_id) {
+        let preloader = "";
+        let receipt_products = "";
+        let email;
         let num_items = 0;
         let customs_value = 0;
         let weight = 0;
@@ -111,9 +122,26 @@ export async function load({ cookies, params, url }) {
             num_items += order_items[i].quantity;
             customs_value += order_items[i].quantity * order_items[i].price;
             weight += order_items[i].weight;
+
+            const snippet = createReceiptProduct(
+                order_items[i].name,
+                order_items[i].alt_desc,
+                order_items[i].image_link,
+                order_items[i].quantity,
+                order_items[i].variations.Size
+            )
+
+            preloader += snippet.preloader;
+            receipt_products += snippet.product;
         }
 
         weight = weight / 1000;
+
+        let one_line_address = address.address_line1 + ", ";
+        one_line_address += address.city + ", ";
+        one_line_address += address.province + ", ";
+        one_line_address += address.postal_code + ", ";
+        one_line_address += address.country + " ";
         
         const aramexResult = await aramex.createShipment(
             address.address_line1,
@@ -146,10 +174,59 @@ export async function load({ cookies, params, url }) {
 
         await dbFunctions.addAramexShipmentId(order_id, aramexResult.Shipments[0].ID);
         [order] = await dbFunctions.getOrderById(order_id);
+
+        email = createReceipt(
+            preloader,
+            order.tracking_id,
+            `https://www.aramex.com/us/en/track/results?source=aramex&ShipmentNumber=${order.tracking_id}`,
+            order.name,
+            one_line_address,
+            receipt_products,
+            order.tap_receipt,
+            new Date().toISOString().split("T")[0]
+        )
+
+        order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);
+        [delivery] = await dbFunctions.getOrderDelivery(order_id);
+
+        const { returnData, error } = await resend.emails.send({
+            from: RESEND_EMAIL,
+            to: [order.email],
+            subject: "Taqdeer Alitura Receipt",
+            html: email
+        });
+
+         if (error)
+        {
+            await dbFunctions.setCriticalError(
+                "order receipt error", 
+                500,
+                `email not sent to ${email}\nError: ${error.name}` 
+            );
+            if (error.name == 'validation_error')
+            {
+                return {
+                    order,
+                    address,
+                    order_items,
+                    order_invoice_items,
+                    delivery,
+                    error: "invalid email please contact support"
+                };
+            }
+            return {
+                order,
+                address,
+                order_items,
+                order_invoice_items,
+                delivery,
+                error: "error sending email, order has been created"
+            };
+        }
     }
 
-    const order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);
-    const [delivery] = await dbFunctions.getOrderDelivery(order_id);
+    order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);
+    [delivery] = await dbFunctions.getOrderDelivery(order_id);
 
     return {
         order,

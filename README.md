@@ -65,6 +65,7 @@
 - [x] Collection Live functionality
 - [x] Add size chart and return policy in products page
 - [x] Finish Unsubscribe page
+- [x] Email templates
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -79,7 +80,6 @@
 - [ ] Verify payment methods page
 - [ ] Use Permissions correctly
 - [ ] Add Size chart permissions
-- [ ] Email templates
 - [ ] Fix Image Server
 - [ ] Give each page a meta description and maybe a different title
 
@@ -210,14 +210,14 @@ Pre-Launch:
 - [x] Add size chart in products page
 - [x] Adjust Home Page to look like the image
 - [x] Finish Unsubscribe page
+- [x] Email templates
 
 2. Migration:
-- [ ] Buy Server
+- [x] Buy Server
 - [ ] Ensure DB accuracy
 - [ ] Upload Product Photos
 
 3. Post-Migration:
-- [ ] Email templates
 - [ ] QA testing
 
 Launch:
@@ -248,4 +248,4 @@ Post-Launch:
 - [x] Added to email list
 - [x] Verification Code
 - [x] Password Reset
-- [ ] Reciept
+- [x] Reciept

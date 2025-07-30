@@ -5,6 +5,23 @@
     import OrderDetails from '$lib/components/OrderDetails.svelte';
 
     let {data} = $props();
+
+    if (data.error) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == data.error) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: data.error
+            });
+        }
+    }
 </script>
 
 <header>
@@ -26,7 +43,7 @@
         <dt>Tracking number:</dt>
         <dd>{data.order.tracking_id}</dd>
         <dd class="reference-link">
-            <a href="https://www.aramex.com/us/en/track/shipments">
+            <a href={`https://www.aramex.com/us/en/track/results?source=aramex&ShipmentNumber=${data.order.tracking_id}`}>
                 Track order
             </a>
         </dd>
