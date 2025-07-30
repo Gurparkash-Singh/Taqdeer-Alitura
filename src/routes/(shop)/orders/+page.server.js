@@ -78,7 +78,7 @@ export async function load({ cookies, params, url }) {
         paymentInsertResult.insertId
     );
 
-    const [order] = await dbFunctions.getOrderById(order_id);
+    let [order] = await dbFunctions.getOrderById(order_id);
 
     if (!order) {
         dbFunctions.setCriticalError(
@@ -102,19 +102,19 @@ export async function load({ cookies, params, url }) {
 
     const order_items = await dbFunctions.getOrderItems(order_id);
 
-    let num_items = 0;
-    let customs_value = 0;
-    let weight = 0;
-
-    for (let i = 0; i < order_items.length; i++) {
-        num_items += order_items[i].quantity;
-        customs_value += order_items[i].quantity * order_items[i].price;
-        weight += order_items[i].weight;
-    }
-
-    weight = weight / 1000;
-
     if (!order.tracking_id) {
+        let num_items = 0;
+        let customs_value = 0;
+        let weight = 0;
+
+        for (let i = 0; i < order_items.length; i++) {
+            num_items += order_items[i].quantity;
+            customs_value += order_items[i].quantity * order_items[i].price;
+            weight += order_items[i].weight;
+        }
+
+        weight = weight / 1000;
+        
         const aramexResult = await aramex.createShipment(
             address.address_line1,
             address.address_line2,
@@ -145,6 +145,7 @@ export async function load({ cookies, params, url }) {
         console.log(aramexResult.Shipments[0].ID);
 
         await dbFunctions.addAramexShipmentId(order_id, aramexResult.Shipments[0].ID);
+        [order] = await dbFunctions.getOrderById(order_id);
     }
 
     const order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);

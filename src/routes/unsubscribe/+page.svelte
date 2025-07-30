@@ -6,6 +6,8 @@
 
     let token = $state(data.token);
 
+    let success = $state(false);
+
     if (form) {
         let inMessages = false;
         for (let i = 0; i < modal.messages.length; i++) {
@@ -16,6 +18,10 @@
 
         if (form.invalid) {
             token = form.token
+        }
+
+        if (form.success) {
+            success = true;
         }
 
         if (!inMessages && form.invalid) 
@@ -51,12 +57,14 @@
         </a>
     </div>
 	<section id="contact">
-        <h1>Do you want to unsubscribe?</h1>
-        <p>We'll stop sending emails to you right away if you confirm.</p>
-        <form action="?/submit" method="post">
-            <input type="hidden" name="token" value={token}>
-            <button type="submit">unsubscribe</button>
-        </form>
+        {#if !success}
+            <h1>Unsubscribe?</h1>
+            <p>We'll stop sending emails to you right away if you confirm.</p>
+            <form action="?/submit" method="post">
+                <input type="hidden" name="token" value={token}>
+                <button type="submit">unsubscribe</button>
+            </form>
+        {/if}
         <a href="/">home</a>
 	</section>
 </main>
@@ -94,12 +102,12 @@
 	}
 
     #contact h1 {
-        margin: 10px 0 0 0;
+        margin: 20px 0 0 0;
     }
 
     #contact a {
         color: white;
-        margin: 0 0 10px 0;
+        margin: 20px 0;
     }
 
     form button {
@@ -108,7 +116,6 @@
         padding: 5px 20px;
         cursor: pointer;
         color: #1E1E1E;
-        margin: 0 0 20px 0;
     }
 
     #logo-holder {

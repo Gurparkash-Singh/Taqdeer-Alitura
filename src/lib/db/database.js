@@ -1381,5 +1381,11 @@ export const dbFunctions = {
         let query = "DELETE FROM Email_List WHERE email = ? AND id > 0;";
 
         await db.query(query, email);
+    },
+
+    deleteUnsubscribeTokens: async (email) => {
+        let query = "DELETE FROM Email_Unsubscribe_Token WHERE email = ? AND id > 0;";
+
+        await db.query(query, email);
     }
 }

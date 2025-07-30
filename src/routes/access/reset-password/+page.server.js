@@ -4,6 +4,7 @@ import { profileEditor } from '$lib/functions/profile-editor';
 import { dbFunctions } from '$lib/db/database.js';
 import { RESEND_API_KEY, BASE, RESEND_EMAIL } from '$env/static/private';
 import { Resend } from 'resend';
+import { createResetEmail } from '$lib/email_templates/reset_password';
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -40,18 +41,15 @@ export const actions = {
 
         const hashedToken = await bcrypt.hash(token.concat(user.name), 12);
 
-        let message = "Password Reset Link expires in 15 minutes: \n";
-        message += `${BASE}/`;
-        message += "access/reset-password/finish-reset?token="
-        message += hashedToken;
-        message += "&email=";
-        message += email;
+        const reset_link = `${BASE}/access/reset-password/finish-reset?token=${hashedToken}&email=${email}`;
+
+        const message = createResetEmail(reset_link);
 
         const { returnData, error } = await resend.emails.send({
             from: RESEND_EMAIL,
             to: [email],
             subject: "Taqdeer password reset link",
-            text: message,
+            html: message
         });
 
         if (error)

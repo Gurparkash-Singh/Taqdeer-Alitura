@@ -111,8 +111,12 @@
 - [x] Implement Checkout
 - [x] Finish order history
 - [x] Fix Client Details for shipment
-- [ ] Move all credentials to production
-- [ ] Make sure emails have a png logo to point to
+- [x] Make sure emails have a png logo to point to
+- [x] Move google to production
+- [x] Move twilio to production
+- [x] Move aramex to production
+- [ ] Move tap to production
+- [ ] Move resend to production
 
 In Case of minimal viable product:
 - [x] Disable Payment Methods
@@ -242,6 +246,6 @@ Post-Launch:
 
 # Email Templates For:
 - [x] Added to email list
-- [ ] Verification Code
-- [ ] Password Reset
+- [x] Verification Code
+- [x] Password Reset
 - [ ] Reciept

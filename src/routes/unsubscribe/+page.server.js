@@ -70,6 +70,8 @@ export const actions = {
 
         await dbFunctions.unsubscribe(email.email);
 
+        await dbFunctions.deleteUnsubscribeTokens(email.email);
+
         return {
             success: true,
             message: "successfully unsubscribed"

@@ -7,6 +7,7 @@ import { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } from "$env/static/private";
 import { TWILIO_SERVICE_CODE } from '$env/static/private';
 import twilio from "twilio";
 import parsePhoneNumberFromString from 'libphonenumber-js';
+import { createVerifyEmail } from '$lib/email_templates/verify_email';
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -111,10 +112,7 @@ export async function load({ locals, params, url }) {
         }
     }
 
-    let message = `<h1>${otp}</h1>`;
-    message += "<p>Fill in OTP on website</p>";
-    message += "<p>OTP will expire in 5 minutes</p>";
-    message += "<p>Form will auto submit</p>";
+    const message = createVerifyEmail(otp);
 
     const { returnData, error } = await resend.emails.send({
         from: RESEND_EMAIL,
