@@ -4,7 +4,6 @@ VALUES
 ("Bottoms"),
 ("Outerwear");
 
-
 INSERT INTO Collections (collection_name, live)
 VALUES
 ("Juthuur", 1);
@@ -75,7 +74,21 @@ VALUES
 (27, 1, 0),
 (28, 1, 1);
 
-INSERT INTO Product_Type (name) VALUE ("Clothing");
+INSERT INTO Product_Type (name) VALUES 
+("Clothing"),
+("Tees"),
+("Sweatshirts"),
+("Sweatpants"),
+("hoodies"),
+("Shorts");
+
+INSERT INTO Product_Type_Parents (type_id, parent_type_id)
+VALUES 
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1);
 
 INSERT INTO Product_Variations(type_id, name) VALUE (1, "Size");
 
@@ -86,14 +99,87 @@ VALUES
 (1, "L"),
 (1, "XL");
 
+INSERT INTO Size_Chart_Components (type_id, name)
+VALUES
+(2, "pit-to-pit"),
+(2, "cross shoulder"),
+(2, "sleeve length"),
+(2, "length"),
+(3, "hem"),
+(3, "pit-to-pit"),
+(3, "cross shoulder"),
+(3, "sleeve length"),
+(3, "length"),
+(4, "inseam"),
+(4, "outseam"),
+(4, "waist"),
+(4, "hip length"),
+(5, "hem"),
+(5, "pit-to-pit"),
+(5, "cross shoulder"),
+(5, "sleeve length"),
+(5, "length"),
+(6, "inseam"),
+(6, "outseam"),
+(6, "waist"),
+(6, "hip length");
+
 INSERT INTO Products (type_id, name, default_price, category_id, collection_id, description, image_alt_desc)
 VALUES
-(1, "Juthuur Sweats", 459, 2, 1, "Elegant and heavy oversized sweats", "Elegant and heavy oversized sweats"),
-(1, "Juthuur Hoodie", 511, 1, 1, "Heavyweight oversized hoodie in olivegreen", "Heavyweight oversized hoodie in olivegreen"),
-(1, "Juthuur Dunes Tee", 324, 1, 1, "Black oversized shirts with breast and torso pockets", "Black oversized shirts with breast and torso pockets"),
-(1, "Juthuur Sweatshirt", 432, 1, 1, "Heavyweight oversized sweatshirt in black", "Heavyweight oversized sweatshirt in black"),
-(1, "Juthuur Tee", 324, 1, 1, "Oversized white tee with vines printed", "Oversized white tee with vines printed"),
-(1, "Juthuur Shorts", 314, 2, 1, "Black mesh shorts with vines printed", "Black mesh shorts with vines printed");
+(
+	4, 
+    "Juthuur Sweats", 
+    370, 
+    2, 
+    1, 
+    "A pair sweatpants in black, with prints from medieval Islamic medical texts.", 
+    "A pair sweatpants in black, with prints from medieval Islamic medical texts."
+),
+(
+	5, 
+    "Juthuur Hoodie", 
+    420, 
+    1, 
+    1, 
+    "A hoodie in green, with prints from medieval medical texts.", 
+    "A hoodie in green, with prints from medieval medical texts."
+),
+(
+	2, 
+    "Juthuur Dunes Tee", 
+    245, 
+    1, 
+    1, 
+    "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets.", 
+    "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets."
+),
+(
+	3, 
+    "Juthuur Sweatshirt", 
+    355, 
+    1, 
+    1, 
+    "A sweatshirt in black, with prints from medieval Islamic medical texts.", 
+    "A sweatshirt in black, with prints from medieval Islamic medical texts."
+),
+(
+	2, 
+    "Juthuur Tee", 
+    210, 
+    1, 
+    1, 
+    "A tee in white, with prints from medieval Islamic medical texts.", 
+    "A tee in white, with prints from medieval Islamic medical texts."
+),
+(
+	6, 
+    "Juthuur Shorts", 
+    265, 
+    2, 
+    1, 
+    "A pair of shorts in black, with prints from medieval Islamic medical texts.", 
+    "A pair of shorts in black, with prints from medieval Islamic medical texts."
+);
 
 INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
@@ -143,30 +229,30 @@ VALUES
 
 INSERT INTO Product_Item (product_id, sku, quantity, price, weight)
 VALUES
-(1, "FRS01/01", 20, 459, 500),
-(1, "FRS01/01", 20, 459, 500),
-(1, "FRS01/01", 20, 459, 500),
-(1, "FRS01/01", 20, 459, 500),
-(2, "FRS01/02", 20, 511, 500),
-(2, "FRS01/02", 20, 511, 500),
-(2, "FRS01/02", 20, 511, 500),
-(2, "FRS01/02", 20, 511, 500),
-(3, "FRS01/03", 20, 324, 500),
-(3, "FRS01/03", 20, 324, 500),
-(3, "FRS01/03", 20, 324, 500),
-(3, "FRS01/03", 20, 324, 500),
-(4, "FRS01/04", 20, 432, 500),
-(4, "FRS01/04", 20, 432, 500),
-(4, "FRS01/04", 20, 432, 500),
-(4, "FRS01/04", 20, 432, 500),
-(5, "FRS01/05", 20, 324, 500),
-(5, "FRS01/05", 20, 324, 500),
-(5, "FRS01/05", 20, 324, 500),
-(5, "FRS01/05", 20, 324, 500),
-(6, "FRS01/06", 20, 314, 500),
-(6, "FRS01/06", 20, 314, 500),
-(6, "FRS01/06", 20, 314, 500),
-(6, "FRS01/06", 20, 314, 500);
+(1, "FRS01/01S", 16, 370, 500),
+(1, "FRS01/01M", 14, 370, 500),
+(1, "FRS01/01L", 15, 370, 500),
+(1, "FRS01/01XL", 13, 370, 500),
+(2, "FRS01/02S", 11, 420, 500),
+(2, "FRS01/02M", 14, 420, 500),
+(2, "FRS01/02L", 13, 420, 500),
+(2, "FRS01/02XL", 6, 420, 500),
+(3, "FRS01/03S", 12, 245, 500),
+(3, "FRS01/03M", 13, 245, 500),
+(3, "FRS01/03L", 12, 245, 500),
+(3, "FRS01/03XL", 11, 245, 500),
+(4, "FRS01/04S", 15, 355, 500),
+(4, "FRS01/04M", 17, 355, 500),
+(4, "FRS01/04L", 16, 355, 500),
+(4, "FRS01/04XL", 14, 355, 500),
+(5, "FRS01/05S", 28, 210, 500),
+(5, "FRS01/05M", 30, 210, 500),
+(5, "FRS01/05L", 31, 210, 500),
+(5, "FRS01/05XL", 21, 210, 500),
+(6, "FRS01/06S", 11, 265, 500),
+(6, "FRS01/06M", 21, 265, 500),
+(6, "FRS01/06L", 22, 265, 500),
+(6, "FRS01/06XL", 13, 265, 500);
 
 INSERT INTO Product_Configuration (product_item, variation_option)
 VALUES
@@ -196,8 +282,8 @@ VALUES
 (24, 4);
 
 INSERT INTO Messages (heading, paragraph) VALUES
-("Welcome", "Thank you for visiting our website and your interest in Taqdeer Alitura.
-Reminder that all members are entitled to 10% off for their first order for each collection");
+("Welcome", "We're greatful for your support.
+Enjoy browsing and shopping through our collection.");
 
 INSERT INTO Available_Currencies (currency_code)
 VALUES

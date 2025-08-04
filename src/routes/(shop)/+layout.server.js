@@ -1,4 +1,4 @@
-import { redirect } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 export function load({locals, cookies, url}) {
     if (url.pathname === "/orders"){
@@ -6,6 +6,6 @@ export function load({locals, cookies, url}) {
     }
 
     if (!locals.user) {
-        throw redirect(302, "/");
+        error(401, "you need to sign in");
     }
 }

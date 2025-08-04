@@ -6,8 +6,8 @@ import { dbFunctions } from "$lib/db/database";
 const resend = new Resend(RESEND_API_KEY);
 
 export function load({locals}) {
-    if (!locals.admin || MODE !== "DEVELOPMENT"){
-        error(404);
+    if (!locals.user){
+        error(401, "you need to sign in");
     }
 }
 

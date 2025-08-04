@@ -11,8 +11,34 @@
 
     let uploadModal;
 
-    let enableSubmit = $derived(selected_images.length == 1);
+    let developmentUrl = "http://localhost:8000";
+    let productionUrl = "https://media.taqdeeralitura.com";
+
+    let enableSubmit = $derived(selected_images.length === 1);
     let enableDelete = $derived(selected_images.length > 0);
+
+    function showModalMessage(success, message) {
+        let inMessages = false;
+        for (let i = 0; i < modal.messages.length; i++) {
+            if (modal.messages[i].paragraph == message) {
+                inMessages = true;
+            }
+        }
+
+        if (!inMessages && success) {
+            modal.messages.push({
+                heading: "SUCCESS",
+                paragraph: message
+            });
+        }
+        else if (!inMessages && !success) 
+        {
+            modal.messages.push({
+                heading: "ERROR",
+                paragraph: message
+            });
+        }
+    }
 
     function onSelectFiles() {
         const input = document.createElement('input');
@@ -34,53 +60,45 @@
     }
 
     async function uploadFile(file) {
-        let url = "https://media.taqdeeralitura.com";
+        let url = developmentUrl;
         if (PUBLIC_MODE != "DEVELOPMENT") {
-            url = "https://media.taqdeeralitura.com"
+            url = productionUrl;
         }
 
         uploadModal.style.display = "flex";
+
+        let res;
+        let invalid;
         
-        const res = await fetch(
-            `${url}/upload/${data.product.product_id}/${file.name}`, 
-            {
-                method: 'POST',
-                body: file
-            }
-        );
+        try {
+            const formData = new FormData();
+
+            formData.append("file", file);
+
+            res = await fetch(
+                `${url}/upload/${data.product.product_id}`, 
+                {
+                    method: 'POST',
+                    body: formData
+                }
+            );
+        } catch (error) {
+            console.log(error);
+            invalid = true;
+            res = {};
+        }
 
         uploadModal.style.display = "none";
 
-        let message;
-        let invalid = false;
+        let message = 'failed to upload file';
+        invalid = true;
         if (res.ok){
             message = "uploaded successfully";
+            invalid = false;
             invalidateAll();
         }
-        else {
-            message = 'failed to upload file';
-            invalid = true;
-        }
 
-        let inMessages = false;
-        for (let i = 0; i < modal.messages.length; i++) {
-            if (modal.messages[i].paragraph == message) {
-                inMessages = true;
-            }
-        }
-
-        if (!inMessages && invalid) 
-        {
-            modal.messages.push({
-                heading: "ERROR",
-                paragraph: message
-            });
-        }else if (!inMessages) {
-            modal.messages.push({
-                heading: "SUCCESS",
-                paragraph: message
-            });
-        }
+        showModalMessage(!invalid, message);
     }
 
     async function deleteImages(images) {
@@ -89,84 +107,50 @@
         for (let i = 0; i < images.length; i++) {
             message = await deleteImage(images[i]);
         }
-        
-        message = message.message;
-        let invalid = message.invalid;
 
-        if (!invalid) {
+        if (message.valid) {
+            selected_images = [];
             invalidateAll();
         }
 
-        let inMessages = false;
-        for (let i = 0; i < modal.messages.length; i++) {
-            if (modal.messages[i].paragraph == message) {
-                inMessages = true;
-            }
-        }
-
-        if (!inMessages && invalid) 
-        {
-            modal.messages.push({
-                heading: "ERROR",
-                paragraph: message
-            });
-        }else if (!inMessages) {
-            modal.messages.push({
-                heading: "SUCCESS",
-                paragraph: message
-            });
-        }
+        showModalMessage(message.valid, message.message);
     }
 
     async function deleteImage(image_id) {
-        let url = "http://0.0.0.0:8000";
+        let url = developmentUrl;
         if (PUBLIC_MODE != "DEVELOPMENT") {
-            url = "https://media.taqdeeralitura.com"
+            url = productionUrl;
         }
 
-         const res = await fetch(
-            `${url}/delete/${image_id}/${data.product.product_id}`, 
-            {
-                method: 'POST'
-            }
-        );
+        let res;
+
+        try {
+            res = await fetch(
+                `${url}/delete/${image_id}/${data.product.product_id}`, 
+                {
+                    method: 'POST'
+                }
+            );
+        } catch (error) {
+            console.log(error);
+            res = {};
+        }
 
         let message = {
-            message: "image deleted successfully",
-            invalid: false
+            message: "failed to delete image",
+            valid: false
         }
 
         if (res.ok){
             message.message = "image deleted successfully";
-        }
-        else {
-            message.message = 'failed to delete image';
-            message.invalid = true;
+            message.valid = true;
         }
 
         return message;
     }
 
     if (form) {
-        let inMessages = false;
-        for (let i = 0; i < modal.messages.length; i++) {
-            if (modal.messages[i].paragraph == form.message) {
-                inMessages = true;
-            }
-        }
-
-        if (!inMessages && form.invalid) 
-        {
-            modal.messages.push({
-                heading: "ERROR",
-                paragraph: form.message
-            });
-        }else if (!inMessages && form.success) {
-            modal.messages.push({
-                heading: "SUCCESS",
-                paragraph: form.message
-            });
-        }
+        showModalMessage(form.success, form.message);
     }
 </script>
 
@@ -242,6 +226,8 @@
             e.preventDefault();
             deleteImages(selected_images);
         }}
+        disabled={!enableDelete}
+        class:disable-submit={!enableDelete}
     >
         Delete
         <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">

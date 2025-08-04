@@ -1,3 +1,7 @@
+# Build and Deploy
+build.sh is used to build a zip file that can be sent to any server
+run.sh and server-run.sh are platform dependent and must be changed in order to work
+
 # To-Do
 - [x] Style send button
 - [x] On home page, center about us once you reach the scroll height
