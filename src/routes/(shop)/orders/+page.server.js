@@ -169,9 +169,6 @@ export async function load({ cookies, params, url }) {
             error(500);
         }
 
-        console.log(JSON.stringify(aramexResult, null, 2));
-        console.log(aramexResult.Shipments[0].ID);
-
         await dbFunctions.addAramexShipmentId(order_id, aramexResult.Shipments[0].ID);
         [order] = await dbFunctions.getOrderById(order_id);
 
@@ -191,7 +188,7 @@ export async function load({ cookies, params, url }) {
 
         const { returnData, error } = await resend.emails.send({
             from: RESEND_EMAIL,
-            to: [order.email],
+            to: [order.user_email],
             subject: "Taqdeer Alitura Receipt",
             html: email
         });
@@ -201,7 +198,7 @@ export async function load({ cookies, params, url }) {
             await dbFunctions.setCriticalError(
                 "order receipt error", 
                 500,
-                `email not sent to ${email}\nError: ${error.name}` 
+                `email not sent to ${order.user_email}\nError: ${error.name}` 
             );
             if (error.name == 'validation_error')
             {

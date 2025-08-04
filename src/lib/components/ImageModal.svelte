@@ -55,6 +55,7 @@
 
     section {
         width: 90%;
+        height: 90%;
         position: relative;
         display: flex;
         flex-direction: column;

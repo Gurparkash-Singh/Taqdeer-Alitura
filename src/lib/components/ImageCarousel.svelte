@@ -103,9 +103,9 @@
         display: flex;
 		justify-content: center;
         position: relative;
-        height: 400px;
+        height: 100%;
         flex-direction: row;
-        width: 90vw;
+        width: 100%;
     }
 
     .carousel-holder {
