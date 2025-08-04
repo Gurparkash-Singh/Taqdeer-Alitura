@@ -502,18 +502,18 @@
             </thead>
             <tbody>
                 {#each data.size_chart_values as components_array}
-                        <tr>
-                            <th>
-                                {
-                                    components_array.length > 0 ? 
-                                    components_array[0].size : null
-                                }
-                            </th>
-                            {#each components_array as component}
-                                <td>{component.value}</td>
-                            {/each}
-                        </tr>
-                    {/each}
+                    <tr>
+                        <th>
+                            {
+                                components_array.length > 0 ? 
+                                components_array[0].size : null
+                            }
+                        </th>
+                        {#each components_array as component}
+                            <td>{component.value}</td>
+                        {/each}
+                    </tr>
+                {/each}
             </tbody>
         </table>
 
@@ -530,19 +530,19 @@
             </thead>
             <tbody>
                 {#each data.size_chart_values as components_array}
-                        <tr>
-                            <th>
-                                {
-                                    components_array.length > 0 ? 
-                                    components_array[0].size : null
-                                }
-                            </th>
-                            {#each components_array as component}
-                                {@const inch_value = Number(component.value) / 2.54}
-                                <td>{inch_value.toFixed(2)}</td>
-                            {/each}
-                        </tr>
-                    {/each}
+                    <tr>
+                        <th>
+                            {
+                                components_array.length > 0 ? 
+                                components_array[0].size : null
+                            }
+                        </th>
+                        {#each components_array as component}
+                            {@const inch_value = Number(component.value) / 2.54}
+                            <td>{inch_value.toFixed(2)}</td>
+                        {/each}
+                    </tr>
+                {/each}
             </tbody>
         </table>
 

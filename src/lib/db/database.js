@@ -1349,7 +1349,8 @@ export const dbFunctions = {
     },
 
     getSizeChartValues: async (id) => {
-        let query = "SELECT component_id, Size_Chart_Values.value, ";
+        let query = "SELECT Size_Chart_Values.option_id, ";
+        query += "component_id, Size_Chart_Values.value, ";
         query += "VO.value AS size FROM Size_Chart_Values ";
         query += "JOIN Variation_Option AS VO ON VO.id = Size_Chart_Values.option_id ";
         query += "WHERE product_id = ? ";
@@ -1385,5 +1386,38 @@ export const dbFunctions = {
         let query = "DELETE FROM Email_Unsubscribe_Token WHERE email = ? AND id > 0;";
 
         await db.query(query, email);
+    },
+
+    getProductSizeOptions: async (product_id) => {
+        let query = "SELECT VO.id AS option_id, PVO.id AS variation_id, ";
+        query += "value FROM Product_Variation_Options AS PVO ";
+        query += "JOIN Variation_Option AS VO ON PVO.id = VO.variation_id ";
+        query += "WHERE product_id = ? AND PVO.name = 'Size';";
+
+        const [result] = await db.query(query, product_id);
+
+        return result;
+    },
+
+    updateSizeChartText: async (product_id, above, below) => {
+        let query = "UPDATE Products SET size_chart_above_text = ?, ";
+        query += "size_chart_below_text = ? WHERE product_id = ?;";
+
+        await db.query(query, [above, below, product_id]);
+    },
+
+    updateSizeChartValue: async (product_id, option_id, component_id, value) => {
+        let query = "INSERT INTO Size_Chart_Values ";
+        query += "(product_id, option_id, component_id, value) ";
+        query += "VALUE (?, ?, ?, ?) ";
+        query += "ON DUPLICATE KEY UPDATE value = ?;";
+
+        await db.query(query, [
+            product_id, 
+            option_id, 
+            component_id, 
+            value,
+            value
+        ]);
     }
 }

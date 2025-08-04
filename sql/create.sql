@@ -125,7 +125,8 @@ CREATE TABLE IF NOT EXISTS Size_Chart_Values (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (option_id) REFERENCES Variation_Option(id),
     FOREIGN KEY (component_id) REFERENCES Size_Chart_Components(component_id),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    UNIQUE(component_id, option_id, product_id)
 );
 
 CREATE TABLE IF NOT EXISTS Images (

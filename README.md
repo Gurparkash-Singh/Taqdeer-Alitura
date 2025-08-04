@@ -70,6 +70,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Add size chart and return policy in products page
 - [x] Finish Unsubscribe page
 - [x] Email templates
+- [x] Fix Image Server
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -83,8 +84,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify order history
 - [ ] Verify payment methods page
 - [ ] Use Permissions correctly
-- [ ] Add Size chart permissions
-- [ ] Fix Image Server
 - [ ] Give each page a meta description and maybe a different title
 
 # Post Release To Do
@@ -154,12 +153,12 @@ Products
 - [x] add product
 - [x] add and delete images
 - [x] add and update components and properties
+- [x] update sizing info
 - [ ] add and update product types
 - [ ] add and update product variations
 - [ ] add and update variation options
 - [ ] add and update product items (also add variations to products)
 - [ ] add and delete discounts in one place
-- [ ] update sizing info
 
 Allow if collection, categories, products, images, sizes, components, properties or discounts
 
@@ -220,6 +219,7 @@ Pre-Launch:
 - [x] Buy Server
 - [ ] Ensure DB accuracy
 - [ ] Upload Product Photos
+- [ ] Talk to Faris about verifying Aramex data
 
 3. Post-Migration:
 - [ ] QA testing
