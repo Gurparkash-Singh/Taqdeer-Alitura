@@ -3,6 +3,15 @@ import { fail } from "@sveltejs/kit";
 
 export const load = async ({ locals, params }) => {
    const properties = await dbFunctions.getPropertiesByComponentId(params.component_id);
+
+   const [permission] = await dbFunctions.getAdminPermissionsByName(
+        locals.admin.admin_id,
+        "component properties"
+    );
+   
+    if (!permission) {
+        throw redirect(302, './');
+    }
    
    return {properties};
 }
@@ -13,7 +22,7 @@ export const actions = {
 
         const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
             locals.admin.admin_id,
-            7
+            "component properties"
         );
 
         if (!permissions) {
@@ -65,7 +74,7 @@ export const actions = {
 
         const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
             locals.admin.admin_id,
-            7
+            "component properties"
         );
 
         if (!permissions) {

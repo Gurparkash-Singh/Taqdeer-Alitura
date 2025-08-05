@@ -7,28 +7,29 @@ export const load = async ({ locals, parent }) => {
         throw redirect(302, '/profile');
     }
 
-    const { permissions, allowed } = await parent();
+    const id = locals.admin.admin_id;
 
-    if (!allowed.order) {
+    const [permission] = await dbFunctions.getAdminPermissionsByName(id, "orders");
+
+    if (!permission) {
         throw redirect(302, '/admin/settings');
     }
 
+    const permissions = await dbFunctions.getAdminPermissionsByParentName(id, "orders");
+
     const orderAllowance = {
-        users: false,
-        orders: false,
-        order_items: false
+        all_orders: false,
+        create_pickups: false
     }
 
     for (let i = 0; i < permissions.length; i++) {
-        if (permissions[i].permission_id == 9) {
-            orderAllowance.users = true;
-        }
-        else if(permissions[i].permission_id == 10) {
-            orderAllowance.orders = true;
-        }
-        else if (permissions[i].permission_id == 11)
-        {
-            orderAllowance.order_items = true;
+        switch (permissions[i].name) {
+            case "all orders":
+                orderAllowance.all_orders = true;
+                break;
+            case "create pickups":
+                orderAllowance.create_pickups = true;
+                break;
         }
     }
 

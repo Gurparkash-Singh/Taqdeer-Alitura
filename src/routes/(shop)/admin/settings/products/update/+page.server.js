@@ -2,6 +2,15 @@ import { dbFunctions } from "$lib/db/database";
 
 export async function load({locals})
 {
+    const [permission] = await dbFunctions.getAdminPermissionsByName(
+        locals.admin.admin_id,
+        "update products"
+    );
+
+    if (!permission) {
+        throw redirect(302, '/admin/settings/products');
+    }
+
     const categories = await dbFunctions.getCategories();
 
     const collections = await dbFunctions.getCollections();

@@ -511,9 +511,29 @@ export const dbFunctions = {
     },
 
     getAdminPermissions: async (admin_id) => {
-        let query = "SELECT * FROM Admin_Type_And_Permission WHERE admin_id = ?;";
+        let query = "SELECT * FROM Admin_Type_And_Permission ";
+        query += "WHERE admin_id = ?;";
 
         const [permissions] = await db.query(query, admin_id);
+
+        return permissions;
+    },
+
+    getAdminPermissionsByParentName: async (admin_id, name) => {
+        let query = "SELECT * FROM Admin_Type_And_Permission ";
+        query += "WHERE admin_id = ? AND ";
+        query += "parent_permission_name = ?;"
+
+        const [permissions] = await db.query(query, [admin_id, name]);
+
+        return permissions;
+    },
+
+    getAdminPermissionsByName: async (admin_id, name) => {
+        let query = "SELECT * FROM Admin_Type_And_Permission ";
+        query += "WHERE admin_id = ? AND name = ?;";
+
+        const [permissions] = await db.query(query, [admin_id, name]);
 
         return permissions;
     },

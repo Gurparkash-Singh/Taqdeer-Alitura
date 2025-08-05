@@ -6,9 +6,9 @@ export const actions = {
     submit: async ({ locals, cookies, request }) => {
         const data = await request.formData();
 
-        const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
+        const [permissions] = await dbFunctions.getAdminPermissionsByName(
             locals.admin.admin_id,
-            2
+            "categories"
         );
 
         if (!permissions) {
@@ -53,9 +53,9 @@ export const actions = {
     delete: async ({ locals, cookies, request }) => {
         const data = await request.formData();
 
-        const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
+        const [permissions] = await dbFunctions.getAdminPermissionsByName(
             locals.admin.admin_id,
-            2
+            "categories"
         );
 
         if (!permissions) {

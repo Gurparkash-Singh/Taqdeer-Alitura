@@ -1,9 +1,17 @@
 import { dbFunctions } from "$lib/db/database"
 import { fail } from "@sveltejs/kit";
-import * as fs from "fs";
 
 export const load = async ({ locals, params }) => {
     const images = await dbFunctions.getImagesByProductId(params.product_id);
+
+    const [permission] = await dbFunctions.getAdminPermissionsByName(
+        locals.admin.admin_id,
+        "images"
+    );
+   
+    if (!permission) {
+        throw redirect(302, './');
+    }
 
     return {images};
 }
@@ -14,6 +22,25 @@ export const actions = {
         const images = data.get("images");
 
         const [image] = await dbFunctions.getImage(images);
+
+        const [permission] = await dbFunctions.getAdminPermissionsByName(
+            locals.admin.admin_id,
+            "images"
+        );
+    
+        if (!permission) {
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
+
+        if (permission.allow_write != 1){
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
 
         if (!image) {
             return fail(404, {

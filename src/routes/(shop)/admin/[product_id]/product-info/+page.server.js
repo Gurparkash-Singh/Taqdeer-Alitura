@@ -1,5 +1,16 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { dbFunctions } from '$lib/db/database.js';
+
+export const load = async ({ locals, params }) => {
+    const [permission] = await dbFunctions.getAdminPermissionsByName(
+        locals.admin.admin_id,
+        "product info"
+    );
+   
+    if (!permission) {
+        throw redirect(302, './');
+    }
+}
 
 export const actions = {
     submit: async ({ locals, cookies, request }) => {
@@ -21,6 +32,25 @@ export const actions = {
         let setType = false;
         let setCollection = false;
         let resetCollection = false;
+
+        const [permission] = await dbFunctions.getAdminPermissionsByName(
+            locals.admin.admin_id,
+            "product info"
+        );
+    
+        if (!permission) {
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
+
+        if (permission.allow_write != 1){
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
 
         if (!product_id) {
             return fail(404, {

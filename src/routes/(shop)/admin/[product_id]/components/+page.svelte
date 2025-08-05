@@ -151,7 +151,9 @@
         </div>
         <div>
             {#if selectedComponent !== "Add"}
-                <a href={`./components/${selectedComponent}`}>update propeties</a>
+                {#if data.property_permission}
+                    <a href={`./components/${selectedComponent}`}>update propeties</a>
+                {/if}
             {/if}
         </div>
     </form>

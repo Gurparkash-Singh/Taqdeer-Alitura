@@ -8,7 +8,7 @@ export const actions = {
 
         const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
             locals.admin.admin_id,
-            1
+            "collections"
         );
 
         if (!permissions) {
@@ -18,7 +18,7 @@ export const actions = {
             });
         }
 
-        if (!permissions.allow_write == 1) {
+        if (permissions.allow_write != 1) {
             return fail(400, {
                 invalid: true,
                 message: "Invalid permissions"
@@ -56,7 +56,7 @@ export const actions = {
 
         const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
             locals.admin.admin_id,
-            1
+            "collections"
         );
 
         if (!permissions) {
@@ -66,7 +66,7 @@ export const actions = {
             });
         }
 
-        if (!permissions.allow_write == 1) {
+        if (permissions.allow_write != 1) {
             return fail(400, {
                 invalid: true,
                 message: "Invalid permissions"

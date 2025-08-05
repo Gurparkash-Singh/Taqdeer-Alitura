@@ -7,7 +7,7 @@ export const load = async ({ locals }) => {
         throw redirect(302, '/profile');
     }
 
-    const permissions = await dbFunctions.getAdminPermissions(locals.admin.admin_id);
+    const id = locals.admin.admin_id;
 
     let allowed = {
         product: false,
@@ -16,21 +16,28 @@ export const load = async ({ locals }) => {
         admin: false
     };
 
-    for (let i = 0; i < permissions.length; i++) {
-        if (permissions[i].permission_id < 9) {
-            allowed.product = true;
-        }
-        else if(permissions[i].permission_id < 12) {
-            allowed.order = true;
-        }
-        else if (permissions[i].permission_id < 18)
-        {
-            allowed.users = true;
-        }
-        else {
-            allowed.admin = true;
-        }
+    let [permission] = await dbFunctions.getAdminPermissionsByName(id, "products");
+
+    if (permission) {
+        allowed.product = true;
     }
 
-    return {permissions, allowed};
+    [permission] = await dbFunctions.getAdminPermissionsByName(id, "orders");
+
+    if (permission) {
+        allowed.order = true;
+    }
+
+    [permission] = await dbFunctions.getAdminPermissionsByName(id, "users");
+
+    if (permission) {
+        allowed.users = true;
+    }
+    [permission] = await dbFunctions.getAdminPermissionsByName(id, "admins");
+
+    if (permission) {
+        allowed.admin = true;
+    }
+
+    return {allowed};
 }

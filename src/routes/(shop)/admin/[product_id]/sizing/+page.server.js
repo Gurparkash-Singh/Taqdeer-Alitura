@@ -1,6 +1,16 @@
 import { dbFunctions } from "$lib/db/database";
+import { redirect } from "@sveltejs/kit";
 
 export const load = async ({ locals, params }) => {
+    const [permission] = await dbFunctions.getAdminPermissionsByName(
+        locals.admin.admin_id,
+        "sizing info"
+    );
+    
+    if (!permission) {
+        throw redirect(302, './');
+    }
+
     const size_chart_components = await dbFunctions.getSizeChartComponents(
         params.product_id
     );
@@ -39,6 +49,25 @@ export const actions = {
         const above_text = data.get("above_text");
         let size_chart = data.get("size_chart");
         const below_text = data.get("below_text");
+
+        const [permission] = await dbFunctions.getAdminPermissionsByName(
+            locals.admin.admin_id,
+            "sizing info"
+        );
+    
+        if (!permission) {
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
+
+        if (permission.allow_write != 1){
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
 
         size_chart = JSON.parse(size_chart);
 

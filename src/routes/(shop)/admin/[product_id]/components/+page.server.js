@@ -13,7 +13,7 @@ export const actions = {
 
         const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
             locals.admin.admin_id,
-            6
+            'components'
         );
 
         if (!permissions) {
@@ -64,7 +64,7 @@ export const actions = {
 
         const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
             locals.admin.admin_id,
-            6
+            'components'
         );
 
         if (!permissions) {

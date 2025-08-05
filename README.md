@@ -71,6 +71,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Finish Unsubscribe page
 - [x] Email templates
 - [x] Fix Image Server
+- [x] Use Permissions correctly
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -83,7 +84,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
-- [ ] Use Permissions correctly
 - [ ] Give each page a meta description and maybe a different title
 
 # Post Release To Do

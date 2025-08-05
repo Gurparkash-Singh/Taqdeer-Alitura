@@ -7,32 +7,41 @@ export const load = async ({ locals, parent }) => {
         throw redirect(302, '/profile');
     }
 
-    const { permissions, allowed } = await parent();
+    const id = locals.admin.admin_id;
 
-    if (!allowed.product) {
+    const [permission] = await dbFunctions.getAdminPermissionsByName(id, "products");
+
+    if (!permission) {
         throw redirect(302, '/admin/settings');
     }
 
+    const permissions = await dbFunctions.getAdminPermissionsByParentName(id, "products");
+
     const productsAllowance = {
-        categories: false,
+        product_types: false,
+        update_products: false,
         collections: false,
-        products: false,
+        categories: false,
         discounts: false
     }
 
     for (let i = 0; i < permissions.length; i++) {
-        if (permissions[i].permission_id == 1) {
-            productsAllowance.collections = true;
-        }
-        else if(permissions[i].permission_id == 2) {
-            productsAllowance.categories = true;
-        }
-        else if (permissions[i].permission_id < 8)
-        {
-            productsAllowance.products = true;
-        }
-        else if (permissions[i].permission_id == 8){
-            productsAllowance.discounts = true;
+        switch (permissions[i].name) {
+            case "product types":
+                productsAllowance.product_types = true;
+                break;
+            case "update products":
+                productsAllowance.update_products = true;
+                break;
+            case "collections":
+                productsAllowance.collections = true;
+                break;
+            case "categories":
+                productsAllowance.categories = true;
+                break;
+            case "discounts":
+                productsAllowance.discounts = true;
+                break;
         }
     }
 

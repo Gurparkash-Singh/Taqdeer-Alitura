@@ -7,9 +7,12 @@ export const load = async ({ locals, parent }) => {
         throw redirect(302, '/profile');
     }
 
-    const { productsAllowance } = await parent();
+    const [permission] = await dbFunctions.getAdminPermissionsByName(
+        locals.admin.admin_id,
+        "collections"
+    );
 
-    if (!productsAllowance.collections) {
+    if (!permission) {
         throw redirect(302, '/admin/settings/products');
     }
 

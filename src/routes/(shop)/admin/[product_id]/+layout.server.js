@@ -14,11 +14,18 @@ export const load = async ({ locals, parent, params }) => {
         throw redirect(302, '/profile');
     }
 
-    const { permissions, allowed } = await parent();
+    const id = locals.admin.admin_id;
 
-    if (!allowed.product) {
-        throw redirect(302, '/admin/settings');
+    const [permission] = await dbFunctions.getAdminPermissionsByName(id, "update products");
+
+    if (!permission) {
+        throw redirect(302, '/admin/settings/products');
     }
+
+    const permissions = await dbFunctions.getAdminPermissionsByParentName(
+        id, 
+        "update products"
+    );
 
     const categories = await dbFunctions.getCategories();
 
@@ -26,40 +33,30 @@ export const load = async ({ locals, parent, params }) => {
 
     const product_types = await dbFunctions.getProductTypes();
 
-    const productsAllowance = {
-       products: false,
-       productsWrite: false,
+    let productsAllowance = {
+       product_info: false,
        images: false,
-       imagesWrite: false,
-       sizes: false,
-       sizesWrite: false,
+       product_items: false,
        components: false,
-       componentsWrite: false,
-       properties: false,
-       propertiesWrite: false
+       sizing_info: false
     }
 
     for (let i = 0; i < permissions.length; i++) {
-        switch(permissions[i].permission_id) {
-            case 3:
-                productsAllowance.products = true;
-                productsAllowance.productsWrite = permissions[i].allow_write;
+        switch (permissions[i].name) {
+            case "product info":
+                productsAllowance.product_info = true;
                 break;
-            case 4:
+            case "images":
                 productsAllowance.images = true;
-                productsAllowance.imagesWrite = permissions[i].allow_write;
                 break;
-            case 5:
-                productsAllowance.sizes = true;
-                productsAllowance.sizesWrite = permissions[i].allow_write;
+            case "product items":
+                productsAllowance.product_items = true;
                 break;
-            case 6:
+            case "components":
                 productsAllowance.components = true;
-                productsAllowance.componentsWrite = permissions[i].allow_write;
                 break;
-            case 7:
-                productsAllowance.properties = true;
-                productsAllowance.propertiesWrite = permissions[i].allow_write;
+            case "sizing info":
+                productsAllowance.sizing_info = true;
                 break;
         }
     }
