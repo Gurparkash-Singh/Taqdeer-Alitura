@@ -25,6 +25,7 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        background-color: #1e1e1e;
     }
 
     img {
@@ -33,7 +34,7 @@
         object-fit: cover;
     }
 
-    @media screen and (width < 406px) {
+    @media screen and (width < 508px) {
         img {
             width: 90px;
             height: 135px;
@@ -41,7 +42,7 @@
         }
     }
 
-    @media screen and (width < 350px) {
+    @media screen and (width < 370px) {
         img {
             width: 65px;
             height: 98px;

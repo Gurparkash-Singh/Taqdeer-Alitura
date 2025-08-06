@@ -1,6 +1,6 @@
 import { dbFunctions } from "$lib/db/database";
 import { error, fail, redirect } from "@sveltejs/kit";
-import { PROD_SK_TAP, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
+import { MODE, PROD_SK_TAP, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
 import axios from "axios";
 import { getCountryCallingCode } from "libphonenumber-js";
 import { profileEditor } from "$lib/functions/profile-editor";
@@ -158,6 +158,12 @@ export const actions = {
             });
         }
 
+        let redirect_url = "https://taqdeeralitura.com/orders";
+
+        if (MODE == "DEVELOPMENT") {
+            redirect_url = "http://localhost:5173/orders";
+        }
+
         const options = {
             method: 'POST',
             url: 'https://api.tap.company/v2/charges/',
@@ -184,7 +190,7 @@ export const actions = {
                 reference: { order: order_id },
                 merchant: { id: TAP_MERCHANT_ID },
                 source: { id: 'src_all' },
-                redirect: { url: 'https://taqdeeralitura.com/orders' }
+                redirect: { url: redirect_url }
             }
         };
 

@@ -336,9 +336,9 @@
         margin: 10px;
     }
 
-    @media screen and (width < 406px) {
+    @media screen and (width < 508px) {
         #shop {
-            padding: 0 30px;
+            padding: 0 10px;
             justify-items: center;
             align-items: center;
         }
@@ -361,7 +361,7 @@
 
         #sort,
         #collection{
-            width:90px;
+            width: 90px;
             margin: 0;
         }
 
@@ -387,9 +387,23 @@
         }
     }
 
-    @media screen and (width < 350px) {
+    @media screen and (width < 370px) {
         #shop {
             padding: 0 10px;
+        }
+
+        #category-select {
+            width: 65px;
+            font-size: 12pt;
+            padding: 0;
+            margin: 0;
+        }
+
+        #sort,
+        #collection{
+            width: 65px;
+            margin: 0;
+            font-size: 7pt;
         }
 
         .product-links {
