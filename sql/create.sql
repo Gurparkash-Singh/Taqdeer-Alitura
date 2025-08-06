@@ -25,51 +25,29 @@ CREATE TABLE IF NOT EXISTS Collections (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Product_Type (
-	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS Variations (
+	variation_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Product_Type_Parents (
-	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    type_id INT NOT NULL,
-    parent_type_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (type_id) REFERENCES Product_Type(id),
-    FOREIGN KEY (parent_type_id) REFERENCES Product_Type(id),
-    CHECK (type_id <> parent_type_id)
-);
-
-CREATE TABLE IF NOT EXISTS Product_Variations(
-	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    type_id INT NOT NULL,
-    name TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (type_id) REFERENCES Product_Type(id)
-);
-
-CREATE TABLE IF NOT EXISTS Variation_Option(
-	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS Variation_Options(
+	option_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     variation_id INT NOT NULL,
     value TEXT NOT NULL,
     description TEXT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (variation_id) REFERENCES Product_Variations(id)
+    FOREIGN KEY (variation_id) REFERENCES Variations(variation_id)
 );
 
 CREATE TABLE IF NOT EXISTS Size_Chart_Components (
 	component_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    type_id INT NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (type_id) REFERENCES Product_Type(id)
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Possibly update SKU
@@ -88,8 +66,36 @@ CREATE TABLE IF NOT EXISTS Products (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES Category(category_id),
-    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id),
-    FOREIGN KEY (type_id) REFERENCES Product_Type(id)
+    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id)
+);
+
+CREATE TABLE IF NOT EXISTS Product_Variations(
+	variation_id INT NOT NULL,
+    product_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (variation_id) REFERENCES Variations(variation_id),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    PRIMARY KEY (variation_id, product_id)
+);
+
+CREATE TABLE IF NOT EXISTS Product_Variation_Options(
+	option_id INT NOT NULL,
+    product_id INT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (option_id) REFERENCES Variation_Options(option_id),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    PRIMARY KEY (option_id, product_id)
+);
+
+CREATE TABLE IF NOT EXISTS Product_Size_Chart_Components (
+	product_id INT NOT NULL,
+    component_id INT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	FOREIGN KEY (product_id) REFERENCES Products(product_id),
+	FOREIGN KEY (component_id) REFERENCES Size_Chart_Components(component_id)
 );
 
 CREATE TABLE IF NOT EXISTS Product_Item (
@@ -111,22 +117,20 @@ CREATE TABLE IF NOT EXISTS Product_Configuration (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_item) REFERENCES Product_Item(item_id),
-    FOREIGN KEY (variation_option) REFERENCES Variation_Option(id),
+    FOREIGN KEY (variation_option) REFERENCES Variation_Options(option_id),
     PRIMARY KEY (product_item, variation_option)
 );
 
 CREATE TABLE IF NOT EXISTS Size_Chart_Values (
-	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     component_id INT NOT NULL,
-    option_id INT NOT NULL,
     product_id INT NOT NULL,
+    option_id INT NOT NULL,
     value DECIMAL NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (option_id) REFERENCES Variation_Option(id),
     FOREIGN KEY (component_id) REFERENCES Size_Chart_Components(component_id),
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
-    UNIQUE(component_id, option_id, product_id)
+    PRIMARY KEY(component_id, product_id, option_id)
 );
 
 CREATE TABLE IF NOT EXISTS Images (
@@ -475,42 +479,3 @@ FROM Permission_Types AS PT1
 JOIN Admin_Permissions ON Admin_Permissions.permission_id = PT1.permission_id
 JOIN Admin_Type AS AT ON AT.type_id = Admin_Permissions.type_id
 JOIN Admins ON Admins.type_id = AT.type_id;
-
-CREATE OR REPLACE VIEW Product_Type_And_Parent AS
-WITH RECURSIVE cte (id, name, parent_id, parent_name) AS
-(
-	SELECT PT1.id, PT1.name, PT2.id AS parent_id, PT2.name AS parent_name
-    FROM Product_Type AS PT1
-    JOIN Product_Type_Parents ON Product_Type_Parents.type_id = PT1.id
-    JOIN Product_Type AS PT2 ON Product_Type_Parents.parent_type_id = PT2.id
-    UNION
-    SELECT c.id, c.name, cPT2.id AS parent_id, cPT2.name AS parent_name
-    FROM cte c
-    JOIN Product_Type_Parents AS PTP ON c.parent_id = PTP.type_id
-    JOIN Product_Type AS cPT2 ON PTP.parent_type_id = cPT2.id
-)
-SELECT * FROM cte;
-
-CREATE OR REPLACE VIEW Product_Variation_Options AS
-SELECT Products.product_id, PV.id, PT.id AS type_id, PV.name FROM Products
-LEFT JOIN Product_Type AS PT ON PT.id = Products.type_id
-LEFT JOIN Product_Type_And_Parent AS PTP ON PT.id = PTP.id
-JOIN Product_Variations AS PV ON PT.id = PV.type_id
-UNION
-SELECT Products.product_id, PV.id, PT.id, PV.name FROM Products
-LEFT JOIN Product_Type AS PT ON PT.id = Products.type_id
-LEFT JOIN Product_Type_And_Parent AS PTP ON PT.id = PTP.id
-JOIN Product_Variations AS PV ON PTP.parent_id = PV.type_id;
-
-CREATE OR REPLACE VIEW Product_Size_Chart_Components AS
-SELECT Products.product_id, SCC.component_id, PT.id AS type_id, SCC.name, SCC.description
-FROM Products
-LEFT JOIN Product_Type AS PT ON PT.id = Products.type_id
-LEFT JOIN Product_Type_And_Parent AS PTP ON PT.id = PTP.id
-JOIN Size_Chart_Components AS SCC ON SCC.type_id = PT.id
-UNION
-SELECT Products.product_id, SCC.component_id, PT.id AS type_id, SCC.name, SCC.description
-FROM Products
-LEFT JOIN Product_Type AS PT ON PT.id = Products.type_id
-LEFT JOIN Product_Type_And_Parent AS PTP ON PT.id = PTP.id
-JOIN Size_Chart_Components AS SCC ON SCC.type_id = PTP.parent_id;

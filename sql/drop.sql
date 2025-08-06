@@ -1,9 +1,3 @@
-DROP VIEW IF EXISTS Product_Size_Chart_Components;
-
-DROP VIEW IF EXISTS Product_Variation_Options;
-
-DROP VIEW IF EXISTS Product_Type_And_Parent;
-
 DROP VIEW IF EXISTS Admin_Type_And_Permission;
 
 DROP TABLE IF EXISTS Early_Access;
@@ -74,17 +68,19 @@ DROP TABLE IF EXISTS Product_Configuration;
 
 DROP TABLE IF EXISTS Product_Item;
 
+DROP TABLE IF EXISTS Product_Size_Chart_Components;
+
+DROP TABLE IF EXISTS Product_Variation_Options;
+
+DROP TABLE IF EXISTS Product_Variations;
+
 DROP TABLE IF EXISTS Products;
 
 DROP TABLE IF EXISTS Size_Chart_Components;
 
-DROP TABLE IF EXISTS Variation_Option;
+DROP TABLE IF EXISTS Variation_Options;
 
-DROP TABLE IF EXISTS Product_Variations;
-
-DROP TABLE IF EXISTS Product_Type_Parents;
-
-DROP TABLE IF EXISTS Product_Type;
+DROP TABLE IF EXISTS Variations;
 
 DROP TABLE IF EXISTS Collections;
 

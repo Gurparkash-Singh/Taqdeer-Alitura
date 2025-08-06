@@ -31,8 +31,6 @@ export const load = async ({ locals, parent, params }) => {
 
     const collections = await dbFunctions.getCollections();
 
-    const product_types = await dbFunctions.getProductTypes();
-
     let productsAllowance = {
        product_info: false,
        images: false,
@@ -66,7 +64,6 @@ export const load = async ({ locals, parent, params }) => {
         productsAllowance, 
         product_id: params.product_id,
         categories,
-        collections,
-        product_types
+        collections
     }
 }

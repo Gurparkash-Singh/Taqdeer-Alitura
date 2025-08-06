@@ -19,12 +19,9 @@ export const load = async ({ locals, parent, params }) => {
 
     const collections = await dbFunctions.getCollections();
 
-    const product_types = await dbFunctions.getProductTypes();
-
     return {
         categories,
-        collections,
-        product_types
+        collections
     }
 }
 
@@ -38,7 +35,6 @@ export const actions = {
         const price = data.get("price");
         const alt_desc = data.get("alt_desc");
         const description = data.get("description");
-        const type = data.get("type_id");
 
         const [permission] = await dbFunctions.getAdminPermissionsByName(
             locals.admin.admin_id,
@@ -59,7 +55,7 @@ export const actions = {
             });
         }
 
-        if (!name || !price || !alt_desc || !category || !description || !type) {
+        if (!name || !price || !alt_desc || !category || !description) {
             return fail(400, {
                 invalid: true,
                 message: "Fill in all required fields"
@@ -75,14 +71,7 @@ export const actions = {
             });
         }
 
-        [found] = await dbFunctions.getProductTypeById(type);
-
-        if (!found) {
-            return fail(400, {
-                invalid: true,
-                message: "Invalid type id"
-            });
-        }
+        let result;
 
         if (collection) {
             [found] = await dbFunctions.getCollectionByID(collection);
@@ -94,25 +83,23 @@ export const actions = {
                 });
             }
 
-            await dbFunctions.createProduct(
+            result = await dbFunctions.createProduct(
                 name,
                 category,
                 collection,
                 price,
                 alt_desc,
-                description,
-                type
+                description
             );
         }
         else {
-            await dbFunctions.createProduct(
+            result = await dbFunctions.createProduct(
                 name,
                 category,
                 null,
                 price,
                 alt_desc,
-                description,
-                type
+                description
             );
         }
 

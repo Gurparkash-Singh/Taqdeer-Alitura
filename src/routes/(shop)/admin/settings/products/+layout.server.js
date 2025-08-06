@@ -18,7 +18,8 @@ export const load = async ({ locals, parent }) => {
     const permissions = await dbFunctions.getAdminPermissionsByParentName(id, "products");
 
     const productsAllowance = {
-        product_types: false,
+        size_components: false,
+        product_variations: false,
         update_products: false,
         collections: false,
         categories: false,
@@ -27,9 +28,6 @@ export const load = async ({ locals, parent }) => {
 
     for (let i = 0; i < permissions.length; i++) {
         switch (permissions[i].name) {
-            case "product types":
-                productsAllowance.product_types = true;
-                break;
             case "update products":
                 productsAllowance.update_products = true;
                 break;
@@ -41,6 +39,12 @@ export const load = async ({ locals, parent }) => {
                 break;
             case "discounts":
                 productsAllowance.discounts = true;
+                break;
+            case "size components":
+                productsAllowance.size_components = true;
+                break;
+            case "product variations":
+                productsAllowance.product_variations = true;
                 break;
         }
     }

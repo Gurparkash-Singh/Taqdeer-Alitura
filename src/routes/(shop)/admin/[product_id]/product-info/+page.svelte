@@ -11,10 +11,9 @@
     let live = $state(data.product.live == 1 ? true : false);
     let alt_desc = $state(data.product.image_alt_desc);
     let description = $state(data.product.description);
-    let type = $state(data.product.type_id);
 
     let enableSubmit = $derived.by(() => {
-        if (!name || !category || !price || !alt_desc || !type || !description) {
+        if (!name || !category || !price || !alt_desc || !description) {
             return false;
         }
 
@@ -43,10 +42,6 @@
         }
 
         if (description != data.product.description) {
-            return true;
-        }
-
-        if (type != data.product.type) {
             return true;
         }
 
@@ -142,20 +137,6 @@
                 </option>
             {/each}
             <option value={null}>No Collection</option>
-            </select>
-        </p>
-        <p>
-            <label for="type_id">product type:</label>
-            <select
-                name="type_id"
-                id="type_id"
-                bind:value={type}
-            >
-            {#each data.product_types as product_type}
-                <option value={product_type.id}>
-                    {product_type.name}
-                </option>
-            {/each}
             </select>
         </p>
         <p>

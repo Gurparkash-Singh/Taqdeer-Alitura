@@ -21,7 +21,6 @@ export const actions = {
         const name = data.get("name");
         const category = data.get("category_id");
         const collection = data.get("collection_id");
-        const product_type = data.get("type_id");
         const price = data.get("price");
         const live = data.get("live");
         const alt_desc = data.get("alt_desc");
@@ -145,21 +144,6 @@ export const actions = {
             }
         }
 
-        if (product_type) {
-            if (product_type != product.type_id){
-                let [found] = await dbFunctions.getProductTypeById(product_type);
-
-                if (!found) {
-                    return fail(400, {
-                        invalid: true,
-                        message: "invalid type id"
-                    })
-                }
-
-                setType = true;
-            }
-        }
-
         if (setLive) {
             await dbFunctions.updateProductLive(product_id, 1);
         }
@@ -187,13 +171,6 @@ export const actions = {
                 product_id,
                 null
             );
-        }
-
-        if (setType) {
-            await dbFunctions.updateProductType(
-                product_id,
-                product_type
-            )
         }
 
         if (name)

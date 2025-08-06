@@ -159,9 +159,13 @@ export const dbFunctions = {
     },
 
     getProductVariations: async (product_id) => {
-        let query = "SELECT * FROM Product_Variation_Options ";
-        query += "WHERE product_id = ?";
-        query += "ORDER BY product_id ASC, id ASC;";
+        let query = "SELECT product_id, ";
+        query += "Product_Variations.variation_id AS id, name ";
+        query += "FROM Product_Variations ";
+        query += "JOIN Variations ON ";
+        query += "Variations.variation_id = Product_Variations.variation_id ";
+        query += "WHERE product_id = ? ";
+        query += "ORDER BY id ASC;";
 
         const [result] = await db.query(query, product_id);
 
@@ -169,9 +173,10 @@ export const dbFunctions = {
     },
 
     getProductVariationOptions: async (product_id) => {
-        let query = "SELECT VO.id AS option_id, PVO.id AS variation_id, ";
-        query += "value FROM Product_Variation_Options AS PVO ";
-        query += "JOIN Variation_Option AS VO ON PVO.id = VO.variation_id ";
+        let query = "SELECT VO.option_id, VO.variation_id, VO.value ";
+        query += "FROM Product_Variation_Options ";
+        query += "JOIN Variation_Options AS VO ON ";
+        query += "VO.option_id = Product_Variation_Options.option_id ";
         query += "WHERE product_id = ?;";
 
         const [result] = await db.query(query, product_id);
@@ -182,11 +187,11 @@ export const dbFunctions = {
     getProductItems: async (product_id) => {
         let query = "SELECT items.*, ";
         query += "(";
-        query += "SELECT JSON_OBJECTAGG(Variation_Option.variation_id, ";
-        query += "Variation_Option.id) ";
+        query += "SELECT JSON_OBJECTAGG(Variation_Options.variation_id, ";
+        query += "Variation_Options.option_id) ";
         query += "FROM Product_Configuration ";
-        query += "JOIN Variation_Option ON ";
-        query += "Product_Configuration.variation_option = Variation_Option.id ";
+        query += "JOIN Variation_Options ON ";
+        query += "Product_Configuration.variation_option = Variation_Options.option_id ";
         query += "WHERE Product_Configuration.product_item = items.item_id";
         query += ") AS variations ";
         query += "FROM Product_Item as items ";
@@ -255,13 +260,13 @@ export const dbFunctions = {
         let query = "SELECT name, CI.*, PI.price, PI.sku, Images.*, ";
         query += "(";
         query += "SELECT JSON_OBJECTAGG( ";
-        query += "Product_Variations.name, Variation_Option.value) ";
+        query += "Variations.name, Variation_Options.value) ";
         query += "FROM Product_Configuration ";
-        query += "JOIN Variation_Option ON ";
+        query += "JOIN Variation_Options ON ";
         query += "Product_Configuration.variation_option = ";
-        query += "Variation_Option.id ";
-        query += "JOIN Product_Variations ON "
-        query += "Variation_Option.variation_id = Product_Variations.id "
+        query += "Variation_Options.option_id ";
+        query += "JOIN Variations ON "
+        query += "Variation_Options.variation_id = Variations.variation_id "
         query += "WHERE Product_Configuration.product_item = PI.item_id";
         query += ") AS variations ";
         query += "FROM Cart_Items AS CI ";
@@ -674,12 +679,6 @@ export const dbFunctions = {
         await db.query(query, [value, id]);
     },
 
-    // updateProductSKU: async (id, value) => {
-    //     let query = "UPDATE Products SET sku = ? WHERE product_id = ?;";
-
-    //     await db.query(query, [value, id]);
-    // },
-
     updateProductCategory: async (id, value) => {
         let query = "UPDATE Products SET category_id = ? WHERE product_id = ?;";
 
@@ -1014,13 +1013,13 @@ export const dbFunctions = {
         query += "PI.weight, ";
         query += "(";
         query += "SELECT JSON_OBJECTAGG";
-        query += "(Product_Variations.name, Variation_Option.value) ";
+        query += "(Variations.name, Variation_Options.value) ";
         query += "FROM Product_Configuration ";
-        query += "JOIN Variation_Option ON ";
+        query += "JOIN Variation_Options ON ";
         query += "Product_Configuration.variation_option = ";
-        query += "Variation_Option.id ";
-        query += "JOIN Product_Variations ON "
-        query += "Variation_Option.variation_id = Product_Variations.id "
+        query += "Variation_Options.option_id ";
+        query += "JOIN Variations ON "
+        query += "Variation_Options.variation_id = Variations.variation_id "
         query += "WHERE Product_Configuration.product_item = PI.item_id";
         query += ") AS variations ";
         query += "FROM Order_Items AS OI ";
@@ -1286,23 +1285,23 @@ export const dbFunctions = {
         collection,
         price,
         alt_desc,
-        description,
-        type
+        description
     ) => {
         let query = "INSERT INTO Products (name, category_id, ";
         query += "collection_id, default_price, image_alt_desc, ";
-        query += "description, type_id, live) "
-        query += "VALUES (?, ?, ?, ?, ?, ?, ?, 0);"
+        query += "description, live) "
+        query += "VALUES (?, ?, ?, ?, ?, ?, 0);"
 
-        await db.query(query, [
+        const [result] = await db.query(query, [
             name,
             category,
             collection,
             price,
             alt_desc,
-            description,
-            type
+            description
         ]);
+
+        return result;
     },
 
     saveContactForm: async (email, message) => {
@@ -1310,29 +1309,6 @@ export const dbFunctions = {
         query += "(email, message) VALUES (?, ?)";
 
         await db.query(query, [email, message]);
-    },
-
-    getProductTypes: async () => {
-        let query = "SELECT * FROM Product_Type";
-
-        const [result] = await db.query(query);
-
-        return result;
-    },
-
-    getProductTypeById: async (id) => {
-        let query = "SELECT * FROM Product_Type WHERE id = ?;";
-
-        const [result] = await db.query(query, id);
-
-        return result;
-    },
-
-    updateProductType: async (product_id, type_id) => {
-        let query = "UPDATE Products SET type_id = ? ";
-        query += "WHERE product_id = ?;";
-
-        await db.query(query, [type_id, product_id]);
     },
 
     earlyAccess: async (email) => {
@@ -1359,9 +1335,15 @@ export const dbFunctions = {
     },
 
     getSizeChartComponents: async (product_id) => {
-        let query = "SELECT * FROM Product_Size_Chart_Components ";
+        let query = "SELECT ";
+        query += "product_id, Size_Chart_Components.component_id, ";
+        query += "name, description ";
+        query += "FROM Product_Size_Chart_Components ";
+        query += "JOIN Size_Chart_Components ON "
+        query += "Product_Size_Chart_Components.component_id = ";
+        query += "Size_Chart_Components.component_id ";
         query += "WHERE product_id = ? ";
-        query += "ORDER BY component_id";
+        query += "ORDER BY component_id;";
 
         const [result] = await db.query(query, product_id);
 
@@ -1369,12 +1351,12 @@ export const dbFunctions = {
     },
 
     getSizeChartValues: async (id) => {
-        let query = "SELECT Size_Chart_Values.option_id, ";
-        query += "component_id, Size_Chart_Values.value, ";
-        query += "VO.value AS size FROM Size_Chart_Values ";
-        query += "JOIN Variation_Option AS VO ON VO.id = Size_Chart_Values.option_id ";
+        let query = "SELECT SCV.*, VO.value AS size ";
+        query += "FROM Size_Chart_Values AS SCV ";
+        query += "JOIN Variation_Options AS VO ON ";
+        query += "VO.option_id = SCV.option_id ";
         query += "WHERE product_id = ? ";
-        query += "ORDER BY Size_Chart_Values.option_id ASC, component_id ASC;";
+        query += "ORDER BY VO.option_id ASC, component_id ASC;";
 
         const [result] = await db.query(query, id);
 
@@ -1409,10 +1391,15 @@ export const dbFunctions = {
     },
 
     getProductSizeOptions: async (product_id) => {
-        let query = "SELECT VO.id AS option_id, PVO.id AS variation_id, ";
-        query += "value FROM Product_Variation_Options AS PVO ";
-        query += "JOIN Variation_Option AS VO ON PVO.id = VO.variation_id ";
-        query += "WHERE product_id = ? AND PVO.name = 'Size';";
+        let query = "SELECT Variation_Options.option_id, ";
+        query += "Variation_Options.variation_id, value ";
+        query += "FROM Product_Variation_Options ";
+        query += "JOIN Variation_Options ON ";
+        query += "Product_Variation_Options.option_id = ";
+        query += "Variation_Options.option_id ";
+        query += "JOIN Variations ON ";
+        query += "Variations.variation_id = Variation_Options.variation_id ";
+        query += "WHERE product_id = ? AND name = 'Size';"
 
         const [result] = await db.query(query, product_id);
 
@@ -1433,8 +1420,8 @@ export const dbFunctions = {
         query += "ON DUPLICATE KEY UPDATE value = ?;";
 
         await db.query(query, [
-            product_id, 
-            option_id, 
+            product_id,
+            option_id,
             component_id, 
             value,
             value

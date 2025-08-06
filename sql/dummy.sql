@@ -14,9 +14,9 @@ VALUES
 ("orders", "The ability to access order related settings", null, 1, 1),
 ("users", "The ability to access user related settings", null, 1, 1),
 ("admins", "The ability to access admin related settings", null, 1, 1),
-("product types", "The ability to add, update and delete product types", 1, 1, 1),
-("product variations", "The ability to add, update and delete variations on a product type (ex add Size / Colour to Clothing", 5, 1, 1),
-("variation options", "The ability to add, update and delete options for a variation (ex add XXL to Size", 6, 1, 1),
+("size components", "The ability to add, update and delete components for the size chart", 1, 1, 1),
+("product variations", "The ability to add, update and delete variations on a product type (ex add Size / Colour to Clothing)", 1, 1, 1),
+("variation options", "The ability to add, update and delete options for a variation (ex add XXL to Size)", 6, 1, 1),
 ("update products", "The ability to add and update products", 1, 1, 1),
 ("components", "The ability to add, update and delete product components", 8, 1, 1),
 ("component properties", "The ability to add, update and delete properties for components", 9, 1, 1),
@@ -74,55 +74,15 @@ VALUES
 (27, 1, 1),
 (28, 1, 0);
 
-INSERT INTO Product_Type (name) VALUES 
-("Clothing"),
-("Tees"),
-("Sweatshirts"),
-("Sweatpants"),
-("hoodies"),
-("Shorts");
 
-INSERT INTO Product_Type_Parents (type_id, parent_type_id)
-VALUES 
-(2, 1),
-(3, 1),
-(4, 1),
-(5, 1),
-(6, 1);
+INSERT INTO Variations(name) VALUE ("Size");
 
-INSERT INTO Product_Variations(type_id, name) VALUE (1, "Size");
-
-INSERT INTO Variation_Option (variation_id, value) 
+INSERT INTO Variation_Options (variation_id, value) 
 VALUES
 (1, "S"),
 (1, "M"),
 (1, "L"),
 (1, "XL");
-
-INSERT INTO Size_Chart_Components (type_id, name)
-VALUES
-(2, "pit-to-pit"),
-(2, "cross shoulder"),
-(2, "sleeve length"),
-(2, "length"),
-(3, "hem"),
-(3, "pit-to-pit"),
-(3, "cross shoulder"),
-(3, "sleeve length"),
-(3, "length"),
-(4, "inseam"),
-(4, "outseam"),
-(4, "waist"),
-(4, "hip length"),
-(5, "hem"),
-(5, "pit-to-pit"),
-(5, "cross shoulder"),
-(5, "sleeve length"),
-(5, "length"),
-(6, "inseam"),
-(6, "outseam"),
-(6, "waist"),
-(6, "hip length");
 
 INSERT INTO Products (type_id, name, default_price, category_id, collection_id, description, image_alt_desc)
 VALUES
@@ -181,20 +141,187 @@ VALUES
     "A pair of shorts in black, with prints from medieval Islamic medical texts."
 );
 
+INSERT INTO Product_Variations (variation_id, product_id)
+VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 6);
+
+INSERT INTO Product_Variation_Options (product_id, option_id)
+VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4),
+(3, 1),
+(3, 2),
+(3, 3),
+(3, 4),
+(4, 1),
+(4, 2),
+(4, 3),
+(4, 4),
+(5, 1),
+(5, 2),
+(5, 3),
+(5, 4),
+(6, 1),
+(6, 2),
+(6, 3),
+(6, 4);
+
+INSERT INTO Size_Chart_Components (name)
+VALUES
+("pit-to-pit"),
+("cross shoulder"),
+("sleeve length"),
+("length"),
+("hem"),
+("inseam"),
+("outseam"),
+("waist"),
+("hip length");
+
+INSERT INTO Product_Size_Chart_Components (product_id, component_id)
+VALUES
+(1, 6),
+(1, 7),
+(1, 8),
+(1, 9),
+(2, 5),
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4),
+(3, 1),
+(3, 2),
+(3, 3),
+(3, 4),
+(4, 5),
+(4, 1),
+(4, 2),
+(4, 3),
+(4, 4),
+(5, 1),
+(5, 2),
+(5, 3),
+(5, 4),
+(6, 6),
+(6, 7),
+(6, 8),
+(6, 9);
+
 INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
-(1, "https://media.taqdeeralitura.com/products/sweats1.png", "Elegant and heavy oversized sweats", 1),
-(2, "https://media.taqdeeralitura.com/products/hoodie1.png", "Heavyweight oversized hoodie in olivegreen", 1),
-(2, "https://media.taqdeeralitura.com/products/hoodie2.png", "Heavyweight oversized hoodie in olivegreen", null),
-(3, "https://media.taqdeeralitura.com/products/dunes1.png", "Black oversized shirts with breast and torso pockets", 1),
-(3, "https://media.taqdeeralitura.com/products/dunes2.png", "Black oversized shirts with breast and torso pockets", null),
-(3, "https://media.taqdeeralitura.com/products/dunes3.png", "Black oversized shirts with breast and torso pockets", null),
-(4, "https://media.taqdeeralitura.com/products/sweatshirt1.png", "Heavyweight oversized sweatshirt in black", 1),
-(4, "https://media.taqdeeralitura.com/products/sweatshirt2.png", "Heavyweight oversized sweatshirt in black", null),
-(5, "https://media.taqdeeralitura.com/products/tee1.png", "Oversized white tee with vines printed", 1),
-(5, "https://media.taqdeeralitura.com/products/tee2.png", "Oversized white tee with vines printed", null),
-(5, "https://media.taqdeeralitura.com/products/tee3.png", "Oversized white tee with vines printed", null),
-(6, "https://media.taqdeeralitura.com/products/shorts1.png", "Black mesh shorts with vines printed", 1);
+(
+	1, 
+    "https://media.taqdeeralitura.com/products/product1_404ee59d-5f85-459f-bd70-5a5b07f4ed7f..png", 
+    "A pair sweatpants in black, with prints from medieval Islamic medical texts.", 
+    null
+),
+(
+	1, 
+    "https://media.taqdeeralitura.com/products/product1_6b12c52a-84de-4cab-982a-77ca76be2757..png", 
+    "A pair sweatpants in black, with prints from medieval Islamic medical texts.", 
+    1
+),
+(
+	1, 
+    "https://media.taqdeeralitura.com/products/product1_ae65a3b3-dd14-4979-b499-d595502594d1..jpg", 
+    "A pair sweatpants in black, with prints from medieval Islamic medical texts.", 
+    null
+),
+(
+	2, 
+    "https://media.taqdeeralitura.com/products/product2_8097cd2c-ac7b-4bc7-98c7-9cb55b31d91d..png",
+    "A hoodie in green, with prints from medieval medical texts.", 
+    null
+),
+(
+	2, 
+    "https://media.taqdeeralitura.com/products/product2_b1da7d1d-5e2e-44d9-a451-e16488d89914..png",
+    "A hoodie in green, with prints from medieval medical texts.", 
+    null
+),
+(
+	2, 
+    "https://media.taqdeeralitura.com/products/product2_cc7f2061-423e-490a-ac13-c2101707de9b..png",
+    "A hoodie in green, with prints from medieval medical texts.", 
+    1
+),
+(
+	2, 
+    "https://media.taqdeeralitura.com/products/product2_f5240533-31a2-4c4e-8681-410a58bd2eee..jpg",
+    "A hoodie in green, with prints from medieval medical texts.", 
+    null
+),
+(
+	3, 
+    "https://media.taqdeeralitura.com/products/product3_2c333ca6-c793-4c44-8cca-cc22886c1a68..png", 
+    "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets.", 
+    1
+),
+(
+	3, 
+    "https://media.taqdeeralitura.com/products/product3_4b33ca28-469f-4b43-a6d3-7dca46c1b71d..png", 
+    "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets.", 
+    null
+),
+(
+	3, 
+    "https://media.taqdeeralitura.com/products/product3_6702534f-7be0-4493-acb1-9d9085396e7a..png", 
+    "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets.", 
+    null
+),
+(
+	4, 
+    "https://media.taqdeeralitura.com/products/product4_56644ba9-4812-4769-835a-d91df87db76c..png", 
+    "A sweatshirt in black, with prints from medieval Islamic medical texts.", 
+    1
+),
+(
+	4, 
+    "https://media.taqdeeralitura.com/products/product4_7aadb1c0-5b55-4c4d-9267-5bb2b4f2756c..png", 
+    "A sweatshirt in black, with prints from medieval Islamic medical texts.", 
+    null
+),
+(
+	4, 
+    "https://media.taqdeeralitura.com/products/product4_802317b5-8591-4199-93f4-7256af0c2cf2..jpg", 
+    "A sweatshirt in black, with prints from medieval Islamic medical texts.", 
+    null
+),
+(
+	5, 
+    "https://media.taqdeeralitura.com/products/product5_2aa4965e-a121-44ac-a598-a159d666b2bc..png", 
+    "A tee in white, with prints from medieval Islamic medical texts.", 
+    1
+),
+(
+	5, 
+    "https://media.taqdeeralitura.com/products/product5_85a5b32f-f91b-45ef-bb84-fbad57fb1c11..png", 
+    "A tee in white, with prints from medieval Islamic medical texts.", 
+    null
+),
+(
+	6, 
+    "https://media.taqdeeralitura.com/products/product6_4fecc88d-9b51-4e4c-bab7-7df9dd4a4091..jpg",
+    "A pair of shorts in black, with prints from medieval Islamic medical texts.", 
+    null
+),
+(
+	6, 
+    "https://media.taqdeeralitura.com/products/product6_ab04a0db-8ba9-453e-80fc-cf4f0222adf6..png",
+    "A pair of shorts in black, with prints from medieval Islamic medical texts.", 
+    1
+);
 
 INSERT INTO Components (product_id, component_name)
 VALUES

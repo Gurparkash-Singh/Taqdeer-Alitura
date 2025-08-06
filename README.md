@@ -154,20 +154,19 @@ Products
 - [x] add and delete images
 - [x] add and update components and properties
 - [x] update sizing info
-- [ ] add and update product types
-- [ ] add and update product variations
-- [ ] add and update variation options
-- [ ] add and update product items (also add variations to products)
+- [ ] add and update available components to size chart
+- [ ] add and update available variations
+- [ ] add and update available options on a variation
+- [ ] add and remove variations on a product
+- [ ] add and remove options on a product
+- [ ] create product items on create product, update variations and update options
+- [ ] update product items
 - [ ] add and delete discounts in one place
-
-Allow if collection, categories, products, images, sizes, components, properties or discounts
 
 Orders
 - [x] Show all orders
 - [ ] Ability to filter all orders by user name, user email, order date, status
 - [ ] Ability to create pickups
-
-Allow if users, orders or order items
 
 User Controls
 - [ ] seperate place for messages
@@ -176,13 +175,10 @@ User Controls
 - [ ] seperate list for email list
 - [ ] create an abandoned cart section
 
-Allow if messages, members, member types, contact form, email list, carts
-
 Admin Controls
 - [ ] create an admin control panel where you can add admins and admin types
 - [ ] create an error log
-
-Allow if admins, admin types, admin permissions, errors, permissions
+- [ ] automatically apply parent permission (read-only) if child permission added
 
 # Image Sizes required
 ## Product Images

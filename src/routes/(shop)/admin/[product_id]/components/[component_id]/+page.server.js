@@ -20,7 +20,7 @@ export const actions = {
     submit: async ({ locals, cookies, request, params }) => {
         const data = await request.formData();
 
-        const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
+        const [permissions] = await dbFunctions.getAdminPermissionsByName(
             locals.admin.admin_id,
             "component properties"
         );
@@ -72,7 +72,7 @@ export const actions = {
     delete: async ({ locals, cookies, request }) => {
         const data = await request.formData();
 
-        const [permissions] = await dbFunctions.getAdminPermissionsByPermissionID(
+        const [permissions] = await dbFunctions.getAdminPermissionsByName(
             locals.admin.admin_id,
             "component properties"
         );

@@ -10,10 +10,9 @@
     let price = $state("");
     let alt_desc = $state("");
     let description = $state();
-    let type = $state();
 
     let enableSubmit = $derived.by(() => {
-        if (name && price && alt_desc && category && description && type){
+        if (name && price && alt_desc && category && description){
             return true;
         }
 
@@ -79,20 +78,6 @@
                 </option>
             {/each}
             <option value={null}>No Collection</option>
-            </select>
-        </p>
-        <p>
-            <label for="type_id">product type:</label>
-            <select
-                name="type_id"
-                id="type_id"
-                bind:value={type}
-            >
-            {#each data.product_types as product_type}
-                <option value={product_type.id}>
-                    {product_type.name}
-                </option>
-            {/each}
             </select>
         </p>
         <p>
