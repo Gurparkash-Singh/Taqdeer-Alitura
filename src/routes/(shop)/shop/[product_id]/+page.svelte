@@ -822,7 +822,7 @@
         }
 
         #image-carousel {
-            height: min(500px, calc(80vw * 0.75));
+            min-height: min(500px, calc(80vw * 0.75));
         }
     }
 </style>
