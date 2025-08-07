@@ -132,7 +132,7 @@ export async function load({ cookies, params, url }) {
             const snippet = createReceiptProduct(
                 order_items[i].name,
                 order_items[i].alt_desc,
-                order_items[i].image_link,
+                order_items[i].medium_image,
                 order_items[i].quantity,
                 order_items[i].variations.Size
             )

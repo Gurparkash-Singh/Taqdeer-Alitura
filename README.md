@@ -192,6 +192,7 @@ Admin Controls
 - Settings Card
 - shop/[product_id]
 - admin/[product_id]/images
+- /orders (receipt product)
 
 ## Product Images
 90 X 90
