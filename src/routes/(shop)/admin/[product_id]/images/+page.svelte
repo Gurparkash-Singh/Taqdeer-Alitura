@@ -9,9 +9,12 @@
 
     let selected_images = $state([]);
 
-    let uploadModal;
+    let numUploads = $state(0);
+    let totalUploads = $state(0);
+    let uploadText = $derived(`Uploading ${numUploads} / ${totalUploads}`);
 
-    let uploadText = $state("Uploading...");
+    let uploadErrors = $state(0);
+    let uploadSuccesses = $state(0);
 
     let developmentUrl = "http://localhost:8000";
     let productionUrl = "https://media.taqdeeralitura.com";
@@ -53,13 +56,10 @@
             const files = input.files;
             if (!files || files.length === 0) return;
 
-            uploadModal.style.display = "flex";
-
+            totalUploads = files.length;
             for (let i = 0; i < files.length; i++) {
-                uploadText = `Uploading ${i + 1} / ${files.length}`;
                 uploadFile(files[i]);
             }
-            uploadModal.style.display = "none";
         };
 
         input.remove();
@@ -100,7 +100,14 @@
             invalidateAll();
         }
 
-        showModalMessage(!invalid, message);
+        if (invalid) {
+            uploadErrors += 1;
+        }
+        else {
+            uploadSuccesses += 1;
+        }
+
+        numUploads++;
     }
 
     async function deleteImages(images) {
@@ -154,9 +161,30 @@
     if (form) {
         showModalMessage(form.success, form.message);
     }
+
+    $effect(() => {
+        if (totalUploads !== 0){
+            if (totalUploads == uploadErrors + uploadSuccesses) {
+                if (totalUploads == uploadErrors) {
+                    showModalMessage(false, "File uploads failed");
+                }
+                else if (totalUploads == uploadSuccesses) {
+                    showModalMessage(true, "Files uploaded successfully");
+                }
+                else {
+                    showModalMessage(false, "Some files uploads failed");
+                }
+                totalUploads = 0;
+                numUploads = 0;
+            }
+        }
+    })
 </script>
 
-<div id="upload-modal" bind:this={uploadModal}>
+<div 
+    id="upload-modal"
+    class:enabled={numUploads < totalUploads}
+>
     <h1>{uploadText}</h1>
 </div>
 
@@ -245,13 +273,17 @@
         height: 100%;
         z-index: 10;
         background-color: #1E1E1E90;
-        display: none;
         justify-content: center;
         align-items: center;
         position: fixed;
         top: 0;
         left: 0;
         border-radius: 0;
+        display: none;
+    }
+
+    #upload-modal.enabled {
+        display: flex;
     }
 
     section {
