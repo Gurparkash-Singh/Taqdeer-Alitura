@@ -8,8 +8,6 @@ DROP TABLE IF EXISTS Contact_Form_Emails;
 
 DROP TABLE IF EXISTS Email_Unsubscribe_Token;
 
-DROP TABLE IF EXISTS Email_List;
-
 DROP TABLE IF EXISTS User_OTP;
 
 DROP TABLE IF EXISTS Messages;

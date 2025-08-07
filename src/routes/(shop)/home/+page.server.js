@@ -37,9 +37,13 @@ export const actions = {
 
         const { returnData, error } = await resend.emails.send({
             from: RESEND_EMAIL,
-            to: ['khalsags.fateh@gmail.com', "sandee.ceo@gmail.com"],
+            to: [
+                'khalsags.fateh@gmail.com',
+                "sandee.ceo@gmail.com",
+                "support@taqdeeralitura.com"
+            ],
             subject: `Taqdeer Website Message from ${email}`,
-            text: message
+            text: `${email}\n\n${message}`
         });
 
         if (error)

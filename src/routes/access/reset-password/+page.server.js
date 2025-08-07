@@ -48,7 +48,7 @@ export const actions = {
         const { returnData, error } = await resend.emails.send({
             from: RESEND_EMAIL,
             to: [email],
-            subject: "Taqdeer password reset link",
+            subject: "Taqdeer Alitura password reset",
             html: message
         });
 

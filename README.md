@@ -118,8 +118,8 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Move google to production
 - [x] Move twilio to production
 - [x] Move aramex to production
-- [ ] Move tap to production
-- [ ] Move resend to production
+- [x] Move resend to production
+- [x] Move tap to production
 
 In Case of minimal viable product:
 - [x] Disable Payment Methods
@@ -248,4 +248,4 @@ Post-Launch:
 - [x] Added to email list
 - [x] Verification Code
 - [x] Password Reset
-- [x] Reciept
+- [x] Receipt

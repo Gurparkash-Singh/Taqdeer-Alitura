@@ -1,4 +1,4 @@
-import { RESEND_API_KEY } from "$env/static/private";
+import { RESEND_API_KEY, RESEND_AUDIENCE_ID } from "$env/static/private";
 import { dbFunctions } from "$lib/db/database";
 import { error, fail } from "@sveltejs/kit";
 import { Resend } from "resend";
@@ -52,7 +52,20 @@ export const actions = {
             });
         }
 
-        const [email] = await dbFunctions.getEmailListUser(db_token.email);
+        let email = false;
+
+        let subscribed_emails = await resend.contacts.list({
+            audienceId: RESEND_AUDIENCE_ID
+        });
+
+        subscribed_emails = subscribed_emails.data.data;
+
+        for (let i = 0; i < subscribed_emails.length; i++) {
+            if (subscribed_emails[i].email == db_token.email) {
+                email = subscribed_emails[i]
+                break;
+            }
+        }
 
         if (!email) {
             return fail(404, {
@@ -66,9 +79,6 @@ export const actions = {
             email: email.email,
             audienceId: 'dfb7bdbd-6d1a-45af-a821-7ad17950d191',
         });
-
-
-        await dbFunctions.unsubscribe(email.email);
 
         await dbFunctions.deleteUnsubscribeTokens(email.email);
 

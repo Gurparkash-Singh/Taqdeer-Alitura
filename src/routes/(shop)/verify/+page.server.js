@@ -117,7 +117,7 @@ export async function load({ locals, params, url }) {
     const { returnData, error } = await resend.emails.send({
         from: RESEND_EMAIL,
         to: [locals.user.email],
-        subject: "Taqdeer account verification code",
+        subject: "Taqdeer Alitura verify",
         html: message
     });
 

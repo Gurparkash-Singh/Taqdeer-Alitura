@@ -1,5 +1,5 @@
 import { error, fail, redirect } from "@sveltejs/kit";
-import { BASE, MODE, RESEND_API_KEY, RESEND_EMAIL } from '$env/static/private';
+import { BASE, MODE, RESEND_API_KEY, RESEND_AUDIENCE_ID, RESEND_EMAIL } from '$env/static/private';
 import { Resend } from 'resend';
 import { dbFunctions } from "$lib/db/database";
 import { createEmailListEmail } from "$lib/email_templates/email_list";
@@ -53,7 +53,20 @@ export const actions = {
             throw redirect(302, '/access/sign-up');
         }
         
-        const [signed_up] = await dbFunctions.getEmailListUser(email);
+        let subscribed_emails = await resend.contacts.list({
+            audienceId: RESEND_AUDIENCE_ID
+        });
+
+        subscribed_emails = subscribed_emails.data.data;
+
+        let signed_up = false;
+
+        for (let i = 0; i < subscribed_emails.length; i++) {
+            if (subscribed_emails[i].email == email) {
+                signed_up = true;
+                break;
+            }
+        }
 
         if (signed_up) {
             return fail(400, {
@@ -74,8 +87,8 @@ export const actions = {
 
         const { returnData, error } = await resend.emails.send({
             from: RESEND_EMAIL,
-            to: ['khalsags.fateh@gmail.com', email],
-            subject: "Taqdeer Website Message",
+            to: [email],
+            subject: "Taqdeer Alitura newsletter",
             html: email_message,
             headers: {
                 'List-Unsubscribe': `<${unsubscribe}>`,
@@ -107,12 +120,10 @@ export const actions = {
             })
         }
 
-        await dbFunctions.emailListSignup(email);
-
         await resend.contacts.create({
             email: email,
             unsubscribed: false,
-            audienceId: 'dfb7bdbd-6d1a-45af-a821-7ad17950d191',
+            audienceId: RESEND_AUDIENCE_ID,
         });
 
         await dbFunctions.addUnsubscribeToken(email, hashedToken);

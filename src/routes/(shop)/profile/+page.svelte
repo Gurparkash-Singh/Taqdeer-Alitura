@@ -72,7 +72,12 @@
                 {#if data.user.email}
                     {data.user.email}
                     {#if !data.user.verified_email}
-                        <a href="/verify?email=true">verify</a>
+                        <a 
+                            href="/verify?email=true"
+                            data-sveltekit-preload-data="off"
+                        >
+                            verify
+                        </a>
                     {/if}
                 {/if}
             </dd>
@@ -85,7 +90,12 @@
                 {#if data.user.phone}
                     {data.user.phone}
                     {#if !data.user.verified_phone}
-                        <a href="/verify?phone=true">verify</a>
+                        <a 
+                            href="/verify?phone=true" 
+                            data-sveltekit-preload-data="off"
+                        >
+                            verify
+                        </a>
                     {/if}
                 {:else}
                     <a href="/profile/edit/phone" class="alt-link">update</a>

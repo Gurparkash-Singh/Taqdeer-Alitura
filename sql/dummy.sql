@@ -222,103 +222,103 @@ INSERT INTO Images (product_id, image_link, alt_desc, main_image)
 VALUES
 (
 	1, 
-    "https://media.taqdeeralitura.com/products/product1_404ee59d-5f85-459f-bd70-5a5b07f4ed7f..png", 
+    "https://media.taqdeeralitura.com/products/product1_404ee59d-5f85-459f-bd70-5a5b07f4ed7f.png", 
     "A pair sweatpants in black, with prints from medieval Islamic medical texts.", 
     null
 ),
 (
 	1, 
-    "https://media.taqdeeralitura.com/products/product1_6b12c52a-84de-4cab-982a-77ca76be2757..png", 
+    "https://media.taqdeeralitura.com/products/product1_6b12c52a-84de-4cab-982a-77ca76be2757.png", 
     "A pair sweatpants in black, with prints from medieval Islamic medical texts.", 
     1
 ),
 (
 	1, 
-    "https://media.taqdeeralitura.com/products/product1_ae65a3b3-dd14-4979-b499-d595502594d1..jpg", 
+    "https://media.taqdeeralitura.com/products/product1_ae65a3b3-dd14-4979-b499-d595502594d1.jpg", 
     "A pair sweatpants in black, with prints from medieval Islamic medical texts.", 
     null
 ),
 (
 	2, 
-    "https://media.taqdeeralitura.com/products/product2_8097cd2c-ac7b-4bc7-98c7-9cb55b31d91d..png",
+    "https://media.taqdeeralitura.com/products/product2_8097cd2c-ac7b-4bc7-98c7-9cb55b31d91d.png",
     "A hoodie in green, with prints from medieval medical texts.", 
     null
 ),
 (
 	2, 
-    "https://media.taqdeeralitura.com/products/product2_b1da7d1d-5e2e-44d9-a451-e16488d89914..png",
+    "https://media.taqdeeralitura.com/products/product2_b1da7d1d-5e2e-44d9-a451-e16488d89914.png",
     "A hoodie in green, with prints from medieval medical texts.", 
     null
 ),
 (
 	2, 
-    "https://media.taqdeeralitura.com/products/product2_cc7f2061-423e-490a-ac13-c2101707de9b..png",
+    "https://media.taqdeeralitura.com/products/product2_cc7f2061-423e-490a-ac13-c2101707de9b.png",
     "A hoodie in green, with prints from medieval medical texts.", 
     1
 ),
 (
 	2, 
-    "https://media.taqdeeralitura.com/products/product2_f5240533-31a2-4c4e-8681-410a58bd2eee..jpg",
+    "https://media.taqdeeralitura.com/products/product2_f5240533-31a2-4c4e-8681-410a58bd2eee.jpg",
     "A hoodie in green, with prints from medieval medical texts.", 
     null
 ),
 (
 	3, 
-    "https://media.taqdeeralitura.com/products/product3_2c333ca6-c793-4c44-8cca-cc22886c1a68..png", 
+    "https://media.taqdeeralitura.com/products/product3_2c333ca6-c793-4c44-8cca-cc22886c1a68.png", 
     "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets.", 
     1
 ),
 (
 	3, 
-    "https://media.taqdeeralitura.com/products/product3_4b33ca28-469f-4b43-a6d3-7dca46c1b71d..png", 
+    "https://media.taqdeeralitura.com/products/product3_4b33ca28-469f-4b43-a6d3-7dca46c1b71d.png", 
     "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets.", 
     null
 ),
 (
 	3, 
-    "https://media.taqdeeralitura.com/products/product3_6702534f-7be0-4493-acb1-9d9085396e7a..png", 
+    "https://media.taqdeeralitura.com/products/product3_6702534f-7be0-4493-acb1-9d9085396e7a.png", 
     "A tee in dark grey, with a print depicting a deserts dunes and clouds on top of two pockets.", 
     null
 ),
 (
 	4, 
-    "https://media.taqdeeralitura.com/products/product4_56644ba9-4812-4769-835a-d91df87db76c..png", 
+    "https://media.taqdeeralitura.com/products/product4_56644ba9-4812-4769-835a-d91df87db76c.png", 
     "A sweatshirt in black, with prints from medieval Islamic medical texts.", 
     1
 ),
 (
 	4, 
-    "https://media.taqdeeralitura.com/products/product4_7aadb1c0-5b55-4c4d-9267-5bb2b4f2756c..png", 
+    "https://media.taqdeeralitura.com/products/product4_7aadb1c0-5b55-4c4d-9267-5bb2b4f2756c.png", 
     "A sweatshirt in black, with prints from medieval Islamic medical texts.", 
     null
 ),
 (
 	4, 
-    "https://media.taqdeeralitura.com/products/product4_802317b5-8591-4199-93f4-7256af0c2cf2..jpg", 
+    "https://media.taqdeeralitura.com/products/product4_802317b5-8591-4199-93f4-7256af0c2cf2.jpg", 
     "A sweatshirt in black, with prints from medieval Islamic medical texts.", 
     null
 ),
 (
 	5, 
-    "https://media.taqdeeralitura.com/products/product5_2aa4965e-a121-44ac-a598-a159d666b2bc..png", 
+    "https://media.taqdeeralitura.com/products/product5_2aa4965e-a121-44ac-a598-a159d666b2bc.png", 
     "A tee in white, with prints from medieval Islamic medical texts.", 
     1
 ),
 (
 	5, 
-    "https://media.taqdeeralitura.com/products/product5_85a5b32f-f91b-45ef-bb84-fbad57fb1c11..png", 
+    "https://media.taqdeeralitura.com/products/product5_85a5b32f-f91b-45ef-bb84-fbad57fb1c11.png", 
     "A tee in white, with prints from medieval Islamic medical texts.", 
     null
 ),
 (
 	6, 
-    "https://media.taqdeeralitura.com/products/product6_4fecc88d-9b51-4e4c-bab7-7df9dd4a4091..jpg",
+    "https://media.taqdeeralitura.com/products/product6_4fecc88d-9b51-4e4c-bab7-7df9dd4a4091.jpg",
     "A pair of shorts in black, with prints from medieval Islamic medical texts.", 
     null
 ),
 (
 	6, 
-    "https://media.taqdeeralitura.com/products/product6_ab04a0db-8ba9-453e-80fc-cf4f0222adf6..png",
+    "https://media.taqdeeralitura.com/products/product6_ab04a0db-8ba9-453e-80fc-cf4f0222adf6.png",
     "A pair of shorts in black, with prints from medieval Islamic medical texts.", 
     1
 );

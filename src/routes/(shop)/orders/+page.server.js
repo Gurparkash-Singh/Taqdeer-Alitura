@@ -1,6 +1,6 @@
 import { dbFunctions } from "$lib/db/database";
 import { error, fail, redirect } from "@sveltejs/kit";
-import { PROD_SK_TAP, RESEND_API_KEY, RESEND_EMAIL, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
+import { MODE, PROD_SK_TAP, RESEND_API_KEY, RESEND_EMAIL, TAP_MERCHANT_ID, TEST_SK_TAP } from "$env/static/private";
 import axios from "axios";
 import { aramex } from "$lib/functions/aramex";
 import { getCountryCallingCode } from "libphonenumber-js";
@@ -17,13 +17,19 @@ export async function load({ cookies, params, url }) {
         error(404);
     }
 
+    let auth_token = PROD_SK_TAP;
+
+    if (MODE == "DEVELOPMENT") {
+        auth_token = TEST_SK_TAP
+    }
+
     const options = {
         method: 'GET',
         url: `https://api.tap.company/v2/charges/${tap_id}`,
         headers: {
             accept: 'application/json',
             'content-type': 'application/json',
-            Authorization: `Bearer ${TEST_SK_TAP}`
+            Authorization: `Bearer ${auth_token}`
         }
     };
 

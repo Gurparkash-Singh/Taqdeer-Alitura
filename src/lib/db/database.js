@@ -1320,20 +1320,6 @@ export const dbFunctions = {
         return result;
     },
 
-    emailListSignup: async (email) => {
-        let query = "INSERT INTO Email_List (email) VALUES (?);";
-
-        await db.query(query, email);
-    },
-
-    getEmailListUser: async (email) => {
-        let query = "SELECT * FROM Email_List WHERE email = ?;";
-
-        const [result] = await db.query(query, email);
-
-        return result;
-    },
-
     getSizeChartComponents: async (product_id) => {
         let query = "SELECT ";
         query += "product_id, Size_Chart_Components.component_id, ";
@@ -1376,12 +1362,6 @@ export const dbFunctions = {
         const [result] = await db.query(query, token);
 
         return result;
-    },
-
-    unsubscribe: async (email) => {
-        let query = "DELETE FROM Email_List WHERE email = ? AND id > 0;";
-
-        await db.query(query, email);
     },
 
     deleteUnsubscribeTokens: async (email) => {

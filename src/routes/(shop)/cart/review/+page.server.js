@@ -159,9 +159,11 @@ export const actions = {
         }
 
         let redirect_url = "https://taqdeeralitura.com/orders";
+        let auth_token = PROD_SK_TAP;
 
         if (MODE == "DEVELOPMENT") {
             redirect_url = "http://localhost:5173/orders";
+            auth_token = TEST_SK_TAP;
         }
 
         const options = {
@@ -170,7 +172,7 @@ export const actions = {
             headers: {
                 accept: 'application/json',
                 'content-type': 'application/json',
-                Authorization: `Bearer ${TEST_SK_TAP}`
+                Authorization: `Bearer ${auth_token}`
             },
             data: {
                 amount: order_total.total * conversion_rate,

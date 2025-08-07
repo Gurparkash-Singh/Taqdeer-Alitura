@@ -1,4 +1,4 @@
-import { TESTMAIL_TOKEN, TEST_SK_TAP } from "$env/static/private";
+import { TESTMAIL_TOKEN, PROD_SK_TAP } from "$env/static/private";
 import bcrypt from "bcryptjs";
 import { dbFunctions } from '$lib/db/database.js';
 import axios from "axios";
@@ -141,7 +141,7 @@ export const profileEditor = {
             headers: {
                 accept: 'application/json',
                 'content-type': 'application/json',
-                Authorization: `Bearer ${TEST_SK_TAP}`
+                Authorization: `Bearer ${PROD_SK_TAP}`
             },
             data: {
                 first_name: name,
@@ -170,7 +170,7 @@ export const profileEditor = {
             headers: {
                 accept: 'application/json',
                 'content-type': 'application/json',
-                Authorization: `Bearer ${TEST_SK_TAP}`
+                Authorization: `Bearer ${PROD_SK_TAP}`
             }
         };
 
