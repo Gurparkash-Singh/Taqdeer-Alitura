@@ -425,25 +425,11 @@ VALUES
 ("SAR"),
 ("USD");
 
-INSERT INTO User (email, password, name, tap_customer_id)
+INSERT INTO Early_Access (email)
 VALUES
-(
-	'khalsags.fateh@gmail.com', 
-    '$2a$10$QbGwZJ4F.OR2.90g.unEJOXbNjfOGRC8qwrFu3gsx8T/FezCg2Jf6', 
-    'Gurparkash Singh Randhawa',
-    "cus_TS05A0920250306k8J73105846"
-),
-(
-	"fandeejani2002@gmail.com", 
-    "$2a$10$lWBrWw3etB4Oi.HSixcx9.cHtQz70xm4CuxjZi3wBnVJSzxAEE9hq", 
-    "Faris Andeejani",
-    "cus_TS01A1220251928l2RY3105207"
-);
+("khalsags.fateh@gmail.com"),
+("fandeejani2002@gmail.com");
 
-INSERT INTO Admins (user_id, type_id)
-VALUES
-(1, 1),
-(2, 1);
 
 INSERT INTO Order_Status (name) 
 VALUES

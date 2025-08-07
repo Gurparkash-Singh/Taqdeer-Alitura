@@ -25,7 +25,7 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        background-color: #1e1e1e;
+        background-color: #e7e7e7;
     }
 
     img {

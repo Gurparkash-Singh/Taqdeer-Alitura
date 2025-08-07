@@ -11,6 +11,8 @@
 
     let uploadModal;
 
+    let uploadText = $state("Uploading...");
+
     let developmentUrl = "http://localhost:8000";
     let productionUrl = "https://media.taqdeeralitura.com";
 
@@ -51,9 +53,13 @@
             const files = input.files;
             if (!files || files.length === 0) return;
 
+            uploadModal.style.display = "flex";
+
             for (let i = 0; i < files.length; i++) {
+                uploadText = `Uploading ${i + 1} / ${files.length}`;
                 uploadFile(files[i]);
             }
+            uploadModal.style.display = "none";
         };
 
         input.remove();
@@ -64,8 +70,6 @@
         if (PUBLIC_MODE != "DEVELOPMENT") {
             url = productionUrl;
         }
-
-        uploadModal.style.display = "flex";
 
         let res;
         let invalid;
@@ -87,8 +91,6 @@
             invalid = true;
             res = {};
         }
-
-        uploadModal.style.display = "none";
 
         let message = 'failed to upload file';
         invalid = true;
@@ -155,7 +157,7 @@
 </script>
 
 <div id="upload-modal" bind:this={uploadModal}>
-    <h1>Uploading...</h1>
+    <h1>{uploadText}</h1>
 </div>
 
 <AdminBackButton 

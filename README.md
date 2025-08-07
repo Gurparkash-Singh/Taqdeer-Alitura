@@ -84,6 +84,10 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify address book
 - [ ] Verify order history
 - [ ] Verify payment methods page
+- [ ] update measurements
+- [ ] update weights
+- [ ] change images based on screen size
+- [ ] update admin panel to add early access
 - [ ] Give each page a meta description and maybe a different title
 
 # Post Release To Do
@@ -213,6 +217,10 @@ Pre-Launch:
 
 2. Migration:
 - [x] Buy Server
+- [ ] update measurements
+- [ ] update weights
+- [ ] change images based on screen size
+- [ ] update admin panel to add early access
 - [ ] Ensure DB accuracy
 - [ ] Upload Product Photos
 - [ ] Talk to Faris about verifying Aramex data

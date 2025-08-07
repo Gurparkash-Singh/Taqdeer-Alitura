@@ -52,20 +52,7 @@ export const actions = {
             });
         }
 
-        let email = false;
-
-        let subscribed_emails = await resend.contacts.list({
-            audienceId: RESEND_AUDIENCE_ID
-        });
-
-        subscribed_emails = subscribed_emails.data.data;
-
-        for (let i = 0; i < subscribed_emails.length; i++) {
-            if (subscribed_emails[i].email == db_token.email) {
-                email = subscribed_emails[i]
-                break;
-            }
-        }
+        const [email] = await dbFunctions.getEmailListUser(db_token.email);
 
         if (!email) {
             return fail(404, {
@@ -77,8 +64,11 @@ export const actions = {
 
         resend.contacts.remove({
             email: email.email,
-            audienceId: 'dfb7bdbd-6d1a-45af-a821-7ad17950d191',
+            audienceId: RESEND_AUDIENCE_ID,
         });
+
+
+        await dbFunctions.unsubscribe(email.email);
 
         await dbFunctions.deleteUnsubscribeTokens(email.email);
 

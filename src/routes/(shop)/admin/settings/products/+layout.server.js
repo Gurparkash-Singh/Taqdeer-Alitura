@@ -1,7 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import { dbFunctions } from "$lib/db/database";
 
-export const load = async ({ locals, parent }) => {
+export const load = async ({ locals }) => {
     if (!locals.admin)
     {
         throw redirect(302, '/profile');

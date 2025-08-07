@@ -53,20 +53,7 @@ export const actions = {
             throw redirect(302, '/access/sign-up');
         }
         
-        let subscribed_emails = await resend.contacts.list({
-            audienceId: RESEND_AUDIENCE_ID
-        });
-
-        subscribed_emails = subscribed_emails.data.data;
-
-        let signed_up = false;
-
-        for (let i = 0; i < subscribed_emails.length; i++) {
-            if (subscribed_emails[i].email == email) {
-                signed_up = true;
-                break;
-            }
-        }
+        const [signed_up] = await dbFunctions.getEmailListUser(email);
 
         if (signed_up) {
             return fail(400, {
@@ -119,6 +106,8 @@ export const actions = {
                 email
             })
         }
+
+        await dbFunctions.emailListSignup(email);
 
         await resend.contacts.create({
             email: email,
