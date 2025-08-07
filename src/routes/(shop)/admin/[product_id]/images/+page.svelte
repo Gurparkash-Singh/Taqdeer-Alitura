@@ -209,7 +209,7 @@
             class="product-links"
         >
             <img 
-                src={`${image.image_link}`} 
+                src={`${image.small_image}`} 
                 alt={image.alt_desc} 
             />
         </button>

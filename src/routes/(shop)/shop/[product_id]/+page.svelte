@@ -265,7 +265,20 @@
                 }}
                 aria-label="Full Screen Image"
             >
-                <img src={`${image.image_link}`} alt={image.alt_desc} />
+                <picture>
+                    <source 
+                        media="(min-width:640px)" 
+                        srcset={image.large_image}
+                    >
+                    <source 
+                        media="(min-width:320px)" 
+                        srcset={image.medium_image}
+                    >
+                    <img 
+                        src={`${image.image_link}`} 
+                        alt={image.alt_desc}
+                    >
+                </picture>
             </button>
         {/each}
         <button 

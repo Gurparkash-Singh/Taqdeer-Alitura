@@ -185,6 +185,14 @@ Admin Controls
 - [ ] automatically apply parent permission (read-only) if child permission added
 
 # Image Sizes required
+
+# To Update Images
+- Image Carousel
+- Product Card
+- Settings Card
+- shop/[product_id]
+- admin/[product_id]/images
+
 ## Product Images
 90 X 90
 65 X 65

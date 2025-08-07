@@ -12,7 +12,7 @@
 
 <div>
     {#if displayImage}
-        <img src={`${displayImage.image_link}`} alt={displayImage.alt_desc} />
+        <img src={`${displayImage.small_image}`} alt={displayImage.alt_desc} />
     {:else}
         {product.name}
     {/if}

@@ -24,10 +24,10 @@
         <div>
             <h3>{product.name}</h3>
         </div>
-        {#if product.image_link}
+        {#if product.small_image}
             <a href="/shop/{product.product_id}">
                 <img 
-                    src={`${product.image_link}`} 
+                    src={`${product.small_image}`} 
                     alt={product.alt_desc} 
                 />
             </a>

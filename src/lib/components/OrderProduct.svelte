@@ -14,9 +14,9 @@
 <article>
     <section id="title">
         <h3>{product.name}</h3>
-        {#if product.image_link}
+        {#if product.small_image}
             <a href="/shop/{product.product_id}">
-                <img src={`${product.image_link}`} alt={product.alt_desc} />
+                <img src={`${product.small_image}`} alt={product.alt_desc} />
             </a>
         {/if}
     </section>
