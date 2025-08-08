@@ -11,6 +11,8 @@ export async function load({params})
         error(404);
     }
 
+    await dbFunctions.cancelOldOrders();
+
     const images = await dbFunctions.getImagesByProductId(params.product_id);
 
     const product_variations = await dbFunctions.getProductVariations(

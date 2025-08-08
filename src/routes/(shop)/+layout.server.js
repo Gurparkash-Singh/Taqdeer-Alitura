@@ -5,6 +5,10 @@ export function load({locals, cookies, url}) {
         return;
     }
 
+    if (url.pathname === "/cart/review") {
+        return;
+    }
+
     if (!locals.user) {
         error(401, "you need to sign in");
     }

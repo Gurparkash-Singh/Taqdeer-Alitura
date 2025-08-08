@@ -1198,7 +1198,8 @@ export const dbFunctions = {
     },
 
     setOrderToPending: async (order_id) => {
-        let query = "UPDATE Orders SET status = 5 WHERE id = ?;";
+        let query = "UPDATE Orders SET status = 5, modified_at = now() ";
+        query += "WHERE id = ?;"
         await db.query(query, order_id);
     },
 
@@ -1454,5 +1455,20 @@ export const dbFunctions = {
         let query = "DELETE FROM Early_Access WHERE email = ?;";
 
         await db.query(query, email);
+    },
+
+    cancelOldOrders: async () => {
+        let query = "UPDATE Orders ";
+        query += "JOIN Order_Items ON Order_Items.order_id = Orders.id ";
+        query += "JOIN Product_Item ON ";
+        query += "Product_Item.item_id = Order_Items.item_id ";
+        query += "SET";
+        query += "Orders.status = 6, "
+        query += "Product_Item.quantity = ";
+        query += "Product_Item.quantity + Order_Items.quantity ";
+        query += "WHERE Orders.id > 0 AND Orders.status < 6 ";
+        query += "AND Orders.modified_at < now() - interval 35 minute;";
+
+        await db.query(query);
     }
 }

@@ -85,7 +85,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify post checkout page
 - [ ] Verify address book
 - [ ] Verify order history
-- [ ] Verify payment methods page
 - [ ] update measurements
 - [ ] update weights
 - [ ] Give each page a meta description and maybe a different title
@@ -232,8 +231,8 @@ Pre-Launch:
 - [x] update admin panel to add early access
 - [ ] update measurements
 - [ ] update weights
+- [ ] update return policy
 - [ ] Ensure DB accuracy
-- [ ] Talk to Faris about verifying Aramex data
 
 3. Post-Migration:
 - [ ] QA testing

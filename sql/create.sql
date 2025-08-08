@@ -483,3 +483,21 @@ FROM Permission_Types AS PT1
 JOIN Admin_Permissions ON Admin_Permissions.permission_id = PT1.permission_id
 JOIN Admin_Type AS AT ON AT.type_id = Admin_Permissions.type_id
 JOIN Admins ON Admins.type_id = AT.type_id;
+
+CREATE EVENT IF NOT EXISTS expire_products
+ON SCHEDULE 
+EVERY 1 MINUTE
+STARTS CURRENT_TIMESTAMP 
+DO
+UPDATE Orders
+JOIN Order_Items ON Order_Items.order_id = Orders.id
+JOIN Product_Item ON Product_Item.item_id = Order_Items.item_id
+SET 
+Orders.status = 6,
+Product_Item.quantity = Product_Item.quantity + Order_Items.quantity 
+WHERE
+Orders.id > 0
+AND
+Orders.status < 6
+AND
+Orders.modified_at < now() - interval 35 minute;
