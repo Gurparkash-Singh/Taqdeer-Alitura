@@ -1462,7 +1462,7 @@ export const dbFunctions = {
         query += "JOIN Order_Items ON Order_Items.order_id = Orders.id ";
         query += "JOIN Product_Item ON ";
         query += "Product_Item.item_id = Order_Items.item_id ";
-        query += "SET";
+        query += "SET ";
         query += "Orders.status = 6, "
         query += "Product_Item.quantity = ";
         query += "Product_Item.quantity + Order_Items.quantity ";
