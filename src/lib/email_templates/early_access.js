@@ -1,5 +1,5 @@
-export function createEmailListEmail(unsubscribe_link) {
-    const email = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+export function createEarlyAccessEmail(){
+    return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="en">
 
 <head>
@@ -32,18 +32,16 @@ export function createEmailListEmail(unsubscribe_link) {
                     <div>
                         <center>
                             <h1>
-                                <span style="color: #cb2d2d;">Welcome</span> to our newsletter
+                                <span style="color: #cb2d2d;">Congratulations</span>
                             </h1>
                         </center>
                     </div>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:center">
-                        <span>Thank you for subscribing to our newsletter.</span>
+                        <span>You have been invited to early access for Taqdeer Alitura.</span>
                     </p>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left"></p>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
-                        <span>Hope this email finds you well. Your support is invaluable. We
-                            will keep you updated on new drops, restocks and
-                            promotions.</span>
+                        <span>Hope this email finds you well. Your support is invaluable. We have added you to the early access list. You may start shopping and browsing our collection.</span>
                     </p>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left"></p>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
@@ -61,8 +59,10 @@ export function createEmailListEmail(unsubscribe_link) {
                                     <br />
                                     <hr class="divider" style="width:100%;border:none;border-top:1px solid #eaeaea;padding-bottom:1em;border-width:2px" />
                                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
-                                        <span>You are receiving this email because you opted in via
-                                            our site.</span><br /><br /><span>Want to change how you receive these emails?</span><br /><span>You can </span><span><a href="${unsubscribe_link}" rel="noopener noreferrer nofollow" ses:no-track="true" style="color:#0670DB;text-decoration-line:none;text-decoration:underline;font-weight:400" target="_blank">unsubscribe from this list</a></span><span>.</span>
+                                        To enter the website, simply enter your email
+                                        on the homepage.
+                                        This will lead you to a signup page where you
+                                        can enter your details.
                                     </p>
                                 </td>
                             </tr>
@@ -76,6 +76,5 @@ export function createEmailListEmail(unsubscribe_link) {
     <!--7--><!--/$-->
 </body>
 
-</html>`
-    return email;
+</html>`;
 }

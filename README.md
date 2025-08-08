@@ -72,6 +72,8 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Email templates
 - [x] Fix Image Server
 - [x] Use Permissions correctly
+- [x] change images based on screen size
+- [x] update admin panel to add early access
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -86,8 +88,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify payment methods page
 - [ ] update measurements
 - [ ] update weights
-- [ ] change images based on screen size
-- [ ] update admin panel to add early access
 - [ ] Give each page a meta description and maybe a different title
 
 # Post Release To Do
@@ -192,6 +192,7 @@ Admin Controls
 - Settings Card
 - shop/[product_id]
 - admin/[product_id]/images
+- Order Product
 - /orders (receipt product)
 
 ## Product Images
@@ -226,12 +227,12 @@ Pre-Launch:
 
 2. Migration:
 - [x] Buy Server
+- [x] change images based on screen size
+- [x] Upload Product Photos
+- [x] update admin panel to add early access
 - [ ] update measurements
 - [ ] update weights
-- [ ] change images based on screen size
-- [ ] update admin panel to add early access
 - [ ] Ensure DB accuracy
-- [ ] Upload Product Photos
 - [ ] Talk to Faris about verifying Aramex data
 
 3. Post-Migration:

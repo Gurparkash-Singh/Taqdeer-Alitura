@@ -21,6 +21,7 @@
 
     let enableSubmit = $derived(selected_images.length === 1);
     let enableDelete = $derived(selected_images.length > 0);
+    let enableReorder = $derived(selected_images.length === data.images.length);
 
     function showModalMessage(success, message) {
         let inMessages = false;
@@ -208,6 +209,9 @@
             class:selected={selected_images.indexOf(image.image_id) != -1}
             class="product-links"
         >
+            {#if selected_images.indexOf(image.image_id) !== -1}
+            <span>{selected_images.indexOf(image.image_id) + 1}</span>
+            {/if}
             <img 
                 src={`${image.small_image}`} 
                 alt={image.alt_desc} 
@@ -231,21 +235,35 @@
 </section>
 
 <form 
-    action="?/delete" 
+    action="?/reorder" 
     method="POST"
     id="update-form"
 >
-    <input type="hidden" name="images" bind:value={selected_images}>
+    <input type="hidden" name="image" bind:value={selected_images}>
+    
     {#if selected_images.length > 1}
-        <input type="hidden" name="multiple-selected" value="multiple">
+        <input type="hidden" name="images" value={JSON.stringify(selected_images)}>
     {/if}
     <button 
         type="submit"
+        class="image-button"
         class:disable-submit={!enableSubmit}
         disabled={!enableSubmit}
         formaction="?/submit"
     >
         Set Main Image
+        <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.0607 13.0607C13.6464 12.4749 13.6464 11.5251 13.0607 10.9393L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L9.87868 12L1.3934 20.4853C0.807611 21.0711 0.807611 22.0208 1.3934 22.6066C1.97919 23.1924 2.92893 23.1924 3.51472 22.6066L13.0607 13.0607ZM10 13.5H12V10.5H10V13.5Z" fill="white"/>
+        </svg>
+    </button>
+
+    <button
+        type="submit"
+        class:image-button={enableSubmit}
+        class:disable-submit={enableSubmit || !enableReorder}
+        disabled={enableSubmit || !enableReorder}
+    >
+        Reorder Images
         <svg width="10" height="10" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.0607 13.0607C13.6464 12.4749 13.6464 11.5251 13.0607 10.9393L3.51472 1.3934C2.92893 0.807611 1.97919 0.807611 1.3934 1.3934C0.807611 1.97919 0.807611 2.92893 1.3934 3.51472L9.87868 12L1.3934 20.4853C0.807611 21.0711 0.807611 22.0208 1.3934 22.6066C1.97919 23.1924 2.92893 23.1924 3.51472 22.6066L13.0607 13.0607ZM10 13.5H12V10.5H10V13.5Z" fill="white"/>
         </svg>
@@ -305,9 +323,22 @@
         align-items: center;
         cursor: pointer;
         border: none;
+        position: relative;
     }
 
-    .selected {
+    .product-links span {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        color: white;
+        background-color: #bf1e2e;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        padding: 2px;
+    }
+
+    .selected img{
         opacity: 0.6;
     }
 
@@ -350,6 +381,10 @@
 
     #update-form .disable-submit svg path {
         fill: #1E1E1E80;
+    }
+
+    #update-form .image-button.disable-submit {
+        display: none;
     }
 
     @media screen and (width < 530px) {

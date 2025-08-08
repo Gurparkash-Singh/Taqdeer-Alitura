@@ -52,20 +52,6 @@
 
 <div 
     id="image-carousel"
-    ontouchstart={(e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }}
-    ontouchend={(e) => {
-        touchEndX = event.changedTouches[0].screenX;
-        if (touchEndX < touchStartX) {
-            console.log('Swiped Left');
-            nextImage();
-        }
-        if(touchEndX > touchStartX) {
-            console.log('Swiped Right');
-            prevImage();
-        }
-    }}
 >
     <button 
         aria-label="previous image"

@@ -139,7 +139,7 @@ export const dbFunctions = {
 
     getImagesByProductId: async (product_id) => {
         let query = "SELECT * FROM Images WHERE product_id = ? ";
-        query += "ORDER BY image_id;";
+        query += "ORDER BY -display_order DESC;";
 
         const [images] = await db.query(query, product_id);
 
@@ -1432,6 +1432,26 @@ export const dbFunctions = {
 
     unsubscribe: async (email) => {
         let query = "DELETE FROM Email_List WHERE email = ? AND id > 0;";
+
+        await db.query(query, email);
+    },
+
+    updateImageDisplayOrder: async (image_id, product_id, order) => {
+        let query = "UPDATE Images SET display_order = ? ";
+        query += "WHERE image_id = ? AND product_id = ?;";
+
+        await db.query(query, [order, image_id, product_id]);
+    },
+
+    addToEarlyAccess: async (email) => {
+        let query = "INSERT INTO Early_Access (email) VALUE (?) ";
+        query += "ON DUPLICATE KEY UPDATE email = ?;";
+
+        await db.query(query, [email, email]);
+    },
+
+    deleteEarlyAccess: async (email) => {
+        let query = "DELETE FROM Early_Access WHERE email = ?;";
 
         await db.query(query, email);
     }

@@ -1,5 +1,7 @@
-import { RESEND_API_KEY, RESEND_AUDIENCE_ID } from "$env/static/private"
+import { RESEND_API_KEY, RESEND_AUDIENCE_ID, RESEND_EMAIL } from "$env/static/private"
 import { dbFunctions } from "$lib/db/database";
+import { createEarlyAccessEmail } from "$lib/email_templates/early_access";
+import { fail } from "@sveltejs/kit";
 import { Resend } from "resend"
 
 const resend = new Resend(RESEND_API_KEY);
@@ -40,12 +42,57 @@ export const actions = {
         const add_early_access = JSON.parse(add_list);
         const remove_early_access = JSON.parse(remove_list);
 
+        const toSend = [];
+
         for (let i = 0; i < add_early_access.length; i++) {
-            console.log(add_early_access[i].email);
+            let email = add_early_access[i].email;
+            await dbFunctions.addToEarlyAccess(email);
+            toSend.push(email);
         }
 
         for (let j = 0; j < remove_early_access.length; j++) {
-            console.log(remove_early_access[j].email);
+            let email = remove_early_access[j].email;
+            await dbFunctions.deleteEarlyAccess(email);
+        }
+
+        if (toSend.length === 0){
+            return {
+                success: true,
+                message: "updated early access"
+            }
+        }
+
+        const email_message = createEarlyAccessEmail();
+
+        const { returnData, error } = await resend.emails.send({
+            from: RESEND_EMAIL,
+            to: ['admin@taqdeeralitura.com'],
+            bcc: toSend,
+            subject: "Taqdeer Alitura early access",
+            html: email_message
+        });
+
+        if (error)
+        {
+            await dbFunctions.setError(
+                "early access",
+                400,
+                `error sending email to ${JSON.stringify(toSend)}\nError: ${JSON.stringify(error, null, 2)}` 
+            );
+
+            if (error.name == 'validation_error')
+            {
+                return fail(400, {
+                    invalid: true,
+                    message: "invalid email",
+                    email: email
+                });
+            }
+            return fail(500,{
+                invalid: true,
+                message: "some error occured",
+                email
+            })
         }
 
         return {
@@ -59,7 +106,39 @@ export const actions = {
 
         const email = data.get("email");
 
-        console.log(email);
+        await dbFunctions.addToEarlyAccess(email);
+
+        const email_message = createEarlyAccessEmail();
+
+        const { returnData, error } = await resend.emails.send({
+            from: RESEND_EMAIL,
+            to: email,
+            subject: "Taqdeer Alitura early access",
+            html: email_message
+        });
+
+        if (error)
+        {
+            await dbFunctions.setError(
+                "early access",
+                400,
+                `error sending email to ${email}}\nError: ${JSON.stringify(error, null, 2)}` 
+            );
+
+            if (error.name == 'validation_error')
+            {
+                return fail(400, {
+                    invalid: true,
+                    message: "invalid email",
+                    email: email
+                });
+            }
+            return fail(500,{
+                invalid: true,
+                message: "some error occured",
+                email
+            })
+        }
 
         return {
             success: true,

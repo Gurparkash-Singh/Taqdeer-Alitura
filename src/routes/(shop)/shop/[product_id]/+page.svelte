@@ -234,18 +234,6 @@
 <section id="product">
     <div 
         id="image-carousel"
-        ontouchstart={(e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }}
-        ontouchend={(e) => {
-            touchEndX = event.changedTouches[0].screenX;
-            if (touchEndX < touchStartX) {
-                nextImage();
-            }
-            if(touchEndX > touchStartX) {
-                prevImage();
-            }
-        }}
     >
         <button 
             aria-label="previous image"

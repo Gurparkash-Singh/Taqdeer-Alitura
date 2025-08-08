@@ -142,6 +142,7 @@ CREATE TABLE IF NOT EXISTS Images (
     large_image TEXT,
     alt_desc TEXT NOT NULL,
     main_image BOOLEAN DEFAULT NULL,
+    display_order INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Products(product_id),

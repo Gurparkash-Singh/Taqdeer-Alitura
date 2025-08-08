@@ -19,7 +19,7 @@ export const load = async ({ locals, params }) => {
 export const actions = {
     submit: async ({locals, request, params}) => {
         const data = await request.formData();
-        const images = data.get("images");
+        const images = data.get("image");
 
         const [image] = await dbFunctions.getImage(images);
 
@@ -61,6 +61,43 @@ export const actions = {
         return {
             success: true, 
             message:"main image changed successfully"
+        }
+    },
+
+    reorder: async ({locals, request, params}) => {
+        const data = await request.formData();
+        const images = JSON.parse(data.get("images"));
+
+        const [permission] = await dbFunctions.getAdminPermissionsByName(
+            locals.admin.admin_id,
+            "images"
+        );
+    
+        if (!permission) {
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
+
+        if (permission.allow_write != 1){
+            return fail(404, {
+                invalid: true,
+                message: "invalid permissions"
+            });
+        }
+
+        for (let i = 0; i < images.length; i++) {
+            await dbFunctions.updateImageDisplayOrder(
+                images[i], 
+                params.product_id, 
+                i
+            );
+        }
+
+        return {
+            success: true, 
+            message:"successfully reordered images"
         }
     }
 }
