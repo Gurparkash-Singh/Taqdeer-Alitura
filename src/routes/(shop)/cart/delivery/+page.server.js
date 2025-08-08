@@ -149,7 +149,7 @@ export const actions = {
                 return fail(400, returnMessage)
             }
 
-            if (user_address.country != country) {
+            if (user_address.country != delivery_country) {
                 return fail(400, returnMessage)
             }
         }
@@ -374,7 +374,7 @@ export const actions = {
 
         cookies.set('order_id', result.insertId, {
             path: "/",
-            sameSite: 'strict',
+            sameSite: 'lax',
             maxAge: 60 * 60 * 24
         });
 

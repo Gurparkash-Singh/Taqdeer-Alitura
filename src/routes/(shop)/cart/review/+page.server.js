@@ -61,6 +61,19 @@ export const actions = {
 
         const [order] = await dbFunctions.getOrderById(order_id);
 
+        if (!order) {
+            return fail(404, {
+                message: "order not found"
+            });
+        }
+
+        if (order.status > 5) {
+            return fail(404, {
+                invalid: true,
+                message: "order not found"
+            });
+        }
+
         let user_tap_id;
         let user;
 
@@ -88,6 +101,10 @@ export const actions = {
 
                 user_tap_id = user.tap_customer_id;
             }
+        }
+
+        if (MODE == "DEVELOPMENT") {
+            user_tap_id = false;
         }
 
         let currency_response;
@@ -142,12 +159,6 @@ export const actions = {
                 conversion_rate = currency_response.data.sar;
                 conversion_rate = conversion_rate[currency_code.toLowerCase()];
             }
-        }
-
-        if (!order) {
-            return fail(404, {
-                message: "order not found"
-            });
         }
 
         await dbFunctions.setOrderToPending(order_id);

@@ -66,8 +66,9 @@ export async function load({ cookies, params, url }) {
         if (!cookies.get("order_id")) {
             cookies.set('order_id', order_id, {
                 path: "/",
-                sameSite: 'strict',
-                maxAge: 60 * 60 * 24
+                sameSite: 'lax',
+                maxAge: 60 * 60 * 24,
+                secure: true
             });
         }
         throw redirect(302, "/cart/review?declined=true");
@@ -166,12 +167,13 @@ export async function load({ cookies, params, url }) {
         )
 
         if (aramexResult.HasErrors) {
-            const errors = aramexResult.Notifications;
-            await dbFunctions.setError(
+            const errors = aramexResult;
+            await dbFunctions.setCriticalError(
                 "orders",
                 500,
                 `${JSON.stringify(errors, null, 2)}}`
             );
+
             error(500);
         }
 
@@ -192,21 +194,21 @@ export async function load({ cookies, params, url }) {
         order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);
         [delivery] = await dbFunctions.getOrderDelivery(order_id);
 
-        const { returnData, error } = await resend.emails.send({
+        const { returnData, email_error } = await resend.emails.send({
             from: RESEND_EMAIL,
             to: [order.user_email],
             subject: "Taqdeer Alitura Receipt",
             html: email
         });
 
-         if (error)
+         if (email_error)
         {
             await dbFunctions.setCriticalError(
                 "order receipt error", 
                 500,
-                `email not sent to ${order.user_email}\nError: ${error.name}` 
+                `email not sent to ${order.user_email}\nError: ${email_error.name}` 
             );
-            if (error.name == 'validation_error')
+            if (email_error.name == 'validation_error')
             {
                 return {
                     order,
