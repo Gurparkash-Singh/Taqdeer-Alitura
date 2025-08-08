@@ -18,7 +18,7 @@ export const handle = async ({ event, resolve }) => {
 
         event.cookies.set("messages", messages, {
             path: "/",
-            sameSite: 'strict',
+            sameSite: 'lax',
             maxAge: 60 * 60 * 24 * 7
         });
     }

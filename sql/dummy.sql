@@ -1,5 +1,6 @@
 -- Missing Size Chart Values
 -- Update Email List Using Resend
+
 Insert Into Category (category_name)
 VALUES
 ("Tops"),
@@ -483,6 +484,25 @@ VALUES
 ("khalsags.fateh@gmail.com"),
 ("fandeejani2002@gmail.com");
 
+INSERT INTO User (email, password, name, tap_customer_id)
+VALUES
+(
+	"khalsags.fateh@gmail.com", 
+    "$2a$10$dmZz8.OLrk38z/vQE.ZwfOnShU8gOEPQNAxOelANS1w7.MuHQHp8i", 
+    "Gurparkash Singh",
+    "cus_LV02G2520250314j8M50808521"
+),
+(
+	"Fandeejani2002@gmail.com", 
+    "$2a$10$Rx6n4T97QS8CA97krlNHa.PFC8SNGZ8AsKBptoQq3dqwvHz/T4xGS", 
+    "Faris Andeejani"
+    "cus_LV04G3120250315r4YD0808291"
+);
+
+INSERT INTO Admins (type_id, user_id)
+VALUES
+(1, 1),
+(1, 2);
 
 INSERT INTO Order_Status (name) 
 VALUES
