@@ -4,7 +4,7 @@
 
     let { form, data } = $props();
 
-    let email = $state("");
+    let email = $state(data.email);
     let enableSend = $derived(email ? true : false);
 
     if (form) {

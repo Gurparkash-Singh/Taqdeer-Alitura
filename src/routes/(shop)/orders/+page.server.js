@@ -197,6 +197,7 @@ export async function load({ cookies, params, url }) {
         const { returnData, email_error } = await resend.emails.send({
             from: RESEND_EMAIL,
             to: [order.user_email],
+            bcc: ['sandee.ceo@gmail.com'],
             subject: "Taqdeer Alitura Receipt",
             html: email
         });

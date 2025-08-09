@@ -47,7 +47,14 @@ export const actions = {
         for (let i = 0; i < add_early_access.length; i++) {
             let email = add_early_access[i].email;
             await dbFunctions.addToEarlyAccess(email);
-            toSend.push(email);
+            const message = createEarlyAccessEmail(email);
+            const email_request = {
+                from: RESEND_EMAIL,
+                to: email,
+                subject: "Taqdeer Alitura early access",
+                html: message
+            }
+            toSend.push(email_request);
         }
 
         for (let j = 0; j < remove_early_access.length; j++) {
@@ -62,15 +69,7 @@ export const actions = {
             }
         }
 
-        const email_message = createEarlyAccessEmail();
-
-        const { returnData, error } = await resend.emails.send({
-            from: RESEND_EMAIL,
-            to: ['admin@taqdeeralitura.com'],
-            bcc: toSend,
-            subject: "Taqdeer Alitura early access",
-            html: email_message
-        });
+        const { returnData, error } = await resend.batch.send(toSend);
 
         if (error)
         {

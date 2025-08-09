@@ -1,4 +1,4 @@
-export function createEarlyAccessEmail(){
+export function createEarlyAccessEmail(email){
     return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="en">
 
@@ -43,6 +43,32 @@ export function createEarlyAccessEmail(){
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
                         <span>Hope this email finds you well. Your support is invaluable. We have added you to the early access list. You may start shopping and browsing our collection.</span>
                     </p>
+                    <table
+                    align="center"
+                    width="100%"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="background:rgb(245, 244, 245);border-radius:4px;margin-bottom:30px;padding:40px 10px">
+                    <tbody>
+                        <tr>
+                        <td>
+                            <p
+                            style="font-size:30px;line-height:24px;text-align:center;vertical-align:middle;margin-top:16px;margin-bottom:16px">
+                            <a href='https://taqdeeralitura.com/?email=${email}' style="color: black;">Signup</a>
+                            </p>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    <h2>Instructions:</h2>
+                    <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
+                        To enter the website, simply enter your email
+                        on the homepage.
+                        This will lead you to a signup page where you
+                        can enter your details.
+                    </p>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left"></p>
                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
                         <span>Sincerely,</span>
@@ -59,10 +85,12 @@ export function createEarlyAccessEmail(){
                                     <br />
                                     <hr class="divider" style="width:100%;border:none;border-top:1px solid #eaeaea;padding-bottom:1em;border-width:2px" />
                                     <p class="" style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;text-align:left">
-                                        To enter the website, simply enter your email
-                                        on the homepage.
-                                        This will lead you to a signup page where you
-                                        can enter your details.
+                                        Full link: 
+                                        <a 
+                                        href="https://taqdeeralitura.com/?email=${email}"
+                                        >
+                                            https://taqdeeralitura.com/?email=${email}
+                                        </a>
                                     </p>
                                 </td>
                             </tr>
@@ -76,5 +104,6 @@ export function createEarlyAccessEmail(){
     <!--7--><!--/$-->
 </body>
 
-</html>`;
+</html>
+`;
 }

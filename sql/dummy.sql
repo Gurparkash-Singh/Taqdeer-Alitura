@@ -495,7 +495,7 @@ VALUES
 (
 	"Fandeejani2002@gmail.com", 
     "$2a$10$Rx6n4T97QS8CA97krlNHa.PFC8SNGZ8AsKBptoQq3dqwvHz/T4xGS", 
-    "Faris Andeejani"
+    "Faris Andeejani",
     "cus_LV04G3120250315r4YD0808291"
 );
 

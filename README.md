@@ -232,6 +232,7 @@ Pre-Launch:
 - [ ] update measurements
 - [ ] update weights
 - [ ] update return policy
+- [ ] Tell Faris you added his email in /orders
 - [ ] Ensure DB accuracy
 
 3. Post-Migration:

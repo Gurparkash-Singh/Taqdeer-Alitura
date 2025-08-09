@@ -7,10 +7,14 @@ import bcrypt from "bcryptjs";
 
 const resend = new Resend(RESEND_API_KEY);
 
-export function load({locals}) {
+export function load({locals, url}) {
     if (locals.user){
         throw redirect(302, "/home");
     }
+
+    const email = url.searchParams.get("email");
+
+    return {email};
 }
 
 export const actions = {
