@@ -1,15 +1,14 @@
 export function createReceipt(
-    preload,
-    tracking_number,
-    tracking_link,
-    user_name,
-    address,
-    products,
-    order_number,
-    order_date,
-) 
-{
-    return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	preload,
+	tracking_number,
+	tracking_link,
+	user_name,
+	address,
+	products,
+	order_number,
+	order_date
+) {
+	return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="en">
   <head>
     <link

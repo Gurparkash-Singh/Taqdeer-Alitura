@@ -1,24 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Gloock&display=swap');
 
 * {
-    box-sizing: border-box;
-    font-family: "Gloock", serif;
+	box-sizing: border-box;
+	font-family: 'Gloock', serif;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    min-height: 100vh;
-    position: relative;
-    color: #1E1E1E;
-    font-size: 14px;
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	min-height: 100vh;
+	position: relative;
+	color: #1e1e1e;
+	font-size: 14px;
 }
 
-button, a {
-    color: #1E1E1E;
+button,
+a {
+	color: #1e1e1e;
 }
 
 h1 {
-    font-size: 2em;
+	font-size: 2em;
 }

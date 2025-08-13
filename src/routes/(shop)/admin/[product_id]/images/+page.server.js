@@ -1,103 +1,96 @@
-import { dbFunctions } from "$lib/db/database"
-import { fail } from "@sveltejs/kit";
+import { dbFunctions } from '$lib/db/database';
+import { fail } from '@sveltejs/kit';
 
 export const load = async ({ locals, params }) => {
-    const images = await dbFunctions.getImagesByProductId(params.product_id);
+	const images = await dbFunctions.getImagesByProductId(params.product_id);
 
-    const [permission] = await dbFunctions.getAdminPermissionsByName(
-        locals.admin.admin_id,
-        "images"
-    );
-   
-    if (!permission) {
-        throw redirect(302, './');
-    }
+	const [permission] = await dbFunctions.getAdminPermissionsByName(locals.admin.admin_id, 'images');
 
-    return {images};
-}
+	if (!permission) {
+		throw redirect(302, './');
+	}
+
+	return { images };
+};
 
 export const actions = {
-    submit: async ({locals, request, params}) => {
-        const data = await request.formData();
-        const images = data.get("image");
+	submit: async ({ locals, request, params }) => {
+		const data = await request.formData();
+		const images = data.get('image');
 
-        const [image] = await dbFunctions.getImage(images);
+		const [image] = await dbFunctions.getImage(images);
 
-        const [permission] = await dbFunctions.getAdminPermissionsByName(
-            locals.admin.admin_id,
-            "images"
-        );
-    
-        if (!permission) {
-            return fail(404, {
-                invalid: true,
-                message: "invalid permissions"
-            });
-        }
+		const [permission] = await dbFunctions.getAdminPermissionsByName(
+			locals.admin.admin_id,
+			'images'
+		);
 
-        if (permission.allow_write != 1){
-            return fail(404, {
-                invalid: true,
-                message: "invalid permissions"
-            });
-        }
+		if (!permission) {
+			return fail(404, {
+				invalid: true,
+				message: 'invalid permissions'
+			});
+		}
 
-        if (!image) {
-            return fail(404, {
-                invalid: true,
-                message: "image not found"
-            });
-        }
+		if (permission.allow_write != 1) {
+			return fail(404, {
+				invalid: true,
+				message: 'invalid permissions'
+			});
+		}
 
-        if (image.product_id != params.product_id) {
-            return fail(404, {
-                invalid: true,
-                message: "product not found"
-            });
-        }
+		if (!image) {
+			return fail(404, {
+				invalid: true,
+				message: 'image not found'
+			});
+		}
 
-        await dbFunctions.setMainImage(params.product_id, images);
+		if (image.product_id != params.product_id) {
+			return fail(404, {
+				invalid: true,
+				message: 'product not found'
+			});
+		}
 
-        return {
-            success: true, 
-            message:"main image changed successfully"
-        }
-    },
+		await dbFunctions.setMainImage(params.product_id, images);
 
-    reorder: async ({locals, request, params}) => {
-        const data = await request.formData();
-        const images = JSON.parse(data.get("images"));
+		return {
+			success: true,
+			message: 'main image changed successfully'
+		};
+	},
 
-        const [permission] = await dbFunctions.getAdminPermissionsByName(
-            locals.admin.admin_id,
-            "images"
-        );
-    
-        if (!permission) {
-            return fail(404, {
-                invalid: true,
-                message: "invalid permissions"
-            });
-        }
+	reorder: async ({ locals, request, params }) => {
+		const data = await request.formData();
+		const images = JSON.parse(data.get('images'));
 
-        if (permission.allow_write != 1){
-            return fail(404, {
-                invalid: true,
-                message: "invalid permissions"
-            });
-        }
+		const [permission] = await dbFunctions.getAdminPermissionsByName(
+			locals.admin.admin_id,
+			'images'
+		);
 
-        for (let i = 0; i < images.length; i++) {
-            await dbFunctions.updateImageDisplayOrder(
-                images[i], 
-                params.product_id, 
-                i
-            );
-        }
+		if (!permission) {
+			return fail(404, {
+				invalid: true,
+				message: 'invalid permissions'
+			});
+		}
 
-        return {
-            success: true, 
-            message:"successfully reordered images"
-        }
-    }
-}
+		if (permission.allow_write != 1) {
+			return fail(404, {
+				invalid: true,
+				message: 'invalid permissions'
+			});
+		}
+
+		for (let i = 0; i < images.length; i++) {
+			await dbFunctions.updateImageDisplayOrder(images[i], params.product_id, i);
+		}
+
+		return {
+			success: true,
+			message: 'successfully reordered images'
+		};
+	}
+};

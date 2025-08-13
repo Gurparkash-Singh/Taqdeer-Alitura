@@ -1,209 +1,174 @@
-import { dbFunctions } from "$lib/db/database";
-import { error } from "@sveltejs/kit";
-import { fail } from "@sveltejs/kit";
+import { dbFunctions } from '$lib/db/database';
+import { error } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 
-export async function load({params})
-{
-    const [product] = await dbFunctions.getProductById(params.product_id);
+export async function load({ params }) {
+	const [product] = await dbFunctions.getProductById(params.product_id);
 
-    if (!product)
-    {
-        error(404);
-    }
+	if (!product) {
+		error(404);
+	}
 
-    await dbFunctions.cancelOldOrders();
+	await dbFunctions.cancelOldOrders();
 
-    const images = await dbFunctions.getImagesByProductId(params.product_id);
+	const images = await dbFunctions.getImagesByProductId(params.product_id);
 
-    const product_variations = await dbFunctions.getProductVariations(
-        params.product_id
-    );
+	const product_variations = await dbFunctions.getProductVariations(params.product_id);
 
-    const product_variation_options = await dbFunctions.getProductVariationOptions(
-        params.product_id
-    );
+	const product_variation_options = await dbFunctions.getProductVariationOptions(params.product_id);
 
-    const product_items = await dbFunctions.getProductItems(params.product_id);
+	const product_items = await dbFunctions.getProductItems(params.product_id);
 
-    const outOfStock = await dbFunctions.getProductOutOfStock(params.product_id);
+	const outOfStock = await dbFunctions.getProductOutOfStock(params.product_id);
 
-    const components = await dbFunctions.getProductComponents(params.product_id);
+	const components = await dbFunctions.getProductComponents(params.product_id);
 
-    const properties = await dbFunctions.getComponentProperties(params.product_id);
+	const properties = await dbFunctions.getComponentProperties(params.product_id);
 
-    const size_chart_components = await dbFunctions.getSizeChartComponents(
-        params.product_id
-    );
+	const size_chart_components = await dbFunctions.getSizeChartComponents(params.product_id);
 
-    let size_chart_values = await dbFunctions.getSizeChartValues(params.product_id);
+	let size_chart_values = await dbFunctions.getSizeChartValues(params.product_id);
 
-    let temp_values = [[]];
-    let current_component;
+	let temp_values = [[]];
+	let current_component;
 
-    if (size_chart_values.length > 0) {
-        current_component = size_chart_values[0].size;
-    }
+	if (size_chart_values.length > 0) {
+		current_component = size_chart_values[0].size;
+	}
 
-    let current_array = 0;
+	let current_array = 0;
 
-    for (let i = 0; i < size_chart_values.length; i++) {
-        if (current_component !== size_chart_values[i].size) {
-            current_component = size_chart_values[i].size;
-            temp_values.push([]);
-            current_array++;
-        }
-        temp_values[current_array].push(size_chart_values[i]);
-    }
+	for (let i = 0; i < size_chart_values.length; i++) {
+		if (current_component !== size_chart_values[i].size) {
+			current_component = size_chart_values[i].size;
+			temp_values.push([]);
+			current_array++;
+		}
+		temp_values[current_array].push(size_chart_values[i]);
+	}
 
-    return {
-        product,
-        images,
-        product_variations,
-        product_variation_options,
-        product_items,
-        outOfStock,
-        components, 
-        properties,
-        size_chart_components,
-        size_chart_values: temp_values
-    };
+	return {
+		product,
+		images,
+		product_variations,
+		product_variation_options,
+		product_items,
+		outOfStock,
+		components,
+		properties,
+		size_chart_components,
+		size_chart_values: temp_values
+	};
 }
 
 export const actions = {
-    add: async ({ cookies, request, params }) => {
-        const data = await request.formData();
+	add: async ({ cookies, request, params }) => {
+		const data = await request.formData();
 
-        const order_id = cookies.get("order_id");
+		const order_id = cookies.get('order_id');
 
-        if (order_id) {
-            const [order] = await dbFunctions.getOrderById(order_id);
-    
-            if (order?.status < 6) {
-                return fail(500, {
-                    invalid: true,
-                    message: "cannot update order"
-                });
-            }
-        }
+		if (order_id) {
+			const [order] = await dbFunctions.getOrderById(order_id);
 
-        const session = cookies.get("session");
-        const [shopping_session] = await dbFunctions.getShoppingSessionByToken(session);
+			if (order?.status < 6) {
+				return fail(500, {
+					invalid: true,
+					message: 'cannot update order'
+				});
+			}
+		}
 
-        if (!session || !shopping_session) {
-            await dbFunctions.setCriticalError(
-                "shop",
-                500,
-                `Error creating shopping session` 
-            );
-            return fail(500, {
-                invalid: true,
-                message: "server failed"
-            });
-        }
+		const session = cookies.get('session');
+		const [shopping_session] = await dbFunctions.getShoppingSessionByToken(session);
 
-        const quantity = data.get("quantity").trim();
-        const item_id = data.get("item");
+		if (!session || !shopping_session) {
+			await dbFunctions.setCriticalError('shop', 500, `Error creating shopping session`);
+			return fail(500, {
+				invalid: true,
+				message: 'server failed'
+			});
+		}
 
-        if (!quantity || !item_id) {
-            await dbFunctions.setError(
-                "shop",
-                400,
-                `Empty fields` 
-            );
-            return fail(400, {
-                invalid: true,
-                message: "missing fields"
-            });
-        }
+		const quantity = data.get('quantity').trim();
+		const item_id = data.get('item');
 
-        const [item] = await dbFunctions.getItemById(item_id);
+		if (!quantity || !item_id) {
+			await dbFunctions.setError('shop', 400, `Empty fields`);
+			return fail(400, {
+				invalid: true,
+				message: 'missing fields'
+			});
+		}
 
-        if (!item) {
-            await dbFunctions.setError(
-                "shop",
-                400,
-                `Invalid Product Item` 
-            );
-            return fail(400, {
-                invalid: true,
-                message: "item not found"
-            });
-        }
+		const [item] = await dbFunctions.getItemById(item_id);
 
-        if (item.product_id != params.product_id) {
-            await dbFunctions.setError(
-                "shop",
-                400,
-                `Product Item does not match expected product` 
-            );
-            return fail(400, {
-                invalid: true,
-                message: "product not found"
-            });
-        }
+		if (!item) {
+			await dbFunctions.setError('shop', 400, `Invalid Product Item`);
+			return fail(400, {
+				invalid: true,
+				message: 'item not found'
+			});
+		}
 
-        const [product] = await dbFunctions.getProductById(params.product_id);
+		if (item.product_id != params.product_id) {
+			await dbFunctions.setError('shop', 400, `Product Item does not match expected product`);
+			return fail(400, {
+				invalid: true,
+				message: 'product not found'
+			});
+		}
 
-        if (!product) {
-             await dbFunctions.setError(
-                "shop",
-                400,
-                `Product not found` 
-            );
-            return fail(400, {
-                invalid: true,
-                message: "product not found"
-            });
-        }
+		const [product] = await dbFunctions.getProductById(params.product_id);
 
-        if (quantity < 0  || quantity > item.quantity || quantity > 5) {
-            await dbFunctions.setError(
-                "shop",
-                400,
-                `Invalid quantity` 
-            );
-            return fail(404, {
-                invalid: true,
-                message: "invalid quantity"
-            });
-        }
+		if (!product) {
+			await dbFunctions.setError('shop', 400, `Product not found`);
+			return fail(400, {
+				invalid: true,
+				message: 'product not found'
+			});
+		}
 
-        // Check cart for item
-        // Then add if not already added, Update if added and remove if quantity = 0
+		if (quantity < 0 || quantity > item.quantity || quantity > 5) {
+			await dbFunctions.setError('shop', 400, `Invalid quantity`);
+			return fail(404, {
+				invalid: true,
+				message: 'invalid quantity'
+			});
+		}
 
-        const [item_in_cart] = await dbFunctions.checkCartForProduct(
-            shopping_session.id, 
-            item_id
-        );
+		// Check cart for item
+		// Then add if not already added, Update if added and remove if quantity = 0
 
-        if (!item_in_cart) {
-            if (quantity === 0) {
-                return {
-                    success: true,
-                    message: "nothing to add"
-                };
-            }
+		const [item_in_cart] = await dbFunctions.checkCartForProduct(shopping_session.id, item_id);
 
-            await dbFunctions.addToCart(shopping_session.id, item_id, quantity);
-            return {
-                success: true,
-                message: "added to cart"
-            }
-        }
+		if (!item_in_cart) {
+			if (quantity === 0) {
+				return {
+					success: true,
+					message: 'nothing to add'
+				};
+			}
 
-        if (quantity === 0) {
-            await dbFunctions.removeFromCart(shopping_session.id, item_id);
-            return {
-                success: true,
-                message: "removed from cart"
-            };
-        }
+			await dbFunctions.addToCart(shopping_session.id, item_id, quantity);
+			return {
+				success: true,
+				message: 'added to cart'
+			};
+		}
 
-        await dbFunctions.updateCart(shopping_session.id, item_id, quantity);
+		if (quantity === 0) {
+			await dbFunctions.removeFromCart(shopping_session.id, item_id);
+			return {
+				success: true,
+				message: 'removed from cart'
+			};
+		}
 
-        return {
-            success: true,
-            message: "updated cart"
-        };
-    }
+		await dbFunctions.updateCart(shopping_session.id, item_id, quantity);
+
+		return {
+			success: true,
+			message: 'updated cart'
+		};
+	}
 };

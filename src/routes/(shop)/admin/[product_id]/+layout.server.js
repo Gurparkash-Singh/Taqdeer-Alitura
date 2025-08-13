@@ -1,69 +1,64 @@
-import { redirect, error } from "@sveltejs/kit";
-import { dbFunctions } from "$lib/db/database";
+import { redirect, error } from '@sveltejs/kit';
+import { dbFunctions } from '$lib/db/database';
 
 export const load = async ({ locals, parent, params }) => {
-    const [product] = await dbFunctions.getAnyProductById(params.product_id);
-    
-    if (!product)
-    {
-        return error(404);
-    }
+	const [product] = await dbFunctions.getAnyProductById(params.product_id);
 
-    if (!locals.admin)
-    {
-        throw redirect(302, '/profile');
-    }
+	if (!product) {
+		return error(404);
+	}
 
-    const id = locals.admin.admin_id;
+	if (!locals.admin) {
+		throw redirect(302, '/profile');
+	}
 
-    const [permission] = await dbFunctions.getAdminPermissionsByName(id, "update products");
+	const id = locals.admin.admin_id;
 
-    if (!permission) {
-        throw redirect(302, '/admin/settings/products');
-    }
+	const [permission] = await dbFunctions.getAdminPermissionsByName(id, 'update products');
 
-    const permissions = await dbFunctions.getAdminPermissionsByParentName(
-        id, 
-        "update products"
-    );
+	if (!permission) {
+		throw redirect(302, '/admin/settings/products');
+	}
 
-    const categories = await dbFunctions.getCategories();
+	const permissions = await dbFunctions.getAdminPermissionsByParentName(id, 'update products');
 
-    const collections = await dbFunctions.getCollections();
+	const categories = await dbFunctions.getCategories();
 
-    let productsAllowance = {
-       product_info: false,
-       images: false,
-       product_items: false,
-       components: false,
-       sizing_info: false
-    }
+	const collections = await dbFunctions.getCollections();
 
-    for (let i = 0; i < permissions.length; i++) {
-        switch (permissions[i].name) {
-            case "product info":
-                productsAllowance.product_info = true;
-                break;
-            case "images":
-                productsAllowance.images = true;
-                break;
-            case "product items":
-                productsAllowance.product_items = true;
-                break;
-            case "components":
-                productsAllowance.components = true;
-                break;
-            case "sizing info":
-                productsAllowance.sizing_info = true;
-                break;
-        }
-    }
+	let productsAllowance = {
+		product_info: false,
+		images: false,
+		product_items: false,
+		components: false,
+		sizing_info: false
+	};
 
-    return {
-        product, 
-        productsAllowance, 
-        product_id: params.product_id,
-        categories,
-        collections
-    }
-}
+	for (let i = 0; i < permissions.length; i++) {
+		switch (permissions[i].name) {
+			case 'product info':
+				productsAllowance.product_info = true;
+				break;
+			case 'images':
+				productsAllowance.images = true;
+				break;
+			case 'product items':
+				productsAllowance.product_items = true;
+				break;
+			case 'components':
+				productsAllowance.components = true;
+				break;
+			case 'sizing info':
+				productsAllowance.sizing_info = true;
+				break;
+		}
+	}
+
+	return {
+		product,
+		productsAllowance,
+		product_id: params.product_id,
+		categories,
+		collections
+	};
+};

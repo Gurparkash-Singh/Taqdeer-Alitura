@@ -1,50 +1,50 @@
 <script>
-    let { product, images } = $props();
+	let { product, images } = $props();
 
-    let displayImage = $state("");
+	let displayImage = $state('');
 
-    images.forEach(element => {
-        if (element.product_id == product.product_id) {
-            displayImage = element;
-        }
-    });
+	images.forEach((element) => {
+		if (element.product_id == product.product_id) {
+			displayImage = element;
+		}
+	});
 </script>
 
 <div>
-    {#if displayImage}
-        <img src={`${displayImage.small_image}`} alt={displayImage.alt_desc} />
-    {:else}
-        {product.name}
-    {/if}
+	{#if displayImage}
+		<img src={`${displayImage.small_image}`} alt={displayImage.alt_desc} />
+	{:else}
+		{product.name}
+	{/if}
 </div>
 
 <style>
-    div {
-        height: 115px;
-        width: 115px;
-        background-color: #D9D9D9;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-    }
+	div {
+		height: 115px;
+		width: 115px;
+		background-color: #d9d9d9;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+	}
 
-    img {
-        max-width: 90px;
-        height: 90px;
-        object-fit: contain;
-    }
+	img {
+		max-width: 90px;
+		height: 90px;
+		object-fit: contain;
+	}
 
-    @media screen and (width < 530px) {
-        div {
-            height: 90px;
-            width: 90px;
-        }
+	@media screen and (width < 530px) {
+		div {
+			height: 90px;
+			width: 90px;
+		}
 
-        img {
-            max-width: 65px;
-            height: 65px;
-        }
-    }
+		img {
+			max-width: 65px;
+			height: 65px;
+		}
+	}
 </style>

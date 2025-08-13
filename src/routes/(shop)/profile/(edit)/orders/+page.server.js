@@ -1,11 +1,11 @@
-import { dbFunctions } from "$lib/db/database";
+import { dbFunctions } from '$lib/db/database';
 
 export async function load({ locals }) {
-    const orders = await dbFunctions.getUserOrdersAndPaymentDetails(locals.user.user_id);
+	const orders = await dbFunctions.getUserOrdersAndPaymentDetails(locals.user.user_id);
 
-    if (orders.length == 0) {
-        return {};
-    }
+	if (orders.length == 0) {
+		return {};
+	}
 
-    return {orders};
+	return { orders };
 }

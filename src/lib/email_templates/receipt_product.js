@@ -1,5 +1,5 @@
 export function createReceiptProduct(name, alt_desc, image, amount, size) {
-    const product = `<hr class="divider" style="width:100%;border:none;border-top:1px solid #eaeaea;padding-bottom:1em;border-width:2px" />
+	const product = `<hr class="divider" style="width:100%;border:none;border-top:1px solid #eaeaea;padding-bottom:1em;border-width:2px" />
             <table
                 align="center"
                 width="100%"
@@ -49,11 +49,11 @@ export function createReceiptProduct(name, alt_desc, image, amount, size) {
                 </tr>
                 </tbody>
             </table>
-`
-    const preloader = `<link
+`;
+	const preloader = `<link
       rel="preload"
       as="image"
-      href="${image}" />`
-    
-    return {preloader: preloader, product: product};
+      href="${image}" />`;
+
+	return { preloader: preloader, product: product };
 }

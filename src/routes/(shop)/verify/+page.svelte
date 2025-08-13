@@ -1,189 +1,166 @@
 <script>
-    import { modal } from '$lib/shared_state/shared.svelte';
+	import { modal } from '$lib/shared_state/shared.svelte';
 
-    let { form, data } = $props();
+	let { form, data } = $props();
 
-    let formElement;
+	let formElement;
 
-    let service = $state("");
+	let service = $state('');
 
-    let otp = $state("");
-    let enableSubmit = $state(true);
+	let otp = $state('');
+	let enableSubmit = $state(true);
 
-    let time = $state("");
+	let time = $state('');
 
-    if (form) {
-        let inMessages = false;
-        for (let i = 0; i < modal.messages.length; i++) {
-            if (modal.messages[i].paragraph == form.message) {
-                inMessages = true;
-            }
-        }
+	if (form) {
+		let inMessages = false;
+		for (let i = 0; i < modal.messages.length; i++) {
+			if (modal.messages[i].paragraph == form.message) {
+				inMessages = true;
+			}
+		}
 
-        service = form.service;
+		service = form.service;
 
-        if (!inMessages && form.invalid) 
-        {
-            modal.messages.push({
-                heading: "ERROR",
-                paragraph: form.message
-            });
-        }else if (!inMessages && form.success) {
-            modal.messages.push({
-                heading: "SUCCESS",
-                paragraph: form.message
-            });
-        }
-    }
-    else if (data.wait) {
-        let inMessages = false;
-        for (let i = 0; i < modal.messages.length; i++) {
-            if (modal.messages[i].paragraph == data.wait) {
-                inMessages = true;
-            }
-        }
+		if (!inMessages && form.invalid) {
+			modal.messages.push({
+				heading: 'ERROR',
+				paragraph: form.message
+			});
+		} else if (!inMessages && form.success) {
+			modal.messages.push({
+				heading: 'SUCCESS',
+				paragraph: form.message
+			});
+		}
+	} else if (data.wait) {
+		let inMessages = false;
+		for (let i = 0; i < modal.messages.length; i++) {
+			if (modal.messages[i].paragraph == data.wait) {
+				inMessages = true;
+			}
+		}
 
-        service = data.service;
+		service = data.service;
 
-        if (!inMessages && data.wait) 
-        {
-            modal.messages.push({
-                heading: "ERROR",
-                paragraph: data.wait
-            });
-        }
-    }
-    else {
-        service = data.service;
-    }
+		if (!inMessages && data.wait) {
+			modal.messages.push({
+				heading: 'ERROR',
+				paragraph: data.wait
+			});
+		}
+	} else {
+		service = data.service;
+	}
 
-    $effect(() => {
-        if (otp.length >= 6) {
-            formElement.submit();
-        }
-    })
+	$effect(() => {
+		if (otp.length >= 6) {
+			formElement.submit();
+		}
+	});
 
-    function onReload() {
-        enableSubmit = false;
+	function onReload() {
+		enableSubmit = false;
 
-        if (data.time) {
-            time = data.time;
-            const newInterval = setInterval(() => {
-                time -= 1;
-            }, 1000)
+		if (data.time) {
+			time = data.time;
+			const newInterval = setInterval(() => {
+				time -= 1;
+			}, 1000);
 
-            setTimeout(() => {
-                enableSubmit = true;
+			setTimeout(() => {
+				enableSubmit = true;
 
-                clearInterval(newInterval);
+				clearInterval(newInterval);
 
-                time = "";
-            }, (data.time * 1000));
-        } else {
-            time = "";
-        }
-    }
+				time = '';
+			}, data.time * 1000);
+		} else {
+			time = '';
+		}
+	}
 
-    onReload()
+	onReload();
 </script>
 
 <section>
-    <h1>VERIFY ACCOUNT</h1>
-    <form 
-        action="?/submit" 
-        method="POST"
-        bind:this={formElement}
-    >
-        <input 
-            type="hidden" 
-            name="service"
-            bind:value={service}
-        />
-        <p>
-            <label for="otp">code:</label>
-            <input 
-                type="text" 
-                name="otp" 
-                id="otp"
-                bind:value={otp}
-            />
-        </p>
-        <div id="button-holder">
-            <button 
-                class:disable-submit={!enableSubmit}
-                disabled={!enableSubmit}
-                formaction="?/send"
-            >
-                Send OTP
-            </button>
-            
-            {#if time}
-                <p>
-                    {time}s
-                </p>
-            {/if}
-            
-        </div>
-    </form>
+	<h1>VERIFY ACCOUNT</h1>
+	<form action="?/submit" method="POST" bind:this={formElement}>
+		<input type="hidden" name="service" bind:value={service} />
+		<p>
+			<label for="otp">code:</label>
+			<input type="text" name="otp" id="otp" bind:value={otp} />
+		</p>
+		<div id="button-holder">
+			<button class:disable-submit={!enableSubmit} disabled={!enableSubmit} formaction="?/send">
+				Send OTP
+			</button>
+
+			{#if time}
+				<p>
+					{time}s
+				</p>
+			{/if}
+		</div>
+	</form>
 </section>
 
 <style>
 	h1 {
-        color: #bf1e2e;
-    }
+		color: #bf1e2e;
+	}
 
-    section {
-        width: 80%;
-    }
+	section {
+		width: 80%;
+	}
 
-    form p {
-        display: flex;
-        flex-direction: column;
-    }
+	form p {
+		display: flex;
+		flex-direction: column;
+	}
 
-    form label {
-        margin-bottom: 5px;
-    }
+	form label {
+		margin-bottom: 5px;
+	}
 
-    form p input {
-        background-color: #D9D9D9;
-        border: none;
-        padding: 10px;
-    }
+	form p input {
+		background-color: #d9d9d9;
+		border: none;
+		padding: 10px;
+	}
 
-    form button {
-        background-color: #bf1e2e;
-        color: white;
-        border: none;
-        padding: 10px 10px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-    }
+	form button {
+		background-color: #bf1e2e;
+		color: white;
+		border: none;
+		padding: 10px 10px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		cursor: pointer;
+	}
 
-    .disable-submit {
-        background-color: #D9D9D9;
-        color: #1E1E1E80;
-    }
+	.disable-submit {
+		background-color: #d9d9d9;
+		color: #1e1e1e80;
+	}
 
-    div {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 20px 0;
-    }
+	div {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 20px 0;
+	}
 
-    #button-holder {
-        justify-content: flex-start;
-        align-items: center;
-        margin: 20px 0;
-    }
+	#button-holder {
+		justify-content: flex-start;
+		align-items: center;
+		margin: 20px 0;
+	}
 
-    #button-holder p {
-        margin: 10px;
-    }
+	#button-holder p {
+		margin: 10px;
+	}
 </style>
-

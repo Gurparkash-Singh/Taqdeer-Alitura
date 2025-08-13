@@ -1,12 +1,12 @@
 export let modal = $state({
-    messages: []
+	messages: []
 });
 
 export let numberFormat = $state({
-    area: "en",
-    style: {
-        style: "currency",
-        currency: "SAR",
-    },
-    conversion_rate: 1
-})
+	area: 'en',
+	style: {
+		style: 'currency',
+		currency: 'SAR'
+	},
+	conversion_rate: 1
+});

@@ -1,7 +1,6 @@
 <script>
-    let { children, data } = $props();
+	let { children, data } = $props();
 </script>
-
 
 <h1>Welcome, Admin</h1>
 
@@ -9,6 +8,6 @@
 
 <style>
 	h1 {
-        color: #BF1E2E;
-    }
+		color: #bf1e2e;
+	}
 </style>

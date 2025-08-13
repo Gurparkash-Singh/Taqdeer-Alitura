@@ -1,100 +1,93 @@
 <script>
-    import BackgroundImage from "$lib/images/homepage.jpg";
-    import { modal } from '$lib/shared_state/shared.svelte';
+	import BackgroundImage from '$lib/images/homepage.jpg';
+	import { modal } from '$lib/shared_state/shared.svelte';
 
-    let { form, data } = $props();
+	let { form, data } = $props();
 
-    let email = $state(data.email);
-    let enableSend = $derived(email ? true : false);
+	let email = $state(data.email);
+	let enableSend = $derived(email ? true : false);
 
-    if (form) {
-        let inMessages = false;
-        for (let i = 0; i < modal.messages.length; i++) {
-            if (modal.messages[i].paragraph == form.message) {
-                inMessages = true;
-            }
-        }
+	if (form) {
+		let inMessages = false;
+		for (let i = 0; i < modal.messages.length; i++) {
+			if (modal.messages[i].paragraph == form.message) {
+				inMessages = true;
+			}
+		}
 
-        if (form.invalid) {
-            email = form.email;
-        }
+		if (form.invalid) {
+			email = form.email;
+		}
 
-        if (!inMessages && form.invalid) 
-        {
-            modal.messages.push({
-                heading: "ERROR",
-                paragraph: form.message
-            });
-        }else if (!inMessages && form.success) {
-            modal.messages.push({
-                heading: "SUCCESS",
-                paragraph: form.message
-            });
-        }
-    }
+		if (!inMessages && form.invalid) {
+			modal.messages.push({
+				heading: 'ERROR',
+				paragraph: form.message
+			});
+		} else if (!inMessages && form.success) {
+			modal.messages.push({
+				heading: 'SUCCESS',
+				paragraph: form.message
+			});
+		}
+	}
 </script>
 
 <svelte:head>
-    <meta name="description" 
-    content="
+	<meta
+		name="description"
+		content="
         Taqdeer Alitura Pre-Launch Page
         Use this page to signup for our newsletter,
         so that we can let you know when we launch.
     "
-    >
+	/>
 </svelte:head>
 
 <div id="image-holder">
-    <img 
-        src={BackgroundImage} 
-        alt="background"
-        style:object-fit="cover"
-        style:object-position="center center"
-        style:width="100vw"
-        style:height="100vh"
-    >
+	<img
+		src={BackgroundImage}
+		alt="background"
+		style:object-fit="cover"
+		style:object-position="center center"
+		style:width="100vw"
+		style:height="100vh"
+	/>
 </div>
 
 <main>
-    <div id="logo-holder">
-        <a href="/" aria-label="Link to Home">
-            <img src="/Logo2.svg" alt="Taqdeer Alitura Logo" id="Logo" />
-        </a>
-    </div>
+	<div id="logo-holder">
+		<a href="/" aria-label="Link to Home">
+			<img src="/Logo2.svg" alt="Taqdeer Alitura Logo" id="Logo" />
+		</a>
+	</div>
 	<section id="contact">
 		<div>
-            <form action="?/send" method="POST" id="contact-form-element">
-                <p
-                    style="margin: 10px 0 10px 0"
-                >
-                    signup to our email newsletter.
-                </p>
-                <p>
-                    <label for="email">Email: </label>
-                    <input 
-                        type="text"
-                        name="email"
-                        id="email"
-                        required
-                        placeholder="example@example.com"
-                        bind:value={email}
-                    >
-                </p>
-                <input 
-                    type="submit" 
-                    value="Send" 
-                    id="form-button"
-                    class:enable-send={enableSend}
-                    class:disable-send={!enableSend}
-                    disabled={!enableSend}
-                >
+			<form action="?/send" method="POST" id="contact-form-element">
+				<p style="margin: 10px 0 10px 0">signup to our email newsletter.</p>
+				<p>
+					<label for="email">Email: </label>
+					<input
+						type="text"
+						name="email"
+						id="email"
+						required
+						placeholder="example@example.com"
+						bind:value={email}
+					/>
+				</p>
+				<input
+					type="submit"
+					value="Send"
+					id="form-button"
+					class:enable-send={enableSend}
+					class:disable-send={!enableSend}
+					disabled={!enableSend}
+				/>
 			</form>
 			<ul>
 				<li>
-					<a 
-                        href="https://www.linkedin.com/company/taqdeer-alitura/"
-                        aria-label="linkedin link"
-                    >
+					<a href="https://www.linkedin.com/company/taqdeer-alitura/" aria-label="linkedin link">
 						<svg
 							width="24"
 							height="27"
@@ -127,10 +120,7 @@
 					</a>
 				</li>
 				<li>
-					<a 
-                        href="https://www.instagram.com/taqdeeralitura" 
-                        aria-label="instagram link"
-                    >
+					<a href="https://www.instagram.com/taqdeeralitura" aria-label="instagram link">
 						<svg
 							width="24"
 							height="24"
@@ -238,8 +228,8 @@
 		justify-content: center;
 		z-index: 2;
 		color: white;
-        align-items: center;
-        height: 100vh;
+		align-items: center;
+		height: 100vh;
 	}
 
 	#image-holder {
@@ -252,9 +242,9 @@
 	#contact {
 		margin: 0 25px;
 		z-index: 2;
-        position: relative;
-        display: flex;
-        flex-direction: column;
+		position: relative;
+		display: flex;
+		flex-direction: column;
 		justify-content: center;
 	}
 
@@ -265,19 +255,19 @@
 		padding: 15px 25px;
 		background-color: #cb2d2d;
 		color: white;
-        position: relative;
-        font-size: 14px;
+		position: relative;
+		font-size: 14px;
 	}
 
-    #contact p {
-        color: white;
-        line-height: 1.5;
-    }
+	#contact p {
+		color: white;
+		line-height: 1.5;
+	}
 
-    #contact label {
-        color: white;
-        margin: 0 4px 0 0;
-    }
+	#contact label {
+		color: white;
+		margin: 0 4px 0 0;
+	}
 
 	#contact ul {
 		list-style: none;
@@ -291,60 +281,60 @@
 
 	#contact ul li {
 		margin: 3px;
-        color: white;
+		color: white;
 	}
 
-    #form-button {
-        background: white;
-        border: none;
-        padding: 5px 20px;
-        cursor: pointer;
-    }
+	#form-button {
+		background: white;
+		border: none;
+		padding: 5px 20px;
+		cursor: pointer;
+	}
 
-    .enable-send {
-        color: #1E1E1E;
-    }
+	.enable-send {
+		color: #1e1e1e;
+	}
 
-    .disable-send {
-        color: #1E1E1E66;
-    }
+	.disable-send {
+		color: #1e1e1e66;
+	}
 
-    #contact-form-element {
-        width: 100%;
-        text-align: center;
-    }
+	#contact-form-element {
+		width: 100%;
+		text-align: center;
+	}
 
-    #contact-form-element p {
-        display: inline-flex;
-        flex-direction: row;
-        align-items: flex-end;
-        justify-content: flex-start;
-        margin: 10px 10px 10px 0;
-    }
+	#contact-form-element p {
+		display: inline-flex;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: flex-start;
+		margin: 10px 10px 10px 0;
+	}
 
-    #contact-form-element p input {
-        background: transparent;
-        border: none;
-        border-bottom: 2px solid white;
-        color: white;
-    }
+	#contact-form-element p input {
+		background: transparent;
+		border: none;
+		border-bottom: 2px solid white;
+		color: white;
+	}
 
-    #contact-form-element input[type="text"] {
-        max-width: 160px;
-        width: 100%;
-    }
+	#contact-form-element input[type='text'] {
+		max-width: 160px;
+		width: 100%;
+	}
 
-    #contact-form-element input[type="submit"] {
-        margin-bottom: 20px;
-        display: inline;
-    }
+	#contact-form-element input[type='submit'] {
+		margin-bottom: 20px;
+		display: inline;
+	}
 
-    #logo-holder {
+	#logo-holder {
 		display: flex;
 		justify-content: center;
 		width: 100%;
-        height: 140px;
-        margin: -175px 0 35px 0;
+		height: 140px;
+		margin: -175px 0 35px 0;
 	}
 
 	#Logo {

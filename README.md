@@ -1,8 +1,10 @@
 # Build and Deploy
+
 build.sh is used to build a zip file that can be sent to any server
 run.sh and server-run.sh are platform dependent and must be changed in order to work
 
 # To-Do
+
 - [x] Style send button
 - [x] On home page, center about us once you reach the scroll height
 - [x] Change direction on first scroll
@@ -59,7 +61,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Create Shipment and get tracking info
 - [x] Make it so that /cart/delivery cannot be accessed without having items
 - [x] Add ability to cancel order from review page
-- [x] Add ability to make an entire collection live 
+- [x] Add ability to make an entire collection live
 - [x] Send an uploading message while image uploads
 - [x] Get Logout Working
 - [x] Add (optional) to fields that are optional in forms
@@ -90,6 +92,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Give each page a meta description and maybe a different title
 
 # Post Release To Do
+
 - [ ] Finish Admin Panel
 - [ ] Add security to image server by authenticating user before upload or delete
 - [ ] Redo Discounts to allow for members to receive discounts without code
@@ -106,6 +109,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Save card if so choosen
 
 # To-Do for minimal viable product
+
 - [x] Load products from DB
 - [x] Add functionality to dropdown menus on shop page
 - [x] Make a products page
@@ -125,9 +129,11 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Move tap to production
 
 In Case of minimal viable product:
+
 - [x] Disable Payment Methods
 
 # Completely Finished
+
 - Homepage
 - Shop page
 - Signup page
@@ -136,6 +142,7 @@ In Case of minimal viable product:
 - Product page
 
 # Before Launch
+
 - Move Homepage to look like the one in the image
 - When an email is entered add them to the email list
 - If email is already allowed move them to the sign up page
@@ -146,11 +153,14 @@ In Case of minimal viable product:
 - Make sure emails have a png logo to point to
 
 # For Critical Error Route
+
 - A post request should be able to be made to the route with an error message
 - The route should be used to send critical front end error messages
 
 # For Admin Panel
+
 Products
+
 - [x] create a place to create and update collections and categories
 - [x] update products
 - [x] add product
@@ -167,11 +177,13 @@ Products
 - [ ] add and delete discounts in one place
 
 Orders
+
 - [x] Show all orders
 - [ ] Ability to filter all orders by user name, user email, order date, status
 - [ ] Ability to create pickups
 
 User Controls
+
 - [ ] seperate place for messages
 - [ ] seperate place for members and member types
 - [ ] seperate place to read contact form emails
@@ -179,6 +191,7 @@ User Controls
 - [ ] create an abandoned cart section
 
 Admin Controls
+
 - [ ] create an admin control panel where you can add admins and admin types
 - [ ] create an error log
 - [ ] automatically apply parent permission (read-only) if child permission added
@@ -186,6 +199,7 @@ Admin Controls
 # Image Sizes required
 
 # To Update Images
+
 - Image Carousel
 - Product Card
 - Settings Card
@@ -195,26 +209,30 @@ Admin Controls
 - /orders (receipt product)
 
 ## Product Images
+
 90 X 90
 65 X 65
 Full Size
 
 ## Logo
+
 150 X 150
 170 X 170
 
 ## Homepage
+
 Full Size
 
-
 # For Payment Methods
+
 - [ ] In /cards/add tokenize and verify card to save it
 - [ ] In /cart/review tokenize card and use it
 - [ ] In /orders save card id
 
-
 Pre-Launch:
+
 1. Pre-Migration:
+
 - [x] Add (optional) to forms
 - [x] Insert weights to DB
 - [x] Use the weights to create shipments
@@ -225,25 +243,27 @@ Pre-Launch:
 - [x] Email templates
 
 2. Migration:
+
 - [x] Buy Server
 - [x] change images based on screen size
 - [x] Upload Product Photos
 - [x] update admin panel to add early access
+- [x] update return policy
 - [ ] update measurements
 - [ ] update weights
-- [ ] update return policy
-- [ ] Tell Faris you added his email in /orders
 - [ ] Ensure DB accuracy
 
 3. Post-Migration:
+
 - [ ] QA testing
 
 Launch:
+
 - [ ] Allow access to the entire website to everyone
 - [ ] Finished Website
 
+Post-Launch:
 
-Post-Launch: 
 - [ ] Add ability to create pickup from admin panel
 - [ ] Create routine pickups
 - [ ] Get payment methods page working
@@ -254,6 +274,7 @@ Post-Launch:
 - [ ] Add ability to track shipments
 
 # Fix Pre Launch Mode
+
 - [ ] Move /access to (shop)
 - [ ] Delete /access/+layout.svelte
 - [ ] Remove everything below first if in /access/+layout.server.js
@@ -263,6 +284,7 @@ Post-Launch:
 - [ ] Remove load function from routes/+page.server.js
 
 # Email Templates For:
+
 - [x] Added to email list
 - [x] Verification Code
 - [x] Password Reset

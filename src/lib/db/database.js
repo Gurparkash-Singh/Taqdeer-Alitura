@@ -1,1474 +1,1419 @@
-import mysql from "mysql2";
-import { DATABASE_PASS, MODE, OFFLINE } from "$env/static/private";
+import mysql from 'mysql2';
+import { DATABASE_PASS, MODE, OFFLINE } from '$env/static/private';
 import { RESEND_API_KEY } from '$env/static/private';
 import { Resend } from 'resend';
-import { error } from "@sveltejs/kit";
+import { error } from '@sveltejs/kit';
 
 const resend = new Resend(RESEND_API_KEY);
 
 export let db;
 try {
-    if (MODE == "DEVELOPMENT" && OFFLINE == "TRUE") {
-        db = mysql.createPool({
-            host: "localhost",
-            user: "root",
-            database: "Taqdeer",
-            timezone: "Z"
-        }).promise();
-    }
-    else if (MODE == "DEVELOPMENT") {
-        db = mysql.createPool({
-            host: "82.198.225.76",
-            user: "gurp",
-            password: DATABASE_PASS,
-            database: "Taqdeer",
-            timezone: "Z"
-        }).promise();
-    }
-    else{
-        
-        db = mysql.createPool({
-            host: "localhost",
-            user: "gurp",
-            password: DATABASE_PASS,
-            database: "Taqdeer",
-            timezone: "Z"
-        }).promise();
-    }
+	if (MODE == 'DEVELOPMENT' && OFFLINE == 'TRUE') {
+		db = mysql
+			.createPool({
+				host: 'localhost',
+				user: 'root',
+				database: 'Taqdeer',
+				timezone: 'Z'
+			})
+			.promise();
+	} else if (MODE == 'DEVELOPMENT') {
+		db = mysql
+			.createPool({
+				host: '82.198.225.76',
+				user: 'gurp',
+				password: DATABASE_PASS,
+				database: 'Taqdeer',
+				timezone: 'Z'
+			})
+			.promise();
+	} else {
+		db = mysql
+			.createPool({
+				host: 'localhost',
+				user: 'gurp',
+				password: DATABASE_PASS,
+				database: 'Taqdeer',
+				timezone: 'Z'
+			})
+			.promise();
+	}
 } catch (dbError) {
-    if (MODE != "DEVELOPMENT") {
-        const { returnData, error } = await resend.emails.send({
-            from: 'web-contact@gurparkashsingh.com',
-            to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
-            subject: "Taqdeer Website Error",
-            text: `cannot connect to database\nError: ${dbError.code}`,
-        });
-    }
+	if (MODE != 'DEVELOPMENT') {
+		const { returnData, error } = await resend.emails.send({
+			from: 'web-contact@gurparkashsingh.com',
+			to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
+			subject: 'Taqdeer Website Error',
+			text: `cannot connect to database\nError: ${dbError.code}`
+		});
+	}
 }
 
 export const dbFunctions = {
-    getCategories: async () => {
-        let query = "SELECT category_id, category_name FROM Category;";
-        
-        const [result] = await db.query(query);
+	getCategories: async () => {
+		let query = 'SELECT category_id, category_name FROM Category;';
 
-        return result;
-    },
+		const [result] = await db.query(query);
 
-    getLiveCollections: async () => {
-        const [result] = await db.query("SELECT collection_id, collection_name FROM Collections WHERE live = 1;");
+		return result;
+	},
 
-        return result;
-    },
+	getLiveCollections: async () => {
+		const [result] = await db.query(
+			'SELECT collection_id, collection_name FROM Collections WHERE live = 1;'
+		);
 
-    getCollections: async () => {
-        const [result] = await db.query("SELECT collection_id, collection_name, live FROM Collections;");
+		return result;
+	},
 
-        return result;
-    },
+	getCollections: async () => {
+		const [result] = await db.query(
+			'SELECT collection_id, collection_name, live FROM Collections;'
+		);
 
-    getUserByEmail: async (email) => {
-        let query = "SELECT * FROM User WHERE Email = ?";
+		return result;
+	},
 
-        const [users] = await db.query(query, email);
+	getUserByEmail: async (email) => {
+		let query = 'SELECT * FROM User WHERE Email = ?';
 
-        if (users.length > 0) {
-            return users[0];
-        }
+		const [users] = await db.query(query, email);
 
-        return;
-    },
+		if (users.length > 0) {
+			return users[0];
+		}
 
-    getProducts: async (sort_asc = true, limit = 0, offset = 0) => {
-        let query = "SELECT P.* FROM Products AS P ";
-        query += "LEFT JOIN Collections ON P.collection_id = Collections.collection_id ";
-        query += "WHERE P.live = 1 AND Collections.live = 1 ";
-        query += "ORDER BY default_price ";
+		return;
+	},
 
-        if (sort_asc == true)
-        {
-            query += "ASC";
-        }
-        else
-        {
-            query += "DESC";
-        }
+	getProducts: async (sort_asc = true, limit = 0, offset = 0) => {
+		let query = 'SELECT P.* FROM Products AS P ';
+		query += 'LEFT JOIN Collections ON P.collection_id = Collections.collection_id ';
+		query += 'WHERE P.live = 1 AND Collections.live = 1 ';
+		query += 'ORDER BY default_price ';
 
-        if (limit > 0)
-        {
-            query += ` LIMIT ${limit}`;
-        }
+		if (sort_asc == true) {
+			query += 'ASC';
+		} else {
+			query += 'DESC';
+		}
 
-        if (offset > 0)
-        {
-            query += ` OFFSET ${offset}`;
-        }
+		if (limit > 0) {
+			query += ` LIMIT ${limit}`;
+		}
 
-        query += ";";
+		if (offset > 0) {
+			query += ` OFFSET ${offset}`;
+		}
 
-        const [products] = await db.query(query);
+		query += ';';
 
-        return products;
-    },
+		const [products] = await db.query(query);
 
-    getProductById: async (id) => {
-        let query = "SELECT P.* FROM Products AS P ";
-        query += "LEFT JOIN Collections ON P.collection_id = Collections.collection_id ";
-        query += "WHERE product_id = ? AND P.live = 1 AND Collections.live = 1;"
+		return products;
+	},
 
-        const [products] = await db.query(query, id);
+	getProductById: async (id) => {
+		let query = 'SELECT P.* FROM Products AS P ';
+		query += 'LEFT JOIN Collections ON P.collection_id = Collections.collection_id ';
+		query += 'WHERE product_id = ? AND P.live = 1 AND Collections.live = 1;';
 
-        return products;
-    },
+		const [products] = await db.query(query, id);
 
-    getItemById: async (id) => {
-        let query = "SELECT * FROM Product_Item WHERE item_id = ?;";
+		return products;
+	},
 
-        const [result] = await db.query(query, id);
+	getItemById: async (id) => {
+		let query = 'SELECT * FROM Product_Item WHERE item_id = ?;';
 
-        return result;
-    },
+		const [result] = await db.query(query, id);
 
-    getMainImages: async () => {
-        let query = "SELECT * FROM Images WHERE main_image = 1;";
+		return result;
+	},
 
-        const [images] = await db.query(query);
+	getMainImages: async () => {
+		let query = 'SELECT * FROM Images WHERE main_image = 1;';
 
-        return images;
-    },
+		const [images] = await db.query(query);
 
-    getImagesByProductId: async (product_id) => {
-        let query = "SELECT * FROM Images WHERE product_id = ? ";
-        query += "ORDER BY -display_order DESC;";
+		return images;
+	},
 
-        const [images] = await db.query(query, product_id);
+	getImagesByProductId: async (product_id) => {
+		let query = 'SELECT * FROM Images WHERE product_id = ? ';
+		query += 'ORDER BY -display_order DESC;';
 
-        return images;
-    },
+		const [images] = await db.query(query, product_id);
 
-    getProductOutOfStock: async (product_id) => {
-        let query = "SELECT SUM(quantity) AS total_quantity ";
-        query += "FROM Product_Item WHERE product_id = ?;"
+		return images;
+	},
 
-        const [[result]] = await db.query(query, product_id);
+	getProductOutOfStock: async (product_id) => {
+		let query = 'SELECT SUM(quantity) AS total_quantity ';
+		query += 'FROM Product_Item WHERE product_id = ?;';
 
-        if (result.total_quantity === '0') {
-            return true;
-        }
-        return false;
-    },
+		const [[result]] = await db.query(query, product_id);
 
-    getProductVariations: async (product_id) => {
-        let query = "SELECT product_id, ";
-        query += "Product_Variations.variation_id AS id, name ";
-        query += "FROM Product_Variations ";
-        query += "JOIN Variations ON ";
-        query += "Variations.variation_id = Product_Variations.variation_id ";
-        query += "WHERE product_id = ? ";
-        query += "ORDER BY id ASC;";
-
-        const [result] = await db.query(query, product_id);
-
-        return result;
-    },
-
-    getProductVariationOptions: async (product_id) => {
-        let query = "SELECT VO.option_id, VO.variation_id, VO.value ";
-        query += "FROM Product_Variation_Options ";
-        query += "JOIN Variation_Options AS VO ON ";
-        query += "VO.option_id = Product_Variation_Options.option_id ";
-        query += "WHERE product_id = ?;";
-
-        const [result] = await db.query(query, product_id);
-
-        return result;
-    },
-
-    getProductItems: async (product_id) => {
-        let query = "SELECT items.*, ";
-        query += "(";
-        query += "SELECT JSON_OBJECTAGG(Variation_Options.variation_id, ";
-        query += "Variation_Options.option_id) ";
-        query += "FROM Product_Configuration ";
-        query += "JOIN Variation_Options ON ";
-        query += "Product_Configuration.variation_option = Variation_Options.option_id ";
-        query += "WHERE Product_Configuration.product_item = items.item_id";
-        query += ") AS variations ";
-        query += "FROM Product_Item as items ";
-        query += "WHERE product_id = ?;";
+		if (result.total_quantity === '0') {
+			return true;
+		}
+		return false;
+	},
 
-        const [result] = await db.query(query, product_id);
+	getProductVariations: async (product_id) => {
+		let query = 'SELECT product_id, ';
+		query += 'Product_Variations.variation_id AS id, name ';
+		query += 'FROM Product_Variations ';
+		query += 'JOIN Variations ON ';
+		query += 'Variations.variation_id = Product_Variations.variation_id ';
+		query += 'WHERE product_id = ? ';
+		query += 'ORDER BY id ASC;';
+
+		const [result] = await db.query(query, product_id);
+
+		return result;
+	},
+
+	getProductVariationOptions: async (product_id) => {
+		let query = 'SELECT VO.option_id, VO.variation_id, VO.value ';
+		query += 'FROM Product_Variation_Options ';
+		query += 'JOIN Variation_Options AS VO ON ';
+		query += 'VO.option_id = Product_Variation_Options.option_id ';
+		query += 'WHERE product_id = ?;';
+
+		const [result] = await db.query(query, product_id);
+
+		return result;
+	},
+
+	getProductItems: async (product_id) => {
+		let query = 'SELECT items.*, ';
+		query += '(';
+		query += 'SELECT JSON_OBJECTAGG(Variation_Options.variation_id, ';
+		query += 'Variation_Options.option_id) ';
+		query += 'FROM Product_Configuration ';
+		query += 'JOIN Variation_Options ON ';
+		query += 'Product_Configuration.variation_option = Variation_Options.option_id ';
+		query += 'WHERE Product_Configuration.product_item = items.item_id';
+		query += ') AS variations ';
+		query += 'FROM Product_Item as items ';
+		query += 'WHERE product_id = ?;';
 
-        return result;
-    },
-
-    getShoppingSessionByToken: async (token) => {
-        let query = "SELECT * FROM Shopping_Session WHERE token = ?;";
-
-        const [session] = await db.query(query, token);
-
-        return session;
-    },
-
-    createNewShoppingSession: async (token) => {
-        let query = "INSERT INTO Shopping_Session (token) VALUES (?);";
-
-        await db.query(query, token);
-    },
-
-    checkCartForProduct: async (session_id, item_id) => {
-        let query = "SELECT * FROM Cart_Items ";
-        query += "WHERE session_id = ? AND item_id = ?;";
-
-        const [items] = await db.query(query, [session_id, item_id]);
-
-        return items;
-    },
+		const [result] = await db.query(query, product_id);
 
-    addToCart: async (id, item_id, quantity) => {
-        let query = "INSERT INTO Cart_Items ";
-        query += "(session_id, item_id, quantity) ";
-        query += "VALUES (?, ?, ?);";
+		return result;
+	},
+
+	getShoppingSessionByToken: async (token) => {
+		let query = 'SELECT * FROM Shopping_Session WHERE token = ?;';
+
+		const [session] = await db.query(query, token);
+
+		return session;
+	},
+
+	createNewShoppingSession: async (token) => {
+		let query = 'INSERT INTO Shopping_Session (token) VALUES (?);';
 
-        await db.query(query, [id, item_id, quantity]);
-    },
+		await db.query(query, token);
+	},
+
+	checkCartForProduct: async (session_id, item_id) => {
+		let query = 'SELECT * FROM Cart_Items ';
+		query += 'WHERE session_id = ? AND item_id = ?;';
 
-    updateCart: async (id, item_id, quantity) => {
-        let query = "UPDATE Cart_Items SET quantity = ? ";
-        query += "WHERE session_id = ? AND item_id = ?;";
+		const [items] = await db.query(query, [session_id, item_id]);
 
-        await db.query(query, [quantity, id, item_id]);
-    },
+		return items;
+	},
 
-    removeFromCart: async (id, item_id) => {
-        let query = "DELETE FROM Cart_Items ";
-        query += "WHERE session_id = ? AND item_id = ?;";
+	addToCart: async (id, item_id, quantity) => {
+		let query = 'INSERT INTO Cart_Items ';
+		query += '(session_id, item_id, quantity) ';
+		query += 'VALUES (?, ?, ?);';
 
-        await db.query(query, [id, item_id]);
-    },
+		await db.query(query, [id, item_id, quantity]);
+	},
 
-    getTotalCartQuantity: async (id) => {
-        let query = "SELECT SUM(quantity) AS quantity ";
-        query += "FROM Cart_Items WHERE session_id = ?;";
+	updateCart: async (id, item_id, quantity) => {
+		let query = 'UPDATE Cart_Items SET quantity = ? ';
+		query += 'WHERE session_id = ? AND item_id = ?;';
 
-        const [result] = await db.query(query, id);
+		await db.query(query, [quantity, id, item_id]);
+	},
 
-        return result;
-    },
+	removeFromCart: async (id, item_id) => {
+		let query = 'DELETE FROM Cart_Items ';
+		query += 'WHERE session_id = ? AND item_id = ?;';
 
-    getItemsForCurrentSession: async (id) => {
-        let query = "SELECT name, CI.*, PI.price, PI.sku, Images.*, ";
-        query += "(";
-        query += "SELECT JSON_OBJECTAGG( ";
-        query += "Variations.name, Variation_Options.value) ";
-        query += "FROM Product_Configuration ";
-        query += "JOIN Variation_Options ON ";
-        query += "Product_Configuration.variation_option = ";
-        query += "Variation_Options.option_id ";
-        query += "JOIN Variations ON "
-        query += "Variation_Options.variation_id = Variations.variation_id "
-        query += "WHERE Product_Configuration.product_item = PI.item_id";
-        query += ") AS variations ";
-        query += "FROM Cart_Items AS CI ";
-        query += "JOIN Product_Item AS PI ON CI.item_id = PI.item_id ";
-        query += "JOIN Products ON PI.product_id = Products.product_id ";
-        query += "JOIN Images ON Images.product_id = Products.product_id ";
-        query += "WHERE session_id = ? AND main_image = 1;";
+		await db.query(query, [id, item_id]);
+	},
 
-        const [items] = await db.query(query, id);
+	getTotalCartQuantity: async (id) => {
+		let query = 'SELECT SUM(quantity) AS quantity ';
+		query += 'FROM Cart_Items WHERE session_id = ?;';
 
-        return items;
-    },
+		const [result] = await db.query(query, id);
 
-    getMessages: async () => {
-        let query = "SELECT * FROM Messages WHERE broadcast = 1;";
+		return result;
+	},
 
-        const [messages] = await db.query(query);
+	getItemsForCurrentSession: async (id) => {
+		let query = 'SELECT name, CI.*, PI.price, PI.sku, Images.*, ';
+		query += '(';
+		query += 'SELECT JSON_OBJECTAGG( ';
+		query += 'Variations.name, Variation_Options.value) ';
+		query += 'FROM Product_Configuration ';
+		query += 'JOIN Variation_Options ON ';
+		query += 'Product_Configuration.variation_option = ';
+		query += 'Variation_Options.option_id ';
+		query += 'JOIN Variations ON ';
+		query += 'Variation_Options.variation_id = Variations.variation_id ';
+		query += 'WHERE Product_Configuration.product_item = PI.item_id';
+		query += ') AS variations ';
+		query += 'FROM Cart_Items AS CI ';
+		query += 'JOIN Product_Item AS PI ON CI.item_id = PI.item_id ';
+		query += 'JOIN Products ON PI.product_id = Products.product_id ';
+		query += 'JOIN Images ON Images.product_id = Products.product_id ';
+		query += 'WHERE session_id = ? AND main_image = 1;';
 
-        return messages;
-    },
+		const [items] = await db.query(query, id);
 
-    getProductComponents: async (id) => {
-        let query = "SELECT * FROM Components WHERE product_id = ?;";
+		return items;
+	},
 
-        const [components] = await db.query(query, id);
+	getMessages: async () => {
+		let query = 'SELECT * FROM Messages WHERE broadcast = 1;';
 
-        return components;
-    },
+		const [messages] = await db.query(query);
 
-    getComponentProperties: async (id) => {
-        let query = "SELECT Components.component_id, component_name, ";
-        query += "property_name, property_value, ";
-        query += "Component_Properties.property_id ";
-        query += "FROM Components ";
-        query += "JOIN Component_Properties ON ";
-        query += "Components.component_id ";
-        query += "= Component_Properties.component_id ";
-        query += "WHERE Components.product_id = ? ";
-        query += "ORDER BY Components.component_id;";
+		return messages;
+	},
 
-        const [properties] = await db.query(query, id);
+	getProductComponents: async (id) => {
+		let query = 'SELECT * FROM Components WHERE product_id = ?;';
 
-        return properties;
-    },
+		const [components] = await db.query(query, id);
 
-    createUser: async (email, pass, name, tap_id) => {
-        let query = "INSERT INTO User (email, password, name, tap_customer_id) "
-        query += "VALUES (?, ?, ?, ?);";
+		return components;
+	},
 
-        await db.query(
-            query, [email, pass, name, tap_id]
-        );
+	getComponentProperties: async (id) => {
+		let query = 'SELECT Components.component_id, component_name, ';
+		query += 'property_name, property_value, ';
+		query += 'Component_Properties.property_id ';
+		query += 'FROM Components ';
+		query += 'JOIN Component_Properties ON ';
+		query += 'Components.component_id ';
+		query += '= Component_Properties.component_id ';
+		query += 'WHERE Components.product_id = ? ';
+		query += 'ORDER BY Components.component_id;';
 
-        query = "SELECT * FROM User WHERE email = ?;";
+		const [properties] = await db.query(query, id);
 
-        const [users] = await db.query(query, email);
+		return properties;
+	},
 
-        if (users.length > 0)
-        {
-            return users;
-        }
+	createUser: async (email, pass, name, tap_id) => {
+		let query = 'INSERT INTO User (email, password, name, tap_customer_id) ';
+		query += 'VALUES (?, ?, ?, ?);';
 
-        return;
-    },
+		await db.query(query, [email, pass, name, tap_id]);
 
-    storeAuth: async (session, id) => {
-        let query = "INSERT INTO User_Tokens (user_id, token, expires_at) ";
-        query += "VALUES (?, ?, now()+interval 1 day);";
+		query = 'SELECT * FROM User WHERE email = ?;';
 
-        await db.query(query, [id, session]);
-    },
+		const [users] = await db.query(query, email);
 
-    removeAuth: async (session) => {
-        let query = "UPDATE User_Tokens SET expires_at = now() ";
-        query += "WHERE token = ?;";
+		if (users.length > 0) {
+			return users;
+		}
 
-        await db.query(query, session);
-    },
+		return;
+	},
 
-    storeToken: async (session, id) => {
-        let query = "INSERT INTO User_Tokens (user_id, token, expires_at) ";
-        query += "VALUES (?, ?, now()+interval 15 minute);";
+	storeAuth: async (session, id) => {
+		let query = 'INSERT INTO User_Tokens (user_id, token, expires_at) ';
+		query += 'VALUES (?, ?, now()+interval 1 day);';
 
-        await db.query(query, [id, session]);
-    },
+		await db.query(query, [id, session]);
+	},
 
-    getUserByAuthToken: async (session) => {
-        let query = "SELECT * FROM User_Tokens WHERE token = ? ";
-        query += "AND expires_at > now();";
+	removeAuth: async (session) => {
+		let query = 'UPDATE User_Tokens SET expires_at = now() ';
+		query += 'WHERE token = ?;';
 
-        const [users] = await db.query(query, session);
+		await db.query(query, session);
+	},
 
-        if (users.length > 0)
-        {
-            return users;
-        }
+	storeToken: async (session, id) => {
+		let query = 'INSERT INTO User_Tokens (user_id, token, expires_at) ';
+		query += 'VALUES (?, ?, now()+interval 15 minute);';
 
-        return;
-    },
+		await db.query(query, [id, session]);
+	},
 
-    getUserByID: async (id) => {
-        let query = "SELECT * FROM User WHERE user_id = ?;";
+	getUserByAuthToken: async (session) => {
+		let query = 'SELECT * FROM User_Tokens WHERE token = ? ';
+		query += 'AND expires_at > now();';
 
-        const [user] = await db.query(query, id);
+		const [users] = await db.query(query, session);
 
-        return user;
-    },
+		if (users.length > 0) {
+			return users;
+		}
 
-    updateEmail: async (newEmail, email) => {
-        let query = "UPDATE User SET email = ?, verified_email = 0 ";
-        query += "WHERE email = ?;"
+		return;
+	},
 
-        await db.query(query, [newEmail, email]);
-    },
+	getUserByID: async (id) => {
+		let query = 'SELECT * FROM User WHERE user_id = ?;';
 
-    updateName: async (name, email) => {
-        let query = "UPDATE User SET name = ? WHERE email = ?;";
+		const [user] = await db.query(query, id);
 
-        await db.query(query, [name, email]);
-    },
+		return user;
+	},
 
-    updateDOB: async (date_of_birth, email) => {
-        let query = "UPDATE User SET date_of_birth = ? WHERE email = ?;";
+	updateEmail: async (newEmail, email) => {
+		let query = 'UPDATE User SET email = ?, verified_email = 0 ';
+		query += 'WHERE email = ?;';
 
-        await db.query(query, [date_of_birth, email]);
-    },
+		await db.query(query, [newEmail, email]);
+	},
 
-    updatePassword: async (password, email) => {
-        let query = "UPDATE User SET password = ? WHERE email = ?;";
+	updateName: async (name, email) => {
+		let query = 'UPDATE User SET name = ? WHERE email = ?;';
 
-        await db.query(query, [password, email]);
-    },
+		await db.query(query, [name, email]);
+	},
 
-    expireToken: async (token_id) => {
-        let query = "UPDATE User_Tokens SET expires_at = now() WHERE ";
-        query += "id = ?;";
+	updateDOB: async (date_of_birth, email) => {
+		let query = 'UPDATE User SET date_of_birth = ? WHERE email = ?;';
 
-        await db.query(query, token_id);
-    },
+		await db.query(query, [date_of_birth, email]);
+	},
 
-    createOTP: async (session, id, service) => {
-        let query = "INSERT INTO User_OTP (user_id, token, service, expires_at) ";
-        query += "VALUES (?, ?, ?, now()+interval 5 minute);";
+	updatePassword: async (password, email) => {
+		let query = 'UPDATE User SET password = ? WHERE email = ?;';
 
-        await db.query(query, [id, session, service]);
-    },
+		await db.query(query, [password, email]);
+	},
 
-    getPreviousOTP: async (user_id) => {
-        let query = "SELECT * FROM User_OTP WHERE user_id = ? "
-        query += "AND created_at > now() - interval 1 minute;";
+	expireToken: async (token_id) => {
+		let query = 'UPDATE User_Tokens SET expires_at = now() WHERE ';
+		query += 'id = ?;';
 
-        const [tokens] = await db.query(query, user_id);
+		await db.query(query, token_id);
+	},
 
-        return tokens;
-    },
+	createOTP: async (session, id, service) => {
+		let query = 'INSERT INTO User_OTP (user_id, token, service, expires_at) ';
+		query += 'VALUES (?, ?, ?, now()+interval 5 minute);';
 
-    getOTP: async (otp) => {
-        let query = "SELECT * FROM User_OTP WHERE token = ? "
-        query += "AND expires_at > now();";
+		await db.query(query, [id, session, service]);
+	},
 
-        const [tokens] = await db.query(query, otp);
+	getPreviousOTP: async (user_id) => {
+		let query = 'SELECT * FROM User_OTP WHERE user_id = ? ';
+		query += 'AND created_at > now() - interval 1 minute;';
 
-        return tokens;
-    },
+		const [tokens] = await db.query(query, user_id);
 
-    expireOTP: async (user_id) => {
-        let query = "UPDATE User_OTP SET expires_at = now() WHERE ";
-        query += "user_id = ?;";
+		return tokens;
+	},
 
-        await db.query(query, user_id);
-    },
+	getOTP: async (otp) => {
+		let query = 'SELECT * FROM User_OTP WHERE token = ? ';
+		query += 'AND expires_at > now();';
 
-    verifyEmail: async (user_id) => {
-        let query = "UPDATE User SET verified_email = 1 WHERE user_id = ?;";
+		const [tokens] = await db.query(query, otp);
 
-        await db.query(query, user_id);
-    },
+		return tokens;
+	},
 
-    verifyPhone: async (user_id) => {
-        let query = "UPDATE User SET verified_phone = 1 WHERE user_id = ?;";
+	expireOTP: async (user_id) => {
+		let query = 'UPDATE User_OTP SET expires_at = now() WHERE ';
+		query += 'user_id = ?;';
 
-        await db.query(query, user_id);
-    },
+		await db.query(query, user_id);
+	},
 
-    getAdmin: async (user_id) => {
-        let query = "SELECT * FROM Admins WHERE user_id = ?;";
+	verifyEmail: async (user_id) => {
+		let query = 'UPDATE User SET verified_email = 1 WHERE user_id = ?;';
 
-        const [admins] = await db.query(query, user_id);
+		await db.query(query, user_id);
+	},
 
-        return admins;
-    },
+	verifyPhone: async (user_id) => {
+		let query = 'UPDATE User SET verified_phone = 1 WHERE user_id = ?;';
 
-    setCriticalError: async (location, id, name) => {
-        let query = "INSERT INTO Errors (location, error_id, error_name) ";
-        query += "VALUES (?, ?, ?);";
+		await db.query(query, user_id);
+	},
 
-        if (MODE == "DEVELOPMENT") {
-            return;
-        }
+	getAdmin: async (user_id) => {
+		let query = 'SELECT * FROM Admins WHERE user_id = ?;';
 
-        try {
-            await db.query(query, [location, id, name]);
+		const [admins] = await db.query(query, user_id);
 
-            const { returnData, error } = await resend.emails.send({
-                from: 'web-contact@gurparkashsingh.com',
-                to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
-                subject: "Taqdeer Website Error",
-                text: `Unexpected error occured\nError: ${name}`,
-            });
-        } catch (queryError) {
-            const { returnData, error } = await resend.emails.send({
-                from: 'web-contact@gurparkashsingh.com',
-                to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
-                subject: "Taqdeer Website Error",
-                text: `Error while saving\nError: ${queryError.message}`,
-            });
-            console.log(queryError);
+		return admins;
+	},
 
-            if (error) {
-                console.log("Resend failed");
-                console.log(error);
-            }
-        }
-    },
+	setCriticalError: async (location, id, name) => {
+		let query = 'INSERT INTO Errors (location, error_id, error_name) ';
+		query += 'VALUES (?, ?, ?);';
 
-    setError: async (location, id, name) => {
-        let query = "INSERT INTO Errors (location, error_id, error_name) ";
-        query += "VALUES (?, ?, ?);";
+		if (MODE == 'DEVELOPMENT') {
+			return;
+		}
 
-        try {
-            console.log(location, id, name);
-            await db.query(query, [location, id, name]);
-        } catch (queryError) {
-            const { returnData, error } = await resend.emails.send({
-                from: 'web-contact@gurparkashsingh.com',
-                to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
-                subject: "Taqdeer Website Error",
-                text: `Error while saving\nError: ${queryError.message}`,
-            });
-            console.log(queryError);
+		try {
+			await db.query(query, [location, id, name]);
 
-            if (error) {
-                console.log("Resend failed");
-                console.log(error);
-            }
-        }
-    },
+			const { returnData, error } = await resend.emails.send({
+				from: 'web-contact@gurparkashsingh.com',
+				to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
+				subject: 'Taqdeer Website Error',
+				text: `Unexpected error occured\nError: ${name}`
+			});
+		} catch (queryError) {
+			const { returnData, error } = await resend.emails.send({
+				from: 'web-contact@gurparkashsingh.com',
+				to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
+				subject: 'Taqdeer Website Error',
+				text: `Error while saving\nError: ${queryError.message}`
+			});
+			console.log(queryError);
 
-    getAdminPermissions: async (admin_id) => {
-        let query = "SELECT * FROM Admin_Type_And_Permission ";
-        query += "WHERE admin_id = ?;";
+			if (error) {
+				console.log('Resend failed');
+				console.log(error);
+			}
+		}
+	},
 
-        const [permissions] = await db.query(query, admin_id);
+	setError: async (location, id, name) => {
+		let query = 'INSERT INTO Errors (location, error_id, error_name) ';
+		query += 'VALUES (?, ?, ?);';
 
-        return permissions;
-    },
+		try {
+			console.log(location, id, name);
+			await db.query(query, [location, id, name]);
+		} catch (queryError) {
+			const { returnData, error } = await resend.emails.send({
+				from: 'web-contact@gurparkashsingh.com',
+				to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
+				subject: 'Taqdeer Website Error',
+				text: `Error while saving\nError: ${queryError.message}`
+			});
+			console.log(queryError);
 
-    getAdminPermissionsByParentName: async (admin_id, name) => {
-        let query = "SELECT * FROM Admin_Type_And_Permission ";
-        query += "WHERE admin_id = ? AND ";
-        query += "parent_permission_name = ?;"
+			if (error) {
+				console.log('Resend failed');
+				console.log(error);
+			}
+		}
+	},
 
-        const [permissions] = await db.query(query, [admin_id, name]);
+	getAdminPermissions: async (admin_id) => {
+		let query = 'SELECT * FROM Admin_Type_And_Permission ';
+		query += 'WHERE admin_id = ?;';
 
-        return permissions;
-    },
+		const [permissions] = await db.query(query, admin_id);
 
-    getAdminPermissionsByName: async (admin_id, name) => {
-        let query = "SELECT * FROM Admin_Type_And_Permission ";
-        query += "WHERE admin_id = ? AND name = ?;";
+		return permissions;
+	},
 
-        const [permissions] = await db.query(query, [admin_id, name]);
+	getAdminPermissionsByParentName: async (admin_id, name) => {
+		let query = 'SELECT * FROM Admin_Type_And_Permission ';
+		query += 'WHERE admin_id = ? AND ';
+		query += 'parent_permission_name = ?;';
 
-        return permissions;
-    },
+		const [permissions] = await db.query(query, [admin_id, name]);
 
-    setPhone: async (country, number, user_id) => {
-        let query = "UPDATE User SET country = ?, telephone = ?, ";
-        query += "verified_phone = 0 "
-        query += "WHERE user_id = ?;";
+		return permissions;
+	},
 
-        await db.query(query, [country, number, user_id]);
-    },
+	getAdminPermissionsByName: async (admin_id, name) => {
+		let query = 'SELECT * FROM Admin_Type_And_Permission ';
+		query += 'WHERE admin_id = ? AND name = ?;';
 
-    getCategoryByID: async (id) => {
-        let query = "SELECT * FROM Category WHERE category_id = ?;";
+		const [permissions] = await db.query(query, [admin_id, name]);
 
-        const [categories] = await db.query(query, id);
+		return permissions;
+	},
 
-        return categories;
-    },
+	setPhone: async (country, number, user_id) => {
+		let query = 'UPDATE User SET country = ?, telephone = ?, ';
+		query += 'verified_phone = 0 ';
+		query += 'WHERE user_id = ?;';
 
-    getProductsByCategory: async (category) => {
-        let query = "SELECT * FROM Products WHERE category_id = ?;";
+		await db.query(query, [country, number, user_id]);
+	},
 
-        const [products] = await db.query(query, category);
+	getCategoryByID: async (id) => {
+		let query = 'SELECT * FROM Category WHERE category_id = ?;';
 
-        return products;
-    },
+		const [categories] = await db.query(query, id);
 
-    deleteCategory: async (id) => {
-        let query = "DELETE FROM Category WHERE category_id = ?;";
+		return categories;
+	},
 
-        await db.query(query, id);
-    },
+	getProductsByCategory: async (category) => {
+		let query = 'SELECT * FROM Products WHERE category_id = ?;';
 
-    addCategory: async (name) => {
-        let query = "INSERT INTO Category (category_name) VALUES (?);";
+		const [products] = await db.query(query, category);
 
-        await db.query(query, name);
-    },
+		return products;
+	},
 
-    updateCategory: async (id, name) => {
-        let query = "UPDATE Category SET category_name = ? WHERE ";
-        query += "category_id = ?;";
+	deleteCategory: async (id) => {
+		let query = 'DELETE FROM Category WHERE category_id = ?;';
 
-        await db.query(query, [name, id]);
-    },
+		await db.query(query, id);
+	},
 
-    getCollectionByID: async (id) => {
-        let query = "SELECT * FROM Collections WHERE collection_id = ?;";
+	addCategory: async (name) => {
+		let query = 'INSERT INTO Category (category_name) VALUES (?);';
 
-        const [categories] = await db.query(query, id);
+		await db.query(query, name);
+	},
 
-        return categories;
-    },
+	updateCategory: async (id, name) => {
+		let query = 'UPDATE Category SET category_name = ? WHERE ';
+		query += 'category_id = ?;';
 
-    getProductsByCollection: async (collection) => {
-        let query = "SELECT * FROM Products WHERE collection_id = ?;";
+		await db.query(query, [name, id]);
+	},
 
-        const [products] = await db.query(query, collection);
+	getCollectionByID: async (id) => {
+		let query = 'SELECT * FROM Collections WHERE collection_id = ?;';
 
-        return products;
-    },
+		const [categories] = await db.query(query, id);
 
-    deleteCollection: async (id) => {
-        let query = "DELETE FROM Collections WHERE collection_id = ?;";
+		return categories;
+	},
 
-        await db.query(query, id);
-    },
+	getProductsByCollection: async (collection) => {
+		let query = 'SELECT * FROM Products WHERE collection_id = ?;';
 
-    addCollection: async (name) => {
-        let query = "INSERT INTO Collections (collection_name) VALUES (?);";
+		const [products] = await db.query(query, collection);
 
-        await db.query(query, name);
-    },
+		return products;
+	},
 
-    updateCollection: async (id, name, live) => {
-        let query = "UPDATE Collections SET collection_name = ? ";
-        if (live){
-            query += ", live = 1 ";
-        }
-        else {
-            query += ", live = 0 ";
-        }
-        query += "WHERE collection_id = ?;";
+	deleteCollection: async (id) => {
+		let query = 'DELETE FROM Collections WHERE collection_id = ?;';
 
-        await db.query(query, [name, id]);
-    },
+		await db.query(query, id);
+	},
 
-    getAdminPermissionsByPermissionID: async (admin_id, permission_id) => {
-        let query = "SELECT * FROM Admin_Type_And_Permission WHERE admin_id = ? ";
-        query += "AND permission_id = ?"
+	addCollection: async (name) => {
+		let query = 'INSERT INTO Collections (collection_name) VALUES (?);';
 
-        const [permissions] = await db.query(query, [admin_id, permission_id]);
+		await db.query(query, name);
+	},
 
-        return permissions;
-    },
+	updateCollection: async (id, name, live) => {
+		let query = 'UPDATE Collections SET collection_name = ? ';
+		if (live) {
+			query += ', live = 1 ';
+		} else {
+			query += ', live = 0 ';
+		}
+		query += 'WHERE collection_id = ?;';
 
-    getAllProducts: async (sort_asc = true, limit = 0, offset = 0) => {
-        let query = "SELECT * FROM Products ORDER BY default_price ";
+		await db.query(query, [name, id]);
+	},
 
-        if (sort_asc == true)
-        {
-            query += "ASC";
-        }
-        else
-        {
-            query += "DESC";
-        }
+	getAdminPermissionsByPermissionID: async (admin_id, permission_id) => {
+		let query = 'SELECT * FROM Admin_Type_And_Permission WHERE admin_id = ? ';
+		query += 'AND permission_id = ?';
 
-        if (limit > 0)
-        {
-            query += ` LIMIT ${limit}`;
-        }
+		const [permissions] = await db.query(query, [admin_id, permission_id]);
 
-        if (offset > 0)
-        {
-            query += ` OFFSET ${offset}`;
-        }
+		return permissions;
+	},
 
-        query += ";";
+	getAllProducts: async (sort_asc = true, limit = 0, offset = 0) => {
+		let query = 'SELECT * FROM Products ORDER BY default_price ';
 
-        const [products] = await db.query(query);
+		if (sort_asc == true) {
+			query += 'ASC';
+		} else {
+			query += 'DESC';
+		}
 
-        return products;
-    },
+		if (limit > 0) {
+			query += ` LIMIT ${limit}`;
+		}
 
-    getAnyProductById: async (id) => {
-        let query = "SELECT * FROM Products WHERE product_id = ?;";
+		if (offset > 0) {
+			query += ` OFFSET ${offset}`;
+		}
 
-        const [products] = await db.query(query, id);
+		query += ';';
 
-        return products;
-    },
+		const [products] = await db.query(query);
 
-    updateProductName: async (id, value) => {
-        let query = "UPDATE Products SET name = ? WHERE product_id = ?;";
+		return products;
+	},
 
-        await db.query(query, [value, id]);
-    },
+	getAnyProductById: async (id) => {
+		let query = 'SELECT * FROM Products WHERE product_id = ?;';
 
-    updateProductCategory: async (id, value) => {
-        let query = "UPDATE Products SET category_id = ? WHERE product_id = ?;";
+		const [products] = await db.query(query, id);
 
-        await db.query(query, [value, id]);
-    },
+		return products;
+	},
 
-    updateProductCollection: async (id, value) => {
-        let query = "UPDATE Products SET collection_id = ? WHERE product_id = ?;";
+	updateProductName: async (id, value) => {
+		let query = 'UPDATE Products SET name = ? WHERE product_id = ?;';
 
-        await db.query(query, [value, id]);
-    },
+		await db.query(query, [value, id]);
+	},
 
-    updateProductPrice: async (id, value) => {
-        let query = "UPDATE Products SET default_price = ? WHERE product_id = ?;";
+	updateProductCategory: async (id, value) => {
+		let query = 'UPDATE Products SET category_id = ? WHERE product_id = ?;';
 
-        await db.query(query, [value, id]);
-    },
+		await db.query(query, [value, id]);
+	},
 
-    updateProductLive: async (id, value) => {
-        let query = "UPDATE Products SET live = ? WHERE product_id = ?;";
+	updateProductCollection: async (id, value) => {
+		let query = 'UPDATE Products SET collection_id = ? WHERE product_id = ?;';
 
-        await db.query(query, [value, id]);
-    },
+		await db.query(query, [value, id]);
+	},
 
-    updateProductDescription: async (id, value) => {
-        let query = "UPDATE Products SET description = ? WHERE product_id = ?;";
+	updateProductPrice: async (id, value) => {
+		let query = 'UPDATE Products SET default_price = ? WHERE product_id = ?;';
 
-        await db.query(query, [value, id]);
-    },
+		await db.query(query, [value, id]);
+	},
 
-    updateProductImageDesc: async (id, value) => {
-        let query = "UPDATE Products SET image_alt_desc = ? WHERE product_id = ?;";
+	updateProductLive: async (id, value) => {
+		let query = 'UPDATE Products SET live = ? WHERE product_id = ?;';
 
-        await db.query(query, [value, id]);
-    },
+		await db.query(query, [value, id]);
+	},
 
-    getAvailableCurrencies: async () => {
-        let query = "SELECT currency_code FROM Available_Currencies";
+	updateProductDescription: async (id, value) => {
+		let query = 'UPDATE Products SET description = ? WHERE product_id = ?;';
 
-        const [result] = await db.query(query);
+		await db.query(query, [value, id]);
+	},
 
-        return result;
-    },
+	updateProductImageDesc: async (id, value) => {
+		let query = 'UPDATE Products SET image_alt_desc = ? WHERE product_id = ?;';
 
-    removeAllFromCart: async (session) => {
-        let query = "DELETE FROM Cart_Items WHERE session_id = ? ";
-        query += "AND item_id > 0";
+		await db.query(query, [value, id]);
+	},
 
-        await db.query(query, session);
-    },
+	getAvailableCurrencies: async () => {
+		let query = 'SELECT currency_code FROM Available_Currencies';
 
-    createOrderForExistingUser: async (user_id, name, email, country, phone) => {
-        let query = "INSERT INTO Orders ";
-        query += "(user_id, name, user_email, country, telephone, status) VALUES ";
-        query += "(?, ?, ?, ?, ?, 1);";
+		const [result] = await db.query(query);
 
-        const [result] = await db.query(query, [user_id, name, email, country, phone]);
+		return result;
+	},
 
-        return result;
-    },
+	removeAllFromCart: async (session) => {
+		let query = 'DELETE FROM Cart_Items WHERE session_id = ? ';
+		query += 'AND item_id > 0';
 
-    createOrderForGuest: async (name, email, country, phone) => {
-        let query = "INSERT INTO Orders ";
-        query += "(name, user_email, country, telephone, status) VALUES ";
-        query += "(?, ?, ?, ?, 1);";
+		await db.query(query, session);
+	},
 
-        const [result] = await db.query(query, [name, email, country, phone]);
+	createOrderForExistingUser: async (user_id, name, email, country, phone) => {
+		let query = 'INSERT INTO Orders ';
+		query += '(user_id, name, user_email, country, telephone, status) VALUES ';
+		query += '(?, ?, ?, ?, ?, 1);';
 
-        return result;
-    },
+		const [result] = await db.query(query, [user_id, name, email, country, phone]);
 
-    setAddress: async (line1, line2, city, province, postal_code, country) => {
-        let query = "SELECT address_id FROM Addresses WHERE ";
-        query += "address_line1 = ? AND address_line2 = ? AND city = ? ";
-        query += "AND province = ? AND postal_code = ? AND country = ?;";
+		return result;
+	},
 
-        let [[result]] = await db.query(query, [
-            line1, 
-            line2,
-            city,
-            province,
-            postal_code,
-            country
-        ]);
+	createOrderForGuest: async (name, email, country, phone) => {
+		let query = 'INSERT INTO Orders ';
+		query += '(name, user_email, country, telephone, status) VALUES ';
+		query += '(?, ?, ?, ?, 1);';
 
-        if (result) {
-            return result;
-        }
+		const [result] = await db.query(query, [name, email, country, phone]);
 
-        query = "INSERT INTO Addresses ";
-        query += "(address_line1, address_line2, city, ";
-        query += "province, postal_code, country) "
-        query += "VALUES (?, ?, ?, ?, ?, ?);";
+		return result;
+	},
 
-        [result] = await db.query(query, [
-            line1, 
-            line2,
-            city,
-            province,
-            postal_code,
-            country
-        ]);
+	setAddress: async (line1, line2, city, province, postal_code, country) => {
+		let query = 'SELECT address_id FROM Addresses WHERE ';
+		query += 'address_line1 = ? AND address_line2 = ? AND city = ? ';
+		query += 'AND province = ? AND postal_code = ? AND country = ?;';
 
-        return {address_id: result.insertId};
-    },
+		let [[result]] = await db.query(query, [line1, line2, city, province, postal_code, country]);
 
-    setOrderAddress: async (
-        order_id, 
-        line1, 
-        line2, 
-        city, 
-        province, 
-        postal_code, 
-        country,
-        user_address_id
-    ) => {
-        let address_id = user_address_id;
+		if (result) {
+			return result;
+		}
 
-        if (!(address_id > 0)){
-            user_address_id = null;
-        }
+		query = 'INSERT INTO Addresses ';
+		query += '(address_line1, address_line2, city, ';
+		query += 'province, postal_code, country) ';
+		query += 'VALUES (?, ?, ?, ?, ?, ?);';
 
-        if (!user_address_id) {
-            const result = await dbFunctions.setAddress(
-                line1, 
-                line2, 
-                city, 
-                province,
-                postal_code,
-                country
-            );
+		[result] = await db.query(query, [line1, line2, city, province, postal_code, country]);
 
-            address_id = result.address_id;
-        }
+		return { address_id: result.insertId };
+	},
 
-        let query = "UPDATE Orders SET order_address = ?, status = 2 WHERE id = ?";
+	setOrderAddress: async (
+		order_id,
+		line1,
+		line2,
+		city,
+		province,
+		postal_code,
+		country,
+		user_address_id
+	) => {
+		let address_id = user_address_id;
 
-        await db.query(query, [address_id, order_id]);
-    },
+		if (!(address_id > 0)) {
+			user_address_id = null;
+		}
 
-    updateOrderAddress: async (
-        order_id, 
-        line1, 
-        line2, 
-        city, 
-        province, 
-        postal_code, 
-        country,
-        user_address_id
-    ) => {
-        let address_id = user_address_id;
+		if (!user_address_id) {
+			const result = await dbFunctions.setAddress(
+				line1,
+				line2,
+				city,
+				province,
+				postal_code,
+				country
+			);
 
-        if (!(address_id > 0)){
-            address_id = null;
-        }
+			address_id = result.address_id;
+		}
 
-        if (!user_address_id) {
-            const result = await dbFunctions.setAddress(
-                line1, 
-                line2, 
-                city, 
-                province,
-                postal_code,
-                country
-            );
+		let query = 'UPDATE Orders SET order_address = ?, status = 2 WHERE id = ?';
 
-            address_id = result.address_id;
-        }
+		await db.query(query, [address_id, order_id]);
+	},
 
-        let query = "UPDATE Orders SET order_address = ? WHERE id = ?";
+	updateOrderAddress: async (
+		order_id,
+		line1,
+		line2,
+		city,
+		province,
+		postal_code,
+		country,
+		user_address_id
+	) => {
+		let address_id = user_address_id;
 
-        await db.query(query, [address_id, order_id]);
-    },
+		if (!(address_id > 0)) {
+			address_id = null;
+		}
 
-    getOrderById: async (id) => {
-        let query = "SELECT * FROM Orders WHERE id = ?";
+		if (!user_address_id) {
+			const result = await dbFunctions.setAddress(
+				line1,
+				line2,
+				city,
+				province,
+				postal_code,
+				country
+			);
 
-        const [order] = await db.query(query, id);
+			address_id = result.address_id;
+		}
 
-        return order;
-    },
+		let query = 'UPDATE Orders SET order_address = ? WHERE id = ?';
 
-    updateOrder: async (id, name, email, country, phone) => {
-        let query = "UPDATE Orders ";
-        query += "SET name = ?, user_email = ?, country = ?, telephone = ? WHERE ";
-        query += "id = ?;";
+		await db.query(query, [address_id, order_id]);
+	},
 
-        const [result] = await db.query(query, [name, email, country, phone, id]);
+	getOrderById: async (id) => {
+		let query = 'SELECT * FROM Orders WHERE id = ?';
 
-        return result;
-    },
+		const [order] = await db.query(query, id);
 
-    getOrderAddress: async (address_id) => {
-        let query = "SELECT * FROM Addresses WHERE address_id = ?;";
+		return order;
+	},
 
-        if (!address_id) {
-            return [];
-        }
+	updateOrder: async (id, name, email, country, phone) => {
+		let query = 'UPDATE Orders ';
+		query += 'SET name = ?, user_email = ?, country = ?, telephone = ? WHERE ';
+		query += 'id = ?;';
 
-        const [result] = await db.query(query, address_id);
+		const [result] = await db.query(query, [name, email, country, phone, id]);
 
-        return result;
-    },
+		return result;
+	},
 
-    updateInvalidCart: async (session_id) => {
-        let query = "DELETE FROM Cart_Items WHERE (quantity > ( ";
-        query += "SELECT quantity FROM Product_Item ";
-        query += "WHERE item_id = Cart_Items.item_id ";
-        query += ") OR quantity > 5) ";
-        query += "AND session_id = ?;";
+	getOrderAddress: async (address_id) => {
+		let query = 'SELECT * FROM Addresses WHERE address_id = ?;';
 
-        const [result] = await db.query(query, session_id);
+		if (!address_id) {
+			return [];
+		}
 
-        return result.affectedRows > 0;
-    },
+		const [result] = await db.query(query, address_id);
 
-    moveItemsToOrder: async (order_id, session_id) => {
-        let query = "UPDATE Product_Item JOIN Cart_Items ";
-        query += "ON Product_Item.item_id = Cart_Items.item_id ";
-        query += "SET Product_Item.quantity = ";
-        query += "Product_Item.quantity - Cart_Items.quantity ";
-        query += "WHERE Cart_Items.session_id = ?;";
-        await db.query(query, session_id);
+		return result;
+	},
 
-        query = "INSERT INTO Order_Items (order_id, item_id, quantity) ";
-        query += "SELECT ? AS order_id, item_id, quantity ";
-        query += "FROM Cart_Items WHERE session_id = ?;";
-        await db.query(query, [order_id, session_id]);
+	updateInvalidCart: async (session_id) => {
+		let query = 'DELETE FROM Cart_Items WHERE (quantity > ( ';
+		query += 'SELECT quantity FROM Product_Item ';
+		query += 'WHERE item_id = Cart_Items.item_id ';
+		query += ') OR quantity > 5) ';
+		query += 'AND session_id = ?;';
 
-        query = "UPDATE Orders SET status = 3 WHERE id = ?;";
-        await db.query(query, order_id);
-    },
+		const [result] = await db.query(query, session_id);
 
-    createOrderInvoiceItem: async (order_id, amount, name) => {
-        let query = "INSERT INTO Order_Invoice_Items (order_id, amount, name) ";
-        query += "VALUES (?, ?, ?);";
+		return result.affectedRows > 0;
+	},
 
-        await db.query(query, [order_id, amount, name]);
+	moveItemsToOrder: async (order_id, session_id) => {
+		let query = 'UPDATE Product_Item JOIN Cart_Items ';
+		query += 'ON Product_Item.item_id = Cart_Items.item_id ';
+		query += 'SET Product_Item.quantity = ';
+		query += 'Product_Item.quantity - Cart_Items.quantity ';
+		query += 'WHERE Cart_Items.session_id = ?;';
+		await db.query(query, session_id);
 
-        query = "UPDATE Orders SET status = 4 WHERE id = ?;";
-        await db.query(query, order_id);
-    },
+		query = 'INSERT INTO Order_Items (order_id, item_id, quantity) ';
+		query += 'SELECT ? AS order_id, item_id, quantity ';
+		query += 'FROM Cart_Items WHERE session_id = ?;';
+		await db.query(query, [order_id, session_id]);
 
-    getUserAddresses: async (user_id) => {
-        let query = "SELECT User.id, User.address_name, User.user_id, Addresses.* ";
-        query += "FROM User_Addresses AS User ";
-        query += "JOIN Addresses ON Addresses.address_id = User.address_id "
-        query += "WHERE user_id = ?;"
+		query = 'UPDATE Orders SET status = 3 WHERE id = ?;';
+		await db.query(query, order_id);
+	},
 
-        const [result] = await db.query(query, user_id);
+	createOrderInvoiceItem: async (order_id, amount, name) => {
+		let query = 'INSERT INTO Order_Invoice_Items (order_id, amount, name) ';
+		query += 'VALUES (?, ?, ?);';
 
-        return result;
-    },
+		await db.query(query, [order_id, amount, name]);
 
-    setUserAddress: async (
-        user_id, 
-        name,
-        line1, 
-        line2, 
-        city, 
-        province, 
-        postal_code, 
-        country
-    ) => {
-        let result = await dbFunctions.setAddress(
-            line1, 
-            line2, 
-            city, 
-            province,
-            postal_code,
-            country
-        );
+		query = 'UPDATE Orders SET status = 4 WHERE id = ?;';
+		await db.query(query, order_id);
+	},
 
-        const address_id = result.address_id;
+	getUserAddresses: async (user_id) => {
+		let query = 'SELECT User.id, User.address_name, User.user_id, Addresses.* ';
+		query += 'FROM User_Addresses AS User ';
+		query += 'JOIN Addresses ON Addresses.address_id = User.address_id ';
+		query += 'WHERE user_id = ?;';
 
-        let query = "INSERT INTO User_Addresses ";
-        query += "(user_id, address_name, address_id) ";
-        query += "VALUES (?, ?, ?)";
+		const [result] = await db.query(query, user_id);
 
-        [result] = await db.query(query, [ 
-            user_id,
-            name,
-            address_id
-        ]);
+		return result;
+	},
 
-        return address_id;
-    },
+	setUserAddress: async (user_id, name, line1, line2, city, province, postal_code, country) => {
+		let result = await dbFunctions.setAddress(line1, line2, city, province, postal_code, country);
 
-    updateUserAddress: async (
-        id, 
-        user_id,
-        name,
-        line1, 
-        line2, 
-        city, 
-        province, 
-        postal_code, 
-        country
-    ) => {
-        let query = "DELETE FROM User_Addresses WHERE id = ?;";
+		const address_id = result.address_id;
 
-        await db.query(query, id);
+		let query = 'INSERT INTO User_Addresses ';
+		query += '(user_id, address_name, address_id) ';
+		query += 'VALUES (?, ?, ?)';
 
-        await dbFunctions.setUserAddress(
-            user_id,
-            name,
-            line1,
-            line2,
-            city,
-            province,
-            postal_code,
-            country
-        )
-    },
+		[result] = await db.query(query, [user_id, name, address_id]);
 
-    deleteUserAddress: async (id) => {
-        let query = "DELETE FROM User_Addresses WHERE id = ?;";
+		return address_id;
+	},
 
-        await db.query(query, id);
-    },
+	updateUserAddress: async (
+		id,
+		user_id,
+		name,
+		line1,
+		line2,
+		city,
+		province,
+		postal_code,
+		country
+	) => {
+		let query = 'DELETE FROM User_Addresses WHERE id = ?;';
 
-    getUserCards: async (user_id) => {
-        let query = "SELECT * FROM User_Cards WHERE user_id = ?;";
+		await db.query(query, id);
 
-        const [result] = await db.query(query, user_id);
+		await dbFunctions.setUserAddress(
+			user_id,
+			name,
+			line1,
+			line2,
+			city,
+			province,
+			postal_code,
+			country
+		);
+	},
 
-        return result;
-    },
+	deleteUserAddress: async (id) => {
+		let query = 'DELETE FROM User_Addresses WHERE id = ?;';
 
-    getOrderItems: async (id) => {
-        let query = "SELECT name, OI.*, PI.price, PI.sku, Images.*, ";
-        query += "PI.weight, ";
-        query += "(";
-        query += "SELECT JSON_OBJECTAGG";
-        query += "(Variations.name, Variation_Options.value) ";
-        query += "FROM Product_Configuration ";
-        query += "JOIN Variation_Options ON ";
-        query += "Product_Configuration.variation_option = ";
-        query += "Variation_Options.option_id ";
-        query += "JOIN Variations ON "
-        query += "Variation_Options.variation_id = Variations.variation_id "
-        query += "WHERE Product_Configuration.product_item = PI.item_id";
-        query += ") AS variations ";
-        query += "FROM Order_Items AS OI ";
-        query += "JOIN Product_Item AS PI ON OI.item_id = PI.item_id ";
-        query += "JOIN Products ON PI.product_id = Products.product_id ";
-        query += "JOIN Images ON Images.product_id = Products.product_id ";
-        query += "WHERE order_id = ? AND main_image = 1;";
+		await db.query(query, id);
+	},
 
-        const [items] = await db.query(query, id);
+	getUserCards: async (user_id) => {
+		let query = 'SELECT * FROM User_Cards WHERE user_id = ?;';
 
-        return items;
-    },
+		const [result] = await db.query(query, user_id);
 
-    addImage: async (product_id, link, alt_desc) => {
-        let query = "INSERT INTO Images (product_id, image_link, alt_desc) ";
-        query += "VALUES (?, ?, ?);";
-        
-        await db.query(query, [product_id, link, alt_desc]);
-    },
+		return result;
+	},
 
-    setMainImage: async (product_id, image_id) => {
-        let query = "UPDATE Images SET main_image = null WHERE product_id = ?;";
+	getOrderItems: async (id) => {
+		let query = 'SELECT name, OI.*, PI.price, PI.sku, Images.*, ';
+		query += 'PI.weight, ';
+		query += '(';
+		query += 'SELECT JSON_OBJECTAGG';
+		query += '(Variations.name, Variation_Options.value) ';
+		query += 'FROM Product_Configuration ';
+		query += 'JOIN Variation_Options ON ';
+		query += 'Product_Configuration.variation_option = ';
+		query += 'Variation_Options.option_id ';
+		query += 'JOIN Variations ON ';
+		query += 'Variation_Options.variation_id = Variations.variation_id ';
+		query += 'WHERE Product_Configuration.product_item = PI.item_id';
+		query += ') AS variations ';
+		query += 'FROM Order_Items AS OI ';
+		query += 'JOIN Product_Item AS PI ON OI.item_id = PI.item_id ';
+		query += 'JOIN Products ON PI.product_id = Products.product_id ';
+		query += 'JOIN Images ON Images.product_id = Products.product_id ';
+		query += 'WHERE order_id = ? AND main_image = 1;';
 
-        await db.query(query, product_id);
+		const [items] = await db.query(query, id);
 
-        query = "UPDATE Images SET main_image = 1 WHERE image_id = ?;";
+		return items;
+	},
 
-        await db.query(query, image_id);
-    },
+	addImage: async (product_id, link, alt_desc) => {
+		let query = 'INSERT INTO Images (product_id, image_link, alt_desc) ';
+		query += 'VALUES (?, ?, ?);';
 
-    setAltDesc: async (product_id, alt_desc) => {
-        let query = "UPDATE Images SET alt_desc = ? WHERE product_id = ?;";
+		await db.query(query, [product_id, link, alt_desc]);
+	},
 
-        await db.query(query, [alt_desc, product_id]);
-    },
+	setMainImage: async (product_id, image_id) => {
+		let query = 'UPDATE Images SET main_image = null WHERE product_id = ?;';
 
-    getImage: async (image_id) => {
-        let query = "SELECT * FROM Images WHERE image_id = ?;";
+		await db.query(query, product_id);
 
-        const [result] = await db.query(query, image_id);
+		query = 'UPDATE Images SET main_image = 1 WHERE image_id = ?;';
 
-        return result;
-    },
+		await db.query(query, image_id);
+	},
 
-    deleteImage: async (id) => {
-        let query = "DELETE FROM Images WHERE image_id = ?;";
+	setAltDesc: async (product_id, alt_desc) => {
+		let query = 'UPDATE Images SET alt_desc = ? WHERE product_id = ?;';
 
-        await db.query(query, id);
-    },
+		await db.query(query, [alt_desc, product_id]);
+	},
 
-    getOrderInvoice: async (order_id) => {
-        let query = "SELECT * FROM Order_Invoice_Items WHERE order_id = ?;";
+	getImage: async (image_id) => {
+		let query = 'SELECT * FROM Images WHERE image_id = ?;';
 
-        const [result] = await db.query(query, order_id);
+		const [result] = await db.query(query, image_id);
 
-        return result;
-    },
+		return result;
+	},
 
-    getOrderInvoiceWithoutDelivery: async (order_id) => {
-        let query = "SELECT * FROM Order_Invoice_Items WHERE order_id = ? ";
-        query += "AND name <> 'delivery'";
-        
-        const [result] = await db.query(query, order_id);
+	deleteImage: async (id) => {
+		let query = 'DELETE FROM Images WHERE image_id = ?;';
 
-        return result;
-    },
+		await db.query(query, id);
+	},
 
-    getOrderDelivery: async (order_id) => {
-        let query = "SELECT * FROM Order_Invoice_Items WHERE order_id = ? ";
-        query += "AND name = 'delivery'";
-        
-        const [result] = await db.query(query, order_id);
+	getOrderInvoice: async (order_id) => {
+		let query = 'SELECT * FROM Order_Invoice_Items WHERE order_id = ?;';
 
-        return result;
-    },
+		const [result] = await db.query(query, order_id);
 
-    updateDeliveryRate: async (order_id, amount) => {
-        let query = "UPDATE Order_Invoice_Items SET ";
-        query += "amount = ? WHERE order_id = ? AND name = 'delivery';";
+		return result;
+	},
 
-        await db.query(query, [amount, order_id]);
-    },
+	getOrderInvoiceWithoutDelivery: async (order_id) => {
+		let query = 'SELECT * FROM Order_Invoice_Items WHERE order_id = ? ';
+		query += "AND name <> 'delivery'";
 
-    getOrderInvoiceTotal: async (order_id) => {
-        let query = "SELECT sum(amount) as total FROM Order_Invoice_Items ";
-        query += "WHERE order_id = ?;";
+		const [result] = await db.query(query, order_id);
 
-        const [result] = await db.query(query, order_id);
+		return result;
+	},
 
-        return result;
-    },
+	getOrderDelivery: async (order_id) => {
+		let query = 'SELECT * FROM Order_Invoice_Items WHERE order_id = ? ';
+		query += "AND name = 'delivery'";
 
-    getUserAddressById: async (id) => {
-        let query = "SELECT * FROM Addresses WHERE address_id = ?;";
+		const [result] = await db.query(query, order_id);
 
-        const [result] = await db.query(query, id);
+		return result;
+	},
 
-        return result;
-    },
+	updateDeliveryRate: async (order_id, amount) => {
+		let query = 'UPDATE Order_Invoice_Items SET ';
+		query += "amount = ? WHERE order_id = ? AND name = 'delivery';";
 
-    getUserOrders: async (id) => {
-        let query = "SELECT * FROM Orders WHERE user_id = ? AND status > 5;";
+		await db.query(query, [amount, order_id]);
+	},
 
-        const [result] = await db.query(query, id);
+	getOrderInvoiceTotal: async (order_id) => {
+		let query = 'SELECT sum(amount) as total FROM Order_Invoice_Items ';
+		query += 'WHERE order_id = ?;';
 
-        return result;
-    },
+		const [result] = await db.query(query, order_id);
 
-    saveTapDetails: async (order_id, tap_id, tap_order_id, receipt, payment_id) => {
-        let query = "UPDATE Orders SET tap_charge_id = ?, ";
-        query += "tap_order_id = ?, tap_receipt = ?, payment_id = ?, ";
-        query += "status = 7 WHERE id = ?;";
+		return result;
+	},
 
-        await db.query(query, [tap_id, tap_order_id, receipt, payment_id, order_id]);
-    },
+	getUserAddressById: async (id) => {
+		let query = 'SELECT * FROM Addresses WHERE address_id = ?;';
 
-    addAramexShipmentId: async (order_id, tracking_id) => {
-        let query = "UPDATE Orders SET tracking_id = ? WHERE id = ?;";
+		const [result] = await db.query(query, id);
 
-        await db.query(query, [tracking_id, order_id]);
-    },
+		return result;
+	},
 
-    saveTapCustomer: async (tap_id, user_id) => {
-        let query = "UPDATE User SET tap_customer_id = ? ";
-        query += "WHERE user_id = ?;";
+	getUserOrders: async (id) => {
+		let query = 'SELECT * FROM Orders WHERE user_id = ? AND status > 5;';
 
-        await db.query(query, [tap_id, user_id]);
-    },
+		const [result] = await db.query(query, id);
 
-    getCardById: async (card_id) => {
-        let query = "SELECT * FROM User_Cards WHERE card_id = ?;";
+		return result;
+	},
 
-        const [result] = await db.query(query, card_id);
+	saveTapDetails: async (order_id, tap_id, tap_order_id, receipt, payment_id) => {
+		let query = 'UPDATE Orders SET tap_charge_id = ?, ';
+		query += 'tap_order_id = ?, tap_receipt = ?, payment_id = ?, ';
+		query += 'status = 7 WHERE id = ?;';
 
-        return result;
-    },
+		await db.query(query, [tap_id, tap_order_id, receipt, payment_id, order_id]);
+	},
 
-    deleteCard: async (card_id) => {
-        let query = "DELETE FROM User_Cards WHERE card_id = ?;";
+	addAramexShipmentId: async (order_id, tracking_id) => {
+		let query = 'UPDATE Orders SET tracking_id = ? WHERE id = ?;';
 
-        await db.query(query, card_id);
-    },
+		await db.query(query, [tracking_id, order_id]);
+	},
 
-    addPaymentDetails: async (amount, provider, status) => {
-        let query = "INSERT INTO Payment_Details (amount, provider, status) ";
-        query += "VALUES (?,?,?);";
+	saveTapCustomer: async (tap_id, user_id) => {
+		let query = 'UPDATE User SET tap_customer_id = ? ';
+		query += 'WHERE user_id = ?;';
 
-        const [result] = await db.query(query, [amount, provider, status]);
+		await db.query(query, [tap_id, user_id]);
+	},
 
-        return result;
-    },
+	getCardById: async (card_id) => {
+		let query = 'SELECT * FROM User_Cards WHERE card_id = ?;';
 
-    getUserOrdersAndPaymentDetails: async (id) => {
-        let query = "SELECT Orders.id, Orders.tap_receipt, ";
-        query += "Payment_Details.created_at FROM Orders ";
-        query += "LEFT JOIN Payment_Details ON ";
-        query += "Orders.payment_id = Payment_Details.payment_id ";
-        query += "WHERE user_id = ? AND Orders.status > 6;";
+		const [result] = await db.query(query, card_id);
 
-        const [result] = await db.query(query, id);
+		return result;
+	},
 
-        return result;
-    },
+	deleteCard: async (card_id) => {
+		let query = 'DELETE FROM User_Cards WHERE card_id = ?;';
 
-    getAllOrdersAndPaymentDetails: async () => {
-        let query = "SELECT Orders.id, Orders.tap_receipt, Orders.name, ";
-        query += "Orders.user_email, Orders.created_at, Order_Status.name AS status, ";
-        query += "Payment_Details.created_at AS payment_date FROM Orders ";
-        query += "JOIN Order_Status ON Order_Status.status_id = Orders.status ";
-        query += "LEFT JOIN Payment_Details ON ";
-        query += "Orders.payment_id = Payment_Details.payment_id ";
+		await db.query(query, card_id);
+	},
 
-        const [result] = await db.query(query);
+	addPaymentDetails: async (amount, provider, status) => {
+		let query = 'INSERT INTO Payment_Details (amount, provider, status) ';
+		query += 'VALUES (?,?,?);';
 
-        return result;
-    },
+		const [result] = await db.query(query, [amount, provider, status]);
 
-    setOrderToPending: async (order_id) => {
-        let query = "UPDATE Orders SET status = 5, modified_at = now() ";
-        query += "WHERE id = ?;"
-        await db.query(query, order_id);
-    },
+		return result;
+	},
 
-    cancelOrder: async (order_id) => {
-        let query = "UPDATE Orders SET status = 6 WHERE id = ?;";
-        await db.query(query, order_id);
+	getUserOrdersAndPaymentDetails: async (id) => {
+		let query = 'SELECT Orders.id, Orders.tap_receipt, ';
+		query += 'Payment_Details.created_at FROM Orders ';
+		query += 'LEFT JOIN Payment_Details ON ';
+		query += 'Orders.payment_id = Payment_Details.payment_id ';
+		query += 'WHERE user_id = ? AND Orders.status > 6;';
 
-        query = "UPDATE Product_Item JOIN Order_Items ";
-        query += "ON Product_Item.item_id = Order_Items.item_id ";
-        query += "SET Product_Item.quantity = ";
-        query += "Product_Item.quantity + Order_Items.quantity ";
-        query += "WHERE Order_Items.order_id = ?;";
-        await db.query(query, order_id);
-    },
+		const [result] = await db.query(query, id);
 
-    getComponentById: async (id) => {
-        let query = "SELECT * FROM Components WHERE component_id = ?;";
+		return result;
+	},
 
-        const [result] = await db.query(query, id);
+	getAllOrdersAndPaymentDetails: async () => {
+		let query = 'SELECT Orders.id, Orders.tap_receipt, Orders.name, ';
+		query += 'Orders.user_email, Orders.created_at, Order_Status.name AS status, ';
+		query += 'Payment_Details.created_at AS payment_date FROM Orders ';
+		query += 'JOIN Order_Status ON Order_Status.status_id = Orders.status ';
+		query += 'LEFT JOIN Payment_Details ON ';
+		query += 'Orders.payment_id = Payment_Details.payment_id ';
 
-        return result;
-    },
+		const [result] = await db.query(query);
 
-    addComponent: async (product_id, component_name, description) => {
-        let query = "INSERT INTO Components (product_id, component_name, ";
-        query += "component_description) VALUES (?, ?, ?);";
+		return result;
+	},
 
-        await db.query(query, [product_id, component_name, description]);
-    },
+	setOrderToPending: async (order_id) => {
+		let query = 'UPDATE Orders SET status = 5, modified_at = now() ';
+		query += 'WHERE id = ?;';
+		await db.query(query, order_id);
+	},
 
-    updateComponent: async (id, component_name, description) => {
-        let query = "UPDATE Components SET component_name = ?, ";
-        query += "component_description = ? WHERE component_id = ?;";
+	cancelOrder: async (order_id) => {
+		let query = 'UPDATE Orders SET status = 6 WHERE id = ?;';
+		await db.query(query, order_id);
 
-        await db.query(query, [component_name, description, id]);
-    },
+		query = 'UPDATE Product_Item JOIN Order_Items ';
+		query += 'ON Product_Item.item_id = Order_Items.item_id ';
+		query += 'SET Product_Item.quantity = ';
+		query += 'Product_Item.quantity + Order_Items.quantity ';
+		query += 'WHERE Order_Items.order_id = ?;';
+		await db.query(query, order_id);
+	},
 
-    deleteComponent: async (id) => {
-        let query = "DELETE FROM Components WHERE component_id = ?;";
+	getComponentById: async (id) => {
+		let query = 'SELECT * FROM Components WHERE component_id = ?;';
 
-        await db.query(query, id);
-    },
+		const [result] = await db.query(query, id);
 
-    getPropertyById: async (id) => {
-        let query = "SELECT * FROM Component_Properties WHERE property_id = ?;";
+		return result;
+	},
 
-        const [result] = await db.query(query, id);
+	addComponent: async (product_id, component_name, description) => {
+		let query = 'INSERT INTO Components (product_id, component_name, ';
+		query += 'component_description) VALUES (?, ?, ?);';
 
-        return result;
-    },
+		await db.query(query, [product_id, component_name, description]);
+	},
 
-    addProperty: async (component_id, name, value) => {
-        let query = "INSERT INTO Component_Properties (component_id, ";
-        query += "property_name, property_value) VALUES (?, ?, ?);";
+	updateComponent: async (id, component_name, description) => {
+		let query = 'UPDATE Components SET component_name = ?, ';
+		query += 'component_description = ? WHERE component_id = ?;';
 
-        await db.query(query, [component_id, name, value]);
-    },
+		await db.query(query, [component_name, description, id]);
+	},
 
-    updateProperty: async (id, name, value) => {
-        let query = "UPDATE Component_Properties SET property_name = ?, ";
-        query += "property_value = ? WHERE property_id = ?;";
+	deleteComponent: async (id) => {
+		let query = 'DELETE FROM Components WHERE component_id = ?;';
 
-        await db.query(query, [name, value, id]);
-    },
+		await db.query(query, id);
+	},
 
-    deleteProperty: async (id) => {
-        let query = "DELETE FROM Component_Properties WHERE property_id = ?;";
+	getPropertyById: async (id) => {
+		let query = 'SELECT * FROM Component_Properties WHERE property_id = ?;';
 
-        await db.query(query, id);
-    },
+		const [result] = await db.query(query, id);
 
-    getPropertiesByComponentId: async (id) => {
-        let query = "SELECT * FROM Component_Properties WHERE ";
-        query += "component_id = ?;";
+		return result;
+	},
 
-        const [result] = await db.query(query, id);
+	addProperty: async (component_id, name, value) => {
+		let query = 'INSERT INTO Component_Properties (component_id, ';
+		query += 'property_name, property_value) VALUES (?, ?, ?);';
 
-        return result;
-    },
+		await db.query(query, [component_id, name, value]);
+	},
 
-    createProduct: async (
-        name,
-        category,
-        collection,
-        price,
-        alt_desc,
-        description
-    ) => {
-        let query = "INSERT INTO Products (name, category_id, ";
-        query += "collection_id, default_price, image_alt_desc, ";
-        query += "description, live) "
-        query += "VALUES (?, ?, ?, ?, ?, ?, 0);"
+	updateProperty: async (id, name, value) => {
+		let query = 'UPDATE Component_Properties SET property_name = ?, ';
+		query += 'property_value = ? WHERE property_id = ?;';
 
-        const [result] = await db.query(query, [
-            name,
-            category,
-            collection,
-            price,
-            alt_desc,
-            description
-        ]);
+		await db.query(query, [name, value, id]);
+	},
 
-        return result;
-    },
+	deleteProperty: async (id) => {
+		let query = 'DELETE FROM Component_Properties WHERE property_id = ?;';
 
-    saveContactForm: async (email, message) => {
-        let query = "INSERT INTO Contact_Form_Emails ";
-        query += "(email, message) VALUES (?, ?)";
+		await db.query(query, id);
+	},
 
-        await db.query(query, [email, message]);
-    },
+	getPropertiesByComponentId: async (id) => {
+		let query = 'SELECT * FROM Component_Properties WHERE ';
+		query += 'component_id = ?;';
 
-    earlyAccess: async (email) => {
-        let query = "SELECT * FROM Early_Access ";
-        query += "WHERE email = ?;";
+		const [result] = await db.query(query, id);
 
-        const [[result]] = await db.query(query, email);
+		return result;
+	},
 
-        return result;
-    },
+	createProduct: async (name, category, collection, price, alt_desc, description) => {
+		let query = 'INSERT INTO Products (name, category_id, ';
+		query += 'collection_id, default_price, image_alt_desc, ';
+		query += 'description, live) ';
+		query += 'VALUES (?, ?, ?, ?, ?, ?, 0);';
 
-    getSizeChartComponents: async (product_id) => {
-        let query = "SELECT ";
-        query += "product_id, Size_Chart_Components.component_id, ";
-        query += "name, description ";
-        query += "FROM Product_Size_Chart_Components ";
-        query += "JOIN Size_Chart_Components ON "
-        query += "Product_Size_Chart_Components.component_id = ";
-        query += "Size_Chart_Components.component_id ";
-        query += "WHERE product_id = ? ";
-        query += "ORDER BY component_id;";
+		const [result] = await db.query(query, [
+			name,
+			category,
+			collection,
+			price,
+			alt_desc,
+			description
+		]);
 
-        const [result] = await db.query(query, product_id);
+		return result;
+	},
 
-        return result;
-    },
+	saveContactForm: async (email, message) => {
+		let query = 'INSERT INTO Contact_Form_Emails ';
+		query += '(email, message) VALUES (?, ?)';
 
-    getSizeChartValues: async (id) => {
-        let query = "SELECT SCV.*, VO.value AS size ";
-        query += "FROM Size_Chart_Values AS SCV ";
-        query += "JOIN Variation_Options AS VO ON ";
-        query += "VO.option_id = SCV.option_id ";
-        query += "WHERE product_id = ? ";
-        query += "ORDER BY VO.option_id ASC, component_id ASC;";
+		await db.query(query, [email, message]);
+	},
 
-        const [result] = await db.query(query, id);
+	earlyAccess: async (email) => {
+		let query = 'SELECT * FROM Early_Access ';
+		query += 'WHERE email = ?;';
 
-        return result;
-    },
+		const [[result]] = await db.query(query, email);
 
-    addUnsubscribeToken: async (email, token) => {
-        let query = "INSERT INTO Email_Unsubscribe_Token ";
-        query += "(email, token) VALUES (?, ?);";
+		return result;
+	},
 
-        await db.query(query, [email, token]);
-    },
+	getSizeChartComponents: async (product_id) => {
+		let query = 'SELECT ';
+		query += 'product_id, Size_Chart_Components.component_id, ';
+		query += 'name, description ';
+		query += 'FROM Product_Size_Chart_Components ';
+		query += 'JOIN Size_Chart_Components ON ';
+		query += 'Product_Size_Chart_Components.component_id = ';
+		query += 'Size_Chart_Components.component_id ';
+		query += 'WHERE product_id = ? ';
+		query += 'ORDER BY component_id;';
 
-    getEmailUnsubscribeToken: async (token) => {
-        let query = "SELECT * FROM Email_Unsubscribe_Token WHERE token = ?;";
+		const [result] = await db.query(query, product_id);
 
-        const [result] = await db.query(query, token);
+		return result;
+	},
 
-        return result;
-    },
+	getSizeChartValues: async (id) => {
+		let query = 'SELECT SCV.*, VO.value AS size ';
+		query += 'FROM Size_Chart_Values AS SCV ';
+		query += 'JOIN Variation_Options AS VO ON ';
+		query += 'VO.option_id = SCV.option_id ';
+		query += 'WHERE product_id = ? ';
+		query += 'ORDER BY VO.option_id ASC, component_id ASC;';
 
-    deleteUnsubscribeTokens: async (email) => {
-        let query = "DELETE FROM Email_Unsubscribe_Token WHERE email = ? AND id > 0;";
+		const [result] = await db.query(query, id);
 
-        await db.query(query, email);
-    },
+		return result;
+	},
 
-    getProductSizeOptions: async (product_id) => {
-        let query = "SELECT Variation_Options.option_id, ";
-        query += "Variation_Options.variation_id, value ";
-        query += "FROM Product_Variation_Options ";
-        query += "JOIN Variation_Options ON ";
-        query += "Product_Variation_Options.option_id = ";
-        query += "Variation_Options.option_id ";
-        query += "JOIN Variations ON ";
-        query += "Variations.variation_id = Variation_Options.variation_id ";
-        query += "WHERE product_id = ? AND name = 'Size';"
+	addUnsubscribeToken: async (email, token) => {
+		let query = 'INSERT INTO Email_Unsubscribe_Token ';
+		query += '(email, token) VALUES (?, ?);';
 
-        const [result] = await db.query(query, product_id);
+		await db.query(query, [email, token]);
+	},
 
-        return result;
-    },
+	getEmailUnsubscribeToken: async (token) => {
+		let query = 'SELECT * FROM Email_Unsubscribe_Token WHERE token = ?;';
 
-    updateSizeChartText: async (product_id, above, below) => {
-        let query = "UPDATE Products SET size_chart_above_text = ?, ";
-        query += "size_chart_below_text = ? WHERE product_id = ?;";
+		const [result] = await db.query(query, token);
 
-        await db.query(query, [above, below, product_id]);
-    },
+		return result;
+	},
 
-    updateSizeChartValue: async (product_id, option_id, component_id, value) => {
-        let query = "INSERT INTO Size_Chart_Values ";
-        query += "(product_id, option_id, component_id, value) ";
-        query += "VALUE (?, ?, ?, ?) ";
-        query += "ON DUPLICATE KEY UPDATE value = ?;";
+	deleteUnsubscribeTokens: async (email) => {
+		let query = 'DELETE FROM Email_Unsubscribe_Token WHERE email = ? AND id > 0;';
 
-        await db.query(query, [
-            product_id,
-            option_id,
-            component_id, 
-            value,
-            value
-        ]);
-    },
+		await db.query(query, email);
+	},
 
-    getAllFromEarlyAccess: async () => {
-        let query = "SELECT * FROM Early_Access;";
+	getProductSizeOptions: async (product_id) => {
+		let query = 'SELECT Variation_Options.option_id, ';
+		query += 'Variation_Options.variation_id, value ';
+		query += 'FROM Product_Variation_Options ';
+		query += 'JOIN Variation_Options ON ';
+		query += 'Product_Variation_Options.option_id = ';
+		query += 'Variation_Options.option_id ';
+		query += 'JOIN Variations ON ';
+		query += 'Variations.variation_id = Variation_Options.variation_id ';
+		query += "WHERE product_id = ? AND name = 'Size';";
 
-        const [result] = await db.query(query);
+		const [result] = await db.query(query, product_id);
 
-        return result;
-    },
+		return result;
+	},
 
-    emailListSignup: async (email) => {
-        let query = "INSERT INTO Email_List (email) VALUES (?);";
+	updateSizeChartText: async (product_id, above, below) => {
+		let query = 'UPDATE Products SET size_chart_above_text = ?, ';
+		query += 'size_chart_below_text = ? WHERE product_id = ?;';
 
-        await db.query(query, email);
-    },
+		await db.query(query, [above, below, product_id]);
+	},
 
-    getEmailListUser: async (email) => {
-        let query = "SELECT * FROM Email_List WHERE email = ?;";
+	updateSizeChartValue: async (product_id, option_id, component_id, value) => {
+		let query = 'INSERT INTO Size_Chart_Values ';
+		query += '(product_id, option_id, component_id, value) ';
+		query += 'VALUE (?, ?, ?, ?) ';
+		query += 'ON DUPLICATE KEY UPDATE value = ?;';
 
-        const [result] = await db.query(query, email);
+		await db.query(query, [product_id, option_id, component_id, value, value]);
+	},
 
-        return result;
-    },
+	getAllFromEarlyAccess: async () => {
+		let query = 'SELECT * FROM Early_Access;';
 
-    unsubscribe: async (email) => {
-        let query = "DELETE FROM Email_List WHERE email = ? AND id > 0;";
+		const [result] = await db.query(query);
 
-        await db.query(query, email);
-    },
+		return result;
+	},
 
-    updateImageDisplayOrder: async (image_id, product_id, order) => {
-        let query = "UPDATE Images SET display_order = ? ";
-        query += "WHERE image_id = ? AND product_id = ?;";
+	emailListSignup: async (email) => {
+		let query = 'INSERT INTO Email_List (email) VALUES (?);';
 
-        await db.query(query, [order, image_id, product_id]);
-    },
+		await db.query(query, email);
+	},
 
-    addToEarlyAccess: async (email) => {
-        let query = "INSERT INTO Early_Access (email) VALUE (?) ";
-        query += "ON DUPLICATE KEY UPDATE email = ?;";
+	getEmailListUser: async (email) => {
+		let query = 'SELECT * FROM Email_List WHERE email = ?;';
 
-        await db.query(query, [email, email]);
-    },
+		const [result] = await db.query(query, email);
 
-    deleteEarlyAccess: async (email) => {
-        let query = "DELETE FROM Early_Access WHERE email = ?;";
+		return result;
+	},
 
-        await db.query(query, email);
-    },
+	unsubscribe: async (email) => {
+		let query = 'DELETE FROM Email_List WHERE email = ? AND id > 0;';
 
-    cancelOldOrders: async () => {
-        let query = "UPDATE Orders ";
-        query += "JOIN Order_Items ON Order_Items.order_id = Orders.id ";
-        query += "JOIN Product_Item ON ";
-        query += "Product_Item.item_id = Order_Items.item_id ";
-        query += "SET ";
-        query += "Orders.status = 6, "
-        query += "Product_Item.quantity = ";
-        query += "Product_Item.quantity + Order_Items.quantity ";
-        query += "WHERE Orders.id > 0 AND Orders.status < 6 ";
-        query += "AND Orders.modified_at < now() - interval 35 minute;";
+		await db.query(query, email);
+	},
 
-        await db.query(query);
-    }
-}
+	updateImageDisplayOrder: async (image_id, product_id, order) => {
+		let query = 'UPDATE Images SET display_order = ? ';
+		query += 'WHERE image_id = ? AND product_id = ?;';
+
+		await db.query(query, [order, image_id, product_id]);
+	},
+
+	addToEarlyAccess: async (email) => {
+		let query = 'INSERT INTO Early_Access (email) VALUE (?) ';
+		query += 'ON DUPLICATE KEY UPDATE email = ?;';
+
+		await db.query(query, [email, email]);
+	},
+
+	deleteEarlyAccess: async (email) => {
+		let query = 'DELETE FROM Early_Access WHERE email = ?;';
+
+		await db.query(query, email);
+	},
+
+	cancelOldOrders: async () => {
+		let query = 'UPDATE Orders ';
+		query += 'JOIN Order_Items ON Order_Items.order_id = Orders.id ';
+		query += 'JOIN Product_Item ON ';
+		query += 'Product_Item.item_id = Order_Items.item_id ';
+		query += 'SET ';
+		query += 'Orders.status = 6, ';
+		query += 'Product_Item.quantity = ';
+		query += 'Product_Item.quantity + Order_Items.quantity ';
+		query += 'WHERE Orders.id > 0 AND Orders.status < 6 ';
+		query += 'AND Orders.modified_at < now() - interval 35 minute;';
+
+		await db.query(query);
+	}
+};

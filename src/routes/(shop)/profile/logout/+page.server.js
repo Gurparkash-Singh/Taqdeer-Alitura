@@ -1,8 +1,8 @@
-import { dbFunctions } from "$lib/db/database";
-import { redirect } from "@sveltejs/kit";
+import { dbFunctions } from '$lib/db/database';
+import { redirect } from '@sveltejs/kit';
 
-export async function load({cookies}) {
-   await dbFunctions.removeAuth(cookies.get("session"));
+export async function load({ cookies }) {
+	await dbFunctions.removeAuth(cookies.get('session'));
 
-   throw redirect(303, '/');
+	throw redirect(303, '/');
 }

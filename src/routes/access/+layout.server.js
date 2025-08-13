@@ -1,22 +1,21 @@
-import { redirect } from "@sveltejs/kit";
+import { redirect } from '@sveltejs/kit';
 
-export function load({locals, cookies, url}) {
-    if (locals.user)
-    {
-        throw redirect(302, "/profile");
-    }
+export function load({ locals, cookies, url }) {
+	if (locals.user) {
+		throw redirect(302, '/profile');
+	}
 
-    const token = url.searchParams.get('token');
+	const token = url.searchParams.get('token');
 
-    if (token) {
-        return;
-    }
+	if (token) {
+		return;
+	}
 
-    if (!cookies.get("user_email")) {
-        throw redirect(302, "/");
-    }
+	if (!cookies.get('user_email')) {
+		throw redirect(302, '/');
+	}
 
-    const email = cookies.get("user_email");
+	const email = cookies.get('user_email');
 
-    return {email};
+	return { email };
 }
