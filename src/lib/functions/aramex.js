@@ -1,8 +1,7 @@
 import { MODE } from '$env/static/private';
 import axios from 'axios';
 
-
-let url_start = "https://ws.aramex.net/ShippingAPI.V2"
+let url_start = 'https://ws.aramex.net/ShippingAPI.V2';
 
 const taqdeerShipmentInfo = {
 	Line1: '8775 Al Shairah',
@@ -31,19 +30,18 @@ let clientInfo = {
 	AccountCountryCode: 'SA'
 };
 
-if (MODE === "DEVELOPMENT") {
-    clientInfo = {
-        Version: "v1.0",
-        UserName: "testingapi@aramex.com",
-        Password: "R123456789$r",
-        AccountNumber: "4004636",
-        AccountPin: "442543",
-        AccountEntity: "RUH",
-        AccountCountryCode: "SA"
-    };
+if (MODE === 'DEVELOPMENT') {
+	clientInfo = {
+		Version: 'v1.0',
+		UserName: 'testingapi@aramex.com',
+		Password: 'R123456789$r',
+		AccountNumber: '4004636',
+		AccountPin: '442543',
+		AccountEntity: 'RUH',
+		AccountCountryCode: 'SA'
+	};
 
-    
-    url_start = "https://ws.sbx.aramex.net/ShippingAPI.V2";
+	url_start = 'https://ws.sbx.aramex.net/ShippingAPI.V2';
 }
 
 export const aramex = {

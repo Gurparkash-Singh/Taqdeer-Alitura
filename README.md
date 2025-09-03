@@ -3,6 +3,46 @@
 build.sh is used to build a zip file that can be sent to any server
 run.sh and server-run.sh are platform dependent and must be changed in order to work
 
+# Website Launch Checklist
+
+1. Pre-Launch:
+
+- [x] Buy Server
+- [x] change images based on screen size
+- [x] Upload Product Photos
+- [x] update admin panel to add early access
+- [x] update return policy
+- [ ] update measurements
+- [ ] update weights
+- [ ] Ensure DB accuracy
+- [ ] QA testing
+
+2. Launch:
+
+- [ ] Allow access to the entire website to everyone
+- [ ] Finished Website
+
+3. Post-Launch:
+
+- [ ] Add ability to create pickup from admin panel
+- [ ] Create routine pickups
+- [ ] Get payment methods page working
+- [ ] Save card if so choosen
+- [ ] Allow selection of address by moving pin on the map
+- [ ] Add a close button to product page
+- [ ] Go back to exact shop settings and scroll to exact product on product page
+- [ ] Add ability to track shipments
+
+# Fix Pre Launch Mode
+
+- [ ] Move /access to (shop)
+- [ ] Delete /access/+layout.svelte
+- [ ] Remove everything below first if in /access/+layout.server.js
+- [ ] SET EARLY_ACCESS to FALSE in .env
+- [ ] Move everything from (shop)/home to routes and delete (shop)/home
+- [ ] Remove if (url.pathname === "/") from routes/+layout.svelte
+- [ ] Remove load function from routes/+page.server.js
+
 # To-Do
 
 - [x] Style send button
@@ -108,30 +148,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Get payment methods page working
 - [ ] Save card if so choosen
 
-# To-Do for minimal viable product
-
-- [x] Load products from DB
-- [x] Add functionality to dropdown menus on shop page
-- [x] Make a products page
-- [x] Create Cart
-- [x] Finish Contact form
-- [x] Edit Database to be able to save sizes
-- [x] Finish profile
-- [x] Finish edit profile
-- [x] Implement Checkout
-- [x] Finish order history
-- [x] Fix Client Details for shipment
-- [x] Make sure emails have a png logo to point to
-- [x] Move google to production
-- [x] Move twilio to production
-- [x] Move aramex to production
-- [x] Move resend to production
-- [x] Move tap to production
-
-In Case of minimal viable product:
-
-- [x] Disable Payment Methods
-
 # Completely Finished
 
 - Homepage
@@ -140,22 +156,6 @@ In Case of minimal viable product:
 - Login page
 - Forgot password design
 - Product page
-
-# Before Launch
-
-- Move Homepage to look like the one in the image
-- When an email is entered add them to the email list
-- If email is already allowed move them to the sign up page
-- If account exists for the email entered move them to the login page
-- Only allow signups from allowed emails
-- Disable access to the entire website without loging in
-- Move all instances to Production Credentials (google, twilio, tap, resend and aramex)
-- Make sure emails have a png logo to point to
-
-# For Critical Error Route
-
-- A post request should be able to be made to the route with an error message
-- The route should be used to send critical front end error messages
 
 # For Admin Panel
 
@@ -226,64 +226,3 @@ Full Size
 - [ ] In /cards/add tokenize and verify card to save it
 - [ ] In /cart/review tokenize card and use it
 - [ ] In /orders save card id
-
-Pre-Launch:
-
-1. Pre-Migration:
-
-- [x] Add (optional) to forms
-- [x] Insert weights to DB
-- [x] Use the weights to create shipments
-- [x] Collection Live functionality
-- [x] Add size chart in products page
-- [x] Adjust Home Page to look like the image
-- [x] Finish Unsubscribe page
-- [x] Email templates
-
-2. Migration:
-
-- [x] Buy Server
-- [x] change images based on screen size
-- [x] Upload Product Photos
-- [x] update admin panel to add early access
-- [x] update return policy
-- [ ] update measurements
-- [ ] update weights
-- [ ] Ensure DB accuracy
-
-3. Post-Migration:
-
-- [ ] QA testing
-
-Launch:
-
-- [ ] Allow access to the entire website to everyone
-- [ ] Finished Website
-
-Post-Launch:
-
-- [ ] Add ability to create pickup from admin panel
-- [ ] Create routine pickups
-- [ ] Get payment methods page working
-- [ ] Save card if so choosen
-- [ ] Allow selection of address by moving pin on the map
-- [ ] Add a close button to product page
-- [ ] Go back to exact shop settings and scroll to exact product on product page
-- [ ] Add ability to track shipments
-
-# Fix Pre Launch Mode
-
-- [ ] Move /access to (shop)
-- [ ] Delete /access/+layout.svelte
-- [ ] Remove everything below first if in /access/+layout.server.js
-- [ ] SET EARLY_ACCESS to FALSE in .env
-- [ ] Move everything from (shop)/home to routes and delete (shop)/home
-- [ ] Remove if (url.pathname === "/") from routes/+layout.svelte
-- [ ] Remove load function from routes/+page.server.js
-
-# Email Templates For:
-
-- [x] Added to email list
-- [x] Verification Code
-- [x] Password Reset
-- [x] Receipt

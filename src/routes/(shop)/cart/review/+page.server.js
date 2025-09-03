@@ -247,7 +247,7 @@ export const actions = {
 
 		let url;
 
-        cookies.set('temp_session', cookies.get("session"), {
+		cookies.set('temp_session', cookies.get('session'), {
 			path: '/',
 			sameSite: 'lax',
 			maxAge: 60 * 30
