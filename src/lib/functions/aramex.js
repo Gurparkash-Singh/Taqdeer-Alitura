@@ -1,4 +1,8 @@
+import { MODE } from '$env/static/private';
 import axios from 'axios';
+
+
+let url_start = "https://ws.aramex.net/ShippingAPI.V2"
 
 const taqdeerShipmentInfo = {
 	Line1: '8775 Al Shairah',
@@ -17,17 +21,7 @@ const taqdeerShipmentInfo = {
 	Type: ''
 };
 
-// const clientInfo = {
-//     Version: "v1.0",
-//     UserName: "testingapi@aramex.com",
-//     Password: "R123456789$r",
-//     AccountNumber: "4004636",
-//     AccountPin: "442543",
-//     AccountEntity: "RUH",
-//     AccountCountryCode: "SA"
-// };
-
-const clientInfo = {
+let clientInfo = {
 	Version: 'v1.0',
 	UserName: 'fandeejani2002@gmail.com',
 	Password: 'Mysoon@2000',
@@ -36,6 +30,21 @@ const clientInfo = {
 	AccountEntity: 'RUH',
 	AccountCountryCode: 'SA'
 };
+
+if (MODE === "DEVELOPMENT") {
+    clientInfo = {
+        Version: "v1.0",
+        UserName: "testingapi@aramex.com",
+        Password: "R123456789$r",
+        AccountNumber: "4004636",
+        AccountPin: "442543",
+        AccountEntity: "RUH",
+        AccountCountryCode: "SA"
+    };
+
+    
+    url_start = "https://ws.sbx.aramex.net/ShippingAPI.V2";
+}
 
 export const aramex = {
 	calculateRate: async (
@@ -108,7 +117,7 @@ export const aramex = {
 
 		let config = {
 			method: 'post',
-			url: 'https://ws.aramex.net/ShippingAPI.V2/RateCalculator/Service_1_0.svc/xml/CalculateRate',
+			url: `${url_start}/RateCalculator/Service_1_0.svc/xml/CalculateRate`,
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -236,7 +245,7 @@ export const aramex = {
 
 		let config = {
 			method: 'post',
-			url: 'https://ws.aramex.net/ShippingAPI.V2/Shipping/Service_1_0.svc/xml/CreateShipments',
+			url: `${url_start}/Shipping/Service_1_0.svc/xml/CreateShipments`,
 			headers: {
 				'Content-Type': 'application/json'
 			},

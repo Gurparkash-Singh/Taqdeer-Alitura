@@ -3,6 +3,27 @@ import { dbFunctions } from '$lib/db/database.js';
 export const handle = async ({ event, resolve }) => {
 	let session = event.cookies.get('session');
 
+    let temp_session = event.cookies.get("temp_session");
+
+    if (temp_session) {
+        session = temp_session;
+        event.cookies.set('session', session, {
+			path: '/',
+			sameSite: 'strict',
+			maxAge: 60 * 60 * 24,
+			secure: true,
+			httpOnly: true
+		});
+
+        event.cookies.set('temp_session', null, {
+			path: '/',
+			sameSite: 'lax',
+			maxAge: 0
+		});
+    }
+
+
+
 	if (!session) {
 		const authToken = crypto.randomUUID();
 		event.cookies.set('session', authToken, {

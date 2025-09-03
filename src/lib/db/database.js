@@ -20,10 +20,10 @@ try {
 	} else if (MODE == 'DEVELOPMENT') {
 		db = mysql
 			.createPool({
-				host: '82.198.225.76',
+				host: '192.168.2.25',
 				user: 'gurp',
 				password: DATABASE_PASS,
-				database: 'Taqdeer',
+				database: 'Taqdeer_Development',
 				timezone: 'Z'
 			})
 			.promise();

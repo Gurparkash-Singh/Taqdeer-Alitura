@@ -196,9 +196,7 @@ Admin Controls
 - [ ] create an error log
 - [ ] automatically apply parent permission (read-only) if child permission added
 
-# Image Sizes required
-
-# To Update Images
+# Images
 
 - Image Carousel
 - Product Card
