@@ -2,15 +2,6 @@ import { dbFunctions } from '$lib/db/database';
 import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals, params }) => {
-	const [permission] = await dbFunctions.getAdminPermissionsByName(
-		locals.admin.admin_id,
-		'sizing info'
-	);
-
-	if (!permission) {
-		throw redirect(302, './');
-	}
-
 	const size_chart_components = await dbFunctions.getSizeChartComponents(params.product_id);
 
 	let size_chart_values = await dbFunctions.getSizeChartValues(params.product_id);

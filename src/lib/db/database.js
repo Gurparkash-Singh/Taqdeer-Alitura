@@ -201,6 +201,8 @@ export const dbFunctions = {
 
 		const [result] = await db.query(query, product_id);
 
+        console.log(result);
+
 		return result;
 	},
 
@@ -1288,6 +1290,26 @@ export const dbFunctions = {
 		return result;
 	},
 
+    getAvailableSizeChartComponents: async () => {
+        let query = "SELECT * FROM Size_Chart_Components;"
+
+        const [result] = await db.query(query);
+
+		return result;
+    },
+
+    getUnusedSizeChartComponents: async (product_id) => {
+        let query = 'SELECT * FROM Size_Chart_Components ';
+		query += 'WHERE component_id NOT IN (';
+		query += 'SELECT component_id FROM Product_Size_Chart_Components ';
+		query += 'WHERE product_id = 1';
+		query += ');';
+
+		const [result] = await db.query(query, product_id);
+
+		return result;
+    },
+
 	getSizeChartValues: async (id) => {
 		let query = 'SELECT SCV.*, VO.value AS size ';
 		query += 'FROM Size_Chart_Values AS SCV ';
@@ -1415,5 +1437,22 @@ export const dbFunctions = {
 		query += 'AND Orders.modified_at < now() - interval 35 minute;';
 
 		await db.query(query);
-	}
+	},
+
+    addSizeChartComponentToProduct: async (component_id, product_id) => {
+        let query = "INSERT INTO Product_Size_Chart_Components ";
+        query += "(product_id, component_id) VALUE (?, ?) "
+        query += "ON DUPLICATE KEY UPDATE component_id = ?;";
+
+        await db.query(query, [product_id, component_id, component_id]);
+    },
+
+    removeSizeChartComponentFromProduct: async (component_id, product_id) => {
+        let query = "DELETE FROM Product_Size_Chart_Components ";
+        query += "WHERE product_id = ? AND component_id = ?;";
+
+        console.log(product_id, component_id);
+
+        await db.query(query, [product_id, component_id]);
+    }
 };

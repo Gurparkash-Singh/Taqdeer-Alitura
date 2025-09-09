@@ -37,10 +37,10 @@
 	<meta
 		name="description"
 		content="
-        Taqdeer Alitura Pre-Launch Page
-        Use this page to signup for our newsletter,
-        so that we can let you know when we launch.
-    "
+            Taqdeer Alitura Pre-Launch Page
+            Use this page to signup for our newsletter,
+            so that we can let you know when we launch.
+        "
 	/>
 </svelte:head>
 

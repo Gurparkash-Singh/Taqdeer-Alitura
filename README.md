@@ -163,10 +163,10 @@ Products
 
 - [x] create a place to create and update collections and categories
 - [x] update products
-- [x] add product
 - [x] add and delete images
 - [x] add and update components and properties
-- [x] update sizing info
+- [x] update sizing info 
+- [x] update product size chart components
 - [ ] add and update available components to size chart
 - [ ] add and update available variations
 - [ ] add and update available options on a variation
@@ -174,6 +174,7 @@ Products
 - [ ] add and remove options on a product
 - [ ] create product items on create product, update variations and update options
 - [ ] update product items
+- [ ] add product
 - [ ] add and delete discounts in one place
 
 Orders

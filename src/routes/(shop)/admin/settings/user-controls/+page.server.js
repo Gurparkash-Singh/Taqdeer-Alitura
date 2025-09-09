@@ -1,4 +1,4 @@
-import { RESEND_API_KEY, RESEND_AUDIENCE_ID, RESEND_EMAIL } from '$env/static/private';
+import { MODE, RESEND_API_KEY, RESEND_AUDIENCE_ID, RESEND_EMAIL } from '$env/static/private';
 import { dbFunctions } from '$lib/db/database';
 import { createEarlyAccessEmail } from '$lib/email_templates/early_access';
 import { fail } from '@sveltejs/kit';
@@ -68,6 +68,14 @@ export const actions = {
 				message: 'updated early access'
 			};
 		}
+
+        if (MODE === "DEVELOPMENT") {
+            console.log("Emails not sent as we are on the development server");
+            return {
+                success: true,
+				message: 'updated early access'
+            }
+        }
 
 		const { returnData, error } = await resend.batch.send(toSend);
 
