@@ -201,8 +201,6 @@ export const dbFunctions = {
 
 		const [result] = await db.query(query, product_id);
 
-        console.log(result);
-
 		return result;
 	},
 
@@ -1450,8 +1448,6 @@ export const dbFunctions = {
     removeSizeChartComponentFromProduct: async (component_id, product_id) => {
         let query = "DELETE FROM Product_Size_Chart_Components ";
         query += "WHERE product_id = ? AND component_id = ?;";
-
-        console.log(product_id, component_id);
 
         await db.query(query, [product_id, component_id]);
     }
