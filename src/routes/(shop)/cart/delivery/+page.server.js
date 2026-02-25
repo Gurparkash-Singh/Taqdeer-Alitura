@@ -190,6 +190,7 @@ export const actions = {
 
 		let item_quantity = 0;
 		let customs_value = 0;
+		let weight = 0;
 
 		if (cookies.get('order_id')) {
 			let [order] = await dbFunctions.getOrderById(cookies.get('order_id'));
@@ -198,18 +199,22 @@ export const actions = {
 
 			if (order?.status <= 5) {
 				for (let i = 0; i < order_items.length; i++) {
-					item_quantity += order_items[i].quantity;
-					customs_value += order_items[i].quantity * order_items[i].price;
+					item_quantity += parseInt(order_items[i].quantity);
+					customs_value += parseInt(order_items[i].quantity * order_items[i].price);
+					weight += parseFloat(order_items[i].weight);
 				}
 			}
 		}
 
 		if (item_quantity === 0) {
 			for (let i = 0; i < cart_items.length; i++) {
-				item_quantity += cart_items[i].quantity;
-				customs_value += cart_items[i].quantity * cart_items[i].price;
+				item_quantity += parseInt(cart_items[i].quantity);
+				customs_value += parseInt(cart_items[i].quantity) * parseFloat(cart_items[i].price);
+				weight += parseFloat(cart_items[i].weight);
 			}
 		}
+
+		weight = weight / 1000;
 
 		const rate = await aramex.calculateRate(
 			address1,

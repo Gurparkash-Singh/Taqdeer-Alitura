@@ -117,9 +117,9 @@ export async function load({ cookies, params, url }) {
 		let weight = 0;
 
 		for (let i = 0; i < order_items.length; i++) {
-			num_items += order_items[i].quantity;
-			customs_value += order_items[i].quantity * order_items[i].price;
-			weight += order_items[i].weight;
+			num_items += parseInt(order_items[i].quantity);
+			customs_value += parseInt(order_items[i].quantity) * parseFloat(order_items[i].price);
+			weight += parseFloat(order_items[i].weight);
 
 			const snippet = createReceiptProduct(
 				order_items[i].name,

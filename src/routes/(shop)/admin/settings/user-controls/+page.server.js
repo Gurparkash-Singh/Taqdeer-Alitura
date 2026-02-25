@@ -69,13 +69,13 @@ export const actions = {
 			};
 		}
 
-        if (MODE === "DEVELOPMENT") {
-            console.log("Emails not sent as we are on the development server");
-            return {
-                success: true,
+		if (MODE === 'DEVELOPMENT') {
+			console.log('Emails not sent as we are on the development server');
+			return {
+				success: true,
 				message: 'updated early access'
-            }
-        }
+			};
+		}
 
 		const { returnData, error } = await resend.batch.send(toSend);
 

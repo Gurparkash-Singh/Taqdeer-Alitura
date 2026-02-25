@@ -71,17 +71,17 @@
 			addressComponents = place.addressComponents;
 
 			addressComponents.forEach((addressComponent) => {
-				addressComponent.Dg.forEach((type) => {
+				addressComponent.types.forEach((type) => {
 					if (type == 'administrative_area_level_1') {
-						setValue(type, addressComponent.Fg);
+						setValue(type, addressComponent.shortText);
 					} else if (type == 'street_number') {
-						street_number = addressComponent.Eg;
+						street_number = addressComponent.shortText;
 					} else if (type == 'route') {
-						route = addressComponent.Eg;
+						route = addressComponent.shortText;
 					} else if (type == 'country') {
-						setValue(type, addressComponent.Fg);
+						setValue(type, addressComponent.shortText);
 					} else {
-						setValue(type, addressComponent.Eg);
+						setValue(type, addressComponent.shortText);
 					}
 				});
 			});

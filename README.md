@@ -116,6 +116,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Use Permissions correctly
 - [x] change images based on screen size
 - [x] update admin panel to add early access
+- [x] Fix Google Maps error
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -127,9 +128,12 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify post checkout page
 - [ ] Verify address book
 - [ ] Verify order history
+- [ ] Fix Delivery system
 - [ ] update measurements
 - [ ] update weights
 - [ ] Give each page a meta description and maybe a different title
+- [ ] Add Print Label functionality
+- [ ] Add ability to generate a commericial invoice
 
 # Post Release To Do
 
@@ -165,7 +169,7 @@ Products
 - [x] update products
 - [x] add and delete images
 - [x] add and update components and properties
-- [x] update sizing info 
+- [x] update sizing info
 - [x] update product size chart components
 - [ ] add and update available components to size chart
 - [ ] add and update available variations
@@ -227,3 +231,7 @@ Full Size
 - [ ] In /cards/add tokenize and verify card to save it
 - [ ] In /cart/review tokenize card and use it
 - [ ] In /orders save card id
+
+Every field the admin should have access to:
+
+- Errors: id, location, name

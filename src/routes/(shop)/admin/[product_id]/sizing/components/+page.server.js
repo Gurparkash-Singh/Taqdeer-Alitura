@@ -16,13 +16,13 @@ export const actions = {
 	submit: async ({ locals, cookies, request, params }) => {
 		const data = await request.formData();
 
-        let add_list = data.get("add-list");
-        let remove_list = data.get("remove-list");
+		let add_list = data.get('add-list');
+		let remove_list = data.get('remove-list');
 
-        add_list = JSON.parse(add_list);
-        remove_list = JSON.parse(remove_list);
+		add_list = JSON.parse(add_list);
+		remove_list = JSON.parse(remove_list);
 
-        const [permission] = await dbFunctions.getAdminPermissionsByName(
+		const [permission] = await dbFunctions.getAdminPermissionsByName(
 			locals.admin.admin_id,
 			'sizing info'
 		);
@@ -41,19 +41,16 @@ export const actions = {
 			});
 		}
 
-        for (let i = 0; i < add_list.length; i++) {
-            await dbFunctions.addSizeChartComponentToProduct(
-                add_list[i].component_id,
-                params.product_id
-            );
-        }
+		for (let i = 0; i < add_list.length; i++) {
+			await dbFunctions.addSizeChartComponentToProduct(add_list[i].component_id, params.product_id);
+		}
 
-        for (let i = 0; i < remove_list.length; i++) {
-            await dbFunctions.removeSizeChartComponentFromProduct(
-                remove_list[i].component_id,
-                params.product_id
-            );
-        }
+		for (let i = 0; i < remove_list.length; i++) {
+			await dbFunctions.removeSizeChartComponentFromProduct(
+				remove_list[i].component_id,
+				params.product_id
+			);
+		}
 
 		return {
 			success: true,

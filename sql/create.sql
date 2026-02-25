@@ -318,6 +318,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     payment_id INT,
     status INT DEFAULT 1,
     order_address INT,
+    calculated_weight DECIMAL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (payment_id) REFERENCES Payment_Details(payment_id),
