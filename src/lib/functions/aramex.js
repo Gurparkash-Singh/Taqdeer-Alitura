@@ -78,7 +78,12 @@ export const aramex = {
 			},
 			PreferredCurrencyCode: 'SAR',
 			ShipmentDetails: {
-				Dimensions: null,
+				Dimensions: {
+                    Length: 20,
+                    Width: 40,
+                    Height: 10,
+                    Unit: "CM"
+                },
 				ActualWeight: {
 					Unit: 'KG',
 					Value: weight
@@ -199,7 +204,12 @@ export const aramex = {
 					},
 					ShippingDateTime: `\/Date(${Date.now().valueOf()})\/`,
 					Details: {
-						Dimensions: null,
+						Dimensions: {
+                            Length: 20,
+                            Width: 40,
+                            Height: 10,
+                            Unit: "CM"
+                        },
 						ActualWeight: {
 							Unit: 'KG',
 							Value: weight

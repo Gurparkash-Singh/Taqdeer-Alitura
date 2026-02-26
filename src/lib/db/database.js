@@ -687,6 +687,10 @@ export const dbFunctions = {
 		let query = 'UPDATE Products SET default_price = ? WHERE product_id = ?;';
 
 		await db.query(query, [value, id]);
+
+        query = "UPDATE Product_Item SET price = ? WHERE product_id = ?;";
+
+        await db.query(query, [value, id]);
 	},
 
 	updateProductLive: async (id, value) => {

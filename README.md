@@ -138,6 +138,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 # Post Release To Do
 
 - [ ] Finish Admin Panel
+- [ ] Make sure Product Item Price is changed with default price if a button is clicked
 - [ ] Add security to image server by authenticating user before upload or delete
 - [ ] Redo Discounts to allow for members to receive discounts without code
 - [ ] Add ability to create pickup from admin panel

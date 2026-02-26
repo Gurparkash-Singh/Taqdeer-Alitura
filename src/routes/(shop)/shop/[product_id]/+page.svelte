@@ -123,7 +123,7 @@
 
 	// For Price
 	let floatPrice = $derived.by(() => {
-		const tempPrice = parseFloat(data.product.default_price);
+		const tempPrice = parseFloat(selection.selected_item.price);
 		return tempPrice * numberFormat.conversion_rate;
 	});
 
