@@ -117,6 +117,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] change images based on screen size
 - [x] update admin panel to add early access
 - [x] Fix Google Maps error
+- [x] Fix Delivery system
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -128,7 +129,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify post checkout page
 - [ ] Verify address book
 - [ ] Verify order history
-- [ ] Fix Delivery system
 - [ ] update measurements
 - [ ] update weights
 - [ ] Give each page a meta description and maybe a different title

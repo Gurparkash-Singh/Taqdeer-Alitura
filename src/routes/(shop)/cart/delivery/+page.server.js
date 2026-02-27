@@ -208,13 +208,14 @@ export const actions = {
 
 		if (item_quantity === 0) {
 			for (let i = 0; i < cart_items.length; i++) {
-				item_quantity += parseInt(cart_items[i].quantity);
 				customs_value += parseInt(cart_items[i].quantity) * parseFloat(cart_items[i].price);
 				weight += parseFloat(cart_items[i].weight);
+                item_quantity += parseInt(cart_items[i].quantity) * parseFloat(cart_items[i].default_box_value)
 			}
-		}
 
-		weight = weight / 1000;
+            weight = weight / 1000;
+            item_quantity = Math.ceil(item_quantity);
+		}
 
 		const rate = await aramex.calculateRate(
 			address1,
@@ -225,7 +226,7 @@ export const actions = {
 			delivery_country,
 			item_quantity,
 			customs_value,
-			0.5
+			weight
 		);
 
 		if (rate.HasErrors) {

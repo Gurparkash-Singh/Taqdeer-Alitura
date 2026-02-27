@@ -260,6 +260,7 @@ export const dbFunctions = {
 
 	getItemsForCurrentSession: async (id) => {
 		let query = 'SELECT name, CI.*, PI.price, PI.sku, Images.*, PI.weight, ';
+        query += "default_box_volume, ";
 		query += '(';
 		query += 'SELECT JSON_OBJECTAGG( ';
 		query += 'Variations.name, Variation_Options.value) ';
@@ -972,7 +973,7 @@ export const dbFunctions = {
 
 	getOrderItems: async (id) => {
 		let query = 'SELECT name, OI.*, PI.price, PI.sku, Images.*, ';
-		query += 'PI.weight, ';
+		query += 'PI.weight, default_box_volume, ';
 		query += '(';
 		query += 'SELECT JSON_OBJECTAGG';
 		query += '(Variations.name, Variation_Options.value) ';

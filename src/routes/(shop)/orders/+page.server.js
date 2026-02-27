@@ -117,7 +117,7 @@ export async function load({ cookies, params, url }) {
 		let weight = 0;
 
 		for (let i = 0; i < order_items.length; i++) {
-			num_items += parseInt(order_items[i].quantity);
+			num_items += parseInt(order_items[i].quantity) * parseFloat(order_items[i].default_box_volume);
 			customs_value += parseInt(order_items[i].quantity) * parseFloat(order_items[i].price);
 			weight += parseFloat(order_items[i].weight);
 
@@ -134,6 +134,7 @@ export async function load({ cookies, params, url }) {
 		}
 
 		weight = weight / 1000;
+        num_items = Math.ceil(num_items);
 
 		let one_line_address = address.address_line1 + ', ';
 		one_line_address += address.city + ', ';
