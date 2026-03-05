@@ -209,8 +209,8 @@ export const actions = {
 		if (item_quantity === 0) {
 			for (let i = 0; i < cart_items.length; i++) {
 				customs_value += parseInt(cart_items[i].quantity) * parseFloat(cart_items[i].price);
-				weight += parseFloat(cart_items[i].weight);
-                item_quantity += parseInt(cart_items[i].quantity) * parseFloat(cart_items[i].default_box_value)
+				weight += parseFloat(cart_items[i].weight) * parseInt(cart_items[i].quantity);
+                item_quantity += parseInt(cart_items[i].quantity) * parseFloat(cart_items[i].default_box_volume)
 			}
 
             weight = weight / 1000;
