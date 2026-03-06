@@ -119,6 +119,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Fix Google Maps error
 - [x] Fix Delivery system
 - [x] Add ability to track shipments
+- [x] Add ability to generate a commericial invoice
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -134,7 +135,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] update weights
 - [ ] Give each page a meta description and maybe a different title
 - [ ] Add Print Label functionality
-- [ ] Add ability to generate a commericial invoice
 
 # Post Release To Do
 
