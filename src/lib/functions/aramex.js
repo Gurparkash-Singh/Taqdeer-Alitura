@@ -30,19 +30,19 @@ let clientInfo = {
 	AccountCountryCode: 'SA'
 };
 
-if (MODE === 'DEVELOPMENT') {
-	clientInfo = {
-		Version: 'v1.0',
-		UserName: 'testingapi@aramex.com',
-		Password: 'R123456789$r',
-		AccountNumber: '4004636',
-		AccountPin: '442543',
-		AccountEntity: 'RUH',
-		AccountCountryCode: 'SA'
-	};
+// if (MODE === 'DEVELOPMENT') {
+// 	clientInfo = {
+// 		Version: 'v1.0',
+// 		UserName: 'testingapi@aramex.com',
+// 		Password: 'R123456789$r',
+// 		AccountNumber: '4004636',
+// 		AccountPin: '442543',
+// 		AccountEntity: 'RUH',
+// 		AccountCountryCode: 'SA'
+// 	};
 
-	url_start = 'https://ws.sbx.aramex.net/ShippingAPI.V2';
-}
+// 	url_start = 'https://ws.sbx.aramex.net/ShippingAPI.V2';
+// }
 
 export const aramex = {
 	calculateRate: async (
@@ -153,9 +153,6 @@ export const aramex = {
 		customs_value,
 		weight
 	) => {
-		// Shipping Date = The date Aramex receives the shipment to be shipped out.
-		// Due Date = The date specified for shipment to be delivered to the consignee.
-		// Customs Value = Value of the item
 		let data = {
 			ClientInfo: clientInfo,
 			Shipments: [
@@ -229,7 +226,12 @@ export const aramex = {
 						Items: null,
 						DeliveryInstructions: null
 					},
-					TransportType: 0
+					TransportType: 0,
+                    Attachments: {
+                        FileName: "",
+                        FileExtension: "",
+                        FileContents: ""
+                    }
 				}
 			],
 			LabelInfo: {
@@ -269,5 +271,32 @@ export const aramex = {
 		}
 
 		return result.data;
-	}
+	},
+
+    trackShipment: async (shipments) => {
+        let data = {
+            ClientInfo: clientInfo,
+            Shipments: shipments,
+            GetLastTrackingUpdateOnly: true
+        }
+
+        let config = {
+			method: 'post',
+			url: `${url_start}/Tracking/Service_1_0.svc/xml/TrackShipments`,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			data: data
+		};
+
+        let result;
+
+		try {
+			result = await axios.request(config);
+		} catch (error) {
+			console.log(error);
+		}
+
+		return result.data;
+    }
 };

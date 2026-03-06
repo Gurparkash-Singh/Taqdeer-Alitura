@@ -3,7 +3,7 @@ import { dbFunctions } from '$lib/db/database';
 import { aramex } from '$lib/functions/aramex';
 
 export const load = async ({ locals }) => {
-	const orders = await dbFunctions.getAllOrdersAndPaymentDetails(locals.user.user_id);
+	let orders = await dbFunctions.getAllOrdersAndPaymentDetails();
 
 	if (orders.length == 0) {
 		return {};
@@ -19,15 +19,19 @@ export const load = async ({ locals }) => {
 
     const result = await aramex.trackShipment(track_orders);
 
-    result.TrackingResults.forEach(async (order) => {
-        if (order.Value.UpdateDescription === "Delivered") {
+    for (let i = 0; i < result.TrackingResults.length; i++){
+        let order = result.TrackingResults[i];
+
+        if (order.Value[0].UpdateDescription === "Delivered") {
             await dbFunctions.setOrderToDelivered(order.Key);
         }
 
-        if (order.Value.UpdateDescription === "Collected") {
+        if (order.Value[0].UpdateDescription === "Collected") {
             await dbFunctions.setOrderToShipping(order.Key);
         }
-    })
+    }
+
+    orders = await dbFunctions.getAllOrdersAndPaymentDetails();
 
 	return { orders };
 };
