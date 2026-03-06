@@ -84,6 +84,8 @@ DROP TABLE IF EXISTS Variation_Options;
 
 DROP TABLE IF EXISTS Variations;
 
+DROP TABLE IF EXISTS HS_Code;
+
 DROP TABLE IF EXISTS Collections;
 
 DROP TABLE IF EXISTS Category;

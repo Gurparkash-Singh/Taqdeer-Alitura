@@ -15,19 +15,16 @@ export const load = async ({ locals }) => {
 
 	subscribed_emails = subscribed_emails.data.data;
 
-	const indexes = [];
+    subscribed_emails = subscribed_emails.filter((email) => {
+        for (let i = 0; i < early_access.length; i++) {
+            if (early_access[i].email == email.email) {
+                console.log(email);
+                return;
+            }
+        }
 
-	for (let i = 0; i < early_access.length; i++) {
-		for (let j = 0; j < subscribed_emails.length; j++) {
-			if (early_access[i].email == subscribed_emails[j].email) {
-				indexes.push(j);
-			}
-		}
-	}
-
-	for (let i = 0; i < indexes.length; i++) {
-		const result = subscribed_emails.splice(indexes[i], 1);
-	}
+        return email;
+    });
 
 	return { subscribed_emails, early_access };
 };

@@ -25,6 +25,13 @@ CREATE TABLE IF NOT EXISTS Collections (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS HS_Code (
+    hs_code VARCHAR(255) PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS Variations (
 	variation_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name TEXT NOT NULL,
@@ -64,10 +71,12 @@ CREATE TABLE IF NOT EXISTS Products (
     default_box_volume FLOAT NOT NULL,
     size_chart_above_text TEXT,
     size_chart_below_text TEXT,
+    hs_code VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES Category(category_id),
-    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id)
+    FOREIGN KEY (collection_id) REFERENCES Collections(collection_id),
+    FOREIGN KEY (hs_code) REFERENCES HS_Code(hs_code)
 );
 
 CREATE TABLE IF NOT EXISTS Product_Variations(
