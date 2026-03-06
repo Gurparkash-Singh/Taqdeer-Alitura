@@ -1149,6 +1149,7 @@ export const dbFunctions = {
 
 	getAllOrdersAndPaymentDetails: async () => {
 		let query = 'SELECT Orders.id, Orders.tap_receipt, Orders.name, ';
+        query += "Orders.tracking_id, ";
 		query += 'Orders.user_email, Orders.created_at, Order_Status.name AS status, ';
 		query += 'Payment_Details.created_at AS payment_date FROM Orders ';
 		query += 'JOIN Order_Status ON Order_Status.status_id = Orders.status ';
@@ -1163,6 +1164,18 @@ export const dbFunctions = {
 	setOrderToPending: async (order_id) => {
 		let query = 'UPDATE Orders SET status = 5, modified_at = now() ';
 		query += 'WHERE id = ?;';
+		await db.query(query, order_id);
+	},
+
+    setOrderToShipping: async (order_id) => {
+		let query = 'UPDATE Orders SET status = 8, modified_at = now() ';
+		query += 'WHERE tracking_id = ?;';
+		await db.query(query, order_id);
+	},
+
+    setOrderToDelivered: async (order_id) => {
+		let query = 'UPDATE Orders SET status = 9, modified_at = now() ';
+		query += 'WHERE tracking_id = ?;';
 		await db.query(query, order_id);
 	},
 
