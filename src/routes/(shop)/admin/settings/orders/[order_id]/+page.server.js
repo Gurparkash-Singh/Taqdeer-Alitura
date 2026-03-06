@@ -22,7 +22,7 @@ export async function load({ locals, params }) {
 	const order_invoice_items = await dbFunctions.getOrderInvoiceWithoutDelivery(order_id);
 	const [delivery] = await dbFunctions.getOrderDelivery(order_id);
 
-    const result = await aramex.printLabel(order.tracking_id);
+	const result = await aramex.printLabel(order.tracking_id);
 
 	return {
 		order,
@@ -30,6 +30,6 @@ export async function load({ locals, params }) {
 		order_items,
 		order_invoice_items,
 		delivery,
-        label: result.ShipmentLabel.LabelURL
+		label: result.ShipmentLabel.LabelURL
 	};
 }

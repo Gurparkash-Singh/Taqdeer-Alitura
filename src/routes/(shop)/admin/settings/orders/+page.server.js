@@ -9,28 +9,27 @@ export const load = async ({ locals }) => {
 		return {};
 	}
 
-    const track_orders = [];
+	const track_orders = [];
 
-    orders.forEach(order => {
-        if (order.status === "processing" || order.status === "shipped") {
-            track_orders.push(order.tracking_id);
-        }
-    });
+	orders.forEach((order) => {
+		if (order.status === 'processing' || order.status === 'shipped') {
+			track_orders.push(order.tracking_id);
+		}
+	});
 
-    const result = await aramex.trackShipment(track_orders);
+	const result = await aramex.trackShipment(track_orders);
 
-    for (let i = 0; i < result.TrackingResults.length; i++){
-        let order = result.TrackingResults[i];
+	for (let i = 0; i < result.TrackingResults.length; i++) {
+		let order = result.TrackingResults[i];
 
-        if (order.Value[0].UpdateDescription === "Delivered") {
-            await dbFunctions.setOrderToDelivered(order.Key);
-        }
-        else if (order.Value[0].UpdateDescription === "Received at Origin Facility") {
-            await dbFunctions.setOrderToShipping(order.Key);
-        }
-    }
+		if (order.Value[0].UpdateDescription === 'Delivered') {
+			await dbFunctions.setOrderToDelivered(order.Key);
+		} else if (order.Value[0].UpdateDescription === 'Received at Origin Facility') {
+			await dbFunctions.setOrderToShipping(order.Key);
+		}
+	}
 
-    orders = await dbFunctions.getAllOrdersAndPaymentDetails();
+	orders = await dbFunctions.getAllOrdersAndPaymentDetails();
 
 	return { orders };
 };

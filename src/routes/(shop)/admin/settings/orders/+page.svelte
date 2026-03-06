@@ -3,29 +3,29 @@
 
 	let { data } = $props();
 
-    let selectedOrderStatus = $state("all");
+	let selectedOrderStatus = $state('all');
 
-    let filteredOrders = $derived.by(() => {
-        if (selectedOrderStatus === "all") {
-            return data.orders;
-        }
+	let filteredOrders = $derived.by(() => {
+		if (selectedOrderStatus === 'all') {
+			return data.orders;
+		}
 
-        return data.orders.filter((order) => order.status === selectedOrderStatus)
-    });
+		return data.orders.filter((order) => order.status === selectedOrderStatus);
+	});
 </script>
 
 <AdminBackButton link="/admin/settings" name="Admin Panel" />
 
 <section>
-    <p>
-        <select bind:value={selectedOrderStatus}>
-            <option value="all">all</option>
-            <option value="cancelled">cancelled</option>
-            <option value="processing">processing</option>
-            <option value="shipped">shipped</option>
-            <option value="delivered">delivered</option>
-        </select>
-    </p>
+	<p>
+		<select bind:value={selectedOrderStatus}>
+			<option value="all">all</option>
+			<option value="cancelled">cancelled</option>
+			<option value="processing">processing</option>
+			<option value="shipped">shipped</option>
+			<option value="delivered">delivered</option>
+		</select>
+	</p>
 	{#each filteredOrders as order}
 		<article>
 			<a href={`./orders/${order.id}`}>
@@ -42,11 +42,11 @@
 </section>
 
 <style>
-    select {
-        background-color: #d9d9d9;
+	select {
+		background-color: #d9d9d9;
 		border: none;
 		padding: 10px;
-    }
+	}
 
 	article {
 		background-color: #d9d9d9;

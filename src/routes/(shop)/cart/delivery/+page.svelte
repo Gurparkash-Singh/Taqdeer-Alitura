@@ -103,7 +103,7 @@
 		if (form.invalid) {
 			email = form.email;
 			name = form.name;
-			(countryCode = form.country), (phoneNumber = form.phone), (address1 = form.address1);
+			((countryCode = form.country), (phoneNumber = form.phone), (address1 = form.address1));
 			address2 = form.address2;
 			city = form.city;
 			province = form.province;
@@ -130,7 +130,7 @@
 	if (data.existing_order) {
 		email = data.existing_order.email;
 		name = data.existing_order.name;
-		(countryCode = data.existing_order.country), (phoneNumber = data.existing_order.phone);
+		((countryCode = data.existing_order.country), (phoneNumber = data.existing_order.phone));
 		address1 = data.existing_order.address1;
 		address2 = data.existing_order.address2;
 		city = data.existing_order.city;

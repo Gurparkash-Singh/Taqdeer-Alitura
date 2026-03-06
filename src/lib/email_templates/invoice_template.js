@@ -1,14 +1,14 @@
 export function createInvoiceTemplate(
-    name, 
-    address, 
-    telephone, 
-    country,
-    tracking_id,
-    products,
-    total_amount,
-    date 
+	name,
+	address,
+	telephone,
+	country,
+	tracking_id,
+	products,
+	total_amount,
+	date
 ) {
-    return `<!DOCTYPE html>
+	return `<!DOCTYPE html>
 <html lang="en">
 
 <head>

@@ -1,12 +1,12 @@
 export function createInvoiceProduct(
-    num_of_pieces, 
-    product_name, 
-    hs_code, 
-    qty, 
-    item_price, 
-    total_for_item
-){
-    return `<tr>
+	num_of_pieces,
+	product_name,
+	hs_code,
+	qty,
+	item_price,
+	total_for_item
+) {
+	return `<tr>
             <td class="gen-first-column">
                 <p class="MsoNormal">
                     ${num_of_pieces}
@@ -38,5 +38,5 @@ export function createInvoiceProduct(
                 </p>
             </td>
         </tr>
-    `
-};
+    `;
+}

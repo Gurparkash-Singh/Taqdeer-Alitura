@@ -15,16 +15,16 @@ export const load = async ({ locals }) => {
 
 	subscribed_emails = subscribed_emails.data.data;
 
-    subscribed_emails = subscribed_emails.filter((email) => {
-        for (let i = 0; i < early_access.length; i++) {
-            if (early_access[i].email == email.email) {
-                console.log(email);
-                return;
-            }
-        }
+	subscribed_emails = subscribed_emails.filter((email) => {
+		for (let i = 0; i < early_access.length; i++) {
+			if (early_access[i].email == email.email) {
+				console.log(email);
+				return;
+			}
+		}
 
-        return email;
-    });
+		return email;
+	});
 
 	return { subscribed_emails, early_access };
 };

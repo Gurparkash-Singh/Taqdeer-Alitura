@@ -260,7 +260,7 @@ export const dbFunctions = {
 
 	getItemsForCurrentSession: async (id) => {
 		let query = 'SELECT name, CI.*, PI.price, PI.sku, Images.*, PI.weight, ';
-        query += "default_box_volume, ";
+		query += 'default_box_volume, ';
 		query += '(';
 		query += 'SELECT JSON_OBJECTAGG( ';
 		query += 'Variations.name, Variation_Options.value) ';
@@ -689,9 +689,9 @@ export const dbFunctions = {
 
 		await db.query(query, [value, id]);
 
-        query = "UPDATE Product_Item SET price = ? WHERE product_id = ?;";
+		query = 'UPDATE Product_Item SET price = ? WHERE product_id = ?;';
 
-        await db.query(query, [value, id]);
+		await db.query(query, [value, id]);
 	},
 
 	updateProductLive: async (id, value) => {
@@ -1149,7 +1149,7 @@ export const dbFunctions = {
 
 	getAllOrdersAndPaymentDetails: async () => {
 		let query = 'SELECT Orders.id, Orders.tap_receipt, Orders.name, ';
-        query += "Orders.tracking_id, ";
+		query += 'Orders.tracking_id, ';
 		query += 'Orders.user_email, Orders.created_at, Order_Status.name AS status, ';
 		query += 'Payment_Details.created_at AS payment_date FROM Orders ';
 		query += 'JOIN Order_Status ON Order_Status.status_id = Orders.status ';
@@ -1167,13 +1167,13 @@ export const dbFunctions = {
 		await db.query(query, order_id);
 	},
 
-    setOrderToShipping: async (order_id) => {
+	setOrderToShipping: async (order_id) => {
 		let query = 'UPDATE Orders SET status = 8, modified_at = now() ';
 		query += 'WHERE tracking_id = ?;';
 		await db.query(query, order_id);
 	},
 
-    setOrderToDelivered: async (order_id) => {
+	setOrderToDelivered: async (order_id) => {
 		let query = 'UPDATE Orders SET status = 9, modified_at = now() ';
 		query += 'WHERE tracking_id = ?;';
 		await db.query(query, order_id);

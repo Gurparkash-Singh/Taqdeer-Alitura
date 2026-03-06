@@ -79,11 +79,11 @@ export const aramex = {
 			PreferredCurrencyCode: 'SAR',
 			ShipmentDetails: {
 				Dimensions: {
-                    Length: 20,
-                    Width: 40,
-                    Height: 10,
-                    Unit: "CM"
-                },
+					Length: 20,
+					Width: 40,
+					Height: 10,
+					Unit: 'CM'
+				},
 				ActualWeight: {
 					Unit: 'KG',
 					Value: weight
@@ -202,11 +202,11 @@ export const aramex = {
 					ShippingDateTime: `\/Date(${Date.now().valueOf()})\/`,
 					Details: {
 						Dimensions: {
-                            Length: 20,
-                            Width: 40,
-                            Height: 10,
-                            Unit: "CM"
-                        },
+							Length: 20,
+							Width: 40,
+							Height: 10,
+							Unit: 'CM'
+						},
 						ActualWeight: {
 							Unit: 'KG',
 							Value: weight
@@ -227,11 +227,11 @@ export const aramex = {
 						DeliveryInstructions: null
 					},
 					TransportType: 0,
-                    Attachments: {
-                        FileName: "",
-                        FileExtension: "",
-                        FileContents: ""
-                    }
+					Attachments: {
+						FileName: '',
+						FileExtension: '',
+						FileContents: ''
+					}
 				}
 			],
 			LabelInfo: {
@@ -273,14 +273,14 @@ export const aramex = {
 		return result.data;
 	},
 
-    trackShipment: async (shipments) => {
-        let data = {
-            ClientInfo: clientInfo,
-            Shipments: shipments,
-            GetLastTrackingUpdateOnly: true
-        }
+	trackShipment: async (shipments) => {
+		let data = {
+			ClientInfo: clientInfo,
+			Shipments: shipments,
+			GetLastTrackingUpdateOnly: true
+		};
 
-        let config = {
+		let config = {
 			method: 'post',
 			url: `${url_start}/Tracking/Service_1_0.svc/xml/TrackShipments`,
 			headers: {
@@ -289,7 +289,7 @@ export const aramex = {
 			data: data
 		};
 
-        let result;
+		let result;
 
 		try {
 			result = await axios.request(config);
@@ -298,19 +298,19 @@ export const aramex = {
 		}
 
 		return result.data;
-    },
+	},
 
-    printLabel: async (shipment) => {
-        let data = {
-            ClientInfo: clientInfo,
-            ShipmentNumber: shipment,
-            LabelInfo: {
-                ReportID: 9729,
-                ReportType: "URL"
-            }
-        }
+	printLabel: async (shipment) => {
+		let data = {
+			ClientInfo: clientInfo,
+			ShipmentNumber: shipment,
+			LabelInfo: {
+				ReportID: 9729,
+				ReportType: 'URL'
+			}
+		};
 
-        let config = {
+		let config = {
 			method: 'post',
 			url: `${url_start}/Shipping/Service_1_0.svc/json/PrintLabel`,
 			headers: {
@@ -319,7 +319,7 @@ export const aramex = {
 			data: data
 		};
 
-        let result;
+		let result;
 
 		try {
 			result = await axios.request(config);
@@ -328,5 +328,5 @@ export const aramex = {
 		}
 
 		return result.data;
-    }
+	}
 };

@@ -5,7 +5,7 @@
 
 	let { data, form } = $props();
 
-    let invoice_printer;
+	let invoice_printer;
 
 	if (form) {
 		let inMessages = false;
@@ -28,24 +28,21 @@
 		}
 	}
 
-    async function printInvoice(e) {
-        e.preventDefault();
+	async function printInvoice(e) {
+		e.preventDefault();
 
-        const response = await fetch(
-            `/admin/settings/orders/${data.order.id}/print-invoice`, 
-            {
-                method: "post",
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        )
+		const response = await fetch(`/admin/settings/orders/${data.order.id}/print-invoice`, {
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 
-        const res = await response.json();
+		const res = await response.json();
 
-        invoice_printer.contentWindow.document.write(res.invoice);
-        invoice_printer.contentWindow.print();
-    }
+		invoice_printer.contentWindow.document.write(res.invoice);
+		invoice_printer.contentWindow.print();
+	}
 </script>
 
 <AdminBackButton link="./" name="All Orders" />
@@ -57,11 +54,11 @@
 		<dd class="reference-link">
 			<button onclick={printInvoice}>Print Invoice</button>
 		</dd>
-        <dt>Date:</dt>
-        <dd>{new Date(data.order.created_at).toISOString().split('T')[0]}</dd>
-        <dd class="reference-link">
-            <a href={data.label} target="_blank">Print Label</a>
-        </dd>
+		<dt>Date:</dt>
+		<dd>{new Date(data.order.created_at).toISOString().split('T')[0]}</dd>
+		<dd class="reference-link">
+			<a href={data.label} target="_blank">Print Label</a>
+		</dd>
 		<dt>Tracking number:</dt>
 		<dd>{data.order.tracking_id}</dd>
 		<dd class="reference-link">
@@ -78,10 +75,7 @@
 	order_items={data.order_items}
 />
 
-<iframe 
-    title="invoice" 
-    bind:this={invoice_printer}
-></iframe>
+<iframe title="invoice" bind:this={invoice_printer}></iframe>
 
 <style>
 	#order-ref {
@@ -110,7 +104,7 @@
 		cursor: pointer;
 	}
 
-    iframe {
-        display: none;
-    }
+	iframe {
+		display: none;
+	}
 </style>
