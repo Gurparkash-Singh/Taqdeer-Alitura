@@ -25,8 +25,7 @@ export const load = async ({ locals }) => {
         if (order.Value[0].UpdateDescription === "Delivered") {
             await dbFunctions.setOrderToDelivered(order.Key);
         }
-
-        if (order.Value[0].UpdateDescription === "Collected") {
+        else if (order.Value[0].UpdateDescription === "Received at Origin Facility") {
             await dbFunctions.setOrderToShipping(order.Key);
         }
     }

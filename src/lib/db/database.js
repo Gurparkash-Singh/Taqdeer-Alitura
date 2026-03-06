@@ -973,7 +973,7 @@ export const dbFunctions = {
 
 	getOrderItems: async (id) => {
 		let query = 'SELECT name, OI.*, PI.price, PI.sku, Images.*, ';
-		query += 'PI.weight, default_box_volume, ';
+		query += 'PI.weight, default_box_volume, Products.hs_code, ';
 		query += '(';
 		query += 'SELECT JSON_OBJECTAGG';
 		query += '(Variations.name, Variation_Options.value) ';

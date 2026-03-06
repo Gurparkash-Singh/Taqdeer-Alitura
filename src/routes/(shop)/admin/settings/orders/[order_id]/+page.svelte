@@ -5,6 +5,8 @@
 
 	let { data, form } = $props();
 
+    let invoice_printer;
+
 	if (form) {
 		let inMessages = false;
 		for (let i = 0; i < modal.messages.length; i++) {
@@ -25,6 +27,25 @@
 			});
 		}
 	}
+
+    async function generateInvoice(e) {
+        e.preventDefault();
+
+        const response = await fetch(
+            `/admin/settings/orders/${data.order.id}/print-invoice`, 
+            {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+
+        const res = await response.json();
+
+        invoice_printer.contentWindow.document.write(res.invoice);
+        invoice_printer.contentWindow.print();
+    }
 </script>
 
 <AdminBackButton link="./" name="All Orders" />
@@ -34,10 +55,7 @@
 		<dt>Order number:</dt>
 		<dd>{data.order.tap_receipt}</dd>
 		<dd class="reference-link">
-			<form action="?/submit" method="POST">
-				<input type="hidden" name="order-id" value={data.order.id} />
-				<button type="submit">Print label</button>
-			</form>
+			<button onclick={generateInvoice}>Print Invoice</button>
 		</dd>
 		<dt>Tracking number:</dt>
 		<dd>{data.order.tracking_id}</dd>
@@ -54,6 +72,11 @@
 	order_invoice_items={data.order_invoice_items}
 	order_items={data.order_items}
 />
+
+<iframe 
+    title="invoice" 
+    bind:this={invoice_printer}
+></iframe>
 
 <style>
 	#order-ref {
@@ -81,4 +104,8 @@
 		text-decoration: underline;
 		cursor: pointer;
 	}
+
+    iframe {
+        display: none;
+    }
 </style>
