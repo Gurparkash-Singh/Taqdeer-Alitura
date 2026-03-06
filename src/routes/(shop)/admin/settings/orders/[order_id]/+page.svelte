@@ -28,7 +28,7 @@
 		}
 	}
 
-    async function generateInvoice(e) {
+    async function printInvoice(e) {
         e.preventDefault();
 
         const response = await fetch(
@@ -55,8 +55,13 @@
 		<dt>Order number:</dt>
 		<dd>{data.order.tap_receipt}</dd>
 		<dd class="reference-link">
-			<button onclick={generateInvoice}>Print Invoice</button>
+			<button onclick={printInvoice}>Print Invoice</button>
 		</dd>
+        <dt>Date:</dt>
+        <dd>{new Date(data.order.created_at).toISOString().split('T')[0]}</dd>
+        <dd class="reference-link">
+            <a href={data.label} target="_blank">Print Label</a>
+        </dd>
 		<dt>Tracking number:</dt>
 		<dd>{data.order.tracking_id}</dd>
 		<dd class="reference-link">

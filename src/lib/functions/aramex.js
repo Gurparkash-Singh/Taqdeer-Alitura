@@ -298,5 +298,35 @@ export const aramex = {
 		}
 
 		return result.data;
+    },
+
+    printLabel: async (shipment) => {
+        let data = {
+            ClientInfo: clientInfo,
+            ShipmentNumber: shipment,
+            LabelInfo: {
+                ReportID: 9729,
+                ReportType: "URL"
+            }
+        }
+
+        let config = {
+			method: 'post',
+			url: `${url_start}/Shipping/Service_1_0.svc/json/PrintLabel`,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			data: data
+		};
+
+        let result;
+
+		try {
+			result = await axios.request(config);
+		} catch (error) {
+			console.log(error);
+		}
+
+		return result.data;
     }
 };

@@ -120,6 +120,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Fix Delivery system
 - [x] Add ability to track shipments
 - [x] Add ability to generate a commericial invoice
+- [x] Add Print Label functionality
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -133,8 +134,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify order history
 - [ ] update measurements
 - [ ] update weights
-- [ ] Give each page a meta description and maybe a different title
-- [ ] Add Print Label functionality
 
 # Post Release To Do
 
@@ -152,6 +151,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Allow selection of address by moving pin on the map
 - [ ] Get payment methods page working
 - [ ] Save card if so choosen
+- [ ] Give each page a meta description and maybe a different title
 
 # Completely Finished
 
