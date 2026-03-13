@@ -1318,7 +1318,7 @@ export const dbFunctions = {
 		let query = 'SELECT * FROM Size_Chart_Components ';
 		query += 'WHERE component_id NOT IN (';
 		query += 'SELECT component_id FROM Product_Size_Chart_Components ';
-		query += 'WHERE product_id = 1';
+		query += 'WHERE product_id = ?';
 		query += ');';
 
 		const [result] = await db.query(query, product_id);

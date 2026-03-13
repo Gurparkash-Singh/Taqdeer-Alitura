@@ -135,6 +135,14 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] update measurements
 - [ ] update weights
 
+For Commercial Invoices
+    if we can submit to aramex automatically
+        automatically calculate which piece goes into which box and assign number of pieces
+        also calculate actual weight of each box
+    else
+        leave number of pieces blank
+
+
 # Post Release To Do
 
 - [ ] Finish Admin Panel
