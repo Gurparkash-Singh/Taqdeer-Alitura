@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS Products (
     image_alt_desc TEXT NOT NULL,
     category_id INT NOT NULL,
     collection_id INT,
-    type_id INT NOT NULL,
     default_price FLOAT NOT NULL,
     default_box_volume FLOAT NOT NULL,
     size_chart_above_text TEXT,

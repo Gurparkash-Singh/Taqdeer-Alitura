@@ -12,8 +12,9 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Upload Product Photos
 - [x] update admin panel to add early access
 - [x] update return policy
-- [ ] update measurements
-- [ ] update weights
+- [x] update measurements
+- [x] update weights
+- [x] Add ability to track shipments
 - [ ] Ensure DB accuracy
 - [ ] QA testing
 
@@ -31,7 +32,6 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Allow selection of address by moving pin on the map
 - [ ] Add a close button to product page
 - [ ] Go back to exact shop settings and scroll to exact product on product page
-- [ ] Add ability to track shipments
 
 # Fix Pre Launch Mode
 
@@ -121,6 +121,8 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] Add ability to track shipments
 - [x] Add ability to generate a commericial invoice
 - [x] Add Print Label functionality
+- [x] update measurements
+- [x] update weights
 - [ ] Verify profile page
 - [ ] Verify edit profile
 - [ ] Verify password reset
@@ -132,20 +134,11 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [ ] Verify post checkout page
 - [ ] Verify address book
 - [ ] Verify order history
-- [ ] update measurements
-- [ ] update weights
-
-For Commercial Invoices
-    if we can submit to aramex automatically
-        automatically calculate which piece goes into which box and assign number of pieces
-        also calculate actual weight of each box
-    else
-        leave number of pieces blank
-
 
 # Post Release To Do
 
 - [ ] Finish Admin Panel
+- [ ] Make sure Admin Panel is properly styled
 - [ ] Make sure Product Item Price is changed with default price if a button is clicked
 - [ ] Add security to image server by authenticating user before upload or delete
 - [ ] Redo Discounts to allow for members to receive discounts without code
@@ -244,3 +237,11 @@ Full Size
 Every field the admin should have access to:
 
 - Errors: id, location, name
+
+# For Commercial Invoices
+
+    if we can submit to aramex automatically
+        automatically calculate which piece goes into which box and assign number of pieces
+        also calculate actual weight of each box
+    else
+        leave number of pieces blank

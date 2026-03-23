@@ -6,6 +6,7 @@
 	let { data, form } = $props();
 
 	let invoice_printer;
+    let iframe_src = $state("");
 
 	if (form) {
 		let inMessages = false;
@@ -40,8 +41,13 @@
 
 		const res = await response.json();
 
-		invoice_printer.contentWindow.document.write(res.invoice);
-		invoice_printer.contentWindow.print();
+        if (iframe_src != res.invoice) {
+            invoice_printer.srcdoc = "";
+            invoice_printer.contentWindow.document.write(res.invoice);
+            iframe_src = res.invoice;
+        }
+        
+        invoice_printer.contentWindow.print();
 	}
 </script>
 
@@ -75,7 +81,10 @@
 	order_items={data.order_items}
 />
 
-<iframe title="invoice" bind:this={invoice_printer}></iframe>
+<iframe 
+    title="invoice" 
+    bind:this={invoice_printer}
+></iframe>
 
 <style>
 	#order-ref {
