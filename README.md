@@ -26,6 +26,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 3. Post-Launch:
 
 - [ ] Add ability to create pickup from admin panel
+- [ ] Fix Delivery system to be able to add and use multiple box sizes
 - [ ] Create routine pickups
 - [ ] Get payment methods page working
 - [ ] Save card if so choosen
@@ -138,6 +139,7 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 # Post Release To Do
 
 - [ ] Finish Admin Panel
+- [ ] Fix Delivery system to be able to add and use multiple box sizes
 - [ ] Make sure Admin Panel is properly styled
 - [ ] Make sure Product Item Price is changed with default price if a button is clicked
 - [ ] Add security to image server by authenticating user before upload or delete

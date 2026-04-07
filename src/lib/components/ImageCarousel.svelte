@@ -80,7 +80,6 @@
 	#image-carousel {
 		display: flex;
 		justify-content: center;
-		position: relative;
 		height: 100%;
 		flex-direction: row;
 		width: 100%;
@@ -93,9 +92,12 @@
 	}
 
 	.carousel-holder img {
-		width: 100%;
+		width: 100vw;
 		object-fit: contain;
-		max-height: 100%;
+		max-height: 100vh;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
 	}
 
 	.showImage {
@@ -107,6 +109,10 @@
 		border: none;
 		bottom: 0;
 		position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        cursor: pointer;
 	}
 
 	#image-carousel button svg path {

@@ -32,7 +32,7 @@
 				<path
 					d="M48 2L2 48M2 2L48 48"
 					stroke="#FFF"
-					stroke-width="4"
+					stroke-width="7"
 					stroke-linecap="round"
 					stroke-linejoin="round"
 				/>
@@ -62,14 +62,13 @@
 	}
 
 	section {
-		width: 90%;
-		height: 90%;
+		width: 100%;
+		height: 100%;
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		padding: 30px;
 		color: white;
 		min-width: 250px;
 	}
@@ -79,13 +78,16 @@
 		color: white;
 		border: none;
 		position: absolute;
-		top: 0;
-		left: 0;
+		top: 10%;
+		right: 0;
+        z-index: 3;
+        cursor: pointer;
+        transform: translateY(-50%);
 	}
 
 	@media screen and (width > 700px) {
 		#close-button {
-			left: 25%;
+			right: 25%;
 		}
 	}
 </style>
