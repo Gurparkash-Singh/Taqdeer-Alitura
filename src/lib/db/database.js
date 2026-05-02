@@ -23,7 +23,7 @@ try {
 				host: '192.168.2.25',
 				user: 'gurp',
 				password: DATABASE_PASS,
-				database: 'Taqdeer_Development',
+				database: 'Taqdeer',
 				timezone: 'Z'
 			})
 			.promise();
