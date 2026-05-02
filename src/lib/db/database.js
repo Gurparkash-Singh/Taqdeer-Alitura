@@ -1,5 +1,5 @@
 import mysql from 'mysql2';
-import { DATABASE_PASS, MODE, OFFLINE } from '$env/static/private';
+import { DATABASE_PASS, MODE, OFFLINE, RESEND_EMAIL } from '$env/static/private';
 import { RESEND_API_KEY } from '$env/static/private';
 import { Resend } from 'resend';
 import { error } from '@sveltejs/kit';
@@ -41,7 +41,7 @@ try {
 } catch (dbError) {
 	if (MODE != 'DEVELOPMENT') {
 		const { returnData, error } = await resend.emails.send({
-			from: 'web-contact@gurparkashsingh.com',
+			from: RESEND_EMAIL,
 			to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
 			subject: 'Taqdeer Website Error',
 			text: `cannot connect to database\nError: ${dbError.code}`
@@ -470,14 +470,14 @@ export const dbFunctions = {
 			await db.query(query, [location, id, name]);
 
 			const { returnData, error } = await resend.emails.send({
-				from: 'web-contact@gurparkashsingh.com',
+				from: RESEND_EMAIL,
 				to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
 				subject: 'Taqdeer Website Error',
 				text: `Unexpected error occured\nError: ${name}`
 			});
 		} catch (queryError) {
 			const { returnData, error } = await resend.emails.send({
-				from: 'web-contact@gurparkashsingh.com',
+				from: RESEND_EMAIL,
 				to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
 				subject: 'Taqdeer Website Error',
 				text: `Error while saving\nError: ${queryError.message}`
@@ -500,7 +500,7 @@ export const dbFunctions = {
 			await db.query(query, [location, id, name]);
 		} catch (queryError) {
 			const { returnData, error } = await resend.emails.send({
-				from: 'web-contact@gurparkashsingh.com',
+				from: RESEND_EMAIL,
 				to: ['khalsags.fateh@gmail.com', 'sandee.ceo@gmail.com'],
 				subject: 'Taqdeer Website Error',
 				text: `Error while saving\nError: ${queryError.message}`
