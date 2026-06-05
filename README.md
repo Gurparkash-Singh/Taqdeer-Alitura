@@ -15,13 +15,13 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 - [x] update measurements
 - [x] update weights
 - [x] Add ability to track shipments
-- [ ] Ensure DB accuracy
-- [ ] QA testing
+- [x] Ensure DB accuracy
+- [x] QA testing
 
 2. Launch:
 
-- [ ] Allow access to the entire website to everyone
-- [ ] Finished Website
+- [x] Allow access to the entire website to everyone
+- [x] Finished Website
 
 3. Post-Launch:
 
@@ -36,13 +36,13 @@ run.sh and server-run.sh are platform dependent and must be changed in order to 
 
 # Fix Pre Launch Mode
 
-- [ ] Move /access to (shop)
-- [ ] Delete /access/+layout.svelte
-- [ ] Remove everything below first if in /access/+layout.server.js
-- [ ] SET EARLY_ACCESS to FALSE in .env
-- [ ] Move everything from (shop)/home to routes and delete (shop)/home
-- [ ] Remove if (url.pathname === "/") from routes/+layout.svelte
-- [ ] Remove load function from routes/+page.server.js
+- [x] Move /access to (shop)
+- [x] Delete /access/+layout.svelte
+- [x] Remove everything below first if in /access/+layout.server.js
+- [x] SET EARLY_ACCESS to FALSE in .env
+- [x] Move everything from (shop)/home to routes and delete (shop)/home
+- [x] Remove if (url.pathname === "/") from routes/+layout.svelte
+- [x] Remove load function from routes/+page.server.js
 
 # To-Do
 
@@ -247,3 +247,14 @@ Every field the admin should have access to:
         also calculate actual weight of each box
     else
         leave number of pieces blank
+
+default_box_volume
+hs_code
+
+Can't change components available for size chart
+Can't change product variations for a given product
+Can't change availble product variations
+Can't change available variation options
+
+Can't change product item
+Can't change Discounts

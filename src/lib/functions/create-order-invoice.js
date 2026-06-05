@@ -12,7 +12,7 @@ export const invoice_creator = {
 
 		for (let i = 0; i < order_items.length; i++) {
 			invoice_products += createInvoiceProduct(
-				order_items[i].quantity,
+				"",
 				order_items[i].name,
 				order_items[i].hs_code,
 				order_items[i].quantity,

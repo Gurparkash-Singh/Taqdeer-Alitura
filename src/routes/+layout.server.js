@@ -1,4 +1,4 @@
-import { EARLY_ACCESS, MODE } from '$env/static/private';
+import { MODE } from '$env/static/private';
 import { dbFunctions } from '$lib/db/database';
 import { error } from '@sveltejs/kit';
 import axios from 'axios';
@@ -20,10 +20,6 @@ export async function load({ cookies, locals }) {
 			expires: new Date(0)
 		});
 	} else {
-		messages = [];
-	}
-
-	if (EARLY_ACCESS === 'TRUE') {
 		messages = [];
 	}
 

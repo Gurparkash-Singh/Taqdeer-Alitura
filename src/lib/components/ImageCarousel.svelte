@@ -95,9 +95,9 @@
 		width: 100vw;
 		object-fit: contain;
 		max-height: 100vh;
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
 	}
 
 	.showImage {
@@ -109,10 +109,10 @@
 		border: none;
 		bottom: 0;
 		position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 3;
-        cursor: pointer;
+		top: 50%;
+		transform: translateY(-50%);
+		z-index: 3;
+		cursor: pointer;
 	}
 
 	#image-carousel button svg path {

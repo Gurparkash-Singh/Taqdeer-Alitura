@@ -80,9 +80,9 @@
 		position: absolute;
 		top: 10%;
 		right: 0;
-        z-index: 3;
-        cursor: pointer;
-        transform: translateY(-50%);
+		z-index: 3;
+		cursor: pointer;
+		transform: translateY(-50%);
 	}
 
 	@media screen and (width > 700px) {

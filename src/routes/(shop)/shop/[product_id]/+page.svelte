@@ -226,23 +226,17 @@
 />
 
 <section id="product">
-    <a id="close-button" aria-label="close modal" href="/shop">
-        <svg
-            width="20"
-            height="20"
-            viewBox="0 0 50 50"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M48 2L2 48M2 2L48 48"
-                stroke="#111"
-                stroke-width="7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-        </svg>
-    </a>
+	<a id="close-button" aria-label="close modal" href="/shop">
+		<svg width="20" height="20" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M48 2L2 48M2 2L48 48"
+				stroke="#111"
+				stroke-width="7"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+		</svg>
+	</a>
 	<div id="image-carousel">
 		<button
 			aria-label="previous image"
@@ -296,7 +290,7 @@
 
 	<div id="product-name-holder">
 		<h1 id="product-name">{data.product.name}</h1>
-        <p id="product-desc">{data.product.description}</p>
+		<p id="product-desc">{data.product.description}</p>
 		<p id="product-price">{price}</p>
 		{#if data.outOfStock}
 			<p style:text-align="center">Out of Stock</p>
@@ -568,22 +562,22 @@
 </section>
 
 <style>
-    #close-button {
+	#close-button {
 		background-color: transparent;
 		color: black;
 		border: none;
 		position: absolute;
 		top: 0;
 		right: 7px;
-        cursor: pointer;
-        z-index: 1;
+		cursor: pointer;
+		z-index: 1;
 	}
 
 	#product {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-        position: relative;
+		position: relative;
 	}
 
 	#image-carousel {
@@ -617,7 +611,7 @@
 		border: none;
 		top: calc(50% - 14px);
 		position: absolute;
-        cursor: pointer;
+		cursor: pointer;
 	}
 
 	.oneImage svg path {
@@ -640,11 +634,11 @@
 		text-align: center;
 	}
 
-    #product-desc {
-        text-align: justify;
-        padding: 0 120px;
-        margin: 20px 0 25px 0;
-    }
+	#product-desc {
+		text-align: justify;
+		padding: 0 120px;
+		margin: 20px 0 25px 0;
+	}
 
 	#product-price {
 		text-align: center;
@@ -818,11 +812,11 @@
 	}
 
 	@media screen and (width < 650px) {
-        #product-desc {
-            text-align: justify;
-            padding: 0 50px;
-            margin: 20px 0 25px 0;
-        }
+		#product-desc {
+			text-align: justify;
+			padding: 0 50px;
+			margin: 20px 0 25px 0;
+		}
 
 		.carousel-holder {
 			width: min(400px, 75%);
