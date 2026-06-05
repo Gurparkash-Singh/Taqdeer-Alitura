@@ -20,7 +20,7 @@
 	let about;
 	let contact;
 
-	let email = $state(data.user ? data.user.email : '');
+	let email = $derived(data.user ? data.user.email : '');
 	let emailBody = $state('');
 	let enableSend = $state(false);
 
@@ -207,7 +207,6 @@
 					required
 					bind:value={emailBody}
 				></textarea>
-				<!-- <div id="form-controls"> -->
 				<p>
 					<label for="email">Email: </label>
 					<input
@@ -227,7 +226,6 @@
 					class:disable-send={!enableSend}
 					disabled={!enableSend}
 				/>
-				<!-- </div> -->
 			</form>
 			<ul>
 				<li>
