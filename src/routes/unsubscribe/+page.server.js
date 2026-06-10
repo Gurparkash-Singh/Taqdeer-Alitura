@@ -17,11 +17,11 @@ export async function load({ params, url }) {
 		error(404, 'token not found');
 	}
 
-	// const [found] = await dbFunctions.getEmailUnsubscribeToken(token);
+	const [found] = await dbFunctions.getEmailUnsubscribeToken(token);
 
-	// if (!found) {
-	// 	error(404, 'token not found');
-	// }
+	if (!found) {
+		error(404, 'token not found');
+	}
 
 	return { token };
 }

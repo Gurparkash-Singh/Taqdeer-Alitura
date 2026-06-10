@@ -1,36 +1,48 @@
 <script>
 	import AdminBackButton from '$lib/components/AdminBackButton.svelte';
 	import { modal } from '$lib/shared_state/shared.svelte';
+	import { onMount } from 'svelte';
 
 	let { data, form } = $props();
 
-	let above_text = $state(data.product.size_chart_above_text);
-	let below_text = $state(data.product.size_chart_below_text);
+	let above_text = $state();
+	let below_text = $state();
 
 	let size_chart_values = $state({});
 
-	let newVal = $state('Hello, World!');
+    function setSizeChartValues() {
+        const values_array = {};
 
-	for (let i = 0; i < data.product_variation_options.length; i++) {
-		for (let j = 0; j < data.size_chart_components.length; j++) {
-			let option_id = data.product_variation_options[i].option_id;
-			let component_id = data.size_chart_components[j].component_id;
+        for (let i = 0; i < data.product_variation_options.length; i++) {
+            for (let j = 0; j < data.size_chart_components.length; j++) {
+                let option_id = data.product_variation_options[i].option_id;
+                let component_id = data.size_chart_components[j].component_id;
+                if (!values_array[option_id]) {
+                    values_array[option_id] = {};
+                }
 
-			if (!size_chart_values[option_id]) {
-				size_chart_values[option_id] = {};
-			}
+                let value = 0;
 
-			let value = 0;
+                if (data.size_chart_values[option_id]) {
+                    if (data.size_chart_values[option_id][component_id]) {
+                        value = data.size_chart_values[option_id][component_id].value;
+                    }
+                }
 
-			if (data.size_chart_values[option_id]) {
-				if (data.size_chart_values[component_id]) {
-					value = data.size_chart_values[option_id][component_id].value;
-				}
-			}
+                values_array[option_id][component_id] = value;
+            }
+        }
 
-			size_chart_values[option_id][component_id] = value;
-		}
-	}
+        size_chart_values = values_array;
+    }
+
+    setSizeChartValues();
+
+    onMount(() => {
+        setSizeChartValues();
+        above_text = data.product.size_chart_above_text;
+        below_text = data.product.size_chart_below_text;
+    })
 
 	if (form) {
 		let inMessages = false;
