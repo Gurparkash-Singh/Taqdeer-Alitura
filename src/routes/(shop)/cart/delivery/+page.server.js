@@ -203,6 +203,9 @@ export const actions = {
 					customs_value += parseInt(order_items[i].quantity * order_items[i].price);
 					weight += parseFloat(order_items[i].weight);
 				}
+
+                weight = weight / 1000;
+			    item_quantity = Math.ceil(item_quantity);
 			}
 		}
 

@@ -1482,5 +1482,31 @@ export const dbFunctions = {
         let query = 'UPDATE Products SET hs_code = ? WHERE product_id = ?;';
 
 		await db.query(query, [value, id]);
+    },
+
+    getShoppingCountry: async (country) => {
+        let query = "SELECT * FROM Shipping_Countries WHERE country_code = ?;";
+
+        const [result] = await db.query(query, country);
+
+        return result;
+    },
+
+    getShippingPriceByCountry: async (country) => {
+        let query = "SELECT * FROM Shipping_Prices WHERE ";
+        query += "country_code = ? AND province_code IS NULL;";
+
+        const [result] = await db.query(query, country);
+
+        return result;
+    },
+
+    getShippingPriceByProvince: async (country, province) => {
+        let query = "SELECT * FROM Shipping_Prices ";
+        query += "WHERE country_code = ? AND province_code = ?;";
+
+        const [result] = await db.query(query, [country, province]);
+
+        return result;
     }
 };

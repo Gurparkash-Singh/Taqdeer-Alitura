@@ -1,4 +1,5 @@
 import { MODE } from '$env/static/private';
+import { dbFunctions } from '$lib/db/database';
 import axios from 'axios';
 
 let url_start = 'https://ws.aramex.net/ShippingAPI.V2';
@@ -30,21 +31,58 @@ let clientInfo = {
 	AccountCountryCode: 'SA'
 };
 
-// if (MODE === 'DEVELOPMENT') {
-// 	clientInfo = {
-// 		Version: 'v1.0',
-// 		UserName: 'testingapi@aramex.com',
-// 		Password: 'R123456789$r',
-// 		AccountNumber: '4004636',
-// 		AccountPin: '442543',
-// 		AccountEntity: 'RUH',
-// 		AccountCountryCode: 'SA'
-// 	};
-
-// 	url_start = 'https://ws.sbx.aramex.net/ShippingAPI.V2';
-// }
-
 export const aramex = {
+    calculateVolumetricWeight: (length, width, height) => {
+        return (length * width * height) / 5000;
+    },
+
+    calculatePrice: (
+        shipping_prices,
+        num_items, 
+        weight
+    ) => {
+        let price = 0;
+
+        let calculatableWeight = 0;
+
+        let volumetric_weight = aramex.calculateVolumetricWeight(20, 40, 10);
+
+        if (weight > volumetric_weight) {
+            calculatableWeight = weight;
+        }
+        else {
+            calculatableWeight = volumetric_weight;
+        }
+
+        if (calculatableWeight <= 0.5){
+            return parseFloat(shipping_prices.first_half_kg) * num_items;
+        }
+
+        if (calculatableWeight > 15) {
+            const extraWeight = ((calculatableWeight - 15) * 1000) / 500;
+            price += Math.ceil(extraWeight) * parseFloat(shipping_prices.additional_half_kg_over_15);
+
+            calculatableWeight -= (calculatableWeight - 15)
+        }
+
+        if (calculatableWeight > 10){
+            const extraWeight = ((calculatableWeight - 10) * 1000) / 500;
+            price += Math.ceil(extraWeight) * parseFloat(shipping_prices.additional_half_kg_over_15);
+
+            calculatableWeight -= (calculatableWeight - 10)
+        }
+
+        price += parseFloat(shipping_prices.first_half_kg);
+        calculatableWeight -= 0.5;
+
+        if (calculatableWeight > 0) {
+            const extraWeight = Math.ceil((calculatableWeight * 1000) / 500)
+            price += extraWeight * parseFloat(shipping_prices.additional_half_kg); 
+        }
+
+        return price;
+    },
+
 	calculateRate: async (
 		line1,
 		line2,
@@ -135,7 +173,62 @@ export const aramex = {
 			console.log(error);
 		}
 
-		return result.data;
+        if (result.data.HasErrors) {
+            return result.data;
+        }
+
+        const [shopping_country] = await dbFunctions.getShoppingCountry(country.toUpperCase());
+
+        if (!shopping_country) {
+            result.data.HasErrors = true;
+
+            result.data.Notifications = [{
+                Message: "DestinationAddress - Invalid Country Code"
+            }]
+
+            return result.data;
+        }
+
+        let price = 0;
+
+        if (shopping_country.province_dependant) {
+            const [shipping_prices] = await dbFunctions.getShippingPriceByProvince(
+                country,
+                state
+            )
+
+            if (shipping_prices) {
+                price = aramex.calculatePrice(
+                    shipping_prices,
+                    num_items, 
+                    weight
+                );
+            }
+        }
+
+        const [shipping_prices] = await dbFunctions.getShippingPriceByCountry(country);
+
+        if (!shipping_prices) {
+            result.data.HasErrors = true;
+
+            result.data.Notifications = [{
+                Message: "ServerError - Error finding delivery rate"
+            }]
+
+            return result.data;
+        }
+
+         if (price == 0) {
+            price = aramex.calculatePrice(
+                shipping_prices,
+                num_items, 
+                weight
+            );
+        }
+
+        result.data.TotalAmount.Value = price;
+
+        return result.data;
 	},
 
 	createShipment: async (
