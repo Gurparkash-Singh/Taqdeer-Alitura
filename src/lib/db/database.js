@@ -1468,5 +1468,19 @@ export const dbFunctions = {
 		query += 'WHERE product_id = ? AND component_id = ?;';
 
 		await db.query(query, [product_id, component_id]);
-	}
+	},
+
+    getHSCodes: async () => {
+        let query = "SELECT * FROM HS_Code";
+
+        const [result] = await db.query(query);
+
+        return result;
+    },
+
+    updateHSCode: async (id, value) => {
+        let query = 'UPDATE Products SET hs_code = ? WHERE product_id = ?;';
+
+		await db.query(query, [value, id]);
+    }
 };

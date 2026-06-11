@@ -249,12 +249,38 @@ Every field the admin should have access to:
         leave number of pieces blank
 
 default_box_volume
-hs_code
 
 Can't change components available for size chart
 Can't change product variations for a given product
 Can't change availble product variations
 Can't change available variation options
+Can't change available hs_codes
 
 Can't change product item
 Can't change Discounts
+
+# Prices not found for the following countries:
+ascension islands
+bhutan
+British Indian Ocean Territory
+Cuba
+Falkland Islands
+Lebanon
+Marshal Islands
+Micronesia
+Niue
+Norfolk Islands
+North Korea
+South Sudan
+St Barthelemy
+St Helena
+St. Pierre & Miquelon
+Svalbard & Jan Mayen
+São Tomé & Príncipe
+Timor-Leste
+Tokelau
+Tristan da Cunha
+Western Sahara
+Åland Islands
+
+Ignored Pitcairn Islands 202.2, 37.7

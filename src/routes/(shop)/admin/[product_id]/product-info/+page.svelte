@@ -11,6 +11,7 @@
 	let live = $state(data.product.live == 1 ? true : false);
 	let alt_desc = $state(data.product.image_alt_desc);
 	let description = $state(data.product.description);
+    let hs_code = $state(data.product.hs_code);
 
 	let enableSubmit = $derived.by(() => {
 		if (!name || !category || !price || !alt_desc || !description) {
@@ -44,6 +45,10 @@
 		if (description != data.product.description) {
 			return true;
 		}
+
+        if (hs_code != data.product.hs_code) {
+            return true;
+        }
 
 		return false;
 	});
@@ -103,6 +108,17 @@
 				{#each data.collections as collection}
 					<option value={collection.collection_id}>
 						{collection.collection_name}
+					</option>
+				{/each}
+				<option value={null}>No Collection</option>
+			</select>
+		</p>
+        <p>
+			<label for="hs_code">hs_code:</label>
+			<select name="hs_code" id="hs_code" bind:value={hs_code}>
+				{#each data.hs_codes as code}
+					<option value={code.hs_code}>
+						{code.hs_code} : {code.name}
 					</option>
 				{/each}
 				<option value={null}>No Collection</option>

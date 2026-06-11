@@ -481,6 +481,29 @@ CREATE TABLE IF NOT EXISTS Early_Access (
 	email VARCHAR(255) PRIMARY KEY NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS Shipping_Countries (
+	country_code VARCHAR(255) NOT NULL PRIMARY KEY,
+    country TEXT NOT NULL,
+    province_dependant BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS Shipping_Prices
+(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    country_code VARCHAR(255) NOT NULL,
+    province_code VARCHAR(255),
+    first_half_kg FLOAT NOT NULL,
+    additional_half_kg FLOAT NOT NULL,
+    additional_half_kg_over_10 FLOAT NOT NULL,
+    additional_half_kg_over_15 FLOAT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (country_code) REFERENCES Shipping_Countries(country_code),
+    KEY (province_code, country_code)
+);
+
 CREATE OR REPLACE VIEW Admin_Type_And_Permission AS
 SELECT Admins.admin_id, PT1.permission_id, PT1.name,
 (

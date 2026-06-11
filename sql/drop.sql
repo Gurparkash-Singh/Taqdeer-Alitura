@@ -2,6 +2,10 @@ DROP EVENT IF EXISTS expire_products;
 
 DROP VIEW IF EXISTS Admin_Type_And_Permission;
 
+DROP TABLE IF EXISTS Shipping_Prices;
+
+DROP TABLE IF EXISTS Shipping_Countries;
+
 DROP TABLE IF EXISTS Early_Access;
 
 DROP TABLE IF EXISTS Available_Currencies;

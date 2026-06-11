@@ -10,6 +10,12 @@ export const load = async ({ locals, params }) => {
 	if (!permission) {
 		throw redirect(302, './');
 	}
+
+    const hs_codes = await dbFunctions.getHSCodes();
+
+    return {
+        hs_codes
+    }
 };
 
 export const actions = {
@@ -24,6 +30,7 @@ export const actions = {
 		const price = data.get('price');
 		const live = data.get('live');
 		const alt_desc = data.get('alt_desc');
+        const hs_code = data.get("hs_code");
 
 		let setLive = false;
 		let resetLive = false;
@@ -186,6 +193,12 @@ export const actions = {
 				await dbFunctions.setAltDesc(product_id, alt_desc);
 			}
 		}
+
+        if (hs_code) {
+            if (product.hs_code != hs_code) {
+                await dbFunctions.updateHSCode(product_id, hs_code);
+            }
+        }
 
 		return {
 			success: true,
